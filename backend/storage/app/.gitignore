@@ -1,0 +1,5 @@
+*
+!public/
+!swagger/
+!swagger/*
+!.gitignore

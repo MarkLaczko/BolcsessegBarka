@@ -1,0 +1,156 @@
+openapi: 3.0.3
+info:
+  title: Swagger Waterpolo - OpenAPI 3.0
+  description: |-
+    A kommunikáció mindkét irányban JSON alapú legyen!
+    
+    Egy-egy API híváskor az alábbi adatokat kell küldeni/fogadni.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8881
+paths:
+  /api/championships:
+    post:
+      tags:
+        - Championship / Bajnokság
+      summary: Új bajnokság felvétele
+      operationId: addChampionship
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChampionshipStore'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Championship'
+        '400':
+          description: Invalid input
+        '403':
+          description: Request not authorized
+        '422':
+          description: Validation exception
+    get:
+      tags:
+        - Bajnokság
+      summary: Bajnokságok listázása
+      operationId: getAllChampionship
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Championship'
+        '404':
+          description: Not found
+  /api/captains:
+    get:
+      tags:
+        - Kapitány
+      summary: Kapitányok listázása
+      operationId: getAllCaptains
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Captain'
+        '404':
+          description: Not found
+  /api/captains/{id}:
+    get:
+      tags:
+        - Kapitány
+      summary: Egy kapitány adatainak lekérése
+      operationId: getCaptainById
+      parameters:
+        - name: id
+          in: path
+          description: A kapitány azonosítója
+          required: true
+          schema:
+            type: integer
+            format: BigInt
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Captain'
+        '404':
+          description: Not found
+components:
+  schemas:
+    Captain:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: BigInt
+          example: 1
+        name:
+          type: string
+          example: Speisegger Ernő
+        born:
+          type: integer
+          example: 1884
+        died:
+          type: integer
+          example: 1948
+    Championship:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: BigInt
+          example: 1
+        year:
+          type: integer
+          example: 1912
+        location:
+          type: string
+          example: Stockholm
+        rank:
+          type: integer
+          example: 5
+        captain:
+          $ref: '#/components/schemas/Captain'
+        type:
+          type: string
+          example: Olimpia
+    ChampionshipStore:
+      type: object
+      properties:
+        year:
+          type: integer
+          example: 1912
+        location:
+          type: string
+          example: Stockholm
+        rank:
+          type: integer
+          example: 5
+        captain_id:
+          type: integer
+          example: 1
+        type:
+          type: string
+          example: Olimpia
+  requestBodies:
+    Championship:
+      description: Új bajnokságot tartalmazó kérés
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ChampionshipStore'
