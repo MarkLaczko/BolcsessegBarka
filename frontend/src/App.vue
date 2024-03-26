@@ -6,7 +6,7 @@
     },
     computed: {
       isSignedOut() {
-        return this.$route.path === "/" || this.$route.path === "/login";
+        return this.$route.path === "/register" || this.$route.path === "/login";
       }
     }
   }
