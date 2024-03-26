@@ -20,5 +20,8 @@
     "vite-plugin-vue-devtools": "^7.0.14",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"
+  },
+  "dependencies": {
+    "primevue": "^3.50.0"
   }
 }

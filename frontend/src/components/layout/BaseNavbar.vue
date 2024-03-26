@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg bg-info" data-bs-theme="dark">
   <div class="container-fluid">
-    <RouterLink class="navbar-brand"  :to="{name: 'home'}"><img class="img-fluid" src="../assets/images/logo.png" alt="BölcsességBárka" style="max-width: 50px;"></RouterLink>
+    <RouterLink class="navbar-brand"  :to="{name: 'home'}"><img class="img-fluid" src="../../assets/images/logo.png" alt="BölcsességBárka" style="max-width: 50px;"></RouterLink>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
