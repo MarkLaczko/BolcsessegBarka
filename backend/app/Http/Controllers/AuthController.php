@@ -22,7 +22,7 @@ class AuthController extends Controller
         }
 
         return response()->json([
-            "message" => [
+            "data" => [
                 "message" => "Unsuccessful authentication"
             ]
         ], 401);
