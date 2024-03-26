@@ -1,0 +1,30 @@
+<template>
+    <div class="card mb-3 w-75 m-auto">
+        <div class="row g-0">
+            <div class="col-md-3">
+                <img :src="'http://localhost:5173/src/assets/images/'+image" :alt="image" class="img-fluid rounded-start object-fit-cover w-100 h-100" alt="kep">
+            </div>
+            <div class="col-md-6">
+                <div class="card-body">
+                    <h7 class="card-title">Kurzus: {{ course }}</h7>
+                    <h3 class="card-text"><b>{{ learningMaterial }}</b></h3>
+                    <span class="badge text-bg-primary">{{ releaseData }}</span>
+                </div>
+            </div>
+            <div class="col-md-3 d-flex justify-content-center align-items-center">
+                <a href="" class="btn btn-primary my-2">Megtekintés</a>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    props: {
+        course: String,
+        learningMaterial: String,
+        image: String,
+        releaseData: String
+    }
+}
+</script>
