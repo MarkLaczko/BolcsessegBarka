@@ -13,84 +13,174 @@
                         'pb-2' : true
                     }
                 }"
+                @submit="register"
             >
-            <h1 class="text-center py-4">Regisztráció</h1>
+            <Message
+                v-for="msg of messages" :key="msg.id"
+                :icon="`fa-solid fa-${msg.icon}`"
+                :pt="{
+                    wrapper: `alert alert-${msg.color} d-flex flex-row w-100 justify-content-between align-items-center p-2 mt-4 mb-0`,
+                    button: `btn btn-outline-${msg.color} rounded-circle`,
+                }">
+                {{ msg.content }}
+                <template #closeicon>
+                    <i class="fa-solid fa-xmark"></i>
+                </template>
+            </Message>
+
+            <h1 class="text-center my-4">Regisztráció</h1>
             
                 <FormKit
                     type="text"
+                    name="name"
                     placeholder="Felhasználónév"
+                    validation="required|length:0,255"
+                    :validation-messages="{ required: 'Ez a mező kötelező.', length: 'A felhasználónévnek kevesebbnek kell lennie, mint 255 karakter.' }"
                     :classes="{
                         input: {
                             'm-auto' : true,
                             'form-control' : true
+                        },
+                        messages: {
+                            'list-style-none': true,
+                        },
+                        message: {
+                            'text-danger': true,
+                            'p-0': true
                         }
                     }"
                 />
                 <FormKit
                     type="email"
+                    name="email"
                     placeholder="E-mail"
-                    :classes="{
-                        input: {
-                            'm-auto' : true,
-                            'my-2' : true,
-                            'form-control' : true
-                        }
-                    }"
-                />
-                <FormKit
-                    type="password"
-                    placeholder="Jelszó"
-                    :classes="{
-                        input: {
-                            'm-auto' : true,
-                            'form-control' : true
-                        }
-                    }"
-                />
-                <FormKit
-                    type="password"
-                    placeholder="Jelszó megerősítés"
+                    validation="required|email"
+                    :validation-messages="{ required: 'Ez a mező kötelező.', email: 'Adjon meg egy érvényes email címet.' }"
                     :classes="{
                         input: {
                             'm-auto' : true,
                             'mt-2' : true,
                             'form-control' : true
+                        },
+                        messages: {
+                            'list-style-none': true,
+                        },
+                        message: {
+                            'text-danger': true,
+                            'p-0': true,
                         }
                     }"
                 />
-                <div class="d-flex justify-content-center">
+                <FormKit
+                    type="password"
+                    name="password"
+                    placeholder="Jelszó"
+                    validation="required|length:8,255"
+                    :validation-messages="{ required: 'Ez a mező kötelező.' }"
+                    :classes="{
+                        input: {
+                            'm-auto' : true,
+                            'mt-2': true,
+                            'form-control' : true
+                        },
+                        messages: {
+                            'list-style-none': true,
+                        },
+                        message: {
+                            'text-danger': true,
+                            'p-0': true
+                        }
+                    }"
+                />
+                <FormKit
+                    type="password"
+                    name="password_confirm"
+                    placeholder="Jelszó megerősítés"
+                    validation="required|length:8,255|confirm"
+                    :validation-messages="{ required: 'Ez a mező kötelező.', confirm: 'A jelszavak nem egyeznek.'  }"
+                    :classes="{
+                        input: {
+                            'm-auto' : true,
+                            'mt-2' : true,
+                            'form-control' : true
+                        },
+                        messages: {
+                            'list-style-none': true,
+                        },
+                        message: {
+                            'text-danger': true,
+                            'p-0': true
+                        }
+                    }"
+                />
+                <div class="d-flex gap-2 justify-content-center">
                     <FormKit
                         type="submit"
                         :classes="{
                             input: {
-                                'text-white' : true,
-                                'bg-primary' : true,
+                                'btn': true,
+                                'btn-primary' : true,
+                                'btn-info' : false,
+                                'form-control': false,
                                 'px-3' : true
                             },
                             outer: {
-                                'pb-3' : true
+                                'pb-3' : true,
                             }
                         }"
                     >
                     Regisztráció
                     </FormKit>
+                    <RouterLink :to="{ name: 'login' }" class="btn btn-secondary h-100 mt-3">
+                        Már van fiókja?
+                    </RouterLink>
                 </div>
             </FormKit>
         </div>
 </template>
 
 <script>
-export default {
+import { http } from '@utils/http';
+import Message from 'primevue/message';
+import { RouterLink } from 'vue-router'
 
+export default {
+    components: {
+        Message,
+        RouterLink
+    },
+    data() {
+        return {
+            messages: [],
+            count: 0
+        };
+    },
+    methods: {
+        async register(data){
+            try {
+                let formData = {...data};
+                formData.password_confirmation = formData.password_confirm;
+                await http.post('/users/register', formData);
+                this.messages = [
+                    { color: 'success', icon:'check', content: 'Sikeres regisztráció!', id: this.count++ },
+                ];
+            } catch (error) {
+                this.messages = [
+                    { color: 'danger', icon:'triangle-exclamation', content: 'Sikertelen regisztráció!', id: this.count++ },
+                ];
+            }
+
+        }
+    }
 }
 </script>
 
 <style scoped>
     .form-control-width {
-        width: 50%;
+        width: 90%;
     } 
 
-    @media screen and (min-width: 1200px) {
+    @media screen and (min-width: 900px) {
         .form-control-width {
             width: 40%;
         } 
