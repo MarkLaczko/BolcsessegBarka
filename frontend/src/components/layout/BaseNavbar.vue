@@ -6,14 +6,14 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100">
         <li class="nav-item">
           <RouterLink class="nav-link"  :to="{name: 'home'}">Főoldal</RouterLink>
         </li>
         <li class="nav-item">
           <RouterLink class="nav-link"  :to="{}">Kurzusaim</RouterLink>
         </li>
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown" v-if="currentUserData.is_admin === 1">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Adminisztráció
           </a>
@@ -23,10 +23,32 @@
             <li><a class="dropdown-item" href="#">Csoportok kezelése</a></li>
           </ul>
         </li>
+        <li class="nav-item ms-auto">
+          <button class="nav-link" @click="logoutUser">Kijelentkezés</button>
+        </li>
       </ul>
     </div>
   </div>
 </nav>
 </template>
 
-<script setup></script>
+<script>
+import { userStore } from "@stores/UserStore.mjs"
+import { mapActions, mapState } from "pinia"
+
+export default {
+  methods: {
+    ...mapActions(userStore, ["getUser","logout"]),
+    logoutUser() {
+      this.logout();
+      this.$router.push("/login");
+    }
+  },
+  computed: {
+    ...mapState(userStore, ["currentUserData"]),
+  },
+  async mounted() {
+    await this.getUser();
+  }
+}
+</script>
