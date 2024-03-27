@@ -1,6 +1,6 @@
 <template>
     <BaseLayout>
-        <h1 class="text-center my-3">Üdvözöllek {Bejelentkezett felhasználó neve}!</h1>
+        <h1 class="text-center my-3">Üdvözöllek {{ currentUserData.name }}!</h1>
         
         <div class="bg-info rounded-3 pt-3">
             <h2 class="text-center mb-3"><b>Elkészítendő feladatok</b></h2>
@@ -49,12 +49,23 @@
 import BaseLayout from "@layouts/BaseLayout.vue"
 import BaseAssignmentCard from "@components/BaseAssignmentCard.vue";
 import BaseLearningMaterialCard from "@components/BaseLearningMaterialCard.vue"
+import { userStore } from "@stores/UserStore.mjs"
+import { mapActions, mapState } from "pinia";
 
 export default {
     components: {
         BaseLayout,
         BaseAssignmentCard,
         BaseLearningMaterialCard
+    },
+    methods: {
+        ...mapActions(userStore, ["getUser"]),
+    },
+    computed: {
+        ...mapState(userStore, ["currentUserData"]),
+    },
+    async mounted() {
+        await this.getUser();
     }
 }
 </script>
