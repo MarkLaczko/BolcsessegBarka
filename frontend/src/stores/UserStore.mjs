@@ -35,6 +35,9 @@ export const userStore = defineStore('userStore', {
     getters:{
         isAuthenticated(){
             return this.token !== ""
+        },
+        isAdmin(){
+            return this.currentUserData.is_admin === 1;
         }
     },
     persist: true,
