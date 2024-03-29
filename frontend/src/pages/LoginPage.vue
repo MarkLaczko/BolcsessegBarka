@@ -114,12 +114,12 @@ export default {
 
 <style scoped>
 .form-control-width {
-    width: 50%;
+    width: 40%;
 } 
 
-@media screen and (min-width: 1200px) {
+@media screen and (max-width: 910px) {
     .form-control-width {
-        width: 40%;
+        width: 80%;
     } 
 }
 </style>
