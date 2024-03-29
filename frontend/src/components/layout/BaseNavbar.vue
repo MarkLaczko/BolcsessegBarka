@@ -18,9 +18,9 @@
             Adminisztráció
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Felhasználó kezelése</a></li>
-            <li><a class="dropdown-item" href="#">Kurzusok kezelése</a></li>
-            <li><a class="dropdown-item" href="#">Csoportok kezelése</a></li>
+            <li><RouterLink class="dropdown-item" :to="{name: 'userAdministration'}">Felhasználó kezelése</RouterLink></li>
+            <li><RouterLink class="dropdown-item" :to="{name: 'courseAdministration'}">Kurzusok kezelése</RouterLink></li>
+            <li><RouterLink class="dropdown-item" :to="{name: 'groupAdministration'}">Csoportok kezelése</RouterLink></li>
           </ul>
         </li>
         <li class="nav-item ms-auto">
