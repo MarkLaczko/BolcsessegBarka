@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { setTitle } from '@/router/guards/SetTitleGuard.mjs'
 import { AuthGuard } from '@/router/guards/AuthGuard.mjs'
+import { AdminGuard } from '@/router/guards/AdminGuard.mjs'
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -31,9 +32,40 @@ export const router = createRouter({
         requiresAuth: true,
         title: 'Főoldal'
       }
+    },
+    {
+      path: '/user-administration',
+      name: 'userAdministration',
+      component: () => import('@pages/UserManagementPage.vue'),
+      meta: {
+        requiresAuth: true,
+        title: 'Felhasználók kezelése',
+        requiresAdmin: true
+      }
+    },
+    {
+      path: '/course-administration',
+      name: 'courseAdministration',
+      component: () => import('@pages/CourseManagementPage.vue'),
+      meta: {
+        requiresAuth: true,
+        title: 'Kurzusok kezelése',
+        requiresAdmin: true
+      }
+    },
+    {
+      path: '/group-administration',
+      name: 'groupAdministration',
+      component: () => import('@pages/GroupManagementPage.vue'),
+      meta: {
+        requiresAuth: true,
+        title: 'Csoportok kezelése',
+        requiresAdmin: true
+      }
     }
   ]
 })
 
 router.beforeEach(setTitle);
 router.beforeEach(AuthGuard);
+router.beforeEach(AdminGuard);
