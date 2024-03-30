@@ -23,5 +23,10 @@ class Quiz extends Model
     {
         return $this->morphTo();
     }
+
+    public function tasks() : BelongsToMany
+    {
+        return $this->belongsToMany(Task::class,"solve","quiz_id","task_id");
+    }
 }
 
