@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string("comment");
             $table->dateTime("deadline");
             $table->integer("grade");
+            $table->unsignedBigInteger("courseable_id");
+            $table->string("courseable_type");
         });
     }
 
