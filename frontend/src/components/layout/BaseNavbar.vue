@@ -11,7 +11,7 @@
           <RouterLink class="nav-link"  :to="{name: 'home'}">Főoldal</RouterLink>
         </li>
         <li class="nav-item">
-          <RouterLink class="nav-link"  :to="{}">Kurzusaim</RouterLink>
+          <RouterLink class="nav-link"  :to="{name: 'courses'}">Kurzusaim</RouterLink>
         </li>
         <li class="nav-item dropdown" v-if="currentUserData.is_admin === 1">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

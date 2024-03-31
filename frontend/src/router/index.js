@@ -62,6 +62,15 @@ export const router = createRouter({
         title: 'Csoportok kezelése',
         requiresAdmin: true
       }
+    },
+    {
+      path: '/courses',
+      name: 'courses',
+      component: () => import('@pages/CoursesPage.vue'),
+      meta: {
+        requiresAuth: true,
+        title: 'Kurzusok',
+      }
     }
   ]
 })
