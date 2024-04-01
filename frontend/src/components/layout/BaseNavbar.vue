@@ -23,7 +23,7 @@
             <li><RouterLink class="dropdown-item" :to="{name: 'groupAdministration'}">Csoportok kezelése</RouterLink></li>
           </ul>
         </li>
-        <li class="nav-item ms-auto">
+        <li class="nav-item ms-lg-auto">
           <button class="nav-link" @click="logoutUser">Kijelentkezés</button>
         </li>
       </ul>
