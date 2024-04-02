@@ -79,7 +79,7 @@
                     v-model="password"
                     placeholder="Jelszó"
                     validation="required|length:8,255"
-                    :validation-messages="{ required: 'Ez a mező kötelező.' }"
+                    :validation-messages="{ required: 'Ez a mező kötelező.', length: 'Legalább 8, maximum 255 karakter hosszú lehet a jelszó.' }"
                     :classes="{
                         input: {
                             'm-auto' : true,
@@ -101,7 +101,7 @@
                     v-model="password_confirm"
                     placeholder="Jelszó megerősítés"
                     validation="required|length:8,255|confirm"
-                    :validation-messages="{ required: 'Ez a mező kötelező.', confirm: 'A jelszavak nem egyeznek.'  }"
+                    :validation-messages="{ required: 'Ez a mező kötelező.', length: 'Legalább 8, maximum 255 karakter hosszú lehet a jelszó.', confirm: 'A jelszavak nem egyeznek.'  }"
                     :classes="{
                         input: {
                             'm-auto' : true,
