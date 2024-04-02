@@ -26,10 +26,13 @@ Route::get('/users', [UserController::class, 'index'])
     ->name('users.index');
 Route::get('/users/{id}', [UserController::class, 'show'])
     ->name('users.show');
+Route::post('/users/delete', [UserController::class, 'bulkDelete'])
+    ->name('users.bulkDelete');
 Route::put('/users/{id}', [UserController::class, 'update'])
     ->name('users.update');
 Route::delete('/users/{id}', [UserController::class, 'destroy'])
     ->name('users.destroy');
+
 
 Route::post('/users/register', [UserController::class, 'store'])
     ->name('users.store');

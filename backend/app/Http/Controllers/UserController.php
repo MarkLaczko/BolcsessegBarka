@@ -69,4 +69,16 @@ class UserController extends Controller
 
         return response()->noContent();
     }
+
+    public function bulkDelete(Request $request)
+    {
+        $userIds = $request->input('userIds');
+
+        if (!empty($userIds)) {
+            User::destroy($userIds);
+            return response()->json(['message' => 'Users deleted successfully'], 200);
+        }
+
+        return response()->json(['message' => 'No users to delete'], 400);
+    }
 }
