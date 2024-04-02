@@ -11,8 +11,6 @@
                     name: 'slide-fade'
                 }
             }" />
-        
-            {{ $toast.sevirity }}
 
         <Dialog v-if="addUserDialogVisible" v-model:visible="addUserDialogVisible" modal header="Felhasználó hozzáadása" :style="{ width: '25rem' }"
             :pt = "{
