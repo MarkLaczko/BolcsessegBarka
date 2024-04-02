@@ -5,9 +5,6 @@ export const userStore = defineStore('userStore', {
     state(){
         return{
             token: "",
-            name: '',
-            email: '',
-            global_role: '',
             currentUserData: []
         }
     },
@@ -26,9 +23,6 @@ export const userStore = defineStore('userStore', {
         },
         logout(){
             this.token = '';
-            this.name = '';
-            this.email = '';
-            this.global_role = '';
             this.currentUserData = [];
         }
     },

@@ -5,7 +5,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { plugin, defaultConfig } from "@formkit/vue"
 import config from '../formkit.config.js'
 import PrimeVue from "primevue/config";
-
+import ToastService from 'primevue/toastservice';
 import App from '@/App.vue'
 
 import 'bootstrap'
@@ -23,5 +23,6 @@ app.use(pinia)
 app.use(PrimeVue, {
     unstyled: true
 });
+app.use(ToastService);
 
 app.mount('#app')
