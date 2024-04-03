@@ -1,55 +1,61 @@
 <template>
   <BaseLayout>
-    <h1 class="text-center my-3">Üdvözöllek {{ currentUserData.name }}!</h1>
-
-    <div class="bg-info rounded-3 pt-3">
-      <h2 class="text-center mb-3"><b>Elkészítendő feladatok</b></h2>
-
-      <div class="row px-5 pb-5 g-4">
-        <TransitionGroup :name="`slide-${animationDirection}`" class="row">
-          <div
-            class="col-12 col-lg-4 col-md-6"
-            v-for="assignment in paginatedAssignments"
-            :key="assignment.id"
-          >
-            <BaseAssignmentCard
-              :title="assignment.title"
-              :image="assignment.image"
-              :deadline="assignment.deadline"
-            />
-          </div>
-        </TransitionGroup>
-      </div>
-      <Paginator
-        :total-pages="totalPages"
-        :current-page="currentPage"
-        @page-changed="onPageChanged"
+    <div class="d-flex justify-content-center" v-if="loading">
+      <img
+        src="../assets/images/logo.png"
+        alt="logo"
+        width="300px"
+        class="rotating-pulsating"
       />
     </div>
 
-    <div class="bg-info rounded-3 pt-3 pb-2 mb-2">
-      <h2 class="text-center mb-3"><b>Legutóbbi tananyagok</b></h2>
+    <div v-if="!loading">
+      <h1 class="text-center my-3">Üdvözöllek {{ currentUserData.name }}!</h1>
 
-      <BaseLearningMaterialCard
-        :course="'Szoftverfejlesztő'"
-        :learningMaterial="'Tesztelés'"
-        :image="'asd.jpeg'"
-        :releaseData="'2024.06.05'"
-      />
-
-      <BaseLearningMaterialCard
-        :course="'Frontend'"
-        :learningMaterial="'Vue'"
-        :image="'asd.jpeg'"
-        :releaseData="'2024.06.10'"
-      />
-
-      <BaseLearningMaterialCard
-        :course="'Backend'"
-        :learningMaterial="'Rest API'"
-        :image="'asd.jpeg'"
-        :releaseData="'2024.06.12'"
-      />
+      <div class="rounded-3 pt-3">
+        <h2 class="text-center mb-3"><b>Elkészítendő feladatok</b></h2>
+        <div class="row px-5 pb-5 g-4">
+          <TransitionGroup :name="`slide-${animationDirection}`" class="row">
+            <div
+              class="col-12 col-lg-4 col-md-6"
+              v-for="assignment in paginatedAssignments"
+              :key="assignment.id"
+            >
+              <BaseAssignmentCard
+                :title="assignment.title"
+                :image="assignment.image"
+                :deadline="assignment.deadline"
+              />
+            </div>
+          </TransitionGroup>
+        </div>
+        <Paginator
+          :total-pages="totalPages"
+          :current-page="currentPage"
+          @page-changed="onPageChanged"
+        />
+      </div>
+      <div class="rounded-3 pt-3 pb-2 mb-2">
+        <h2 class="text-center mb-3"><b>Legutóbbi tananyagok</b></h2>
+        <BaseLearningMaterialCard
+          :course="'Szoftverfejlesztő'"
+          :learningMaterial="'Tesztelés'"
+          :image="'asd.jpeg'"
+          :releaseData="'2024.06.05'"
+        />
+        <BaseLearningMaterialCard
+          :course="'Frontend'"
+          :learningMaterial="'Vue'"
+          :image="'asd.jpeg'"
+          :releaseData="'2024.06.10'"
+        />
+        <BaseLearningMaterialCard
+          :course="'Backend'"
+          :learningMaterial="'Rest API'"
+          :image="'asd.jpeg'"
+          :releaseData="'2024.06.12'"
+        />
+      </div>
     </div>
   </BaseLayout>
 </template>
@@ -178,6 +184,7 @@ export default {
       currentPage: 1,
       pageSize: 3,
       animationDirection: "right",
+      loading: true,
     };
   },
   components: {
@@ -208,11 +215,12 @@ export default {
   },
   watch: {
     currentPage(newPage, oldPage) {
-      this.animationDirection = newPage > oldPage ? "left" : "right";
+      this.animationDirection = newPage > oldPage ? "right" : "left";
     },
   },
   async mounted() {
     await this.getUser();
+    this.loading = false;
   },
 };
 </script>
@@ -221,7 +229,6 @@ export default {
 .row {
   position: relative;
   overflow: hidden;
-  min-height: 100px;
 }
 
 .slide-right-enter-active,
