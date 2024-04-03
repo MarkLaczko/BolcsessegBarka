@@ -1,28 +1,28 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import { router } from '@/router/index.js'
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-import { plugin, defaultConfig } from "@formkit/vue"
-import config from '../formkit.config.js'
+import { createApp } from "vue";
+import { createPinia } from "pinia";
+import { router } from "@/router/index.js";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import { plugin, defaultConfig } from "@formkit/vue";
+import config from "../formkit.config.js";
 import PrimeVue from "primevue/config";
-import ToastService from 'primevue/toastservice';
-import App from '@/App.vue'
+import ToastService from "primevue/toastservice";
+import App from "@/App.vue";
 
-import 'bootstrap'
-import '@assets/app.scss'
+import "bootstrap";
+import "@assets/app.scss";
 
-const app = createApp(App)
+const app = createApp(App);
 
-const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 
-app.use(router)
-app.use(plugin, defaultConfig(config))
-app.use(pinia)
+app.use(router);
+app.use(plugin, defaultConfig(config));
+app.use(pinia);
 
 app.use(PrimeVue, {
-    unstyled: true
+  unstyled: true,
 });
 app.use(ToastService);
 
-app.mount('#app')
+app.mount("#app");
