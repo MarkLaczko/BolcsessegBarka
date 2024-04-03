@@ -1,6 +1,8 @@
-@import 'variables';
-@import '~bootstrap/scss/bootstrap';
-@import 'primeicons/primeicons.css';
+@import "variables";
+@import "~bootstrap/scss/bootstrap";
+@import "primeicons/primeicons.css";
+
+//default styles
 
 #app {
   height: 100vh;
@@ -8,7 +10,131 @@
   flex-direction: column;
 }
 
-.list-style-none{
+.list-style-none {
   list-style-type: none;
   padding-left: 0;
+}
+
+//animations
+
+.rotating-pulsating {
+  animation: rotateAndPulse 6s infinite;
+}
+
+@keyframes rotateAndPulse {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(360deg) scale(1.2);
+  }
+  100% {
+    transform: rotate(720deg) scale(1);
+  }
+}
+
+//dark mode styles
+
+:root {
+  --background-color: #{$white};
+  --text-color: #{$black};
+  --header-color: #{$cyan};
+  --container-color: #{$cyan};
+  --card-color: #{$white};
+  --button-color: #{$blue};
+  --pagination-color: #{$white};
+  --pagination-active-color: #{$blue};
+  --pagination-active-border-color: #{$blue};
+  --pagination-hover-color: #{$black};
+  --badge-bg-color: #{$blue};
+  --border: none;
+  --table-bg-color: #{$white};
+  --input-bg-color: #{$white};
+  --input-color: #{$black};
+  --filter-btn-bg-color: #{$lightGray};
+  --filter-btn-color: #{$black};
+  --icon-color: #{$blue};
+}
+
+[data-theme="dark"] {
+  --background-color: #{$darkerGrey};
+  --text-color: #{$white};
+  --header-color: #{$gray};
+  --container-color: #{$gray};
+  --card-color: #{$darkGrey};
+  --button-color: #{$darkerGrey};
+  --pagination-color: #{$darkGrey};
+  --pagination-active-color: #{$gray};
+  --pagination-active-border-color: #{$white};
+  --pagination-hover-color: #{$white};
+  --badge-bg-color: #{$darkerGrey};
+  --border: 1px solid #{$white};
+  --table-bg-color: #{$darkGrey};
+  --input-bg-color: #{$gray};
+  --input-color: #{$white};
+  --filter-btn-bg-color: #{$darkerGrey};
+  --filter-btn-color: #{$white};
+  --icon-color: #{$white};
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+nav,
+div.rounded-3,
+div > .darkTheme {
+  background-color: var(--header-color);
+}
+
+div.card {
+  background-color: var(--card-color);
+  color: var(--text-color);
+}
+
+.buttons {
+  background-color: var(--button-color);
+  border: var(--border);
+}
+
+ul.pagination {
+  --bs-pagination-bg: var(--pagination-color);
+  --bs-pagination-border-color: var(--pagination-color);
+  --bs-pagination-color: var(--text-color);
+  --bs-pagination-active-bg: var(--pagination-active-color);
+  --bs-pagination-active-border-color: var(--pagination-active-border-color);
+  --bs-pagination-disabled-bg: var(--pagination-color);
+  --bs-pagination-disabled-color: var(--text-color);
+  --bs-pagination-disabled-border-color: var(--pagination-color);
+  --bs-pagination-focus-box-shadow: none;
+  --bs-pagination-hover-color: var(--pagination-hover-color);
+}
+
+span.badge {
+  background-color: var(--badge-bg-color);
+  border: var(--border);
+}
+
+.table > :not(caption) > * > * {
+  background-color: var(--table-bg-color);
+  color: var(--text-color);
+}
+
+div[data-pc-section="filterinput"] > input.form-control,
+div[data-pc-section="filterinput"] > input.form-control::placeholder,
+div[data-pc-section="filterinput"] > input.form-control:focus {
+  background-color: var(--input-bg-color);
+  color: var(--input-color);
+}
+
+button[aria-haspopup="true"],
+button[data-pc-section="headerfilterclearbutton"] {
+  background-color: var(--filter-btn-bg-color);
+  border: var(--border);
+  color: var(--filter-btn-color);
+}
+
+i.fa-regular {
+  color: var(--icon-color);
 }
