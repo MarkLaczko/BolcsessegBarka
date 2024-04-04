@@ -14,6 +14,7 @@
         },
       }"
       @submit="register"
+      incomplete-message="Sajnáljuk, nem minden mezőt töltöttek ki helyesen."
     >
       <Message
         v-for="msg of messages"
@@ -39,7 +40,7 @@
         placeholder="Felhasználónév"
         validation="required|length:0,255"
         :validation-messages="{
-          required: 'Ez a mező kötelező.',
+          required: 'A felhasználónév kitöltése kötelező.',
           length:
             'A felhasználónévnek kevesebbnek kell lennie, mint 255 karakter.',
         }"
@@ -64,7 +65,7 @@
         placeholder="E-mail"
         validation="required|email"
         :validation-messages="{
-          required: 'Ez a mező kötelező.',
+          required: 'Az email kitöltése kötelező.',
           email: 'Adjon meg egy érvényes email címet.',
         }"
         :classes="{
@@ -89,7 +90,7 @@
         placeholder="Jelszó"
         validation="required|length:8,255"
         :validation-messages="{
-          required: 'Ez a mező kötelező.',
+          required: 'A jelszó kitöltése kötelező.',
           length: 'Legalább 8, maximum 255 karakter hosszú lehet a jelszó.',
         }"
         :classes="{
@@ -114,8 +115,9 @@
         placeholder="Jelszó megerősítés"
         validation="required|length:8,255|confirm"
         :validation-messages="{
-          required: 'Ez a mező kötelező.',
-          length: 'Legalább 8, maximum 255 karakter hosszú lehet a jelszó.',
+          required: 'A jelszó megerősítés kitöltése kötelező.',
+          length:
+            'Legalább 8, maximum 255 karakter hosszú lehet a jelszó megerősítés.',
           confirm: 'A jelszavak nem egyeznek.',
         }"
         :classes="{
