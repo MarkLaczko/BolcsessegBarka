@@ -58,20 +58,26 @@
         },
       }"
     >
-      <FormKit type="form" :actions="false" @submit="postUser">
+      <FormKit
+        type="form"
+        :actions="false"
+        @submit="postUser"
+        incomplete-message="Sajnáljuk, nem minden mezőt töltöttek ki helyesen."
+      >
         <FormKit
           type="text"
           name="name"
           label="Név"
           validation="required|length:0,255"
           :validation-messages="{
-            required: 'Ez a mező kötelező.',
+            required: 'A felhasználónév kitöltése kötelező.',
             length:
               'A felhasználónévnek kevesebbnek kell lennie, mint 255 karakter.',
           }"
           :classes="{
             input: {
               'mb-1': true,
+              'form-control': true,
             },
           }"
         />
@@ -82,12 +88,13 @@
           label="Email"
           validation="required|email"
           :validation-messages="{
-            required: 'Ez a mező kötelező.',
+            required: 'Az email kitöltése kötelező.',
             email: 'Adjon meg egy érvényes email címet.',
           }"
           :classes="{
             input: {
               'mb-1': true,
+              'form-control': true,
             },
           }"
         />
@@ -97,12 +104,13 @@
           label="Jelszó"
           validation="required|length:8,255"
           :validation-messages="{
-            required: 'Ez a mező kötelező.',
+            required: 'A jelszó kitöltése kötelező.',
             length: 'Legalább 8, maximum 255 karakter hosszú lehet a jelszó.',
           }"
           :classes="{
             input: {
               'mb-1': true,
+              'form-control': true,
             },
           }"
         />
@@ -112,22 +120,160 @@
           label="Jelszó megerősítés"
           validation="required|length:8,255|confirm"
           :validation-messages="{
-            required: 'Ez a mező kötelező.',
-            length: 'Legalább 8, maximum 255 karakter hosszú lehet a jelszó.',
+            required: 'A jelszó megerősítés kitöltése kötelező.',
+            length:
+              'Legalább 8, maximum 255 karakter hosszú lehet a jelszó megerősítés.',
             confirm: 'A jelszavak nem egyeznek.',
           }"
           :classes="{
             input: {
               'mb-1': true,
+              'form-control': true,
             },
           }"
         />
-        <div class="d-flex justify-content-end mt-2">
+        <div class="d-flex justify-content-end mt-2 mb-3">
           <Button
             type="button"
             label="Mégse"
             class="btn btn-outline-danger mx-1"
             @click="addUserDialogVisible = false"
+          ></Button>
+          <FormKit
+            type="submit"
+            label="Mentés"
+            :classes="{
+              input: {
+                btn: true,
+                'btn-success': true,
+                'w-auto': true,
+              },
+            }"
+          />
+        </div>
+      </FormKit>
+    </Dialog>
+
+    <Dialog
+      v-if="modifyUserDialogVisible"
+      v-model:visible="modifyUserDialogVisible"
+      modal
+      :header="`${currentlyModifyingUser.name} módosítása`"
+      :style="{ width: '25rem' }"
+      :pt="{
+        root: {
+          class: 'modal-dialog p-3 rounded shadow border',
+        },
+        header: {
+          class: 'd-flex justify-content-between align-items-center pb-2',
+        },
+        title: {
+          class: 'modal-title fw-bold',
+        },
+        closeButton: {
+          class: 'btn btn-outline-dark btn-sm',
+        },
+        closeButtonIcon: {
+          class: 'fa-solid fa-x',
+        },
+        transition: {
+          name: 'slide-fade',
+        },
+      }"
+    >
+      <FormKit
+        type="form"
+        :actions="false"
+        @submit="updateUser"
+        :value="currentlyModifyingUser"
+        incomplete-message="Sajnáljuk, nem minden mezőt töltöttek ki helyesen."
+      >
+        <FormKit
+          type="text"
+          name="name"
+          label="Név"
+          validation="required|length:0,255"
+          :validation-messages="{
+            required: 'A felhasználónév kitöltése kötelező.',
+            length:
+              'A felhasználónévnek kevesebbnek kell lennie, mint 255 karakter.',
+          }"
+          :classes="{
+            input: {
+              'mb-1': true,
+              'form-control': true,
+            },
+          }"
+        />
+
+        <FormKit
+          type="email"
+          name="email"
+          label="Email"
+          validation="required|email"
+          :validation-messages="{
+            required: 'Az email kitöltése kötelező.',
+            email: 'Adjon meg egy érvényes email címet.',
+          }"
+          :classes="{
+            input: {
+              'mb-1': true,
+              'form-control': true,
+            },
+          }"
+        />
+        <FormKit
+          type="password"
+          name="password"
+          label="Jelszó"
+          validation="required|length:8,255"
+          :validation-messages="{
+            required: 'A jelszó kitöltése kötelező.',
+            length: 'Legalább 8, maximum 255 karakter hosszú lehet a jelszó.',
+          }"
+          :classes="{
+            input: {
+              'mb-1': true,
+              'form-control': true,
+            },
+          }"
+        />
+        <FormKit
+          type="password"
+          name="password_confirm"
+          label="Jelszó megerősítés"
+          validation="required|length:8,255|confirm"
+          :validation-messages="{
+            required: 'A jelszó megerősítés kitöltése kötelező.',
+            length:
+              'Legalább 8, maximum 255 karakter hosszú lehet a jelszó megerősítés.',
+            confirm: 'A jelszavak nem egyeznek.',
+          }"
+          :classes="{
+            input: {
+              'mb-1': true,
+              'form-control': true,
+            },
+          }"
+        />
+        <FormKit
+          type="checkbox"
+          label="Admin-E"
+          name="is_admin"
+          :classes="{
+            input: {
+              'mb-1': true,
+              'form-check-input': true,
+              'me-2': true,
+            },
+          }"
+        />
+        <div class="d-flex justify-content-end mt-2 mb-3">
+          <Button
+            type="button"
+            label="Mégse"
+            class="btn btn-outline-danger mx-1"
+            @click="modifyUserDialogVisible = false"
           ></Button>
           <FormKit
             type="submit"
@@ -175,6 +321,7 @@
               label=" Törlés"
               icon="pi pi-trash"
               class="btn btn-danger text-white mt-2"
+              @click="deleteMultipleUsers"
             />
           </template>
           <template #end>
@@ -326,14 +473,23 @@
           <Column header="Módosítás">
             <template #body="slotProp">
               <button type="button" class="btn">
-                <i class="fa-solid fa-pen-to-square"></i>
+                <i
+                  class="fa-solid fa-pen-to-square"
+                  @click="
+                    (modifyUserDialogVisible = true),
+                      (currentlyModifyingUser = slotProp.data)
+                  "
+                ></i>
               </button>
             </template>
           </Column>
           <Column header="Törlés">
             <template #body="slotProp">
               <button type="button" class="btn">
-                <i class="fa-solid fa-trash"></i>
+                <i
+                  class="fa-solid fa-trash"
+                  @click="deleteUser(slotProp.data.id)"
+                ></i>
               </button>
             </template>
           </Column>
@@ -382,6 +538,8 @@ export default {
       },
       selectedUsers: [],
       addUserDialogVisible: false,
+      modifyUserDialogVisible: false,
+      currentlyModifyingUser: [],
     };
   },
   computed: {
@@ -419,7 +577,6 @@ export default {
 
         await this.getUsers();
       } catch (error) {
-        console.log(error.message);
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "error",
@@ -439,10 +596,124 @@ export default {
       this.addUserDialogVisible = false;
     },
     selectAllUsers() {
-      if (this.users.length != this.selectedUsers.length) {
-        this.selectedUsers = this.selectedUsers.concat(this.users);
-      } else {
+      if (this.users.length === this.selectedUsers.length) {
         this.selectedUsers = [];
+      } else {
+        this.selectedUsers = [...this.users];
+      }
+    },
+    async deleteUser(userId) {
+      try {
+        await http.delete(`/users/${userId}`);
+
+        if (this.isDarkMode) {
+          this.$toast.add({
+            severity: "success",
+            detail: "Felhasználó törlése sikeres volt!",
+            life: 3000,
+          });
+        } else {
+          this.$toast.add({
+            severity: "success",
+            detail: "Felhasználó törlése sikeres volt!",
+            styleClass: "bg-success text-white",
+            life: 3000,
+          });
+        }
+
+        await this.getUsers();
+      } catch (error) {
+        if (this.isDarkMode) {
+          this.$toast.add({
+            severity: "error",
+            detail: "Felhasználó törlése sikertelen volt!",
+            life: 3000,
+          });
+        } else {
+          this.$toast.add({
+            severity: "error",
+            detail: "Felhasználó törlése sikertelen volt!",
+            styleClass: "bg-danger text-white",
+            life: 3000,
+          });
+        }
+      }
+    },
+    async deleteMultipleUsers() {
+      try {
+        let userIds = this.selectedUsers.map((x) => x.id);
+        await http.post("/users/delete", { userIds: userIds });
+
+        if (this.isDarkMode) {
+          this.$toast.add({
+            severity: "success",
+            detail: "Felhasználó(k) törlése sikeres volt!",
+            life: 3000,
+          });
+        } else {
+          this.$toast.add({
+            severity: "success",
+            detail: "Felhasználó(k) törlése sikeres volt!",
+            styleClass: "bg-success text-white",
+            life: 3000,
+          });
+        }
+
+        await this.getUsers();
+      } catch (error) {
+        if (this.isDarkMode) {
+          this.$toast.add({
+            severity: "error",
+            detail: "Felhasználó(k) törlése sikertelen volt!",
+            life: 3000,
+          });
+        } else {
+          this.$toast.add({
+            severity: "error",
+            detail: "Felhasználó(k) törlése sikertelen volt!",
+            styleClass: "bg-danger text-white",
+            life: 3000,
+          });
+        }
+      }
+    },
+    async updateUser(data) {
+      try {
+        data.password_confirmation = data.password_confirm;
+        await http.put(`/users/${data.id}`, data);
+        this.modifyUserDialogVisible = false;
+
+        if (this.isDarkMode) {
+          this.$toast.add({
+            severity: "success",
+            detail: "Felhasználó módosítása sikeres volt!",
+            life: 3000,
+          });
+        } else {
+          this.$toast.add({
+            severity: "success",
+            detail: "Felhasználó módosítása sikeres volt!",
+            styleClass: "bg-success text-white",
+            life: 3000,
+          });
+        }
+
+        await this.getUsers();
+      } catch (error) {
+        if (this.isDarkMode) {
+          this.$toast.add({
+            severity: "error",
+            detail: "Felhasználó módosítása sikertelen volt!",
+            life: 3000,
+          });
+        } else {
+          this.$toast.add({
+            severity: "error",
+            detail: "Felhasználó módosítása sikertelen volt!",
+            styleClass: "bg-danger text-white",
+            life: 3000,
+          });
+        }
       }
     },
   },
