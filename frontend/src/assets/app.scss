@@ -54,6 +54,10 @@
   --filter-btn-bg-color: #{$lightGray};
   --filter-btn-color: #{$black};
   --icon-color: #{$blue};
+  --modal-text-color: #{$black};
+  --modal-bg-color: #{$white};
+  --toast-success-color: none;
+  --toast-color: #{$black};
 }
 
 [data-theme="dark"] {
@@ -75,6 +79,10 @@
   --filter-btn-bg-color: #{$darkerGrey};
   --filter-btn-color: #{$white};
   --icon-color: #{$white};
+  --modal-text-color: #{$white};
+  --modal-bg-color: #{$gray};
+  --toast-success-color: #{$darkerGrey};
+  --toast-color: #{$white};
 }
 
 body {
@@ -129,7 +137,8 @@ div[data-pc-section="filterinput"] > input.form-control:focus {
 }
 
 button[aria-haspopup="true"],
-button[data-pc-section="headerfilterclearbutton"] {
+button[data-pc-section="headerfilterclearbutton"],
+tbody[role="rowgroup"] button {
   background-color: var(--filter-btn-bg-color);
   border: var(--border);
   color: var(--filter-btn-color);
@@ -137,4 +146,26 @@ button[data-pc-section="headerfilterclearbutton"] {
 
 i.fa-regular {
   color: var(--icon-color);
+}
+
+span.modal-title,
+form#input_42 label.formkit-label {
+  color: var(--modal-text-color);
+}
+
+div[role="dialog"] {
+  background-color: var(--modal-bg-color);
+}
+
+div[role="dialog"] input.form-control,
+div[role="dialog"] input.form-control:focus,
+div[role="dialog"] input.form-control::placeholder {
+  background-color: var(--input-bg-color);
+  color: var(--input-color);
+}
+
+div[data-pc-name="toast"] div[role="alert"] {
+  background-color: var(--toast-success-color);
+  color: var(--toast-color);
+  border: var(--border);
 }
