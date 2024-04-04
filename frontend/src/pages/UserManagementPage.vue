@@ -7,6 +7,24 @@
         root: {
           class: 'w-25',
         },
+        detail: {
+          class: 'text-center',
+        },
+        icon: {
+          class: 'mt-1 ms-1',
+        },
+        text: {
+          class: 'w-75 mx-auto',
+        },
+        container: {
+          class: ' rounded w-75',
+        },
+        buttonContainer: {
+          class: 'w-25 d-flex justify-content-center ms-auto',
+        },
+        button: {
+          class: 'btn mb-2',
+        },
         transition: {
           name: 'slide-fade',
         },
@@ -21,7 +39,7 @@
       :style="{ width: '25rem' }"
       :pt="{
         root: {
-          class: 'modal-dialog bg-light p-3 rounded shadow border',
+          class: 'modal-dialog p-3 rounded shadow border',
         },
         header: {
           class: 'd-flex justify-content-between align-items-center pb-2',
@@ -109,15 +127,7 @@
             type="button"
             label="Mégse"
             class="btn btn-outline-danger mx-1"
-            @click="
-              addUserDialogVisible = false;
-              this.$toast.add({
-                severity: 'info',
-                summary: 'Siker!',
-                detail: 'Message Content',
-                life: 5000,
-              });
-            "
+            @click="addUserDialogVisible = false"
           ></Button>
           <FormKit
             type="submit"
@@ -315,12 +325,16 @@
           </Column>
           <Column header="Módosítás">
             <template #body="slotProp">
-              <button type="button" class="btn btn-dark">💀</button>
+              <button type="button" class="btn">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
             </template>
           </Column>
           <Column header="Törlés">
             <template #body="slotProp">
-              <button type="button" class="btn btn-dark">💀</button>
+              <button type="button" class="btn">
+                <i class="fa-solid fa-trash"></i>
+              </button>
             </template>
           </Column>
         </DataTable>
@@ -344,6 +358,7 @@ import { http } from "@utils/http";
 import { mapState } from "pinia";
 import { userStore } from "@stores/UserStore";
 import { FilterMatchMode } from "primevue/api";
+import { themeStore } from "@stores/themeStore.mjs";
 
 export default {
   components: {
@@ -371,6 +386,7 @@ export default {
   },
   computed: {
     ...mapState(userStore, ["token"]),
+    ...mapState(themeStore, ["isDarkMode"]),
   },
   methods: {
     async getUsers() {
@@ -381,13 +397,46 @@ export default {
       });
       this.users = response.data.data;
     },
-    async postUser() {
-      this.$toast.add({
-        severity: "info",
-        summary: "Siker!",
-        detail: "Message Content",
-        life: 3000,
-      });
+    async postUser(data) {
+      try {
+        data.password_confirmation = data.password_confirm;
+        await http.post("/users/register", data);
+
+        if (this.isDarkMode) {
+          this.$toast.add({
+            severity: "success",
+            detail: "Felhasználó hozzáadása sikeres volt!",
+            life: 3000,
+          });
+        } else {
+          this.$toast.add({
+            severity: "success",
+            detail: "Felhasználó hozzáadása sikeres volt!",
+            styleClass: "bg-success text-white",
+            life: 3000,
+          });
+        }
+
+        await this.getUsers();
+      } catch (error) {
+        console.log(error.message);
+        if (this.isDarkMode) {
+          this.$toast.add({
+            severity: "error",
+            detail: "Felhasználó hozzáadása sikertelen volt!",
+            life: 3000,
+          });
+        } else {
+          this.$toast.add({
+            severity: "error",
+            detail: "Felhasználó hozzáadása sikertelen volt!",
+            styleClass: "bg-danger text-white",
+            life: 3000,
+          });
+        }
+      }
+
+      this.addUserDialogVisible = false;
     },
     selectAllUsers() {
       if (this.users.length != this.selectedUsers.length) {
