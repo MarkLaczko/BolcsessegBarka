@@ -523,7 +523,7 @@ import { http } from "@utils/http";
 import { mapState } from "pinia";
 import { userStore } from "@stores/UserStore";
 import { FilterMatchMode } from "primevue/api";
-import { themeStore } from "@stores/themeStore.mjs";
+import { themeStore } from "@stores/ThemeStore.mjs";
 
 export default {
   components: {

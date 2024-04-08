@@ -57,22 +57,22 @@
               <li>
                 <RouterLink
                   class="dropdown-item"
-                  :to="{ name: 'courseAdministration' }"
-                  >Kurzusok kezelése</RouterLink
+                  :to="{ name: 'groupAdministration' }"
+                  >Csoportok kezelése</RouterLink
                 >
               </li>
               <li>
                 <RouterLink
                   class="dropdown-item"
-                  :to="{ name: 'groupAdministration' }"
-                  >Csoportok kezelése</RouterLink
+                  :to="{ name: 'courseAdministration' }"
+                  >Kurzusok kezelése</RouterLink
                 >
               </li>
             </ul>
           </li>
           <li class="nav-item ms-lg-auto d-flex align-items-center me-2">
             <i
-              class="fa-regular fa-moon fa-xl d-none d-lg-block my-2"
+              :class="`fa-regular ${isDarkMode ? 'fa-sun' : 'fa-moon'} fa-xl d-none d-lg-block my-2`"
               id="icon"
               @click="toggleTheme"
             ></i>
@@ -96,7 +96,7 @@
 <script>
 import { userStore } from "@stores/UserStore.mjs";
 import { mapActions, mapState } from "pinia";
-import { themeStore } from "@stores/themeStore.mjs";
+import { themeStore } from "@stores/ThemeStore.mjs";
 
 export default {
   methods: {
@@ -116,6 +116,6 @@ export default {
   },
   async mounted() {
     await this.getUser();
-  },
+  }
 };
 </script>

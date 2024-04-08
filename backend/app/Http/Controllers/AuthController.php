@@ -11,7 +11,7 @@ class AuthController extends Controller
         $data = $request->validated();
 
         if(Auth::attempt($data)){
-            $token = $request->user()->createToken('token', ['*'], now()->addMinutes(20));
+            $token = $request->user()->createToken('token', ['*'], now()->addHours(24));
 
             return response()->json([
                 "data" => [
