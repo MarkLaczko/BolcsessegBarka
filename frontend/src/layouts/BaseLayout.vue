@@ -1,17 +1,16 @@
 <template>
-    <header>
-        <BaseNavbar />
-    </header>
-    <main class="container">
-        <slot />
-    </main>
-
+  <header>
+    <BaseNavbar />
+  </header>
+  <main class="container">
+    <slot />
+  </main>
 </template>
 <script>
-import BaseNavbar from "@components/layout/BaseNavbar.vue"
+import BaseNavbar from "@components/layout/BaseNavbar.vue";
 export default {
-    components: {
-        BaseNavbar,
-    }
-}
+  components: {
+    BaseNavbar,
+  },
+};
 </script>

@@ -82,7 +82,7 @@
 <script>
 import Message from "primevue/message";
 import { RouterLink } from "vue-router";
-import { mapState, mapActions } from "pinia";
+import { mapActions } from "pinia";
 import { userStore } from "@stores/UserStore";
 
 export default {
@@ -99,7 +99,6 @@ export default {
   methods: {
     ...mapActions(userStore, ["login"]),
     async attemptLogin(data) {
-      console.log(data);
       try {
         await this.login(data);
         this.$router.push({ name: "home" });
