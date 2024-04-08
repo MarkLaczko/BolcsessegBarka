@@ -316,6 +316,7 @@
             <template #start>
               <Button
                 label=" Új felhasználó"
+                id="newUser"
                 icon="pi pi-plus"
                 class="mr-2 btn btn-success text-white me-1 mt-2 ms-2"
                 @click="addUserDialogVisible = true"
