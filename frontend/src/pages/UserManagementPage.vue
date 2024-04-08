@@ -232,9 +232,8 @@
             type="password"
             name="password"
             label="Jelszó"
-            validation="required|length:8,255"
+            validation="length:8,255"
             :validation-messages="{
-              required: 'A jelszó kitöltése kötelező.',
               length: 'Legalább 8, maximum 255 karakter hosszú lehet a jelszó.',
             }"
             :classes="{
@@ -248,9 +247,8 @@
             type="password"
             name="password_confirm"
             label="Jelszó megerősítés"
-            validation="required|length:8,255|confirm"
+            validation="length:8,255|confirm"
             :validation-messages="{
-              required: 'A jelszó megerősítés kitöltése kötelező.',
               length:
                 'Legalább 8, maximum 255 karakter hosszú lehet a jelszó megerősítés.',
               confirm: 'A jelszavak nem egyeznek.',
@@ -479,7 +477,7 @@
             </Column>
             <Column header="Módosítás">
               <template #body="slotProp">
-                <button type="button" class="btn">
+                <button type="button" class="btn btn-warning" v-if="slotProp.data.email != currentUserData.email">
                   <i
                     class="fa-solid fa-pen-to-square"
                     @click="
@@ -495,7 +493,7 @@
             </Column>
             <Column header="Törlés">
               <template #body="slotProp">
-                <button type="button" class="btn">
+                <button type="button" class="btn btn-danger" v-if="slotProp.data.email != currentUserData.email">
                   <i
                     class="fa-solid fa-trash"
                     @click="deleteUser(slotProp.data.id)"
@@ -557,7 +555,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(userStore, ["token"]),
+    ...mapState(userStore, ["token", "currentUserData"]),
     ...mapState(themeStore, ["isDarkMode"]),
   },
   methods: {
@@ -703,6 +701,10 @@ export default {
     async updateUser(data) {
       try {
         data.password_confirmation = data.password_confirm;
+        if(data.password == "") {
+          delete data.password;
+          delete data.password_confirmation;
+        }
         await http.put(`/users/${data.id}`, data, {
           headers: {
             Authorization: `Bearer ${this.token}`,
