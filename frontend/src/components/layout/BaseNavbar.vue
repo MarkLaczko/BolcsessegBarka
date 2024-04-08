@@ -31,7 +31,12 @@
               >Kurzusaim</RouterLink
             >
           </li>
-          <li class="nav-item dropdown" v-if="currentUserData.is_admin === 1">
+          <li
+            class="nav-item dropdown"
+            v-if="
+              currentUserData != undefined && currentUserData.is_admin === 1
+            "
+          >
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -75,7 +80,8 @@
               class="nav-link d-block d-lg-none d-xl-none"
               @click="toggleTheme"
             >
-              Dark Mode
+              <span v-if="!isDarkMode">Dark Mode</span>
+              <span v-else>Light Mode</span>
             </button>
           </li>
           <li class="nav-item d-flex">
@@ -106,6 +112,7 @@ export default {
   },
   computed: {
     ...mapState(userStore, ["currentUserData"]),
+    ...mapState(themeStore, ["isDarkMode"]),
   },
   async mounted() {
     await this.getUser();
