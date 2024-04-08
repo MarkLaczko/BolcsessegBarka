@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -16,6 +17,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        Gate::authorize('users.get');
         return UserResource::collection(User::all());
     }
 
@@ -43,6 +45,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
+        Gate::authorize('users.show');
         $user = User::findOrFail($id);
 
         return new UserResource($user);
@@ -53,6 +56,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, string $id)
     {
+        Gate::authorize('users.update');
         $data = $request->validated();
         $user = User::findOrFail($id);
         $user->update($data);
@@ -65,6 +69,7 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
+        Gate::authorize('users.delete');
         $user = User::findOrFail($id);
         $user->delete();
 
@@ -73,6 +78,7 @@ class UserController extends Controller
 
     public function bulkDelete(Request $request)
     {
+        Gate::authorize('users.delete');
         $userIds = $request->input('userIds');
 
         if (!empty($userIds)) {
