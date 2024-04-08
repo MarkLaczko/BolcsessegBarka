@@ -1,499 +1,510 @@
 <template>
   <BaseLayout>
-    <h1 class="text-center my-3">{{ this.$route.meta.title }}</h1>
+    <div class="d-flex justify-content-center" v-if="loading">
+      <img
+        src="../assets/images/logo.png"
+        alt="logo"
+        width="300px"
+        class="rotating-pulsating"
+      />
+    </div>
 
-    <Toast
-      :pt="{
-        root: {
-          class: 'w-25',
-        },
-        detail: {
-          class: 'text-center',
-        },
-        icon: {
-          class: 'mt-1 ms-1',
-        },
-        text: {
-          class: 'w-75 mx-auto',
-        },
-        container: {
-          class: ' rounded w-75',
-        },
-        buttonContainer: {
-          class: 'w-25 d-flex justify-content-center ms-auto',
-        },
-        button: {
-          class: 'btn mb-2',
-        },
-        transition: {
-          name: 'slide-fade',
-        },
-      }"
-    />
+    <div v-if="!loading">
+      <h1 class="text-center my-3">{{ this.$route.meta.title }}</h1>
 
-    <Dialog
-      v-if="addUserDialogVisible"
-      v-model:visible="addUserDialogVisible"
-      modal
-      header="Felhasználó hozzáadása"
-      :style="{ width: '25rem' }"
-      :pt="{
-        root: {
-          class: 'modal-dialog p-3 rounded shadow border',
-        },
-        header: {
-          class: 'd-flex justify-content-between align-items-center pb-2',
-        },
-        title: {
-          class: 'modal-title fw-bold',
-        },
-        closeButton: {
-          class: 'btn btn-outline-dark btn-sm',
-        },
-        closeButtonIcon: {
-          class: 'fa-solid fa-x',
-        },
-        transition: {
-          name: 'slide-fade',
-        },
-      }"
-    >
-      <FormKit
-        type="form"
-        :actions="false"
-        @submit="postUser"
-        incomplete-message="Sajnáljuk, nem minden mezőt töltöttek ki helyesen."
+      <Toast
+        :pt="{
+          root: {
+            class: 'w-25',
+          },
+          detail: {
+            class: 'text-center',
+          },
+          icon: {
+            class: 'mt-1 ms-1',
+          },
+          text: {
+            class: 'w-75 mx-auto',
+          },
+          container: {
+            class: ' rounded w-75',
+          },
+          buttonContainer: {
+            class: 'w-25 d-flex justify-content-center ms-auto',
+          },
+          button: {
+            class: 'btn mb-2',
+          },
+          transition: {
+            name: 'slide-fade',
+          },
+        }"
+      />
+      <Dialog
+        v-if="addUserDialogVisible"
+        v-model:visible="addUserDialogVisible"
+        modal
+        header="Felhasználó hozzáadása"
+        :style="{ width: '25rem' }"
+        :pt="{
+          root: {
+            class: 'modal-dialog p-3 rounded shadow border',
+          },
+          header: {
+            class: 'd-flex justify-content-between align-items-center pb-2',
+          },
+          title: {
+            class: 'modal-title fw-bold',
+          },
+          closeButton: {
+            class: 'btn btn-outline-dark btn-sm',
+          },
+          closeButtonIcon: {
+            class: 'fa-solid fa-x',
+          },
+          transition: {
+            name: 'slide-fade',
+          },
+        }"
       >
         <FormKit
-          type="text"
-          name="name"
-          label="Név"
-          validation="required|length:0,255"
-          :validation-messages="{
-            required: 'A felhasználónév kitöltése kötelező.',
-            length:
-              'A felhasználónévnek kevesebbnek kell lennie, mint 255 karakter.',
-          }"
-          :classes="{
-            input: {
-              'mb-1': true,
-              'form-control': true,
-            },
-          }"
-        />
-
-        <FormKit
-          type="email"
-          name="email"
-          label="Email"
-          validation="required|email"
-          :validation-messages="{
-            required: 'Az email kitöltése kötelező.',
-            email: 'Adjon meg egy érvényes email címet.',
-          }"
-          :classes="{
-            input: {
-              'mb-1': true,
-              'form-control': true,
-            },
-          }"
-        />
-        <FormKit
-          type="password"
-          name="password"
-          label="Jelszó"
-          validation="required|length:8,255"
-          :validation-messages="{
-            required: 'A jelszó kitöltése kötelező.',
-            length: 'Legalább 8, maximum 255 karakter hosszú lehet a jelszó.',
-          }"
-          :classes="{
-            input: {
-              'mb-1': true,
-              'form-control': true,
-            },
-          }"
-        />
-        <FormKit
-          type="password"
-          name="password_confirm"
-          label="Jelszó megerősítés"
-          validation="required|length:8,255|confirm"
-          :validation-messages="{
-            required: 'A jelszó megerősítés kitöltése kötelező.',
-            length:
-              'Legalább 8, maximum 255 karakter hosszú lehet a jelszó megerősítés.',
-            confirm: 'A jelszavak nem egyeznek.',
-          }"
-          :classes="{
-            input: {
-              'mb-1': true,
-              'form-control': true,
-            },
-          }"
-        />
-        <div class="d-flex justify-content-end mt-2 mb-3">
-          <Button
-            type="button"
-            label="Mégse"
-            class="btn btn-outline-danger mx-1"
-            @click="addUserDialogVisible = false"
-          ></Button>
-          <FormKit
-            type="submit"
-            label="Mentés"
-            :classes="{
-              input: {
-                btn: true,
-                'btn-success': true,
-                'w-auto': true,
-              },
-            }"
-          />
-        </div>
-      </FormKit>
-    </Dialog>
-
-    <Dialog
-      v-if="modifyUserDialogVisible"
-      v-model:visible="modifyUserDialogVisible"
-      modal
-      :header="`${currentlyModifyingUser.name} módosítása`"
-      :style="{ width: '25rem' }"
-      :pt="{
-        root: {
-          class: 'modal-dialog p-3 rounded shadow border',
-        },
-        header: {
-          class: 'd-flex justify-content-between align-items-center pb-2',
-        },
-        title: {
-          class: 'modal-title fw-bold',
-        },
-        closeButton: {
-          class: 'btn btn-outline-dark btn-sm',
-        },
-        closeButtonIcon: {
-          class: 'fa-solid fa-x',
-        },
-        transition: {
-          name: 'slide-fade',
-        },
-      }"
-    >
-      <FormKit
-        type="form"
-        :actions="false"
-        @submit="updateUser"
-        :value="currentlyModifyingUser"
-        incomplete-message="Sajnáljuk, nem minden mezőt töltöttek ki helyesen."
-      >
-        <FormKit
-          type="text"
-          name="name"
-          label="Név"
-          validation="required|length:0,255"
-          :validation-messages="{
-            required: 'A felhasználónév kitöltése kötelező.',
-            length:
-              'A felhasználónévnek kevesebbnek kell lennie, mint 255 karakter.',
-          }"
-          :classes="{
-            input: {
-              'mb-1': true,
-              'form-control': true,
-            },
-          }"
-        />
-
-        <FormKit
-          type="email"
-          name="email"
-          label="Email"
-          validation="required|email"
-          :validation-messages="{
-            required: 'Az email kitöltése kötelező.',
-            email: 'Adjon meg egy érvényes email címet.',
-          }"
-          :classes="{
-            input: {
-              'mb-1': true,
-              'form-control': true,
-            },
-          }"
-        />
-        <FormKit
-          type="password"
-          name="password"
-          label="Jelszó"
-          validation="required|length:8,255"
-          :validation-messages="{
-            required: 'A jelszó kitöltése kötelező.',
-            length: 'Legalább 8, maximum 255 karakter hosszú lehet a jelszó.',
-          }"
-          :classes="{
-            input: {
-              'mb-1': true,
-              'form-control': true,
-            },
-          }"
-        />
-        <FormKit
-          type="password"
-          name="password_confirm"
-          label="Jelszó megerősítés"
-          validation="required|length:8,255|confirm"
-          :validation-messages="{
-            required: 'A jelszó megerősítés kitöltése kötelező.',
-            length:
-              'Legalább 8, maximum 255 karakter hosszú lehet a jelszó megerősítés.',
-            confirm: 'A jelszavak nem egyeznek.',
-          }"
-          :classes="{
-            input: {
-              'mb-1': true,
-              'form-control': true,
-            },
-          }"
-        />
-        <FormKit
-          type="checkbox"
-          label="Admin-E"
-          name="is_admin"
-          :classes="{
-            input: {
-              'mb-1': true,
-              'form-check-input': true,
-              'me-2': true,
-            },
-          }"
-        />
-        <div class="d-flex justify-content-end mt-2 mb-3">
-          <Button
-            type="button"
-            label="Mégse"
-            class="btn btn-outline-danger mx-1"
-            @click="modifyUserDialogVisible = false"
-          ></Button>
-          <FormKit
-            type="submit"
-            label="Mentés"
-            :classes="{
-              input: {
-                btn: true,
-                'btn-success': true,
-                'w-auto': true,
-              },
-            }"
-          />
-        </div>
-      </FormKit>
-    </Dialog>
-
-    <div>
-      <div class="card darkTheme">
-        <Toolbar
-          :pt="{
-            start: {
-              class:
-                'col-sm-12 col-md-5 d-flex justify-content-md-start align-items-center justify-content-center',
-            },
-            center: {
-              class: 'col-sm-12 col-md-2',
-            },
-            end: {
-              class:
-                'col-sm-12 col-md-5 d-flex justify-content-md-end align-items-center justify-content-center',
-            },
-            root: {
-              class: 'row mb-2',
-            },
-          }"
+          type="form"
+          :actions="false"
+          @submit="postUser"
+          incomplete-message="Sajnáljuk, nem minden mezőt töltöttek ki helyesen."
         >
-          <template #start>
+          <FormKit
+            type="text"
+            name="name"
+            label="Név"
+            validation="required|length:0,255"
+            :validation-messages="{
+              required: 'A felhasználónév kitöltése kötelező.',
+              length:
+                'A felhasználónévnek kevesebbnek kell lennie, mint 255 karakter.',
+            }"
+            :classes="{
+              input: {
+                'mb-1': true,
+                'form-control': true,
+              },
+            }"
+          />
+          <FormKit
+            type="email"
+            name="email"
+            label="Email"
+            validation="required|email"
+            :validation-messages="{
+              required: 'Az email kitöltése kötelező.',
+              email: 'Adjon meg egy érvényes email címet.',
+            }"
+            :classes="{
+              input: {
+                'mb-1': true,
+                'form-control': true,
+              },
+            }"
+          />
+          <FormKit
+            type="password"
+            name="password"
+            label="Jelszó"
+            validation="required|length:8,255"
+            :validation-messages="{
+              required: 'A jelszó kitöltése kötelező.',
+              length: 'Legalább 8, maximum 255 karakter hosszú lehet a jelszó.',
+            }"
+            :classes="{
+              input: {
+                'mb-1': true,
+                'form-control': true,
+              },
+            }"
+          />
+          <FormKit
+            type="password"
+            name="password_confirm"
+            label="Jelszó megerősítés"
+            validation="required|length:8,255|confirm"
+            :validation-messages="{
+              required: 'A jelszó megerősítés kitöltése kötelező.',
+              length:
+                'Legalább 8, maximum 255 karakter hosszú lehet a jelszó megerősítés.',
+              confirm: 'A jelszavak nem egyeznek.',
+            }"
+            :classes="{
+              input: {
+                'mb-1': true,
+                'form-control': true,
+              },
+            }"
+          />
+          <div class="d-flex justify-content-end mt-2 mb-3">
             <Button
-              label=" Új felhasználó"
-              icon="pi pi-plus"
-              class="mr-2 btn btn-success text-white me-1 mt-2 ms-2"
-              @click="addUserDialogVisible = true"
-            />
-            <Button
-              label=" Törlés"
-              icon="pi pi-trash"
-              class="btn btn-danger text-white mt-2"
-              @click="deleteMultipleUsers"
-            />
-          </template>
-          <template #end>
-            <FileUpload
-              :pt="{
+              type="button"
+              label="Mégse"
+              class="btn btn-outline-danger mx-1"
+              @click="addUserDialogVisible = false"
+            ></Button>
+            <FormKit
+              type="submit"
+              label="Mentés"
+              :classes="{
                 input: {
-                  class: 'd-none',
+                  btn: true,
+                  'btn-success': true,
+                  'w-auto': true,
                 },
               }"
-              mode="basic"
-              accept="image/*"
-              :maxFileSize="1000000"
-              label="Importálás"
-              chooseLabel=" Importálás"
-              class="mr-2 btn btn-success text-white inline-block me-1 mt-2"
             />
-            <Button
-              label=" Exportálás"
-              icon="pi pi-upload"
-              class="btn btn-warning text-white mt-2 me-2"
-            />
-          </template>
-        </Toolbar>
-        <DataTable
-          :value="users"
-          tableStyle="min-width: 50rem"
-          sortField="id"
-          :sortOrder="1"
-          v-model:filters="filters"
-          filterDisplay="row"
-          v-model:selection="selectedUsers"
-          selectionMode="multiple"
-          dataKey="id"
-          :metaKeySelection="false"
-          :pt="{
-            table: {
-              class: 'table table-responsive align-middle',
-            },
-          }"
+          </div>
+        </FormKit>
+      </Dialog>
+      <Dialog
+        v-if="modifyUserDialogVisible"
+        v-model:visible="modifyUserDialogVisible"
+        modal
+        :header="`${currentlyModifyingUser.name} módosítása`"
+        :style="{ width: '25rem' }"
+        :pt="{
+          root: {
+            class: 'modal-dialog p-3 rounded shadow border',
+          },
+          header: {
+            class: 'd-flex justify-content-between align-items-center pb-2',
+          },
+          title: {
+            class: 'modal-title fw-bold',
+          },
+          closeButton: {
+            class: 'btn btn-outline-dark btn-sm',
+          },
+          closeButtonIcon: {
+            class: 'fa-solid fa-x',
+          },
+          transition: {
+            name: 'slide-fade',
+          },
+        }"
+      >
+        <FormKit
+          type="form"
+          :actions="false"
+          @submit="updateUser"
+          :value="currentlyModifyingUser"
+          incomplete-message="Sajnáljuk, nem minden mezőt töltöttek ki helyesen."
         >
-          <!-- <Column selectionMode="multiple" headerStyle="width: 3rem"
-                        :pt = "{
-                            'rowcheckbox': {
-                                class: 'bg-primary'
-                            },
-                            box: {
-                                class: 'd-none'
-                            }
-                        }"></Column> -->
-          <Column>
-            <template #header>
-              <div class="d-flex justify-content-center">
-                <button
-                  type="button"
-                  class="btn"
-                  style="
-                    --bs-btn-padding-y: 0.25rem;
-                    --bs-btn-padding-x: 0.5rem;
-                    --bs-btn-font-size: 0.75rem;
-                    width: 28px;
-                  "
-                  @click="selectAllUsers"
-                >
+          <FormKit
+            type="text"
+            name="name"
+            label="Név"
+            validation="required|length:0,255"
+            :validation-messages="{
+              required: 'A felhasználónév kitöltése kötelező.',
+              length:
+                'A felhasználónévnek kevesebbnek kell lennie, mint 255 karakter.',
+            }"
+            :classes="{
+              input: {
+                'mb-1': true,
+                'form-control': true,
+              },
+            }"
+          />
+          <FormKit
+            type="email"
+            name="email"
+            label="Email"
+            validation="required|email"
+            :validation-messages="{
+              required: 'Az email kitöltése kötelező.',
+              email: 'Adjon meg egy érvényes email címet.',
+            }"
+            :classes="{
+              input: {
+                'mb-1': true,
+                'form-control': true,
+              },
+            }"
+          />
+          <FormKit
+            type="password"
+            name="password"
+            label="Jelszó"
+            validation="required|length:8,255"
+            :validation-messages="{
+              required: 'A jelszó kitöltése kötelező.',
+              length: 'Legalább 8, maximum 255 karakter hosszú lehet a jelszó.',
+            }"
+            :classes="{
+              input: {
+                'mb-1': true,
+                'form-control': true,
+              },
+            }"
+          />
+          <FormKit
+            type="password"
+            name="password_confirm"
+            label="Jelszó megerősítés"
+            validation="required|length:8,255|confirm"
+            :validation-messages="{
+              required: 'A jelszó megerősítés kitöltése kötelező.',
+              length:
+                'Legalább 8, maximum 255 karakter hosszú lehet a jelszó megerősítés.',
+              confirm: 'A jelszavak nem egyeznek.',
+            }"
+            :classes="{
+              input: {
+                'mb-1': true,
+                'form-control': true,
+              },
+            }"
+          />
+          <FormKit
+            type="checkbox"
+            label="Admin-E"
+            name="is_admin"
+            :classes="{
+              input: {
+                'mb-1': true,
+                'form-check-input': true,
+                'me-2': true,
+              },
+            }"
+          />
+          <div class="d-flex justify-content-end mt-2 mb-3">
+            <Button
+              type="button"
+              label="Mégse"
+              class="btn btn-outline-danger mx-1"
+              @click="modifyUserDialogVisible = false"
+            ></Button>
+            <FormKit
+              type="submit"
+              label="Mentés"
+              :classes="{
+                input: {
+                  btn: true,
+                  'btn-success': true,
+                  'w-auto': true,
+                },
+              }"
+            />
+          </div>
+        </FormKit>
+      </Dialog>
+      <div>
+        <div class="card darkTheme">
+          <Toolbar
+            :pt="{
+              start: {
+                class:
+                  'col-sm-12 col-md-5 d-flex justify-content-md-start align-items-center justify-content-center',
+              },
+              center: {
+                class: 'col-sm-12 col-md-2',
+              },
+              end: {
+                class:
+                  'col-sm-12 col-md-5 d-flex justify-content-md-end align-items-center justify-content-center',
+              },
+              root: {
+                class: 'row mb-2',
+              },
+            }"
+          >
+            <template #start>
+              <Button
+                label=" Új felhasználó"
+                icon="pi pi-plus"
+                class="mr-2 btn btn-success text-white me-1 mt-2 ms-2"
+                @click="addUserDialogVisible = true"
+              />
+              <Button
+                label=" Törlés"
+                icon="pi pi-trash"
+                class="btn btn-danger text-white mt-2"
+                @click="deleteMultipleUsers"
+              />
+            </template>
+            <template #end>
+              <FileUpload
+                :pt="{
+                  input: {
+                    class: 'd-none',
+                  },
+                }"
+                mode="basic"
+                :maxFileSize="1000000"
+                label="Importálás"
+                chooseLabel=" Importálás"
+                class="mr-2 btn btn-success text-white inline-block me-1 mt-2"
+              />
+              <Button
+                label=" Exportálás"
+                icon="pi pi-upload"
+                class="btn btn-warning text-white mt-2 me-2"
+                @click="exportCSV($event)"
+              />
+            </template>
+          </Toolbar>
+          <DataTable
+            exportFilename="users"
+            ref="dt"
+            :value="users"
+            tableStyle="min-width: 50rem"
+            sortField="id"
+            :sortOrder="1"
+            v-model:filters="filters"
+            filterDisplay="row"
+            v-model:selection="selectedUsers"
+            selectionMode="multiple"
+            dataKey="id"
+            :metaKeySelection="false"
+            :pt="{
+              table: {
+                class: 'table table-responsive align-middle',
+              },
+            }"
+          >
+            <!-- <Column selectionMode="multiple" headerStyle="width: 3rem"
+                          :pt = "{
+                              'rowcheckbox': {
+                                  class: 'bg-primary'
+                              },
+                              box: {
+                                  class: 'd-none'
+                              }
+                          }"></Column> -->
+            <Column>
+              <template #header>
+                <div class="d-flex justify-content-center">
+                  <button
+                    type="button"
+                    class="btn"
+                    style="
+                      --bs-btn-padding-y: 0.25rem;
+                      --bs-btn-padding-x: 0.5rem;
+                      --bs-btn-font-size: 0.75rem;
+                      width: 28px;
+                    "
+                    @click="selectAllUsers"
+                  >
+                    <i
+                      class="fa-solid fa-x text-danger"
+                      v-if="selectedUsers.length == 0"
+                    ></i>
+                    <i class="fa-solid fa-check text-success" v-else></i>
+                  </button>
+                </div>
+              </template>
+              <template #body="slotProp">
+                <div class="d-flex justify-content-center">
                   <i
-                    class="fa-solid fa-x text-danger"
-                    v-if="selectedUsers.length == 0"
+                    class="fa-solid fa-check text-success"
+                    v-if="
+                      selectedUsers.findIndex((x) => x == slotProp.data) != -1
+                    "
                   ></i>
-                  <i class="fa-solid fa-check text-success" v-else></i>
-                </button>
-              </div>
-            </template>
-            <template #body="slotProp">
-              <div class="d-flex justify-content-center">
-                <i
-                  class="fa-solid fa-check text-success"
-                  v-if="
-                    selectedUsers.findIndex((x) => x == slotProp.data) != -1
-                  "
-                ></i>
-                <i class="fa-solid fa-x text-danger" v-else></i>
-              </div>
-            </template>
-          </Column>
-          <Column field="id" header="ID" sortable></Column>
-          <Column
-            field="name"
-            header="Name"
-            sortable
-            :pt="{
-              columnfilter: {
-                class: 'd-flex',
-              },
-              filtermenubutton: {
-                class: 'btn ms-1',
-              },
-              headerfilterclearbutton: {
-                class: 'btn ms-1',
-              },
-            }"
-          >
-            <template #filter="{ filterModel, filterCallback }">
-              <InputText
-                v-model="filterModel.value"
-                type="text"
-                @input="filterCallback()"
-                class="form-control"
-                placeholder="Név..."
-              />
-            </template>
-          </Column>
-          <Column
-            field="email"
-            header="Email"
-            sortable
-            :pt="{
-              columnfilter: {
-                class: 'd-flex',
-              },
-              filtermenubutton: {
-                class: 'btn ms-1',
-              },
-              headerfilterclearbutton: {
-                class: 'btn ms-1',
-              },
-            }"
-          >
-            <template #filter="{ filterModel, filterCallback }">
-              <InputText
-                v-model="filterModel.value"
-                type="text"
-                @input="filterCallback()"
-                class="form-control"
-                placeholder="Email..."
-              />
-            </template>
-          </Column>
-          <Column field="is_admin" header="Admin" sortable>
-            <template #body="slotProp">
-              <div class="d-flex justify-content-center">
-                <input
-                  type="radio"
-                  :checked="slotProp.data.is_admin == 1"
-                  disabled
-                  class="disabled-black"
+                  <i class="fa-solid fa-x text-danger" v-else></i>
+                </div>
+              </template>
+            </Column>
+            <Column field="id" header="ID" sortable></Column>
+            <Column
+              field="name"
+              header="Name"
+              sortable
+              :pt="{
+                columnfilter: {
+                  class: 'd-flex',
+                },
+                filtermenubutton: {
+                  class: 'btn ms-1',
+                },
+                headerfilterclearbutton: {
+                  class: 'btn ms-1',
+                },
+              }"
+            >
+              <template #filter="{ filterModel, filterCallback }">
+                <InputText
+                  v-model="filterModel.value"
+                  type="text"
+                  @input="filterCallback()"
+                  class="form-control"
+                  placeholder="Név..."
                 />
-              </div>
-            </template>
-          </Column>
-          <Column header="Módosítás">
-            <template #body="slotProp">
-              <button type="button" class="btn">
-                <i
-                  class="fa-solid fa-pen-to-square"
-                  @click="
-                    (modifyUserDialogVisible = true),
-                      (currentlyModifyingUser = slotProp.data)
-                  "
-                ></i>
-              </button>
-            </template>
-          </Column>
-          <Column header="Törlés">
-            <template #body="slotProp">
-              <button type="button" class="btn">
-                <i
-                  class="fa-solid fa-trash"
-                  @click="deleteUser(slotProp.data.id)"
-                ></i>
-              </button>
-            </template>
-          </Column>
-        </DataTable>
+              </template>
+            </Column>
+            <Column
+              field="email"
+              header="Email"
+              sortable
+              :pt="{
+                columnfilter: {
+                  class: 'd-flex',
+                },
+                filtermenubutton: {
+                  class: 'btn ms-1',
+                },
+                headerfilterclearbutton: {
+                  class: 'btn ms-1',
+                },
+              }"
+            >
+              <template #filter="{ filterModel, filterCallback }">
+                <InputText
+                  v-model="filterModel.value"
+                  type="text"
+                  @input="filterCallback()"
+                  class="form-control"
+                  placeholder="Email..."
+                />
+              </template>
+            </Column>
+            <Column field="is_admin" header="Admin" sortable>
+              <template #body="slotProp">
+                <div class="d-flex justify-content-center">
+                  <RadioButton
+                    v-model="checked"
+                    :value="slotProp.data.is_admin == 1"
+                    ű
+                    class="radioButton"
+                  />
+                </div>
+              </template>
+            </Column>
+            <Column header="Módosítás">
+              <template #body="slotProp">
+                <button type="button" class="btn">
+                  <i
+                    class="fa-solid fa-pen-to-square"
+                    @click="
+                      (modifyUserDialogVisible = true),
+                        (currentlyModifyingUser = {
+                          ...slotProp.data,
+                          password: '',
+                        })
+                    "
+                  ></i>
+                </button>
+              </template>
+            </Column>
+            <Column header="Törlés">
+              <template #body="slotProp">
+                <button type="button" class="btn">
+                  <i
+                    class="fa-solid fa-trash"
+                    @click="deleteUser(slotProp.data.id)"
+                  ></i>
+                </button>
+              </template>
+            </Column>
+          </DataTable>
+        </div>
       </div>
     </div>
   </BaseLayout>
@@ -528,6 +539,7 @@ export default {
     InputText,
     Dialog,
     Toast,
+    RadioButton,
   },
   data() {
     return {
@@ -540,6 +552,8 @@ export default {
       addUserDialogVisible: false,
       modifyUserDialogVisible: false,
       currentlyModifyingUser: [],
+      loading: true,
+      checked: true,
     };
   },
   computed: {
@@ -558,39 +572,36 @@ export default {
     async postUser(data) {
       try {
         data.password_confirmation = data.password_confirm;
-        await http.post("/users/register", data);
+        const response = await http.post("/users/register", data, {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
 
-        if (this.isDarkMode) {
-          this.$toast.add({
+        if (response.status === 200) {
+          let toast = {
             severity: "success",
             detail: "Felhasználó hozzáadása sikeres volt!",
             life: 3000,
-          });
-        } else {
-          this.$toast.add({
-            severity: "success",
-            detail: "Felhasználó hozzáadása sikeres volt!",
-            styleClass: "bg-success text-white",
-            life: 3000,
-          });
+          };
+          if (!this.isDarkMode) {
+            toast.styleClass = "bg-success text-white";
+          }
+
+          this.$toast.add(toast);
         }
 
         await this.getUsers();
       } catch (error) {
-        if (this.isDarkMode) {
-          this.$toast.add({
-            severity: "error",
-            detail: "Felhasználó hozzáadása sikertelen volt!",
-            life: 3000,
-          });
-        } else {
-          this.$toast.add({
-            severity: "error",
-            detail: "Felhasználó hozzáadása sikertelen volt!",
-            styleClass: "bg-danger text-white",
-            life: 3000,
-          });
+        let toast = {
+          severity: "error",
+          detail: "Felhasználó hozzáadása sikertelen volt!",
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-danger text-white";
         }
+        this.$toast.add(toast);
       }
 
       this.addUserDialogVisible = false;
@@ -604,7 +615,11 @@ export default {
     },
     async deleteUser(userId) {
       try {
-        await http.delete(`/users/${userId}`);
+        await http.delete(`/users/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
 
         if (this.isDarkMode) {
           this.$toast.add({
@@ -642,7 +657,15 @@ export default {
     async deleteMultipleUsers() {
       try {
         let userIds = this.selectedUsers.map((x) => x.id);
-        await http.post("/users/delete", { userIds: userIds });
+        await http.post(
+          "/users/delete",
+          { userIds: userIds },
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
 
         if (this.isDarkMode) {
           this.$toast.add({
@@ -680,7 +703,11 @@ export default {
     async updateUser(data) {
       try {
         data.password_confirmation = data.password_confirm;
-        await http.put(`/users/${data.id}`, data);
+        await http.put(`/users/${data.id}`, data, {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
         this.modifyUserDialogVisible = false;
 
         if (this.isDarkMode) {
@@ -716,9 +743,14 @@ export default {
         }
       }
     },
+    exportCSV() {
+      this.$refs.dt.exportCSV();
+      console.log(this.$refs.dt);
+    },
   },
-  mounted() {
-    this.getUsers();
+  async mounted() {
+    await this.getUsers();
+    this.loading = false;
   },
 };
 </script>
