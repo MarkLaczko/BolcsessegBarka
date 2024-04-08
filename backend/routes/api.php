@@ -22,15 +22,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/users', [UserController::class, 'index'])
+Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index'])
     ->name('users.index');
-Route::get('/users/{id}', [UserController::class, 'show'])
+Route::middleware('auth:sanctum')->get('/users/{id}', [UserController::class, 'show'])
     ->name('users.show');
-Route::post('/users/delete', [UserController::class, 'bulkDelete'])
+Route::middleware('auth:sanctum')->post('/users/delete', [UserController::class, 'bulkDelete'])
     ->name('users.bulkDelete');
-Route::put('/users/{id}', [UserController::class, 'update'])
+Route::middleware('auth:sanctum')->put('/users/{id}', [UserController::class, 'update'])
     ->name('users.update');
-Route::delete('/users/{id}', [UserController::class, 'destroy'])
+Route::middleware('auth:sanctum')->delete('/users/{id}', [UserController::class, 'destroy'])
     ->name('users.destroy');
 
 
