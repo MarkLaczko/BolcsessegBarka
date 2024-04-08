@@ -45,16 +45,16 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #{$lightCyan};
+    background: var(--scrollbar-bg-color);
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #{$blue};
+    background: var(--scrollbar-color);
     border-radius: 5px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #{$darkCyan};
+    background: var(--scrollbar-hover-color);
   }
 }
 
@@ -66,7 +66,9 @@
   --header-color: #{$cyan};
   --container-color: #{$cyan};
   --card-color: #{$white};
+  --card-border-color: 1px solid #{$lightGray};
   --button-color: #{$blue};
+  --button-hover-bg-color: #{$blue};
   --pagination-color: #{$white};
   --pagination-active-color: #{$blue};
   --pagination-active-border-color: #{$blue};
@@ -83,6 +85,9 @@
   --modal-bg-color: #{$white};
   --toast-success-color: none;
   --toast-color: #{$black};
+  --scrollbar-color: #{$blue};
+  --scrollbar-bg-color: #{$lightCyan};
+  --scrollbar-hover-color: #{$blue};
 }
 
 [data-theme="dark"] {
@@ -91,7 +96,9 @@
   --header-color: #{$gray};
   --container-color: #{$gray};
   --card-color: #{$darkGrey};
+  --card-border-color: 1px solid #{$white};
   --button-color: #{$darkerGrey};
+  --button-hover-bg-color: #{$wh};
   --pagination-color: #{$darkGrey};
   --pagination-active-color: #{$gray};
   --pagination-active-border-color: #{$white};
@@ -108,6 +115,9 @@
   --modal-bg-color: #{$gray};
   --toast-success-color: #{$darkerGrey};
   --toast-color: #{$white};
+  --scrollbar-color: #{$lightGray};
+  --scrollbar-bg-color: #{$gray};
+  --scrollbar-hover-color: #{$white};
 }
 
 body {
@@ -124,11 +134,20 @@ div > .darkTheme {
 div.card {
   background-color: var(--card-color);
   color: var(--text-color);
+  border: var(--card-border-color);
+}
+
+div.card-footer {
+  border-top: var(--card-border-color);
 }
 
 .buttons {
   background-color: var(--button-color);
   border: var(--border);
+}
+
+.buttons:hover {
+  background-color: var(--button-hover-bg-color);
 }
 
 ul.pagination {
@@ -167,6 +186,12 @@ tbody[role="rowgroup"] button {
   background-color: var(--filter-btn-bg-color);
   border: var(--border);
   color: var(--filter-btn-color);
+}
+
+button[aria-haspopup="true"]:hover,
+button[data-pc-section="headerfilterclearbutton"]:hover,
+tbody[role="rowgroup"] button:hover {
+  background-color: var(--button-hover-bg-color);
 }
 
 i.fa-regular {
