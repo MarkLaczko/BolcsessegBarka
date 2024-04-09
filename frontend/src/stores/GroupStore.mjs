@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { http } from "@utils/http";
+import { userStore } from '@stores/UserStore'
 
 export const groupStore = defineStore("groupStore", {
     state() {
@@ -9,42 +10,47 @@ export const groupStore = defineStore("groupStore", {
     },
     actions: {
         async getGroups() {
+            const user = userStore();
             const response = await http.get("/groups", {
                 headers: {
-                    Authorization: `Bearer ${this.token}`,
+                    Authorization: `Bearer ${user.token}`,
                 },
             });
             this.groups = response.data.data;
         },
         async getGroup(id) {
+            const user = userStore();
             const response = await http.get(`/groups/${id}`, {
                 headers: {
-                    Authorization: `Bearer ${this.token}`,
+                    Authorization: `Bearer ${user.token}`,
                 },
             });
             return response.data.data;
         },
         async postGroup(data) {
+            const user = userStore();
             const response = await http.get(`/groups`, data, {
                 headers: {
-                    Authorization: `Bearer ${this.token}`,
+                    Authorization: `Bearer ${user.token}`,
                 },
             });
             this.groups.push(response.data.data);
         },
         async updateGroup(id, data) {
+            const user = userStore();
             const response = await http.get(`/groups/${id}`, data, {
                 headers: {
-                    Authorization: `Bearer ${this.token}`,
+                    Authorization: `Bearer ${user.token}`,
                 },
             });
             const idx = this.groups.findIndex(x => x.id == id);
             this.groups.splice(idx, 1, response.data.data);
         },
         async deleteGroup(id) {
+            const user = userStore();
             const response = await http.get(`/groups/${id}`, {
                 headers: {
-                    Authorization: `Bearer ${this.token}`,
+                    Authorization: `Bearer ${user.token}`,
                 },
             });
             const idx = this.groups.findIndex(x => x.id == id);
