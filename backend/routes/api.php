@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -60,3 +61,15 @@ Route::middleware('auth:sanctum')->put('/groups/{id}', [GroupController::class, 
     ->name('groups.update');
 Route::middleware('auth:sanctum')->delete('/groups/{id}', [GroupController::class, 'destroy'])
     ->name('groups.destroy');
+
+
+Route::middleware('auth:sanctum')->get('/notes', [NoteController::class,'index'])
+    ->name('notes.index'); 
+Route::middleware('auth:sanctum')->get('/notes/{id}', [NoteController::class,'show'])
+    ->name('notes.show'); 
+Route::middleware('auth:sanctum')->post('/notes', [NoteController::class,'store'])
+    ->name('notes.store');
+Route::middleware('auth:sanctum')->put('/notes/{id}', [NoteController::class,'update'])
+    ->name('notes.update');
+Route::middleware('auth:sanctum')->delete('/notes/{id}', [NoteController::class,'destroy'])
+    ->name('notes.destroy');

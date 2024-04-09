@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
+            $table->string("title");
             $table->longText("text");
             $table->unsignedBigInteger("courseable_id");
             $table->string("courseable_type");
