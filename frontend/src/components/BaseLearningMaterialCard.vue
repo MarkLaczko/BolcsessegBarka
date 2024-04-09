@@ -11,7 +11,7 @@
       </div>
       <div class="col-md-6">
         <div class="card-body">
-          <h7 class="card-title">Kurzus: {{ course }}</h7>
+          <h6 class="card-title">Kurzus: {{ course }}</h6>
           <h3 class="card-text">
             <b>{{ learningMaterial }}</b>
           </h3>
