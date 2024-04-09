@@ -15,7 +15,7 @@
       <div class="rounded-3 pt-3">
         <h2 class="text-center mb-3"><b>Elkészítendő feladatok</b></h2>
         <div class="row px-5 pb-5 g-4">
-          <TransitionGroup :name="`slide-${animationDirection}`" class="row">
+          <TransitionGroup :name="`slide-${animationDirection}`">
             <div
               class="col-12 col-lg-4 col-md-6"
               v-for="assignment in paginatedAssignments"
