@@ -27,5 +27,9 @@ class DatabaseSeeder extends Seeder
             'email' => "user@user.com",
             'is_admin' => 0
         ]);
+
+        $this->call([
+            GroupSeeder::class,
+        ]);
     }
 }
