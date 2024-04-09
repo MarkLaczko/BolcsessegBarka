@@ -32,7 +32,7 @@ export const groupStore = defineStore("groupStore", {
             });
             this.groups.push(response.data.data);
         },
-        async putGroup(id, data) {
+        async updateGroup(id, data) {
             const response = await http.get(`/groups/${id}`, data, {
                 headers: {
                     Authorization: `Bearer ${this.token}`,
@@ -41,7 +41,7 @@ export const groupStore = defineStore("groupStore", {
             const idx = this.groups.findIndex(x => x.id == id);
             this.groups.splice(idx, 1, response.data.data);
         },
-        async destroyGroup(id) {
+        async deleteGroup(id) {
             const response = await http.get(`/groups/${id}`, {
                 headers: {
                     Authorization: `Bearer ${this.token}`,
