@@ -150,6 +150,7 @@
             <FormKit
               type="submit"
               label="Mentés"
+              id="addUserButton"
               :classes="{
                 input: {
                   btn: true,
@@ -478,7 +479,11 @@
             </Column>
             <Column header="Módosítás">
               <template #body="slotProp">
-                <button type="button" class="btn btn-warning" v-if="slotProp.data.email != currentUserData.email">
+                <button
+                  type="button"
+                  class="btn btn-warning"
+                  v-if="slotProp.data.email != currentUserData.email"
+                >
                   <i
                     class="fa-solid fa-pen-to-square"
                     @click="
@@ -494,7 +499,11 @@
             </Column>
             <Column header="Törlés">
               <template #body="slotProp">
-                <button type="button" class="btn btn-danger" v-if="slotProp.data.email != currentUserData.email">
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  v-if="slotProp.data.email != currentUserData.email"
+                >
                   <i
                     class="fa-solid fa-trash"
                     @click="deleteUser(slotProp.data.id)"
@@ -702,7 +711,7 @@ export default {
     async updateUser(data) {
       try {
         data.password_confirmation = data.password_confirm;
-        if(data.password == "") {
+        if (data.password == "") {
           delete data.password;
           delete data.password_confirmation;
         }
