@@ -11,7 +11,7 @@ namespace BolcsessegBarkaSeleniumTests;
 public class BolcsessegBarkaTests
 {
     private WebDriver? _webDriver;
-    private const string _sut = "http://localhost:5174";
+    private const string _sut = "http://localhost:5173";
 
     [TestInitialize]
     public void InitializeWebDriver()
@@ -44,7 +44,7 @@ public class BolcsessegBarkaTests
     private void LoginAsAdmin()
     {
         _webDriver!.Url = _sut + "/login";
-        
+
         var email = _webDriver.FindElement(By.Name("email"));
         email.SendKeys("admin@admin.com");
 
@@ -80,7 +80,7 @@ public class BolcsessegBarkaTests
         {
             _webDriver!.FindElement(By.ClassName($"{data}")).Click();
         }
-        
+
         if (option == "CssSelector" && !click)
         {
             _webDriver!.FindElement(By.CssSelector($"{data}"));
@@ -110,14 +110,14 @@ public class BolcsessegBarkaTests
         wait.Until(condition);
     }
 
-    [TestMethod]
+    [TestMethod, Priority(1)]
     public void LoginPageTitleVerificationTest()
     {
         _webDriver!.Url = _sut;
         Assert.AreEqual("Bejelentkezés", _webDriver.Title);
     }
     
-    [TestMethod]
+    [TestMethod, Priority(2)]
     public void TestOfSuccessLogin()
     {
         LoginAsAdmin();
@@ -125,7 +125,7 @@ public class BolcsessegBarkaTests
         Assert.AreEqual("Főoldal", _webDriver!.Title);
     }
 
-    [TestMethod]
+    [TestMethod, Priority(3)]
     public void TestIfAdminCanCreateUserAccount() 
     {
         LoginAsAdmin();
@@ -133,7 +133,7 @@ public class BolcsessegBarkaTests
         Wait(ExpectedConditions.ElementIsVisible(By.LinkText("Adminisztráció")), TimeSpan.FromSeconds(10));
 
         Navigate("Adminisztráció")!.Click();
-        SelectElement("/html/body/div[1]/div/header/nav/div/div/ul/li[3]/ul/li[1]/a", "XPath",true);
+        SelectElement("a[href='/user-administration']", "CssSelector",true);
 
         Wait(ExpectedConditions.ElementIsVisible(By.Id("newUser")), TimeSpan.FromSeconds(10));
 
@@ -158,7 +158,7 @@ public class BolcsessegBarkaTests
         Assert.AreEqual(3, usersCount.Count);
     }
 
-    [TestMethod]
+    [TestMethod, Priority(4)]
     public void TestIfAdminCanModifyUserAccount()
     {
         LoginAsAdmin();
@@ -166,11 +166,11 @@ public class BolcsessegBarkaTests
         Wait(ExpectedConditions.ElementIsVisible(By.LinkText("Adminisztráció")), TimeSpan.FromSeconds(10));
 
         Navigate("Adminisztráció")!.Click();
-        SelectElement("/html/body/div[1]/div/header/nav/div/div/ul/li[3]/ul/li[1]/a", "XPath", true);
+        SelectElement("a[href='/user-administration']", "CssSelector", true);
          
-        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("tr:nth-child(3)>td:nth-child(6)>button")), TimeSpan.FromSeconds(10));
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(6) > button")), TimeSpan.FromSeconds(10));
 
-        SelectElement("tr:nth-child(3)>td:nth-child(6)>button", "CssSelector", true);
+        SelectElement("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(6) > button", "CssSelector", true);
 
         var name = _webDriver!.FindElement(By.Name("name"));
         name.Clear();
@@ -185,10 +185,114 @@ public class BolcsessegBarkaTests
         SelectElement("button[type='submit'].btn-success", "CssSelector", true);
 
 
-        IWebElement text = _webDriver.FindElement(By.CssSelector("tr[tabindex='-1']:nth-child(3)>td:nth-child(3)"));
+        IWebElement text = _webDriver.FindElement(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(3)"));
         WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10));
-        wait.Until(ExpectedConditions.TextToBePresentInElementLocated(By.CssSelector("tr[tabindex='-1']:nth-child(3)>td:nth-child(3)"), "teszt"));
-        var modifiedUserName = _webDriver.FindElement(By.CssSelector("tr[tabindex='-1']:nth-child(3)>td:nth-child(3)"));
+        wait.Until(ExpectedConditions.TextToBePresentInElementLocated(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(3)"), "teszt"));
+        var modifiedUserName = _webDriver.FindElement(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(3)"));
         Assert.AreEqual("teszt", modifiedUserName.Text);
+    }
+
+    [TestMethod, Priority(5)]
+    public void TestIfAdminCanDeleteUserAccount()
+    {
+        LoginAsAdmin();
+
+        Wait(ExpectedConditions.ElementIsVisible(By.LinkText("Adminisztráció")), TimeSpan.FromSeconds(10));
+
+        Navigate("Adminisztráció")!.Click();
+        SelectElement("a[href='/user-administration']", "CssSelector", true);
+
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("tbody tr")), TimeSpan.FromSeconds(10));
+
+        SelectElement("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(7) > button", "CssSelector",true);
+        new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10)).Until(drv => drv.FindElements(By.CssSelector("tr[tabindex='-1']")).Count == 2);
+
+        var usersCount = _webDriver!.FindElements(By.CssSelector("tr[tabindex='-1']"));
+        Assert.AreEqual(2, usersCount.Count);
+    }
+
+    [TestMethod, Priority(6)]
+    public void TestIfAdminCanDeleteMultipleUserAccount()
+    {
+        LoginAsAdmin();
+
+        Wait(ExpectedConditions.ElementIsVisible(By.LinkText("Adminisztráció")), TimeSpan.FromSeconds(10));
+
+        Navigate("Adminisztráció")!.Click();
+        SelectElement("a[href='/user-administration']", "CssSelector", true);
+
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("tbody tr")), TimeSpan.FromSeconds(10));
+
+        SelectElement("newUser", "Id", true);
+
+        var name = _webDriver!.FindElement(By.Name("name"));
+        name.SendKeys("felhasznalo");
+
+        var email = _webDriver.FindElement(By.Name("email"));
+        email.SendKeys("tesztadat@gmail.com");
+
+        var password = _webDriver.FindElement(By.Name("password"));
+        password.SendKeys("teszt1234");
+
+        var passwordConfirmation = _webDriver.FindElement(By.Name("password_confirm"));
+        passwordConfirmation.SendKeys("teszt1234");
+
+        SelectElement("addUserButton", "Id", true);
+
+        Wait(ExpectedConditions.ElementExists(By.CssSelector("tbody[role='rowgroup']>tr:nth-child(3)")), TimeSpan.FromSeconds(10));
+
+        SelectElement("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(2) > td:nth-child(1) > div > i", "CssSelector", true);
+        SelectElement("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(1) > div > i", "CssSelector", true);
+        SelectElement("#app > div > main > div > div > div > div.row.mb-2 > div.col-sm-12.col-md-5.d-flex.justify-content-md-start.align-items-center.justify-content-center > button.btn.btn-danger.text-white.mt-2", "CssSelector", true);
+        new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10)).Until(drv => drv.FindElements(By.CssSelector("tr[tabindex='-1']")).Count == 1);
+
+        var usersCount = _webDriver!.FindElements(By.CssSelector("tr[tabindex='-1']"));
+        Assert.AreEqual(1, usersCount.Count);
+    }
+
+    [TestMethod, Priority(7)]
+    public void TestUserAdministrationPageNameFiltering()
+    {
+        LoginAsAdmin();
+
+        Wait(ExpectedConditions.ElementIsVisible(By.LinkText("Adminisztráció")), TimeSpan.FromSeconds(10));
+
+        Navigate("Adminisztráció")!.Click();
+        SelectElement("a[href='/user-administration']", "CssSelector", true);
+
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("tbody tr")), TimeSpan.FromSeconds(10));
+
+        SelectElement("newUser", "Id", true);
+
+        var name = _webDriver!.FindElement(By.Name("name"));
+        name.SendKeys("felhasznalo");
+
+        var email = _webDriver.FindElement(By.Name("email"));
+        email.SendKeys("tesztadat@gmail.com");
+
+        var password = _webDriver.FindElement(By.Name("password"));
+        password.SendKeys("teszt1234");
+
+        var passwordConfirmation = _webDriver.FindElement(By.Name("password_confirm"));
+        passwordConfirmation.SendKeys("teszt1234");
+
+        SelectElement("addUserButton", "Id", true);
+
+        Wait(ExpectedConditions.ElementExists(By.CssSelector("tbody[role='rowgroup']>tr:nth-child(2)")), TimeSpan.FromSeconds(10));
+
+        var nameFilter = _webDriver.FindElement(By.CssSelector("input[placeholder='Név...']"));
+        nameFilter.SendKeys("felhasznalo");
+        
+        Assert.AreEqual(1, _webDriver!.FindElements(By.CssSelector("tr[tabindex='-1']")).Count);
+
+        SelectElement("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > thead > tr:nth-child(2) > th:nth-child(3) > div > button:nth-child(3)", "CssSelector", true);
+        new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10)).Until(drv => drv.FindElements(By.CssSelector("tr[tabindex='-1']")).Count == 2);
+        
+        Assert.AreEqual(2, _webDriver!.FindElements(By.CssSelector("tr[tabindex='-1']")).Count);
+
+        var emailFilter = _webDriver.FindElement(By.CssSelector("input[placeholder='Email...']"));
+        emailFilter.SendKeys("admin@admin.com");
+
+        Assert.AreEqual(1, _webDriver!.FindElements(By.CssSelector("tr[tabindex='-1']")).Count);
     }
 }
