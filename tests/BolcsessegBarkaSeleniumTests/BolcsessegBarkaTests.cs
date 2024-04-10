@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
@@ -110,34 +111,41 @@ public class BolcsessegBarkaTests
         wait.Until(condition);
     }
 
-    [TestMethod, Priority(1)]
-    public void LoginPageTitleVerificationTest()
+    private void Wait(Func<IWebDriver, bool> condition, TimeSpan timeout)
+    {
+        WebDriverWait wait = new WebDriverWait(_webDriver, timeout);
+
+        wait.Until(condition);
+    }
+
+    [TestMethod]
+    public void Test00_LoginPageTitleVerificationTest()
     {
         _webDriver!.Url = _sut;
         Assert.AreEqual("Bejelentkezés", _webDriver.Title);
     }
-    
-    [TestMethod, Priority(2)]
-    public void TestOfSuccessLogin()
+
+    [TestMethod]
+    public void Test01_TestOfSuccessLogin()
     {
         LoginAsAdmin();
-        
+
         Assert.AreEqual("Főoldal", _webDriver!.Title);
     }
 
-    [TestMethod, Priority(3)]
-    public void TestIfAdminCanCreateUserAccount() 
+    [TestMethod]
+    public void Test02_TestIfAdminCanCreateUserAccount()
     {
         LoginAsAdmin();
 
         Wait(ExpectedConditions.ElementIsVisible(By.LinkText("Adminisztráció")), TimeSpan.FromSeconds(10));
 
         Navigate("Adminisztráció")!.Click();
-        SelectElement("a[href='/user-administration']", "CssSelector",true);
+        SelectElement("a[href='/user-administration']", "CssSelector", true);
 
         Wait(ExpectedConditions.ElementIsVisible(By.Id("newUser")), TimeSpan.FromSeconds(10));
 
-        SelectElement("newUser","Id",true);
+        SelectElement("newUser", "Id", true);
 
         var name = _webDriver!.FindElement(By.Name("name"));
         name.SendKeys("felhasznalo");
@@ -158,8 +166,8 @@ public class BolcsessegBarkaTests
         Assert.AreEqual(3, usersCount.Count);
     }
 
-    [TestMethod, Priority(4)]
-    public void TestIfAdminCanModifyUserAccount()
+    [TestMethod]
+    public void Test03_TestIfAdminCanModifyUserAccount()
     {
         LoginAsAdmin();
 
@@ -167,7 +175,7 @@ public class BolcsessegBarkaTests
 
         Navigate("Adminisztráció")!.Click();
         SelectElement("a[href='/user-administration']", "CssSelector", true);
-         
+
         Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(6) > button")), TimeSpan.FromSeconds(10));
 
         SelectElement("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(6) > button", "CssSelector", true);
@@ -189,11 +197,12 @@ public class BolcsessegBarkaTests
         WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10));
         wait.Until(ExpectedConditions.TextToBePresentInElementLocated(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(3)"), "teszt"));
         var modifiedUserName = _webDriver.FindElement(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(3)"));
+        
         Assert.AreEqual("teszt", modifiedUserName.Text);
     }
 
-    [TestMethod, Priority(5)]
-    public void TestIfAdminCanDeleteUserAccount()
+    [TestMethod]
+    public void Test04_TestIfAdminCanDeleteUserAccount()
     {
         LoginAsAdmin();
 
@@ -204,15 +213,15 @@ public class BolcsessegBarkaTests
 
         Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("tbody tr")), TimeSpan.FromSeconds(10));
 
-        SelectElement("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(7) > button", "CssSelector",true);
+        SelectElement("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(7) > button", "CssSelector", true);
         new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10)).Until(drv => drv.FindElements(By.CssSelector("tr[tabindex='-1']")).Count == 2);
 
         var usersCount = _webDriver!.FindElements(By.CssSelector("tr[tabindex='-1']"));
         Assert.AreEqual(2, usersCount.Count);
     }
 
-    [TestMethod, Priority(6)]
-    public void TestIfAdminCanDeleteMultipleUserAccount()
+    [TestMethod]
+    public void Test05_TestIfAdminCanDeleteMultipleUserAccount()
     {
         LoginAsAdmin();
 
@@ -250,8 +259,8 @@ public class BolcsessegBarkaTests
         Assert.AreEqual(1, usersCount.Count);
     }
 
-    [TestMethod, Priority(7)]
-    public void TestUserAdministrationPageNameFiltering()
+    [TestMethod]
+    public void Test06_TestUserAdministrationPageNameFiltering()
     {
         LoginAsAdmin();
 
@@ -282,17 +291,51 @@ public class BolcsessegBarkaTests
 
         var nameFilter = _webDriver.FindElement(By.CssSelector("input[placeholder='Név...']"));
         nameFilter.SendKeys("felhasznalo");
-        
+
         Assert.AreEqual(1, _webDriver!.FindElements(By.CssSelector("tr[tabindex='-1']")).Count);
 
         SelectElement("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > thead > tr:nth-child(2) > th:nth-child(3) > div > button:nth-child(3)", "CssSelector", true);
         new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10)).Until(drv => drv.FindElements(By.CssSelector("tr[tabindex='-1']")).Count == 2);
-        
+
         Assert.AreEqual(2, _webDriver!.FindElements(By.CssSelector("tr[tabindex='-1']")).Count);
 
         var emailFilter = _webDriver.FindElement(By.CssSelector("input[placeholder='Email...']"));
         emailFilter.SendKeys("admin@admin.com");
 
         Assert.AreEqual(1, _webDriver!.FindElements(By.CssSelector("tr[tabindex='-1']")).Count);
+    }
+
+    [TestMethod]
+    public void Test07_CoursePageTitleVerificationTest()
+    {
+        LoginAsAdmin();
+        Navigate("Kurzusaim")!.Click();
+        Assert.AreEqual("Kurzusok", _webDriver!.Title);
+    }
+
+    [TestMethod]
+    public void Test08_TestHomePageWorkingPaginator() 
+    {
+        LoginAsAdmin();
+
+        Wait(ExpectedConditions.ElementExists(By.CssSelector("#app > div > main > div > div:nth-child(2)")),TimeSpan.FromSeconds(10));
+
+        SelectElement("a[aria-label='Next']", "CssSelector",true);
+        WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10));
+        wait.Until(ExpectedConditions.TextToBePresentInElementLocated(By.CssSelector("#app > div > main > div > div:nth-child(2) > div > div:nth-child(2) > div"), "Feladat 5"));
+
+        var expectedCardTitle = _webDriver!.FindElement(By.XPath("//*[@id=\"app\"]/div/main/div/div[1]/div/div[2]/div/div[1]/h3"));
+        Assert.AreEqual("Feladat 5", expectedCardTitle.Text);
+    }
+
+    [TestMethod]
+    public void Test09_TestAboutLogoutFunctionality() 
+    {
+        LoginAsAdmin();
+        Navigate("Kijelentkezés")!.Click();
+
+        Wait(ExpectedConditions.TitleIs("Bejelentkezés"),TimeSpan.FromSeconds(10));
+
+        Assert.AreEqual("Bejelentkezés", _webDriver!.Title);
     }
 }
