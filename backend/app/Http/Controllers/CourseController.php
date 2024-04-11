@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCourseRequest;
+use App\Http\Requests\UpdateCourseRequest;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
 use Illuminate\Http\Request;
@@ -41,7 +42,7 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreCourseRequest $request, string $id)
+    public function update(UpdateCourseRequest $request, string $id)
     {
         $data = $request->validated();
         $course = Course::findOrFail($id);
