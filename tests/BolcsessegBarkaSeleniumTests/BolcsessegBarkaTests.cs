@@ -260,7 +260,7 @@ public class BolcsessegBarkaTests
     }
 
     [TestMethod]
-    public void Test06_TestUserAdministrationPageNameFiltering()
+    public void Test06_TestUserAdministrationPageFiltering()
     {
         LoginAsAdmin();
 

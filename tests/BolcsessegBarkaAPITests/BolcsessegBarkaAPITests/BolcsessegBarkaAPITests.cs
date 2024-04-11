@@ -108,7 +108,7 @@ namespace BolcsessegBarkaAPITests
         }
 
         [TestMethod]
-        public async Task GetAllUsers_ReturnsReturnsOK()
+        public async Task GetAllUsers_ReturnsOK()
         {
             var token = await AuthenticateAndGetToken();
             _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
