@@ -330,18 +330,6 @@
               />
             </template>
             <template #end>
-              <FileUpload
-                :pt="{
-                  input: {
-                    class: 'd-none',
-                  },
-                }"
-                mode="basic"
-                :maxFileSize="1000000"
-                label="Importálás"
-                chooseLabel=" Importálás"
-                class="mr-2 btn btn-success text-white inline-block me-1 mt-2"
-              />
               <Button
                 label=" Exportálás"
                 icon="pi pi-upload"
@@ -521,7 +509,6 @@
 <script>
 import BaseLayout from "@layouts/BaseLayout.vue";
 import Toolbar from "primevue/toolbar";
-import FileUpload from "primevue/fileupload";
 import Button from "primevue/button";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
@@ -539,7 +526,6 @@ export default {
   components: {
     BaseLayout,
     Toolbar,
-    FileUpload,
     Button,
     DataTable,
     Column,
@@ -757,7 +743,6 @@ export default {
     },
     exportCSV() {
       this.$refs.dt.exportCSV();
-      console.log(this.$refs.dt);
     },
   },
   async mounted() {
