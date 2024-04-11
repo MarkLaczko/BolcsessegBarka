@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreGroupRequest;
+use App\Http\Requests\UpdateGroupRequest;
 use App\Http\Resources\GroupResource;
 use App\Models\Group;
 use Illuminate\Http\Request;
@@ -25,7 +26,7 @@ class GroupController extends Controller
         $data = $request->validated();
         $group = Group::create($data);
 
-        return new GroupResource($group);
+        return new GroupResource(Group::with(['users', 'courses'])->findOrFail($group->id));
     }
 
     /**
@@ -33,7 +34,7 @@ class GroupController extends Controller
      */
     public function show(string $id)
     {
-        $group = Group::findOrFail($id);
+        $group = Group::with(['users', 'courses'])->findOrFail($id);
 
         return new GroupResource($group);
     }
@@ -41,13 +42,23 @@ class GroupController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreGroupRequest $request, string $id)
+    public function update(UpdateGroupRequest $request, string $id)
     {
         $data = $request->validated();
         $group = Group::findOrFail($id);
-        $group->update($data);
+        $group->update([
+            'name' => $data['name']
+        ]);
 
-        return new GroupResource($group);
+        if(!empty($data['selectedUsers'])){
+            $users = [];
+            foreach($data['selectedUsers'] as $user){
+                $users[$user['id']] = ['permission_id' => $user['permission_id']];
+            }
+            $group->users()->attach($users);
+        }
+
+        return new GroupResource(Group::with(['users', 'courses'])->findOrFail($group->id));
     }
 
     /**

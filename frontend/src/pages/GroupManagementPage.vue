@@ -116,7 +116,7 @@
           v-model:visible="modifyGroupDialogVisible"
           modal
           :header="`${currentlyModifyingGroup.name} módosítása`"
-          :style="{ width: '25rem' }"
+          :style="{ width: '50rem' }"
           :pt="{
             root: {
               class: 'modal-dialog p-3 rounded shadow border',
@@ -141,7 +141,7 @@
           <FormKit
             type="form"
             :actions="false"
-            @submit="updateGroup"
+            @submit="sendUpdateGroup"
             :value="currentlyModifyingGroup"
             incomplete-message="Sajnáljuk, nem minden mezőt töltöttek ki helyesen."
           >
@@ -162,6 +162,133 @@
                 },
               }"
             />
+            {{ currentlyModifyingGroup }}
+            <DataTable
+              :value="users"
+              tableStyle="min-width: 40rem"
+              sortField="name"
+              :sortOrder="1"
+              v-model:filters="userFilters"
+              filterDisplay="row"
+              v-model:selection="currentlyModifyingGroup.selectedUsers"
+              selectionMode="multiple"
+              dataKey="id"
+              :metaKeySelection="false"
+              :pt="{
+                table: {
+                  class: 'table table-responsive align-middle',
+                },
+              }"
+            >
+              <Column>
+                <template #header>
+                  <div class="d-flex justify-content-center">
+                    <button
+                      type="button"
+                      class="btn"
+                      style="
+                        --bs-btn-padding-y: 0.25rem;
+                        --bs-btn-padding-x: 0.5rem;
+                        --bs-btn-font-size: 0.75rem;
+                        width: 28px;
+                      "
+                      @click="selectAllGroups"
+                    >
+                      <i
+                        class="fa-solid fa-x text-danger"
+                        v-if="currentlyModifyingGroup.selectedUsers.length == 0"
+                      ></i>
+                      <i class="fa-solid fa-check text-success" v-else></i>
+                    </button>
+                  </div>
+                </template>
+                <template #body="slotProp">
+                  <div class="d-flex justify-content-center">
+                    <i
+                      class="fa-solid fa-check text-success"
+                      v-if="
+                        currentlyModifyingGroup.selectedUsers.findIndex((x) => x == slotProp.data) != -1
+                      "
+                    ></i>
+                    <i class="fa-solid fa-x text-danger" v-else></i>
+                  </div>
+                </template>
+              </Column>
+              <Column field="id" header="ID" sortable></Column>
+              <Column
+                field="name"
+                header="Név"
+                sortable
+                :pt="{
+                  columnfilter: {
+                    class: 'd-flex',
+                  },
+                  filtermenubutton: {
+                    class: 'btn ms-1',
+                  },
+                  headerfilterclearbutton: {
+                    class: 'btn ms-1',
+                  },
+                }"
+              >
+                <template #filter="{ filterModel, filterCallback }">
+                  <InputText
+                    v-model="filterModel.value"
+                    type="text"
+                    @input="filterCallback()"
+                    class="form-control"
+                    placeholder="Név..."
+                  />
+                </template>
+              </Column>
+              <Column
+                field="email"
+                header="Email"
+                sortable
+                :pt="{
+                  columnfilter: {
+                    class: 'd-flex',
+                  },
+                  filtermenubutton: {
+                    class: 'btn ms-1',
+                  },
+                  headerfilterclearbutton: {
+                    class: 'btn ms-1',
+                  },
+                }"
+              >
+                <template #filter="{ filterModel, filterCallback }">
+                  <InputText
+                    v-model="filterModel.value"
+                    type="text"
+                    @input="filterCallback()"
+                    class="form-control"
+                    placeholder="Email..."
+                  />
+                </template>
+              </Column>
+              <Column
+                field="permission"
+                header="Jogosultság"
+                :pt="{
+                  columnfilter: {
+                    class: 'd-flex',
+                  },
+                  filtermenubutton: {
+                    class: 'btn ms-1',
+                  },
+                  headerfilterclearbutton: {
+                    class: 'btn ms-1',
+                  },
+                }"
+              >
+                <template #body="slotProp">
+                  <select v-model="slotProp.data.permission_id" class="form-select">
+                    <option v-for="permission of permissions" :key="permission.id" :value="permission.id">{{ permission.name }}</option>
+                  </select>
+                </template>
+              </Column>
+            </DataTable>
             <div class="d-flex justify-content-end mt-2 mb-3">
               <Button
                 type="button"
@@ -326,6 +453,7 @@
                         (modifyGroupDialogVisible = true),
                           (currentlyModifyingGroup = {
                             ...slotProp.data,
+                            selectedUsers: slotProp.data.users
                           })
                       "
                     ></i>
@@ -360,11 +488,14 @@
   import InputText from "primevue/inputtext";
   import Dialog from "primevue/dialog";
   import Toast from "primevue/toast";
+  import Dropdown from 'primevue/dropdown';
   import { http } from "@utils/http";
   import { mapActions, mapState } from "pinia";
   import { groupStore } from "@stores/GroupStore";
   import { FilterMatchMode } from "primevue/api";
   import { themeStore } from "@stores/ThemeStore.mjs";
+  import { userStore } from '@stores/UserStore';
+  import { permissionStore } from "@stores/PermissionStore.mjs";
   
   export default {
     components: {
@@ -379,34 +510,51 @@
       Dialog,
       Toast,
       RadioButton,
+      Dropdown,
     },
     data() {
       return {
         filters: {
           name: { value: null, matchMode: FilterMatchMode.CONTAINS },
         },
+        userFilters: {
+          name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+          email: { value: null, matchMode: FilterMatchMode.CONTAINS },
+        },
         selectedGroups: [],
         addGroupDialogVisible: false,
         modifyGroupDialogVisible: false,
         currentlyModifyingGroup: [],
         checked: true,
+        users: [],
       };
     },
     computed: {
+      ...mapState(userStore, ["token",]),
       ...mapState(groupStore, ["groups",]),
       ...mapState(themeStore, ["isDarkMode"]),
+      ...mapState(permissionStore, ["permissions"]),
       loading() {
         return this.groups == null;
       }
     },
     methods: {
       ...mapActions(groupStore, ['getGroups', 'getGroup', 'postGroup', 'updateGroup', 'deleteGroup']),
+      ...mapActions(permissionStore, ['getPermissions']),
       selectAllGroups() {
         if (this.groups.length === this.selectedGroups.length) {
           this.selectedGroups = [];
         } else {
           this.selectedGroups = [...this.groups];
         }
+      },
+      async getUsers() {
+        const response = await http.get("/users", {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+        this.users = response.data.data;
       },
       async deleteMultipleGroups() {
         try {
@@ -454,13 +602,19 @@
           }
         }
       },
+      async sendUpdateGroup(data){
+        data.selectedUsers = this.currentlyModifyingGroup.selectedUsers;
+        await this.updateGroup(data);
+      },
       exportCSV() {
         this.$refs.dt.exportCSV();
         console.log(this.$refs.dt);
       },
     },
-    async mounted() {
-      await this.getGroups();
+    mounted() {
+      this.getGroups();
+      this.getPermissions();
+      this.getUsers();
     },
   };
   </script>

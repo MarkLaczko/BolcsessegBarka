@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -75,3 +76,6 @@ Route::middleware('auth:sanctum')->put('/notes/{id}', [NoteController::class,'up
     ->name('notes.update');
 Route::middleware('auth:sanctum')->delete('/notes/{id}', [NoteController::class,'destroy'])
     ->name('notes.destroy');
+
+Route::middleware('auth:sanctum')->get('/permissions', [PermissionController::class,'index'])
+    ->name('permissions.index');

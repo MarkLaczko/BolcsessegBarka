@@ -18,7 +18,7 @@ class UserController extends Controller
     public function index()
     {
         Gate::authorize('users.get');
-        return UserResource::collection(User::all());
+        return UserResource::collection(User::with(['groups'])->get());
     }
 
     /**

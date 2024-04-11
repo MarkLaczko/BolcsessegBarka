@@ -14,6 +14,11 @@ class Permission extends Model
 
     public function users() : BelongsToMany
     {
-        return $this->belongsToMany(User::class, "member","permission_id","user_id");
+        return $this->belongsToMany(User::class, "member")->as('member')->withPivot('group_id');
+    }
+
+    public function groups() : BelongsToMany
+    {
+        return $this->belongsToMany(Group::class, "member")->as('member')->withPivot('user_id');
     }
 }
