@@ -29,26 +29,27 @@ export const groupStore = defineStore("groupStore", {
         },
         async postGroup(data) {
             const user = userStore();
-            const response = await http.get(`/groups`, data, {
+            const response = await http.post(`/groups`, data, {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
                 },
             });
             this.groups.push(response.data.data);
         },
-        async updateGroup(id, data) {
+        async updateGroup(data) {
             const user = userStore();
-            const response = await http.get(`/groups/${id}`, data, {
+            console.log(data);
+            const response = await http.put(`/groups/${data.id}`, data, {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
                 },
             });
-            const idx = this.groups.findIndex(x => x.id == id);
+            const idx = this.groups.findIndex(x => x.id == data.id);
             this.groups.splice(idx, 1, response.data.data);
         },
         async deleteGroup(id) {
             const user = userStore();
-            const response = await http.get(`/groups/${id}`, {
+            const response = await http.delete(`/groups/${id}`, {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
                 },
