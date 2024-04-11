@@ -81,6 +81,15 @@ export const router = createRouter({
         title: "Jegyzet létrehozása",
       },
     },
+    {
+      path: "/assignment",
+      name: "assignment",
+      component: () => import("@pages/AssignmentPage.vue"),
+      meta: {
+        requiresAuth: true,
+        title: "Feladat beadó felület",
+      },
+    },
   ],
 });
 
