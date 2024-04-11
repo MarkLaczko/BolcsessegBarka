@@ -60,4 +60,16 @@ class CourseController extends Controller
 
         return response()->noContent();
     }
+
+    public function bulkDelete(Request $request)
+    {
+        $courseIds = $request->input('courseIds');
+
+        if (!empty($courseIds)) {
+            Course::destroy($courseIds);
+            return response()->json(['message' => 'Courses deleted successfully'], 200);
+        }
+
+        return response()->json(['message' => 'No Courses to delete'], 400);
+    }
 }
