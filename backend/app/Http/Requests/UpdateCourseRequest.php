@@ -22,8 +22,8 @@ class UpdateCourseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ["nullable","between:5,100","unique:courses,name"],
-            "image" => ["nullable","image"]
+            "name" => ["nullable","between:5,100"],
+            "image" => ["nullable"]
         ];
     }
 }
