@@ -23,7 +23,7 @@ class StoreCourseRequest extends FormRequest
     {
         return [
             "name" => ["required","between:5,100","unique:courses,name"],
-            "image" => ["required","image"]
+            "image" => ["required"]
         ];
     }
 }
