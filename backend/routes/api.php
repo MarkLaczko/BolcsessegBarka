@@ -76,6 +76,3 @@ Route::middleware('auth:sanctum')->put('/notes/{id}', [NoteController::class,'up
     ->name('notes.update');
 Route::middleware('auth:sanctum')->delete('/notes/{id}', [NoteController::class,'destroy'])
     ->name('notes.destroy');
-
-Route::middleware('auth:sanctum')->get('/permissions', [PermissionController::class,'index'])
-    ->name('permissions.index');
