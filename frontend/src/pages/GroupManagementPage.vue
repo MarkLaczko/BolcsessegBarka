@@ -162,7 +162,7 @@
                 },
               }"
             />
-            {{ currentlyModifyingGroup }}
+            
             <DataTable
               :value="users"
               tableStyle="min-width: 40rem"
@@ -170,10 +170,6 @@
               :sortOrder="1"
               v-model:filters="userFilters"
               filterDisplay="row"
-              v-model:selection="currentlyModifyingGroup.selectedUsers"
-              selectionMode="multiple"
-              dataKey="id"
-              :metaKeySelection="false"
               :pt="{
                 table: {
                   class: 'table table-responsive align-middle',
@@ -204,13 +200,33 @@
                 </template>
                 <template #body="slotProp">
                   <div class="d-flex justify-content-center">
-                    <i
-                      class="fa-solid fa-check text-success"
-                      v-if="
-                        currentlyModifyingGroup.selectedUsers.findIndex((x) => x == slotProp.data) != -1
+                    <button
+                      type="button"
+                      class="btn btn-light"
+                      style="
+                        --bs-btn-padding-y: 0.25rem;
+                        --bs-btn-padding-x: 0.5rem;
+                        --bs-btn-font-size: 0.75rem;
+                        width: 28px;
                       "
-                    ></i>
-                    <i class="fa-solid fa-x text-danger" v-else></i>
+                      v-if="
+                        currentlyModifyingGroup.selectedUsers.findIndex((x) => x.id == slotProp.data.id) != -1
+                      "
+                      @click="unSelectUser(slotProp.data)">
+                      <i class="fa-solid fa-check text-success"></i>
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-light"
+                      style="
+                        --bs-btn-padding-y: 0.25rem;
+                        --bs-btn-padding-x: 0.5rem;
+                        --bs-btn-font-size: 0.75rem;
+                        width: 28px;
+                      "
+                      v-else @click="selectUser(slotProp.data)">
+                      <i class="fa-solid fa-x text-danger"></i>
+                    </button>
                   </div>
                 </template>
               </Column>
@@ -283,10 +299,14 @@
                 }"
               >
                 <template #body="slotProp">
-                  <select v-model="slotProp.data.permission" class="form-select">
+                  <select 
+                    v-if="currentlyModifyingGroup.selectedUsers.findIndex((x) => x.id == slotProp.data.id) != -1"
+                    v-model="currentlyModifyingGroup.selectedUsers[currentlyModifyingGroup.selectedUsers.findIndex((x) => x.id == slotProp.data.id)].permission"
+                    class="form-select">
                     <option value="Tanár">Tanár</option>
                     <option value="Tanuló">Tanuló</option>
                   </select>
+                  <select v-else class="form-select" disabled></select>
                 </template>
               </Column>
             </DataTable>
@@ -295,7 +315,7 @@
                 type="button"
                 label="Mégse"
                 class="btn btn-outline-danger mx-1"
-                @click="modifyGroupDialogVisible = false"
+                @click="closeModifyWindow"
               ></Button>
               <FormKit
                 type="submit"
@@ -448,26 +468,14 @@
               <Column header="Módosítás">
                 <template #body="slotProp">
                   <button type="button" class="btn btn-warning">
-                    <i
-                      class="fa-solid fa-pen-to-square"
-                      @click="
-                        (modifyGroupDialogVisible = true),
-                          (currentlyModifyingGroup = {
-                            ...slotProp.data,
-                            selectedUsers: slotProp.data.users
-                          })
-                      "
-                    ></i>
+                    <i class="fa-solid fa-pen-to-square" @click="openModifyWindow(slotProp.data)"></i>
                   </button>
                 </template>
               </Column>
               <Column header="Törlés">
                 <template #body="slotProp">
                   <button type="button" class="btn btn-danger">
-                    <i
-                      class="fa-solid fa-trash"
-                      @click="deleteGroup(slotProp.data.id)"
-                    ></i>
+                    <i class="fa-solid fa-trash" @click="deleteGroup(slotProp.data.id)"></i>
                   </button>
                 </template>
               </Column>
@@ -606,6 +614,39 @@
       async sendUpdateGroup(data){
         data.selectedUsers = this.currentlyModifyingGroup.selectedUsers;
         await this.updateGroup(data);
+        this.closeModifyWindow();
+      },
+      selectUser(data){
+        data.permission = data.permission == null ? "Tanuló" : data.permission;
+        this.currentlyModifyingGroup.selectedUsers.push(data);
+      },
+      unSelectUser(data){
+        const idx = this.currentlyModifyingGroup.selectedUsers.findIndex((x) => x.id == data.id)
+        this.currentlyModifyingGroup.selectedUsers.splice(idx, 1);
+      },
+      openModifyWindow(data) {
+        this.modifyGroupDialogVisible = true;
+        for(let user of data.users){
+          user.permission = user.member == null ? "Tanuló" : user.member.permission;
+        }
+        this.currentlyModifyingGroup = {
+          ...data,
+          selectedUsers: data.users == null ? {} : data.users
+        }
+      },
+      addPermissionFieldToGroupUsers(group){
+        for(let user of group.users){
+          user.permission = "Tanuló"
+        }
+      },
+      addPermissionFieldToAllGroups() {
+        for(let group of this.groups){
+          this.addPermissionFieldToGroupUsers(group)
+        }
+      },
+      closeModifyWindow(){
+        this.modifyGroupDialogVisible = false;
+        this.currentlyModifyingGroup = {}
       },
       exportCSV() {
         this.$refs.dt.exportCSV();
@@ -615,6 +656,7 @@
     mounted() {
       this.getGroups();
       this.getUsers();
+      this.addPermissionFieldToAllGroups();
     },
   };
   </script>
