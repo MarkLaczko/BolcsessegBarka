@@ -151,7 +151,6 @@
         </div>
         <div class="d-flex justify-content-end">
           <button class="btn btn-outline-danger mt-3 px-5">Mégsem</button>
-          <button class="btn btn-success mt-3 ms-2 px-5">Mentés</button>
         </div>
       </div>
     </div>
