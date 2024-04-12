@@ -1,7 +1,7 @@
 <template>
   <BaseLayout>
     <div class="rounded-3 my-5 py-2">
-      <div class="rounded-3 m-3 p-2">
+      <div class="rounded-3 m-3 p-2 bg-white">
         <p>
           Beadandó feladat neve <br />
           Tantárgy <br />
