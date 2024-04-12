@@ -10,6 +10,7 @@
     </div>
 
     <div v-if="!loading">
+      <ScrollBackToTopButton/>
       <h1 class="text-center my-3">Üdvözöllek {{ currentUserData.name }}!</h1>
 
       <div class="rounded-3 pt-3">
@@ -67,6 +68,7 @@ import BaseLearningMaterialCard from "@components/BaseLearningMaterialCard.vue";
 import { userStore } from "@stores/UserStore.mjs";
 import { mapActions, mapState } from "pinia";
 import Paginator from "@components/BasePaginator.vue";
+import ScrollBackToTopButton from "@components/ScrollBackToTopButton.vue";
 
 export default {
   data() {
@@ -192,6 +194,7 @@ export default {
     BaseAssignmentCard,
     BaseLearningMaterialCard,
     Paginator,
+    ScrollBackToTopButton
   },
   methods: {
     ...mapActions(userStore, ["getUser"]),
