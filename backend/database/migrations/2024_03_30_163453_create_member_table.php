@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('member', function (Blueprint $table) {
             $table->foreignId("group_id")->constrained();
-            $table->foreignId("permission_id")->constrained();
             $table->foreignId("user_id")->constrained();
-            $table->primary(["group_id","permission_id","user_id"]);
+            $table->string("permission", 20);
+            $table->primary(["group_id","user_id"]);
         });
     }
 

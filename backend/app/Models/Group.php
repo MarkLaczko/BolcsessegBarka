@@ -14,12 +14,7 @@ class Group extends Model
     
     public function users() : BelongsToMany
     {
-        return $this->belongsToMany(User::class, "member")->as('member')->withPivot('permission_id');
-    }
-
-    public function permissions() : BelongsToMany
-    {
-        return $this->belongsToMany(Permission::class, "member")->as('member')->withPivot('user_id');
+        return $this->belongsToMany(User::class, "member")->as('member')->withPivot('permission');
     }
 
     public function courses() : BelongsToMany

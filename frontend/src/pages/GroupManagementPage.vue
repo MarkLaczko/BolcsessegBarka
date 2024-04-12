@@ -283,8 +283,9 @@
                 }"
               >
                 <template #body="slotProp">
-                  <select v-model="slotProp.data.permission_id" class="form-select">
-                    <option v-for="permission of permissions" :key="permission.id" :value="permission.id">{{ permission.name }}</option>
+                  <select v-model="slotProp.data.permission" class="form-select">
+                    <option value="Tanár">Tanár</option>
+                    <option value="Tanuló">Tanuló</option>
                   </select>
                 </template>
               </Column>
@@ -613,7 +614,6 @@
     },
     mounted() {
       this.getGroups();
-      this.getPermissions();
       this.getUsers();
     },
   };
