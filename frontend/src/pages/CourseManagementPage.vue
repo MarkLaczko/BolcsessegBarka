@@ -70,7 +70,7 @@
         <FormKit
           type="form"
           :actions="false"
-          @submit="postCourse"
+          @submit="postCourses"
           incomplete-message="Sajnáljuk, nem minden mezőt töltöttek ki helyesen."
         >
           <FormKit
@@ -436,7 +436,7 @@ export default {
       "destroyCourse",
       "putCourse",
     ]),
-    async postCourse(data) {
+    async postCourses(data) {
       try {
         const response = await this.postCourse(data);
 
