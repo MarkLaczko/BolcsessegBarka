@@ -47,11 +47,6 @@ class User extends Authenticatable
 
     public function groups() : BelongsToMany
     {
-        return $this->belongsToMany(Group::class, "member")->as('member')->withPivot('permission_id');
-    }
-
-    public function permissions() : BelongsToMany
-    {
-        return $this->belongsToMany(Permission::class, "member")->as('member')->withPivot('group_id');
+        return $this->belongsToMany(Group::class, "member")->as('member')->withPivot('permission');
     }
 }
