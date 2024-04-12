@@ -92,6 +92,8 @@
           />
           <FormKit
             type="file"
+            name="image"
+            @change="handleFileChange"
             label="Kép hozzáadása"
             accept=".JPEG,.PNG,.JPG,.BMP"
             :validation-messages="{
@@ -178,6 +180,7 @@
           <FormKit
             type="file"
             name="image"
+            @change="handleFileChange"
             label="Kép hozzáadása"
             accept=".JPEG,.PNG,.JPG,.BMP"
             :classes="{
@@ -331,16 +334,14 @@
                 />
               </template>
             </Column>
-            <Column field="image" header="Kép">
+            <Column field="image" header="Kép" style="width: 50%">
               <template #body="slotProp">
-                <div class="d-flex justify-content-center">
-                  <img
-                    v-if="slotProp.data.image"
-                    :src="'data:image/jpeg;base64,' + slotProp.data.image"
-                    alt="Course Image"
-                    style="max-height: 100px; max-width: 100%"
-                  />
-                </div>
+                <img
+                  v-if="slotProp.data.image"
+                  :src="'data:image/jpeg;base64,' + slotProp.data.image"
+                  alt="Course Image"
+                  class="img-fluid w-75"
+                />
               </template>
             </Column>
             <Column header="Módosítás">
@@ -436,22 +437,37 @@ export default {
       "destroyCourse",
       "putCourse",
     ]),
+    handleFileChange(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.currentlyModifyingCourse.image = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    },
     async postCourses(data) {
       try {
-        const response = await this.postCourse(data);
+        const base64Image = this.currentlyModifyingCourse.image.split(",")[1];
 
-        if (response.status === 200) {
-          let toast = {
-            severity: "success",
-            detail: "Kurzus hozzáadása sikeres volt!",
-            life: 3000,
-          };
-          if (!this.isDarkMode) {
-            toast.styleClass = "bg-success text-white";
-          }
+        const formData = {
+          name: data.name,
+          image: base64Image,
+        };
 
-          this.$toast.add(toast);
+        await this.postCourse(formData);
+
+        let toast = {
+          severity: "success",
+          detail: "Kurzus hozzáadása sikeres volt!",
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-success text-white";
         }
+
+        this.$toast.add(toast);
 
         await this.getCourses();
       } catch (error) {
@@ -560,7 +576,14 @@ export default {
     },
     async updateCourse(data) {
       try {
-        await this.putCourse(data);
+        const base64Image = this.currentlyModifyingCourse.image.split(",")[1];
+
+        const formData = {
+          name: data.name,
+          image: base64Image,
+        };
+
+        await this.putCourse(data.id, formData);
         this.modifyCourseDialogVisible = false;
 
         if (this.isDarkMode) {
