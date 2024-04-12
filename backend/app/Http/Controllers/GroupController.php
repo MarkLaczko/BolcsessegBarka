@@ -53,7 +53,7 @@ class GroupController extends Controller
         if(!empty($data['selectedUsers'])){
             $users = [];
             foreach($data['selectedUsers'] as $user){
-                $users[$user['id']] = ['permission_id' => $user['permission_id']];
+                $users[$user['id']] = ['permission' => $user['permission']];
             }
             $group->users()->attach($users);
         }
