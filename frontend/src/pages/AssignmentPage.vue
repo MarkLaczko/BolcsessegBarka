@@ -144,13 +144,17 @@
                 <i
                   class="pi pi-cloud-upload border rounded-circle p-3 text-custom"
                 />
-                <p class="mt-4 mb-0">Húzza ide a fájlokat a feltöltéshez.</p>
+                <p class="mt-4 mb-0">
+                  {{ messages.pages.assignmentPage.dragFileText }}
+                </p>
               </div>
             </template>
           </FileUpload>
         </div>
         <div class="d-flex justify-content-end">
-          <button class="btn btn-outline-danger mt-3 px-5">Mégsem</button>
+          <button class="btn btn-outline-danger mt-3 px-5">
+            {{ messages.pages.assignmentPage.cancelButton }}
+          </button>
         </div>
       </div>
     </div>
@@ -164,6 +168,8 @@ import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import Toast from "primevue/toast";
 import ProgressBar from "primevue/progressbar";
+import { mapState } from "pinia";
+import { languageStore } from "@stores/LanguageStore.mjs";
 
 export default {
   components: {
@@ -180,6 +186,9 @@ export default {
       totalSize: 0,
       totalSizePercent: 0,
     };
+  },
+  computed: {
+    ...mapState(languageStore, ["messages"]),
   },
   methods: {
     onRemoveTemplatingFile(file, removeFileCallback, index) {

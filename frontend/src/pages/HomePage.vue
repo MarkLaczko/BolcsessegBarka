@@ -10,10 +10,14 @@
     </div>
 
     <div v-if="!loading">
-      <h1 class="text-center my-3">Üdvözöllek {{ currentUserData.name }}!</h1>
+      <h1 class="text-center my-3">
+        {{ messages.pages.homePage.title }} {{ currentUserData.name }}!
+      </h1>
 
       <div class="rounded-3 pt-3">
-        <h2 class="text-center mb-3"><b>Elkészítendő feladatok</b></h2>
+        <h2 class="text-center mb-3">
+          <b>{{ messages.pages.homePage.taskTitle }}</b>
+        </h2>
         <div class="row px-5 pb-5 g-4">
           <TransitionGroup :name="`slide-${animationDirection}`">
             <div
@@ -36,7 +40,9 @@
         />
       </div>
       <div class="rounded-3 pt-3 pb-2 mb-2">
-        <h2 class="text-center mb-3"><b>Legutóbbi tananyagok</b></h2>
+        <h2 class="text-center mb-3">
+          <b>{{ messages.pages.homePage.materialsTitle }}</b>
+        </h2>
         <BaseLearningMaterialCard
           :course="'Szoftverfejlesztő'"
           :learningMaterial="'Tesztelés'"
@@ -67,6 +73,7 @@ import BaseLearningMaterialCard from "@components/BaseLearningMaterialCard.vue";
 import { userStore } from "@stores/UserStore.mjs";
 import { mapActions, mapState } from "pinia";
 import Paginator from "@components/BasePaginator.vue";
+import { languageStore } from "@stores/LanguageStore.mjs";
 
 export default {
   data() {
@@ -202,6 +209,7 @@ export default {
   },
   computed: {
     ...mapState(userStore, ["currentUserData"]),
+    ...mapState(languageStore, ["messages"]),
 
     paginatedAssignments() {
       const start = (this.currentPage - 1) * this.pageSize;

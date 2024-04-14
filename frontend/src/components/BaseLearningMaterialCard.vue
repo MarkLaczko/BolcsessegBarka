@@ -11,7 +11,10 @@
       </div>
       <div class="col-md-6">
         <div class="card-body">
-          <h6 class="card-title">Kurzus: {{ course }}</h6>
+          <h6 class="card-title">
+            {{ messages.components.BaseLearningMaterialCard.courseTitle }}:
+            {{ course }}
+          </h6>
           <h3 class="card-text">
             <b>{{ learningMaterial }}</b>
           </h3>
@@ -19,14 +22,21 @@
         </div>
       </div>
       <div class="col-md-3 d-flex justify-content-center align-items-center">
-        <a href="" class="btn text-white my-2 buttons">Megtekintés</a>
+        <a href="" class="btn text-white my-2 buttons">{{
+          messages.components.BaseLearningMaterialCard.viewButton
+        }}</a>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "pinia";
+import { languageStore } from "@stores/LanguageStore.mjs";
 export default {
+  computed: {
+    ...mapState(languageStore, ["messages"]),
+  },
   props: {
     course: String,
     learningMaterial: String,

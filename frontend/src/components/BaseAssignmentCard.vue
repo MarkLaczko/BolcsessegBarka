@@ -9,18 +9,28 @@
         :alt="image"
         class="img-fluid rounded"
       />
-      <a href="#" class="btn text-white mt-3 buttons">Feladat leadása</a>
+      <a href="#" class="btn text-white mt-3 buttons">{{
+        messages.components.BaseAssignmentCard.buttonTitle
+      }}</a>
     </div>
     <div class="card-footer">
       <h6 class="text-center m-0">
-        <b>Leadási határidő: {{ deadline }}</b>
+        <b
+          >{{ messages.components.BaseAssignmentCard.deadline }}:
+          {{ deadline }}</b
+        >
       </h6>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "pinia";
+import { languageStore } from "@stores/LanguageStore.mjs";
 export default {
+  computed: {
+    ...mapState(languageStore, ["messages"]),
+  },
   props: {
     title: String,
     image: String,

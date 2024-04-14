@@ -7,13 +7,20 @@
     />
     <div class="card-body text-center">
       <h5 class="card-title">{{ title }}</h5>
-      <a href="#" class="btn text-white mt-3 buttons">Megtekintés</a>
+      <a href="#" class="btn text-white mt-3 buttons">{{
+        messages.components.BaseCourseCard.viewButton
+      }}</a>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "pinia";
+import { languageStore } from "@stores/LanguageStore.mjs";
 export default {
+  computed: {
+    ...mapState(languageStore, ["messages"]),
+  },
   props: {
     title: String,
     image: String,

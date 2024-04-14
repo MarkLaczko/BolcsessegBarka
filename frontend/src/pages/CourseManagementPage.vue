@@ -10,7 +10,9 @@
     </div>
 
     <div v-if="!loading">
-      <h1 class="text-center my-3">{{ this.$route.meta.title }}</h1>
+      <h1 class="text-center my-3">
+        {{ messages.pages.courseManagementPage.title }}
+      </h1>
 
       <Toast
         :pt="{
@@ -44,7 +46,7 @@
         v-if="addCourseDialogVisible"
         v-model:visible="addCourseDialogVisible"
         modal
-        header="Kurzus hozzáadása"
+        :header="messages.pages.courseManagementPage.newCourseDialog.title"
         :style="{ width: '25rem' }"
         :pt="{
           root: {
@@ -71,7 +73,10 @@
           type="form"
           :actions="false"
           @submit="postCourses"
-          incomplete-message="Sajnáljuk, nem minden mezőt töltöttek ki helyesen."
+          :incomplete-message="
+            messages.pages.courseManagementPage.newCourseDialog
+              .validationMessages.matchAllValidationMessage
+          "
         >
           <FormKit
             type="text"
@@ -79,9 +84,12 @@
             label="Kurzus neve"
             validation="required|length:0,255"
             :validation-messages="{
-              required: 'A kurzus nevének kitöltése kötelező.',
+              required:
+                messages.pages.courseManagementPage.newCourseDialog
+                  .validationMessages.nameRequired,
               length:
-                'A kurzus nevének kevesebbnek kell lennie, mint 255 karakter.',
+                messages.pages.courseManagementPage.newCourseDialog
+                  .validationMessages.nameLength,
             }"
             :classes="{
               input: {
@@ -97,7 +105,9 @@
             label="Kép hozzáadása"
             accept=".JPEG,.PNG,.JPG,.BMP"
             :validation-messages="{
-              required: 'Kép feltöltése kötelező.',
+              required:
+                messages.pages.courseManagementPage.newCourseDialog
+                  .validationMessages.imageRequired,
             }"
             :classes="{
               input: {
@@ -105,6 +115,9 @@
                 'form-control': true,
               },
             }"
+            :title="
+              messages.pages.courseManagementPage.newCourseDialog.fileUpload
+            "
           />
           <div class="d-flex justify-content-end mt-2 mb-3">
             <Button
@@ -131,7 +144,11 @@
         v-if="modifyCourseDialogVisible"
         v-model:visible="modifyCourseDialogVisible"
         modal
-        :header="`${currentlyModifyingCourse.name} módosítása`"
+        :header="
+          messages.pages.courseManagementPage.editCourseDialog.title +
+          ' ' +
+          currentlyModifyingCourse.name
+        "
         :style="{ width: '25rem' }"
         :pt="{
           root: {
@@ -159,7 +176,10 @@
           :actions="false"
           @submit="updateCourse"
           :value="currentlyModifyingCourse"
-          incomplete-message="Sajnáljuk, nem minden mezőt töltöttek ki helyesen."
+          :incomplete-message="
+            messages.pages.courseManagementPage.editCourseDialog
+              .validationMessages.matchAllValidationMessage
+          "
         >
           <FormKit
             type="text"
@@ -168,7 +188,8 @@
             validation="length:0,255"
             :validation-messages="{
               length:
-                'A kurzus nevének kevesebbnek kell lennie, mint 255 karakter.',
+                messages.pages.courseManagementPage.editCourseDialog
+                  .validationMessages.nameLength,
             }"
             :classes="{
               input: {
@@ -181,7 +202,10 @@
             type="file"
             name="image"
             @change="handleFileChange"
-            label="Kép hozzáadása"
+            :label="
+              messages.pages.courseManagementPage.editCourseDialog
+                .validationMessages.fileUpload
+            "
             accept=".JPEG,.PNG,.JPG,.BMP"
             :classes="{
               input: {
@@ -233,13 +257,13 @@
           >
             <template #start>
               <Button
-                label=" Új kurzus"
+                :label="messages.pages.courseManagementPage.newUser"
                 icon="pi pi-plus"
                 class="mr-2 btn btn-success text-white me-1 mt-2 ms-2"
                 @click="addCourseDialogVisible = true"
               />
               <Button
-                label=" Törlés"
+                :label="messages.pages.courseManagementPage.deleteUser"
                 icon="pi pi-trash"
                 class="btn btn-danger text-white mt-2"
                 @click="deleteMultipleCourses"
@@ -247,7 +271,7 @@
             </template>
             <template #end>
               <Button
-                label=" Exportálás"
+                :label="messages.pages.courseManagementPage.exportButton"
                 icon="pi pi-upload"
                 class="btn btn-warning text-white mt-2 me-2"
                 @click="exportCSV($event)"
@@ -307,10 +331,14 @@
                 </div>
               </template>
             </Column>
-            <Column field="id" header="ID" sortable></Column>
+            <Column
+              field="id"
+              :header="messages.pages.courseManagementPage.idText"
+              sortable
+            ></Column>
             <Column
               field="name"
-              header="Name"
+              :header="messages.pages.courseManagementPage.nameText"
               sortable
               :pt="{
                 columnfilter: {
@@ -330,11 +358,17 @@
                   type="text"
                   @input="filterCallback()"
                   class="form-control"
-                  placeholder="Név..."
+                  :placeholder="
+                    messages.pages.courseManagementPage.namePlaceholder
+                  "
                 />
               </template>
             </Column>
-            <Column field="image" header="Kép" style="width: 50%">
+            <Column
+              field="image"
+              :header="messages.pages.courseManagementPage.imageText"
+              style="width: 50%"
+            >
               <template #body="slotProp">
                 <img
                   v-if="slotProp.data.image"
@@ -344,7 +378,7 @@
                 />
               </template>
             </Column>
-            <Column header="Módosítás">
+            <Column :header="messages.pages.courseManagementPage.modifyText">
               <template #body="slotProp">
                 <button
                   type="button"
@@ -363,7 +397,7 @@
                 </button>
               </template>
             </Column>
-            <Column header="Törlés">
+            <Column :header="messages.pages.courseManagementPage.deleteText">
               <template #body="slotProp">
                 <button type="button" class="btn btn-danger">
                   <i
@@ -397,6 +431,7 @@ import { userStore } from "@stores/UserStore";
 import { FilterMatchMode } from "primevue/api";
 import { themeStore } from "@stores/ThemeStore.mjs";
 import { courseStore } from "@stores/CourseStore.mjs";
+import { languageStore } from "@stores/LanguageStore.mjs";
 
 export default {
   components: {
@@ -429,6 +464,7 @@ export default {
     ...mapState(userStore, ["token", "currentUserData"]),
     ...mapState(themeStore, ["isDarkMode"]),
     ...mapState(courseStore, ["courses"]),
+    ...mapState(languageStore, ["messages"]),
   },
   methods: {
     ...mapActions(courseStore, [
@@ -460,7 +496,9 @@ export default {
 
         let toast = {
           severity: "success",
-          detail: "Kurzus hozzáadása sikeres volt!",
+          detail:
+            messages.pages.courseManagementPage.toastMessages
+              .successfullyCreatedCourse,
           life: 3000,
         };
         if (!this.isDarkMode) {
@@ -473,7 +511,9 @@ export default {
       } catch (error) {
         let toast = {
           severity: "error",
-          detail: "Kurzus hozzáadása sikertelen volt!",
+          detail:
+            messages.pages.courseManagementPage.toastMessages
+              .failedToCreateCourse,
           life: 3000,
         };
         if (!this.isDarkMode) {
@@ -498,13 +538,17 @@ export default {
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "success",
-            detail: "Kurzus törlése sikeres volt!",
+            detail:
+              messages.pages.courseManagementPage.toastMessages
+                .successfullyDeletedCourse,
             life: 3000,
           });
         } else {
           this.$toast.add({
             severity: "success",
-            detail: "Kurzus törlése sikeres volt!",
+            detail:
+              messages.pages.courseManagementPage.toastMessages
+                .successfullyDeletedCourse,
             styleClass: "bg-success text-white",
             life: 3000,
           });
@@ -515,13 +559,17 @@ export default {
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "error",
-            detail: "Kurzus törlése sikertelen volt!",
+            detail:
+              messages.pages.courseManagementPage.toastMessages
+                .failedToDeleteCourse,
             life: 3000,
           });
         } else {
           this.$toast.add({
             severity: "error",
-            detail: "Kurzus törlése sikertelen volt!",
+            detail:
+              messages.pages.courseManagementPage.toastMessages
+                .failedToDeleteCourse,
             styleClass: "bg-danger text-white",
             life: 3000,
           });
@@ -544,13 +592,17 @@ export default {
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "success",
-            detail: "Kurzus(ok) törlése sikeres volt!",
+            detail:
+              messages.pages.courseManagementPage.toastMessages
+                .successfullyDeletedMultipleCourses,
             life: 3000,
           });
         } else {
           this.$toast.add({
             severity: "success",
-            detail: "Kurzus(ok) törlése sikeres volt!",
+            detail:
+              messages.pages.courseManagementPage.toastMessages
+                .successfullyDeletedMultipleCourses,
             styleClass: "bg-success text-white",
             life: 3000,
           });
@@ -561,13 +613,17 @@ export default {
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "error",
-            detail: "Kurzus(ok) törlése sikertelen volt!",
+            detail:
+              messages.pages.courseManagementPage.toastMessages
+                .failedToDeleteMultipleCourses,
             life: 3000,
           });
         } else {
           this.$toast.add({
             severity: "error",
-            detail: "Kurzus(ok) törlése sikertelen volt!",
+            detail:
+              messages.pages.courseManagementPage.toastMessages
+                .failedToDeleteMultipleCourses,
             styleClass: "bg-danger text-white",
             life: 3000,
           });
@@ -589,13 +645,17 @@ export default {
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "success",
-            detail: "Kurzus módosítása sikeres volt!",
+            detail:
+              messages.pages.courseManagementPage.toastMessages
+                .successfullyUpdatedCourse,
             life: 3000,
           });
         } else {
           this.$toast.add({
             severity: "success",
-            detail: "Kurzus módosítása sikeres volt!",
+            detail:
+              messages.pages.courseManagementPage.toastMessages
+                .successfullyUpdatedCourse,
             styleClass: "bg-success text-white",
             life: 3000,
           });
@@ -606,13 +666,17 @@ export default {
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "error",
-            detail: "Kurzus módosítása sikertelen volt!",
+            detail:
+              messages.pages.courseManagementPage.toastMessages
+                .failedToUpdateCourse,
             life: 3000,
           });
         } else {
           this.$toast.add({
             severity: "error",
-            detail: "Kurzus módosítása sikertelen volt!",
+            detail:
+              messages.pages.courseManagementPage.toastMessages
+                .failedToUpdateCourse,
             styleClass: "bg-danger text-white",
             life: 3000,
           });
@@ -653,5 +717,9 @@ export default {
 .slide-fade-leave-to {
   transform: translateY(-20px);
   opacity: 0;
+}
+
+span.formkit-no-files {
+  display: none;
 }
 </style>

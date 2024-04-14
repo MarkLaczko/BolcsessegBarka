@@ -30,10 +30,10 @@
     />
 
     <div class="container rounded-3 my-5 pt-1 pb-3">
-      <h1 class="text-center my-3">{{ this.$route.meta.title }}</h1>
+      <h1 class="text-center my-3">{{ messages.pages.notePage.title }}</h1>
       <div class="d-flex align-items-center justify-content-center pb-4">
         <label for="username" class="form-label me-2 font-weight-bold"
-          ><b>Jegyzet neve:</b></label
+          ><b>{{ messages.pages.notePage.notesNameText }}</b></label
         >
         <div class="w-25">
           <InputText
@@ -52,8 +52,14 @@
         <Editor v-model="text" editorStyle="height: 320px" />
       </div>
       <div class="d-flex justify-content-center align-items-center mt-3">
-        <Button label="Mégse" class="btn text-light btn-danger px-5 me-4" />
-        <Button label="Mentés" class="btn text-light btn-success px-5" />
+        <Button
+          :label="messages.pages.notePage.cancelButton"
+          class="btn text-light btn-danger px-5 me-4"
+        />
+        <Button
+          :label="messages.pages.notePage.saveButton"
+          class="btn text-light btn-success px-5"
+        />
       </div>
     </div>
   </BaseLayout>
@@ -66,6 +72,8 @@ import Editor from "primevue/editor";
 import Button from "primevue/button";
 import Toast from "primevue/toast";
 import { http } from "@utils/http.mjs";
+import { mapState } from "pinia";
+import { languageStore } from "@stores/LanguageStore.mjs";
 
 export default {
   data() {
@@ -80,6 +88,9 @@ export default {
     Editor,
     Button,
     Toast,
+  },
+  computed: {
+    ...mapState(languageStore, ["messages"]),
   },
   methods: {
     async saveNote() {

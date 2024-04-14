@@ -10,7 +10,9 @@
     </div>
 
     <div v-if="!loading">
-      <h1 class="text-center my-3">{{ this.$route.meta.title }}</h1>
+      <h1 class="text-center my-3">
+        {{ messages.pages.userManagementPage.title }}
+      </h1>
 
       <Toast
         :pt="{
@@ -44,7 +46,7 @@
         v-if="addUserDialogVisible"
         v-model:visible="addUserDialogVisible"
         modal
-        header="Felhasználó hozzáadása"
+        :header="messages.pages.userManagementPage.newUserDialog.title"
         :style="{ width: '25rem' }"
         :pt="{
           root: {
@@ -71,17 +73,23 @@
           type="form"
           :actions="false"
           @submit="postUser"
-          incomplete-message="Sajnáljuk, nem minden mezőt töltöttek ki helyesen."
+          :incomplete-message="
+            messages.pages.userManagementPage.newUserDialog.validationMessages
+              .matchAllValidationMessage
+          "
         >
           <FormKit
             type="text"
             name="name"
-            label="Név"
+            :label="messages.pages.userManagementPage.newUserDialog.nameLabel"
             validation="required|length:0,255"
             :validation-messages="{
-              required: 'A felhasználónév kitöltése kötelező.',
+              required:
+                messages.pages.userManagementPage.newUserDialog
+                  .validationMessages.nameRequired,
               length:
-                'A felhasználónévnek kevesebbnek kell lennie, mint 255 karakter.',
+                messages.pages.userManagementPage.newUserDialog
+                  .validationMessages.nameLength,
             }"
             :classes="{
               input: {
@@ -93,11 +101,15 @@
           <FormKit
             type="email"
             name="email"
-            label="Email"
+            :label="messages.pages.userManagementPage.newUserDialog.emailLabel"
             validation="required|email"
             :validation-messages="{
-              required: 'Az email kitöltése kötelező.',
-              email: 'Adjon meg egy érvényes email címet.',
+              required:
+                messages.pages.userManagementPage.newUserDialog
+                  .validationMessages.emailRequired,
+              email:
+                messages.pages.userManagementPage.newUserDialog
+                  .validationMessages.validEmail,
             }"
             :classes="{
               input: {
@@ -109,11 +121,17 @@
           <FormKit
             type="password"
             name="password"
-            label="Jelszó"
+            :label="
+              messages.pages.userManagementPage.newUserDialog.passwordLabel
+            "
             validation="required|length:8,255"
             :validation-messages="{
-              required: 'A jelszó kitöltése kötelező.',
-              length: 'Legalább 8, maximum 255 karakter hosszú lehet a jelszó.',
+              required:
+                messages.pages.userManagementPage.newUserDialog
+                  .validationMessages.passwordRequired,
+              length:
+                messages.pages.userManagementPage.newUserDialog
+                  .validationMessages.passwordLength,
             }"
             :classes="{
               input: {
@@ -125,13 +143,21 @@
           <FormKit
             type="password"
             name="password_confirm"
-            label="Jelszó megerősítés"
+            :label="
+              messages.pages.userManagementPage.newUserDialog
+                .confirmPasswordLabel
+            "
             validation="required|length:8,255|confirm"
             :validation-messages="{
-              required: 'A jelszó megerősítés kitöltése kötelező.',
+              required:
+                messages.pages.userManagementPage.newUserDialog
+                  .validationMessages.confirmPasswordRequired,
               length:
-                'Legalább 8, maximum 255 karakter hosszú lehet a jelszó megerősítés.',
-              confirm: 'A jelszavak nem egyeznek.',
+                messages.pages.userManagementPage.newUserDialog
+                  .validationMessages.confirmPasswordLength,
+              confirm:
+                messages.pages.userManagementPage.newUserDialog
+                  .validationMessages.confirmPasswordConfirm,
             }"
             :classes="{
               input: {
@@ -143,13 +169,17 @@
           <div class="d-flex justify-content-end mt-2 mb-3">
             <Button
               type="button"
-              label="Mégse"
+              :label="
+                messages.pages.userManagementPage.newUserDialog.cancelButton
+              "
               class="btn btn-outline-danger mx-1"
               @click="addUserDialogVisible = false"
             ></Button>
             <FormKit
               type="submit"
-              label="Mentés"
+              :label="
+                messages.pages.userManagementPage.newUserDialog.saveButton
+              "
               id="addUserButton"
               :classes="{
                 input: {
@@ -166,7 +196,11 @@
         v-if="modifyUserDialogVisible"
         v-model:visible="modifyUserDialogVisible"
         modal
-        :header="`${currentlyModifyingUser.name} módosítása`"
+        :header="
+          messages.pages.userManagementPage.editUserDialog.title +
+          ': ' +
+          currentlyModifyingUser.name
+        "
         :style="{ width: '25rem' }"
         :pt="{
           root: {
@@ -194,17 +228,23 @@
           :actions="false"
           @submit="updateUser"
           :value="currentlyModifyingUser"
-          incomplete-message="Sajnáljuk, nem minden mezőt töltöttek ki helyesen."
+          :incomplete-message="
+            messages.pages.userManagementPage.editUserDialog.validationMessages
+              .matchAllValidationMessage
+          "
         >
           <FormKit
             type="text"
             name="name"
-            label="Név"
+            :label="messages.pages.userManagementPage.editUserDialog.nameLabel"
             validation="required|length:0,255"
             :validation-messages="{
-              required: 'A felhasználónév kitöltése kötelező.',
+              required:
+                messages.pages.userManagementPage.editUserDialog
+                  .validationMessages.nameRequired,
               length:
-                'A felhasználónévnek kevesebbnek kell lennie, mint 255 karakter.',
+                messages.pages.userManagementPage.editUserDialog
+                  .validationMessages.nameLength,
             }"
             :classes="{
               input: {
@@ -216,11 +256,15 @@
           <FormKit
             type="email"
             name="email"
-            label="Email"
+            :label="messages.pages.userManagementPage.editUserDialog.emailLabel"
             validation="required|email"
             :validation-messages="{
-              required: 'Az email kitöltése kötelező.',
-              email: 'Adjon meg egy érvényes email címet.',
+              required:
+                messages.pages.userManagementPage.editUserDialog
+                  .validationMessages.emailRequired,
+              email:
+                messages.pages.userManagementPage.editUserDialog
+                  .validationMessages.validEmail,
             }"
             :classes="{
               input: {
@@ -232,10 +276,14 @@
           <FormKit
             type="password"
             name="password"
-            label="Jelszó"
+            :label="
+              messages.pages.userManagementPage.editUserDialog.passwordLabel
+            "
             validation="length:8,255"
             :validation-messages="{
-              length: 'Legalább 8, maximum 255 karakter hosszú lehet a jelszó.',
+              length:
+                messages.pages.userManagementPage.editUserDialog
+                  .validationMessages.passwordLength,
             }"
             :classes="{
               input: {
@@ -247,12 +295,18 @@
           <FormKit
             type="password"
             name="password_confirm"
-            label="Jelszó megerősítés"
+            :label="
+              messages.pages.userManagementPage.editUserDialog
+                .confirmPasswordLabel
+            "
             validation="length:8,255|confirm"
             :validation-messages="{
               length:
-                'Legalább 8, maximum 255 karakter hosszú lehet a jelszó megerősítés.',
-              confirm: 'A jelszavak nem egyeznek.',
+                messages.pages.userManagementPage.editUserDialog
+                  .validationMessages.confirmPasswordLength,
+              confirm:
+                messages.pages.userManagementPage.editUserDialog
+                  .validationMessages.confirmPasswordConfirm,
             }"
             :classes="{
               input: {
@@ -316,14 +370,14 @@
           >
             <template #start>
               <Button
-                label=" Új felhasználó"
+                :label="messages.pages.userManagementPage.newUser"
                 id="newUser"
                 icon="pi pi-plus"
                 class="mr-2 btn btn-success text-white me-1 mt-2 ms-2"
                 @click="addUserDialogVisible = true"
               />
               <Button
-                label=" Törlés"
+                :label="messages.pages.userManagementPage.deleteUser"
                 icon="pi pi-trash"
                 class="btn btn-danger text-white mt-2"
                 @click="deleteMultipleUsers"
@@ -331,7 +385,7 @@
             </template>
             <template #end>
               <Button
-                label=" Exportálás"
+                :label="messages.pages.userManagementPage.exportButton"
                 icon="pi pi-upload"
                 class="btn btn-warning text-white mt-2 me-2"
                 @click="exportCSV($event)"
@@ -357,15 +411,6 @@
               },
             }"
           >
-            <!-- <Column selectionMode="multiple" headerStyle="width: 3rem"
-                          :pt = "{
-                              'rowcheckbox': {
-                                  class: 'bg-primary'
-                              },
-                              box: {
-                                  class: 'd-none'
-                              }
-                          }"></Column> -->
             <Column>
               <template #header>
                 <div class="d-flex justify-content-center">
@@ -400,10 +445,14 @@
                 </div>
               </template>
             </Column>
-            <Column field="id" header="ID" sortable></Column>
+            <Column
+              field="id"
+              :header="messages.pages.userManagementPage.idText"
+              sortable
+            ></Column>
             <Column
               field="name"
-              header="Name"
+              :header="messages.pages.userManagementPage.nameText"
               sortable
               :pt="{
                 columnfilter: {
@@ -423,7 +472,9 @@
                   type="text"
                   @input="filterCallback()"
                   class="form-control"
-                  placeholder="Név..."
+                  :placeholder="
+                    messages.pages.userManagementPage.namePlaceholder
+                  "
                 />
               </template>
             </Column>
@@ -453,7 +504,11 @@
                 />
               </template>
             </Column>
-            <Column field="is_admin" header="Admin" sortable>
+            <Column
+              field="is_admin"
+              :header="messages.pages.userManagementPage.adminText"
+              sortable
+            >
               <template #body="slotProp">
                 <div class="d-flex justify-content-center">
                   <RadioButton
@@ -465,7 +520,7 @@
                 </div>
               </template>
             </Column>
-            <Column header="Módosítás">
+            <Column :header="messages.pages.userManagementPage.modifyText">
               <template #body="slotProp">
                 <button
                   type="button"
@@ -485,7 +540,7 @@
                 </button>
               </template>
             </Column>
-            <Column header="Törlés">
+            <Column :header="messages.pages.userManagementPage.deleteText">
               <template #body="slotProp">
                 <button
                   type="button"
@@ -521,6 +576,7 @@ import { mapState } from "pinia";
 import { userStore } from "@stores/UserStore";
 import { FilterMatchMode } from "primevue/api";
 import { themeStore } from "@stores/ThemeStore.mjs";
+import { languageStore } from "@stores/LanguageStore.mjs";
 
 export default {
   components: {
@@ -553,6 +609,7 @@ export default {
   computed: {
     ...mapState(userStore, ["token", "currentUserData"]),
     ...mapState(themeStore, ["isDarkMode"]),
+    ...mapState(languageStore, ["messages"]),
   },
   methods: {
     async getUsers() {
@@ -575,7 +632,9 @@ export default {
         if (response.status === 200) {
           let toast = {
             severity: "success",
-            detail: "Felhasználó hozzáadása sikeres volt!",
+            detail:
+              this.messages.pages.userManagementPage.toastMessages
+                .successfullyCreatedUser,
             life: 3000,
           };
           if (!this.isDarkMode) {
@@ -589,7 +648,9 @@ export default {
       } catch (error) {
         let toast = {
           severity: "error",
-          detail: "Felhasználó hozzáadása sikertelen volt!",
+          detail:
+            this.messages.pages.userManagementPage.toastMessages
+              .failedToCreateUser,
           life: 3000,
         };
         if (!this.isDarkMode) {
@@ -618,13 +679,17 @@ export default {
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "success",
-            detail: "Felhasználó törlése sikeres volt!",
+            detail:
+              this.messages.pages.userManagementPage.toastMessages
+                .successfullyDeletedUser,
             life: 3000,
           });
         } else {
           this.$toast.add({
             severity: "success",
-            detail: "Felhasználó törlése sikeres volt!",
+            detail:
+              this.messages.pages.userManagementPage.toastMessages
+                .successfullyDeletedUser,
             styleClass: "bg-success text-white",
             life: 3000,
           });
@@ -635,13 +700,17 @@ export default {
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "error",
-            detail: "Felhasználó törlése sikertelen volt!",
+            detail:
+              this.messages.pages.userManagementPage.toastMessages
+                .failedToDeleteUser,
             life: 3000,
           });
         } else {
           this.$toast.add({
             severity: "error",
-            detail: "Felhasználó törlése sikertelen volt!",
+            detail:
+              this.messages.pages.userManagementPage.toastMessages
+                .failedToDeleteUser,
             styleClass: "bg-danger text-white",
             life: 3000,
           });
@@ -664,13 +733,17 @@ export default {
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "success",
-            detail: "Felhasználó(k) törlése sikeres volt!",
+            detail:
+              this.messages.pages.userManagementPage.toastMessages
+                .successfullyDeletedMultipleUsers,
             life: 3000,
           });
         } else {
           this.$toast.add({
             severity: "success",
-            detail: "Felhasználó(k) törlése sikeres volt!",
+            detail:
+              this.messages.pages.userManagementPage.toastMessages
+                .successfullyDeletedMultipleUsers,
             styleClass: "bg-success text-white",
             life: 3000,
           });
@@ -681,13 +754,17 @@ export default {
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "error",
-            detail: "Felhasználó(k) törlése sikertelen volt!",
+            detail:
+              this.messages.pages.userManagementPage.toastMessages
+                .failedToDeleteMultipleUsers,
             life: 3000,
           });
         } else {
           this.$toast.add({
             severity: "error",
-            detail: "Felhasználó(k) törlése sikertelen volt!",
+            detail:
+              this.messages.pages.userManagementPage.toastMessages
+                .failedToDeleteMultipleUsers,
             styleClass: "bg-danger text-white",
             life: 3000,
           });
@@ -711,13 +788,17 @@ export default {
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "success",
-            detail: "Felhasználó módosítása sikeres volt!",
+            detail:
+              this.messages.pages.userManagementPage.toastMessages
+                .successfullyUpdatedUser,
             life: 3000,
           });
         } else {
           this.$toast.add({
             severity: "success",
-            detail: "Felhasználó módosítása sikeres volt!",
+            detail:
+              this.messages.pages.userManagementPage.toastMessages
+                .successfullyUpdatedUser,
             styleClass: "bg-success text-white",
             life: 3000,
           });
@@ -728,13 +809,17 @@ export default {
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "error",
-            detail: "Felhasználó módosítása sikertelen volt!",
+            detail:
+              this.messages.pages.userManagementPage.toastMessages
+                .failedToUpdateUser,
             life: 3000,
           });
         } else {
           this.$toast.add({
             severity: "error",
-            detail: "Felhasználó módosítása sikertelen volt!",
+            detail:
+              this.messages.pages.userManagementPage.toastMessages
+                .failedToUpdateUser,
             styleClass: "bg-danger text-white",
             life: 3000,
           });
