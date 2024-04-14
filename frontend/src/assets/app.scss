@@ -15,6 +15,10 @@
   padding-left: 0;
 }
 
+.radioButton {
+  pointer-events: none;
+}
+
 //animations
 
 .rotating-pulsating {
@@ -31,10 +35,6 @@
   100% {
     transform: rotate(720deg) scale(1);
   }
-}
-
-.radioButton {
-  pointer-events: none;
 }
 
 //scrollbar styles
@@ -88,6 +88,12 @@
   --scrollbar-color: #{$blue};
   --scrollbar-bg-color: #{$lightCyan};
   --scrollbar-hover-color: #{$blue};
+  --userIcon-color: #{$blue};
+  --dropdownMenu-color: #{$lightCyan};
+  --dropdown-link-hover-bg: #{$blue};
+  --switched-switchButton-bg-color: #{$blue};
+  --switchButton-bg-color: #{$cyan};
+  --dropdownMenu-border-color: #{$black};
 }
 
 [data-theme="dark"] {
@@ -118,6 +124,12 @@
   --scrollbar-color: #{$lightGray};
   --scrollbar-bg-color: #{$gray};
   --scrollbar-hover-color: #{$white};
+  --userIcon-color: #{$lightGray};
+  --dropdownMenu-color: #{$darkGrey};
+  --dropdownLink-hover-bg: none;
+  --switched-switchButton-bg-color: #{$gray};
+  --switchButton-bg-color: #{$lightGray};
+  --dropdownMenu-border-color: #{$white};
 }
 
 body {
@@ -218,4 +230,29 @@ div[data-pc-name="toast"] div[role="alert"] {
   background-color: var(--toast-success-color);
   color: var(--toast-color);
   border: var(--border);
+}
+
+div.user-icon {
+  background-color: var(--userIcon-color);
+}
+
+.dropdown-menu {
+  --bs-dropdown-bg: var(--dropdownMenu-color);
+  --bs-dropdown-link-hover-bg: var(--dropdownLink-hover-bg);
+  --bs-dropdown-link-active-bg: none;
+  --bs-dropdown-border-color: var(--dropdownMenu-border-color);
+}
+
+.form-check-input:checked {
+  background-color: var(--switched-switchButton-bg-color);
+  border-color: var(--switched-switchButton-bg-color);
+}
+
+.form-check-input {
+  --bs-form-check-bg: var(--switchButton-bg-color);
+}
+
+.form-switch .form-check-input {
+  --bs-form-switch-bg: var(--formSwitch-color);
+  background-image: var(--bs-form-switch-bg);
 }
