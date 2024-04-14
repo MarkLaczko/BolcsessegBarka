@@ -54,6 +54,7 @@ class GroupController extends Controller
             $users = [];
             foreach($data['selectedUsers'] as $user){
                 $users[$user['id']] = ['permission' => $user['permission']];
+                $group->users()->detach($user['id']);
             }
             $group->users()->attach($users);
         }

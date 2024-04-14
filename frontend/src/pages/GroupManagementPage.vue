@@ -118,6 +118,25 @@
                 },
               }"
             />
+            <div class="d-flex justify-content-end mt-2 mb-3">
+              <Button
+                type="button"
+                label="Mégse"
+                class="btn btn-outline-danger mx-1"
+                @click="addGroupDialogVisible = false"
+              ></Button>
+              <FormKit
+                type="submit"
+                label="Mentés"
+                :classes="{
+                  input: {
+                    btn: true,
+                    'btn-success': true,
+                    'w-auto': true,
+                  },
+                }"
+              />
+            </div>
           </div>
         </FormKit>
       </Dialog>
@@ -125,11 +144,7 @@
         v-if="modifyGroupDialogVisible"
         v-model:visible="modifyGroupDialogVisible"
         modal
-        :header="
-          messages.pages.groupManagementPage.editGroupDialog.title +
-          ' ' +
-          currentlyModifyingGroup.name
-        "
+        :header="`${currentlyModifyingGroup.name} módosítása`"
         :style="{ width: '50rem' }"
         :pt="{
           root: {
@@ -157,25 +172,17 @@
           :actions="false"
           @submit="sendUpdateGroup"
           :value="currentlyModifyingGroup"
-          :incomplete-message="
-            messages.pages.groupManagementPage.editGroupDialog
-              .validationMessages.matchAllValidationMessage
-          "
+          incomplete-message="Sajnáljuk, nem minden mezőt töltöttek ki helyesen."
         >
           <FormKit
             type="text"
             name="name"
-            :label="
-              messages.pages.groupManagementPage.editGroupDialog.nameLabel
-            "
+            label="Név"
             validation="required|length:0,100"
             :validation-messages="{
-              required:
-                messages.pages.groupManagementPage.editGroupDialog
-                  .validationMessages.nameRequired,
+              required: 'A csoport neve mező kitöltése kötelező.',
               length:
-                messages.pages.groupManagementPage.editGroupDialog
-                  .validationMessages.nameLength,
+                'A csoport nevének kevesebbnek kell lennie, mint 100 karakter.',
             }"
             :classes="{
               input: {
@@ -184,7 +191,7 @@
               },
             }"
           />
-          {{ currentlyModifyingGroup }}
+
           <DataTable
             :value="users"
             tableStyle="min-width: 40rem"
@@ -192,10 +199,6 @@
             :sortOrder="1"
             v-model:filters="userFilters"
             filterDisplay="row"
-            v-model:selection="currentlyModifyingGroup.selectedUsers"
-            selectionMode="multiple"
-            dataKey="id"
-            :metaKeySelection="false"
             :pt="{
               table: {
                 class: 'table table-responsive align-middle',
@@ -226,30 +229,45 @@
               </template>
               <template #body="slotProp">
                 <div class="d-flex justify-content-center">
-                  <i
-                    class="fa-solid fa-check text-success"
+                  <button
+                    type="button"
+                    class="btn btn-light"
+                    style="
+                      --bs-btn-padding-y: 0.25rem;
+                      --bs-btn-padding-x: 0.5rem;
+                      --bs-btn-font-size: 0.75rem;
+                      width: 28px;
+                    "
                     v-if="
                       currentlyModifyingGroup.selectedUsers.findIndex(
-                        (x) => x == slotProp.data
+                        (x) => x.id == slotProp.data.id
                       ) != -1
                     "
-                  ></i>
-                  <i class="fa-solid fa-x text-danger" v-else></i>
+                    @click="unSelectUser(slotProp.data)"
+                  >
+                    <i class="fa-solid fa-check text-success"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-light"
+                    style="
+                      --bs-btn-padding-y: 0.25rem;
+                      --bs-btn-padding-x: 0.5rem;
+                      --bs-btn-font-size: 0.75rem;
+                      width: 28px;
+                    "
+                    v-else
+                    @click="selectUser(slotProp.data)"
+                  >
+                    <i class="fa-solid fa-x text-danger"></i>
+                  </button>
                 </div>
               </template>
             </Column>
-            <Column
-              field="id"
-              :header="
-                messages.pages.groupManagementPage.editGroupDialog.idLabel
-              "
-              sortable
-            ></Column>
+            <Column field="id" header="ID" sortable></Column>
             <Column
               field="name"
-              :header="
-                messages.pages.groupManagementPage.editGroupDialog.nameLabel
-              "
+              header="Név"
               sortable
               :pt="{
                 columnfilter: {
@@ -269,18 +287,13 @@
                   type="text"
                   @input="filterCallback()"
                   class="form-control"
-                  :placeholder="
-                    messages.pages.groupManagementPage.editGroupDialog
-                      .namePlaceholder
-                  "
+                  placeholder="Név..."
                 />
               </template>
             </Column>
             <Column
               field="email"
-              :header="
-                messages.pages.groupManagementPage.editGroupDialog.emailLabel
-              "
+              header="Email"
               sortable
               :pt="{
                 columnfilter: {
@@ -300,19 +313,13 @@
                   type="text"
                   @input="filterCallback()"
                   class="form-control"
-                  :placeholder="
-                    messages.pages.groupManagementPage.editGroupDialog
-                      .emailPlaceholder
-                  "
+                  placeholder="Email..."
                 />
               </template>
             </Column>
             <Column
               field="permission"
-              :header="
-                messages.pages.groupManagementPage.editGroupDialog
-                  .permissionLabel
-              "
+              header="Jogosultság"
               :pt="{
                 columnfilter: {
                   class: 'd-flex',
@@ -326,10 +333,25 @@
               }"
             >
               <template #body="slotProp">
-                <select v-model="slotProp.data.permission" class="form-select">
+                <select
+                  v-if="
+                    currentlyModifyingGroup.selectedUsers.findIndex(
+                      (x) => x.id == slotProp.data.id
+                    ) != -1
+                  "
+                  v-model="
+                    currentlyModifyingGroup.selectedUsers[
+                      currentlyModifyingGroup.selectedUsers.findIndex(
+                        (x) => x.id == slotProp.data.id
+                      )
+                    ].permission
+                  "
+                  class="form-select"
+                >
                   <option value="Tanár">Tanár</option>
                   <option value="Tanuló">Tanuló</option>
                 </select>
+                <select v-else class="form-select" disabled></select>
               </template>
             </Column>
           </DataTable>
@@ -338,7 +360,7 @@
               type="button"
               label="Mégse"
               class="btn btn-outline-danger mx-1"
-              @click="modifyGroupDialogVisible = false"
+              @click="closeModifyWindow"
             ></Button>
             <FormKit
               type="submit"
@@ -376,14 +398,14 @@
           >
             <template #start>
               <Button
-                :label="messages.pages.groupManagementPage.newGroup"
+                label=" Új csoport"
                 id="newUser"
                 icon="pi pi-plus"
                 class="mr-2 btn btn-success text-white me-1 mt-2 ms-2"
                 @click="addGroupDialogVisible = true"
               />
               <Button
-                :label="messages.pages.groupManagementPage.deleteGroup"
+                label=" Törlés"
                 icon="pi pi-trash"
                 class="btn btn-danger text-white mt-2"
                 @click="deleteMultipleGroups"
@@ -391,7 +413,7 @@
             </template>
             <template #end>
               <Button
-                :label="messages.pages.groupManagementPage.exportButton"
+                label=" Exportálás"
                 icon="pi pi-upload"
                 class="btn btn-warning text-white mt-2 me-2"
                 @click="exportCSV($event)"
@@ -451,14 +473,10 @@
                 </div>
               </template>
             </Column>
-            <Column
-              field="id"
-              :header="messages.pages.groupManagementPage.idText"
-              sortable
-            ></Column>
+            <Column field="id" header="ID" sortable></Column>
             <Column
               field="name"
-              :header="messages.pages.groupManagementPage.nameText"
+              header="Név"
               sortable
               :pt="{
                 columnfilter: {
@@ -478,49 +496,31 @@
                   type="text"
                   @input="filterCallback()"
                   class="form-control"
-                  :placeholder="
-                    messages.pages.groupManagementPage.namePlaceholder
-                  "
+                  placeholder="Név..."
                 />
               </template>
             </Column>
-            <Column
-              field="users.length"
-              :header="messages.pages.groupManagementPage.memberText"
-              sortable
-            >
+            <Column field="users.length" header="Tagok száma" sortable>
               <template #body="slotProp">
-                {{ slotProp.data.users.length }}
-                {{ messages.pages.groupManagementPage.member }}
+                {{ slotProp.data.users.length }} tag
               </template>
             </Column>
-            <Column
-              field="courses.length"
-              :header="messages.pages.groupManagementPage.courseText"
-              sortable
-            >
+            <Column field="courses.length" header="Kurzusok száma" sortable>
               <template #body="slotProp">
-                {{ slotProp.data.courses.length }}
-                {{ messages.pages.groupManagementPage.course }}
+                {{ slotProp.data.courses.length }} kurzus
               </template>
             </Column>
-            <Column :header="messages.pages.groupManagementPage.modifyText">
+            <Column header="Módosítás">
               <template #body="slotProp">
                 <button type="button" class="btn btn-warning">
                   <i
                     class="fa-solid fa-pen-to-square"
-                    @click="
-                      (modifyGroupDialogVisible = true),
-                        (currentlyModifyingGroup = {
-                          ...slotProp.data,
-                          selectedUsers: slotProp.data.users,
-                        })
-                    "
+                    @click="openModifyWindow(slotProp.data)"
                   ></i>
                 </button>
               </template>
             </Column>
-            <Column :header="messages.pages.groupManagementPage.deleteText">
+            <Column header="Törlés">
               <template #body="slotProp">
                 <button type="button" class="btn btn-danger">
                   <i
@@ -531,6 +531,425 @@
               </template>
             </Column>
           </DataTable>
+          <Dialog
+            v-if="modifyGroupDialogVisible"
+            v-model:visible="modifyGroupDialogVisible"
+            modal
+            :header="
+              messages.pages.groupManagementPage.editGroupDialog.title +
+              ' ' +
+              currentlyModifyingGroup.name
+            "
+            :style="{ width: '50rem' }"
+            :pt="{
+              root: {
+                class: 'modal-dialog p-3 rounded shadow border',
+              },
+              header: {
+                class: 'd-flex justify-content-between align-items-center pb-2',
+              },
+              title: {
+                class: 'modal-title fw-bold',
+              },
+              closeButton: {
+                class: 'btn btn-outline-dark btn-sm',
+              },
+              closeButtonIcon: {
+                class: 'fa-solid fa-x',
+              },
+              transition: {
+                name: 'slide-fade',
+              },
+            }"
+          >
+            <FormKit
+              type="form"
+              :actions="false"
+              @submit="sendUpdateGroup"
+              :value="currentlyModifyingGroup"
+              :incomplete-message="
+                messages.pages.groupManagementPage.editGroupDialog
+                  .validationMessages.matchAllValidationMessage
+              "
+            >
+              <FormKit
+                type="text"
+                name="name"
+                :label="
+                  messages.pages.groupManagementPage.editGroupDialog.nameLabel
+                "
+                validation="required|length:0,100"
+                :validation-messages="{
+                  required:
+                    messages.pages.groupManagementPage.editGroupDialog
+                      .validationMessages.nameRequired,
+                  length:
+                    messages.pages.groupManagementPage.editGroupDialog
+                      .validationMessages.nameLength,
+                }"
+                :classes="{
+                  input: {
+                    'mb-1': true,
+                    'form-control': true,
+                  },
+                }"
+              />
+              {{ currentlyModifyingGroup }}
+              <DataTable
+                :value="users"
+                tableStyle="min-width: 40rem"
+                sortField="name"
+                :sortOrder="1"
+                v-model:filters="userFilters"
+                filterDisplay="row"
+                v-model:selection="currentlyModifyingGroup.selectedUsers"
+                selectionMode="multiple"
+                dataKey="id"
+                :metaKeySelection="false"
+                :pt="{
+                  table: {
+                    class: 'table table-responsive align-middle',
+                  },
+                }"
+              >
+                <Column>
+                  <template #header>
+                    <div class="d-flex justify-content-center">
+                      <button
+                        type="button"
+                        class="btn"
+                        style="
+                          --bs-btn-padding-y: 0.25rem;
+                          --bs-btn-padding-x: 0.5rem;
+                          --bs-btn-font-size: 0.75rem;
+                          width: 28px;
+                        "
+                        @click="selectAllGroups"
+                      >
+                        <i
+                          class="fa-solid fa-x text-danger"
+                          v-if="
+                            currentlyModifyingGroup.selectedUsers.length == 0
+                          "
+                        ></i>
+                        <i class="fa-solid fa-check text-success" v-else></i>
+                      </button>
+                    </div>
+                  </template>
+                  <template #body="slotProp">
+                    <div class="d-flex justify-content-center">
+                      <i
+                        class="fa-solid fa-check text-success"
+                        v-if="
+                          currentlyModifyingGroup.selectedUsers.findIndex(
+                            (x) => x == slotProp.data
+                          ) != -1
+                        "
+                      ></i>
+                      <i class="fa-solid fa-x text-danger" v-else></i>
+                    </div>
+                  </template>
+                </Column>
+                <Column
+                  field="id"
+                  :header="
+                    messages.pages.groupManagementPage.editGroupDialog.idLabel
+                  "
+                  sortable
+                ></Column>
+                <Column
+                  field="name"
+                  :header="
+                    messages.pages.groupManagementPage.editGroupDialog.nameLabel
+                  "
+                  sortable
+                  :pt="{
+                    columnfilter: {
+                      class: 'd-flex',
+                    },
+                    filtermenubutton: {
+                      class: 'btn ms-1',
+                    },
+                    headerfilterclearbutton: {
+                      class: 'btn ms-1',
+                    },
+                  }"
+                >
+                  <template #filter="{ filterModel, filterCallback }">
+                    <InputText
+                      v-model="filterModel.value"
+                      type="text"
+                      @input="filterCallback()"
+                      class="form-control"
+                      :placeholder="
+                        messages.pages.groupManagementPage.editGroupDialog
+                          .namePlaceholder
+                      "
+                    />
+                  </template>
+                </Column>
+                <Column
+                  field="email"
+                  :header="
+                    messages.pages.groupManagementPage.editGroupDialog
+                      .emailLabel
+                  "
+                  sortable
+                  :pt="{
+                    columnfilter: {
+                      class: 'd-flex',
+                    },
+                    filtermenubutton: {
+                      class: 'btn ms-1',
+                    },
+                    headerfilterclearbutton: {
+                      class: 'btn ms-1',
+                    },
+                  }"
+                >
+                  <template #filter="{ filterModel, filterCallback }">
+                    <InputText
+                      v-model="filterModel.value"
+                      type="text"
+                      @input="filterCallback()"
+                      class="form-control"
+                      :placeholder="
+                        messages.pages.groupManagementPage.editGroupDialog
+                          .emailPlaceholder
+                      "
+                    />
+                  </template>
+                </Column>
+                <Column
+                  field="permission"
+                  :header="
+                    messages.pages.groupManagementPage.editGroupDialog
+                      .permissionLabel
+                  "
+                  :pt="{
+                    columnfilter: {
+                      class: 'd-flex',
+                    },
+                    filtermenubutton: {
+                      class: 'btn ms-1',
+                    },
+                    headerfilterclearbutton: {
+                      class: 'btn ms-1',
+                    },
+                  }"
+                >
+                  <template #body="slotProp">
+                    <select
+                      v-model="slotProp.data.permission"
+                      class="form-select"
+                    >
+                      <option value="Tanár">Tanár</option>
+                      <option value="Tanuló">Tanuló</option>
+                    </select>
+                  </template>
+                </Column>
+              </DataTable>
+              <div class="d-flex justify-content-end mt-2 mb-3">
+                <Button
+                  type="button"
+                  label="Mégse"
+                  class="btn btn-outline-danger mx-1"
+                  @click="modifyGroupDialogVisible = false"
+                ></Button>
+                <FormKit
+                  type="submit"
+                  label="Mentés"
+                  :classes="{
+                    input: {
+                      btn: true,
+                      'btn-success': true,
+                      'w-auto': true,
+                    },
+                  }"
+                />
+              </div>
+            </FormKit>
+          </Dialog>
+          <div>
+            <div class="card darkTheme">
+              <Toolbar
+                :pt="{
+                  start: {
+                    class:
+                      'col-sm-12 col-md-5 d-flex justify-content-md-start align-items-center justify-content-center',
+                  },
+                  center: {
+                    class: 'col-sm-12 col-md-2',
+                  },
+                  end: {
+                    class:
+                      'col-sm-12 col-md-5 d-flex justify-content-md-end align-items-center justify-content-center',
+                  },
+                  root: {
+                    class: 'row mb-2',
+                  },
+                }"
+              >
+                <template #start>
+                  <Button
+                    :label="messages.pages.groupManagementPage.newGroup"
+                    id="newUser"
+                    icon="pi pi-plus"
+                    class="mr-2 btn btn-success text-white me-1 mt-2 ms-2"
+                    @click="addGroupDialogVisible = true"
+                  />
+                  <Button
+                    :label="messages.pages.groupManagementPage.deleteGroup"
+                    icon="pi pi-trash"
+                    class="btn btn-danger text-white mt-2"
+                    @click="deleteMultipleGroups"
+                  />
+                </template>
+                <template #end>
+                  <Button
+                    :label="messages.pages.groupManagementPage.exportButton"
+                    icon="pi pi-upload"
+                    class="btn btn-warning text-white mt-2 me-2"
+                    @click="exportCSV($event)"
+                  />
+                </template>
+              </Toolbar>
+              <DataTable
+                exportFilename="groups"
+                ref="dt"
+                :value="groups"
+                tableStyle="min-width: 50rem"
+                sortField="id"
+                :sortOrder="1"
+                v-model:filters="filters"
+                filterDisplay="row"
+                v-model:selection="selectedGroups"
+                selectionMode="multiple"
+                dataKey="id"
+                :metaKeySelection="false"
+                :pt="{
+                  table: {
+                    class: 'table table-responsive align-middle',
+                  },
+                }"
+              >
+                <Column>
+                  <template #header>
+                    <div class="d-flex justify-content-center">
+                      <button
+                        type="button"
+                        class="btn"
+                        style="
+                          --bs-btn-padding-y: 0.25rem;
+                          --bs-btn-padding-x: 0.5rem;
+                          --bs-btn-font-size: 0.75rem;
+                          width: 28px;
+                        "
+                        @click="selectAllGroups"
+                      >
+                        <i
+                          class="fa-solid fa-x text-danger"
+                          v-if="selectedGroups.length == 0"
+                        ></i>
+                        <i class="fa-solid fa-check text-success" v-else></i>
+                      </button>
+                    </div>
+                  </template>
+                  <template #body="slotProp">
+                    <div class="d-flex justify-content-center">
+                      <i
+                        class="fa-solid fa-check text-success"
+                        v-if="
+                          selectedGroups.findIndex((x) => x == slotProp.data) !=
+                          -1
+                        "
+                      ></i>
+                      <i class="fa-solid fa-x text-danger" v-else></i>
+                    </div>
+                  </template>
+                </Column>
+                <Column
+                  field="id"
+                  :header="messages.pages.groupManagementPage.idText"
+                  sortable
+                ></Column>
+                <Column
+                  field="name"
+                  :header="messages.pages.groupManagementPage.nameText"
+                  sortable
+                  :pt="{
+                    columnfilter: {
+                      class: 'd-flex',
+                    },
+                    filtermenubutton: {
+                      class: 'btn ms-1',
+                    },
+                    headerfilterclearbutton: {
+                      class: 'btn ms-1',
+                    },
+                  }"
+                >
+                  <template #filter="{ filterModel, filterCallback }">
+                    <InputText
+                      v-model="filterModel.value"
+                      type="text"
+                      @input="filterCallback()"
+                      class="form-control"
+                      :placeholder="
+                        messages.pages.groupManagementPage.namePlaceholder
+                      "
+                    />
+                  </template>
+                </Column>
+                <Column
+                  field="users.length"
+                  :header="messages.pages.groupManagementPage.memberText"
+                  sortable
+                >
+                  <template #body="slotProp">
+                    {{ slotProp.data.users.length }}
+                    {{ messages.pages.groupManagementPage.member }}
+                  </template>
+                </Column>
+                <Column
+                  field="courses.length"
+                  :header="messages.pages.groupManagementPage.courseText"
+                  sortable
+                >
+                  <template #body="slotProp">
+                    {{ slotProp.data.courses.length }}
+                    {{ messages.pages.groupManagementPage.course }}
+                  </template>
+                </Column>
+                <Column :header="messages.pages.groupManagementPage.modifyText">
+                  <template #body="slotProp">
+                    <button type="button" class="btn btn-warning">
+                      <i
+                        class="fa-solid fa-pen-to-square"
+                        @click="
+                          (modifyGroupDialogVisible = true),
+                            (currentlyModifyingGroup = {
+                              ...slotProp.data,
+                              selectedUsers: slotProp.data.users,
+                            })
+                        "
+                      ></i>
+                    </button>
+                  </template>
+                </Column>
+                <Column :header="messages.pages.groupManagementPage.deleteText">
+                  <template #body="slotProp">
+                    <button type="button" class="btn btn-danger">
+                      <i
+                        class="fa-solid fa-trash"
+                        @click="deleteGroup(slotProp.data.id)"
+                      ></i>
+                    </button>
+                  </template>
+                </Column>
+              </DataTable>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -681,6 +1100,46 @@ export default {
       data.selectedUsers = this.currentlyModifyingGroup.selectedUsers;
       await this.updateGroup(data);
     },
+    async sendUpdateGroup(data) {
+      data.selectedUsers = this.currentlyModifyingGroup.selectedUsers;
+      await this.updateGroup(data);
+      this.closeModifyWindow();
+    },
+    selectUser(data) {
+      data.permission = data.permission == null ? "Tanuló" : data.permission;
+      this.currentlyModifyingGroup.selectedUsers.push(data);
+    },
+    unSelectUser(data) {
+      const idx = this.currentlyModifyingGroup.selectedUsers.findIndex(
+        (x) => x.id == data.id
+      );
+      this.currentlyModifyingGroup.selectedUsers.splice(idx, 1);
+    },
+    openModifyWindow(data) {
+      this.modifyGroupDialogVisible = true;
+      for (let user of data.users) {
+        user.permission =
+          user.member == null ? "Tanuló" : user.member.permission;
+      }
+      this.currentlyModifyingGroup = {
+        ...data,
+        selectedUsers: data.users == null ? {} : data.users,
+      };
+    },
+    addPermissionFieldToGroupUsers(group) {
+      for (let user of group.users) {
+        user.permission = "Tanuló";
+      }
+    },
+    addPermissionFieldToAllGroups() {
+      for (let group of this.groups) {
+        this.addPermissionFieldToGroupUsers(group);
+      }
+    },
+    closeModifyWindow() {
+      this.modifyGroupDialogVisible = false;
+      this.currentlyModifyingGroup = {};
+    },
     exportCSV() {
       this.$refs.dt.exportCSV();
       console.log(this.$refs.dt);
@@ -689,6 +1148,11 @@ export default {
   mounted() {
     this.getGroups();
     this.getUsers();
+    this.addPermissionFieldToAllGroups();
+  },
+  exportCSV() {
+    this.$refs.dt.exportCSV();
+    console.log(this.$refs.dt);
   },
 };
 </script>
