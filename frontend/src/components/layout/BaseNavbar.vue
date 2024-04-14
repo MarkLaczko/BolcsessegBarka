@@ -22,14 +22,14 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100">
           <li class="nav-item">
-            <RouterLink class="nav-link" :to="{ name: 'home' }"
-              >Főoldal</RouterLink
-            >
+            <RouterLink class="nav-link" :to="{ name: 'home' }">{{
+              messages.layout.header.home
+            }}</RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" :to="{ name: 'courses' }"
-              >Kurzusaim</RouterLink
-            >
+            <RouterLink class="nav-link" :to="{ name: 'courses' }">{{
+              messages.layout.header.courses
+            }}</RouterLink>
           </li>
           <li
             class="nav-item dropdown"
@@ -44,50 +44,109 @@
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Adminisztráció
+              {{ messages.layout.header.admin }}
             </a>
             <ul class="dropdown-menu">
               <li>
                 <RouterLink
                   class="dropdown-item"
                   :to="{ name: 'userAdministration' }"
-                  >Felhasználó kezelése</RouterLink
+                  >{{ messages.layout.header.userAdministration }}</RouterLink
                 >
               </li>
               <li>
                 <RouterLink
                   class="dropdown-item"
                   :to="{ name: 'groupAdministration' }"
-                  >Csoportok kezelése</RouterLink
+                  >{{ messages.layout.header.groupAdministration }}</RouterLink
                 >
               </li>
               <li>
                 <RouterLink
                   class="dropdown-item"
                   :to="{ name: 'courseAdministration' }"
-                  >Kurzusok kezelése</RouterLink
+                  >{{ messages.layout.header.courseAdministration }}</RouterLink
                 >
               </li>
             </ul>
           </li>
-          <li class="nav-item ms-lg-auto d-flex align-items-center me-2">
-            <i
-              :class="`fa-regular ${isDarkMode ? 'fa-sun' : 'fa-moon'} fa-xl d-none d-lg-block my-2`"
-              id="icon"
-              @click="toggleTheme"
-            ></i>
-            <button
-              class="nav-link d-block d-lg-none d-xl-none"
-              @click="toggleTheme"
-            >
-              <span v-if="!isDarkMode">Dark Mode</span>
-              <span v-else>Light Mode</span>
-            </button>
-          </li>
-          <li class="nav-item d-flex">
-            <button class="nav-link" @click="logoutUser">Kijelentkezés</button>
-          </li>
         </ul>
+        <div class="navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <div
+                  class="user-icon"
+                  style="
+                    width: 30px;
+                    height: 30px;
+                    color: white;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                  "
+                >
+                  {{ avatarText }}
+                </div>
+              </a>
+              <ul
+                class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <div class="">
+                  <li class="ms-3 mb-md-3 mt-md-3">
+                    <i
+                      :class="`fa-regular ${
+                        !isDarkMode ? 'fa-moon' : 'fa-sun'
+                      } fa-xl d-none d-lg-block my-2`"
+                      id="icon"
+                      @click="toggleTheme"
+                    ></i>
+                    <button
+                      class="nav-link d-block d-lg-none d-xl-none"
+                      @click="toggleTheme"
+                    >
+                      <span v-if="!isDarkMode">Dark Mode</span>
+                      <span v-else>Light Mode</span>
+                    </button>
+                  </li>
+                  <li>
+                    <a class="dropdown-item">
+                      <div class="form-check form-switch">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          @input="switchLanguage"
+                          id="languageSwitch"
+                          :checked="language === 'EN'"
+                        />
+                        <label
+                          class="form-check-label"
+                          for="languageSwitch"
+                          id="switchLabel"
+                          >{{ language }}</label
+                        >
+                      </div></a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" @click="logoutUser">{{
+                      messages.layout.header.logout
+                    }}</a>
+                  </li>
+                </div>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </nav>
@@ -97,10 +156,12 @@
 import { userStore } from "@stores/UserStore.mjs";
 import { mapActions, mapState } from "pinia";
 import { themeStore } from "@stores/ThemeStore.mjs";
+import { languageStore } from "@stores/LanguageStore.mjs";
 
 export default {
   methods: {
     ...mapActions(userStore, ["getUser", "logout"]),
+    ...mapActions(languageStore, ["switchLanguage"]),
     logoutUser() {
       this.logout();
       this.$router.push("/login");
@@ -111,11 +172,12 @@ export default {
     },
   },
   computed: {
-    ...mapState(userStore, ["currentUserData"]),
+    ...mapState(userStore, ["currentUserData", "avatarText"]),
     ...mapState(themeStore, ["isDarkMode"]),
+    ...mapState(languageStore, ["language", "messages"]),
   },
   async mounted() {
     await this.getUser();
-  }
+  },
 };
 </script>
