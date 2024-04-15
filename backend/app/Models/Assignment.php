@@ -8,7 +8,10 @@ class Assignment extends Model
 {
     public $timestamps = false;
 
+    public $table = "assignment";
+
     protected $fillable = [
+        "task_name",
         "task",
         "comment",
         "deadline",
