@@ -63,6 +63,5 @@ export default {
     }
     .fade-enter, .fade-leave-to {
         opacity: 0;
-    }
-
+    } 
 </style>

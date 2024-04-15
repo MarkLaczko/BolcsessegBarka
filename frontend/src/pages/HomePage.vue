@@ -13,7 +13,6 @@
       <h1 class="text-center my-3">
         {{ messages.pages.homePage.title }} {{ currentUserData.name }}!
       </h1>
-      <h1 class="text-center my-3">Üdvözöllek {{ currentUserData.name }}!</h1>
 
       <div class="rounded-3 pt-3">
         <h2 class="text-center mb-3">
