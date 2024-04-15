@@ -39,7 +39,7 @@
                   <button
                     @click="uploadEvent(uploadCallback)"
                     class="btn btn-outline-success rounded-circle"
-                    :disabled="!files || files.length === 0"
+                    :disabled="!files || files.length === 0 || totalSize >= 100"
                   >
                     <i class="pi pi-cloud-upload"></i>
                   </button>
@@ -60,7 +60,7 @@
                     aria-valuemin="0"
                     aria-valuemax="100"
                   >
-                    <span class="text-white">{{ totalSize }}B / 100MB</span>
+                    <span class="text-white">{{ totalSize }}MB / 100MB</span>
                   </div>
                 </div>
               </div>
@@ -194,7 +194,7 @@ export default {
     onRemoveTemplatingFile(file, removeFileCallback, index) {
       removeFileCallback(index);
       this.totalSize -= parseInt(this.formatSize(file.size));
-      this.totalSizePercent = this.totalSize / 10;
+      this.totalSizePercent = this.totalSize;
     },
     onClearTemplatingUpload(clear) {
       clear();
@@ -208,7 +208,7 @@ export default {
       });
     },
     uploadEvent(callback) {
-      this.totalSizePercent = this.totalSize / 10;
+      this.totalSizePercent = this.totalSize;
       callback();
     },
     onTemplatedUpload() {
@@ -221,15 +221,14 @@ export default {
     },
     formatSize(bytes) {
       const k = 1024;
-      const dm = 3;
       const sizes = this.$primevue.config.locale.fileSizeTypes;
 
       if (bytes === 0) {
         return `0 ${sizes[0]}`;
       }
-
+      
       const i = Math.floor(Math.log(bytes) / Math.log(k));
-      const formattedSize = parseFloat((bytes / Math.pow(k, i)).toFixed(dm));
+      const formattedSize = parseFloat((bytes / Math.pow(k, i)).toFixed(0));
 
       return `${formattedSize} ${sizes[i]}`;
     },
