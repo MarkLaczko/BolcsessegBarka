@@ -1,8 +1,10 @@
 <script>
 import { RouterView } from "vue-router";
+import ScrollBackToTopButton from "@components/ScrollBackToTopButton.vue";
 export default {
   components: {
     RouterView,
+    ScrollBackToTopButton
   },
   computed: {
     isSignedOut() {
@@ -15,6 +17,7 @@ export default {
 <template>
   <div :class="{ backgroundColor: isSignedOut }">
     <RouterView />
+    <ScrollBackToTopButton/>
   </div>
 </template>
 
