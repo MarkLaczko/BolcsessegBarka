@@ -8,7 +8,6 @@
         form: {
           container: true,
           'form-control-width': true,
-          'bg-info': true,
           'rounded-4': true,
           'p-0': true,
         },
@@ -34,9 +33,36 @@
             <i class="fa-solid fa-gear"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <div class="d-flex justify-content-center align-items-center">
+                  <li class="ms-3 mb-md-3 mt-md-3">
+                    <i
+                      :class="`fa-regular ${
+                        !isDarkMode ? 'fa-moon' : 'fa-sun'
+                      } fa-xl my-2`"
+                      id="icon"
+                      @click="toggleTheme"
+                    ></i>
+                  </li>
+                  <li>
+                    <a class="dropdown-item">
+                      <div class="form-check form-switch">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          @input="switchLanguage"
+                          id="languageSwitch"
+                          :checked="language === 'EN'"
+                        />
+                        <label
+                          class="form-check-label text-white"
+                          for="languageSwitch"
+                          id="switchLabel"
+                          >{{ language }}</label
+                        >
+                      </div></a
+                    >
+                  </li>
+                </div>
           </ul>
         </div>
       
@@ -79,16 +105,15 @@
           type="submit"
           :classes="{
             input: {
-              'text-white': true,
-              'bg-primary': true,
               'px-3': true,
+              'formButton' : true
             },
           }"
         >
           {{ messages.pages.loginPage.loginButtonText }}
         </FormKit>
 
-        <RouterLink :to="{ name: 'register' }" class="btn btn-secondary h-100">
+        <RouterLink :to="{ name: 'register' }" class="btn formLink h-100">
           {{ messages.pages.loginPage.accountText }}
         </RouterLink>
       </div>
@@ -101,6 +126,7 @@ import Message from "primevue/message";
 import { RouterLink } from "vue-router";
 import { mapActions, mapState } from "pinia";
 import { userStore } from "@stores/UserStore.mjs";
+import { themeStore } from "@stores/ThemeStore.mjs";
 import { languageStore } from "@stores/LanguageStore.mjs";
 
 export default {
@@ -116,6 +142,12 @@ export default {
   },
   methods: {
     ...mapActions(userStore, ["login"]),
+    ...mapActions(languageStore, ["switchLanguage"]),
+
+    toggleTheme() {
+      themeStore().toggleTheme();
+    },
+
     async attemptLogin(data) {
       try {
         await this.login(data);
@@ -133,7 +165,8 @@ export default {
     },
   },
   computed: {
-    ...mapState(languageStore, ["messages"]),
+    ...mapState(languageStore, ["messages","language"]),
+    ...mapState(themeStore, ["isDarkMode"]),
   }
 };
 </script>
@@ -150,6 +183,10 @@ export default {
 }
 
 .dropdown-toggle::after {
-  display: none !important;
+  display: none;
+}
+
+.btn.dropdown-toggle{
+  border: none;
 }
 </style>
