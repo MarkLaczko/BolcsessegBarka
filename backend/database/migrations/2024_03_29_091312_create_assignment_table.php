@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -13,13 +14,15 @@ return new class extends Migration
     {
         Schema::create('assignment', function (Blueprint $table) {
             $table->id();
-            $table->string("task");
-            $table->string("comment");
+            $table->string("task_name");
+            $table->string("comment")->nullable();
             $table->dateTime("deadline");
-            $table->integer("grade");
+            $table->integer("grade")->nullable();
             $table->unsignedBigInteger("courseable_id");
             $table->string("courseable_type");
         });
+
+        DB::statement("ALTER TABLE assignment ADD task LONGBLOB");
     }
 
     /**
