@@ -1,5 +1,13 @@
 export default {
   pages: {
+    loginPage: {
+      title: "Login",
+      emailPlaceholder: "Email",
+      passwordPlaceholder: "Password",
+      loginButtonText: "Login",
+      accountText: "Don't have an account yet?",
+      loginFailed: "Login failed!"
+    },
     homePage: {
       title: "Welcome",
       taskTitle: "Tasks to be completed",
