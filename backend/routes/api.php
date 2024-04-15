@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\GroupController;
@@ -76,3 +77,14 @@ Route::middleware('auth:sanctum')->put('/notes/{id}', [NoteController::class,'up
     ->name('notes.update');
 Route::middleware('auth:sanctum')->delete('/notes/{id}', [NoteController::class,'destroy'])
     ->name('notes.destroy');
+
+Route::middleware('auth:sanctum')->get('/assignments', [AssignmentController::class,'index'])
+    ->name('assignments.index'); 
+Route::middleware('auth:sanctum')->get('/assignments/{id}', [AssignmentController::class,'show'])
+    ->name('assignments.show'); 
+Route::middleware('auth:sanctum')->post('/assignments', [AssignmentController::class,'store'])
+    ->name('assignments.store');
+Route::middleware('auth:sanctum')->put('/assignments/{id}', [AssignmentController::class,'update'])
+    ->name('assignments.update');
+Route::middleware('auth:sanctum')->delete('/assignments/{id}', [AssignmentController::class,'destroy'])
+    ->name('assignments.destroy');
