@@ -42,32 +42,12 @@
           },
         }"
       />
-      <Dialog
+
+      <BaseDialog
         v-if="addGroupDialogVisible"
-        v-model:visible="addGroupDialogVisible"
-        modal
+        :visible="addGroupDialogVisible"
         :header="messages.pages.groupManagementPage.newGroupDialog.title"
-        :style="{ width: '25rem' }"
-        :pt="{
-          root: {
-            class: 'modal-dialog p-3 rounded shadow border',
-          },
-          header: {
-            class: 'd-flex justify-content-between align-items-center pb-2',
-          },
-          title: {
-            class: 'modal-title fw-bold',
-          },
-          closeButton: {
-            class: 'btn btn-outline-dark btn-sm',
-          },
-          closeButtonIcon: {
-            class: 'fa-solid fa-x',
-          },
-          transition: {
-            name: 'slide-fade',
-          },
-        }"
+        :width="'25rem'"
       >
         <FormKit
           type="form"
@@ -120,33 +100,14 @@
             />
           </div>
         </FormKit>
-      </Dialog>
-      <Dialog
+      </BaseDialog>
+
+
+      <BaseDialog
         v-if="modifyGroupDialogVisible"
-        v-model:visible="modifyGroupDialogVisible"
-        modal
+        :visible="modifyGroupDialogVisible"
         :header="messages.pages.groupManagementPage.editGroupDialog.title+' '+currentlyModifyingGroup.name"
-        :style="{ width: '50rem' }"
-        :pt="{
-          root: {
-            class: 'modal-dialog p-3 rounded shadow border',
-          },
-          header: {
-            class: 'd-flex justify-content-between align-items-center pb-2',
-          },
-          title: {
-            class: 'modal-title fw-bold',
-          },
-          closeButton: {
-            class: 'btn btn-outline-dark btn-sm',
-          },
-          closeButtonIcon: {
-            class: 'fa-solid fa-x',
-          },
-          transition: {
-            name: 'slide-fade',
-          },
-        }"
+        :style="'50'"
       >
         <FormKit
           type="form"
@@ -356,7 +317,8 @@
             />
           </div>
         </FormKit>
-      </Dialog>
+      </BaseDialog>
+
       <div>
         <div class="card darkTheme">
           <Toolbar
@@ -512,245 +474,6 @@
               </template>
             </Column>
           </DataTable>
-          <Dialog
-            v-if="modifyGroupDialogVisible"
-            v-model:visible="modifyGroupDialogVisible"
-            modal
-            :header="
-              messages.pages.groupManagementPage.editGroupDialog.title +
-              ' ' +
-              currentlyModifyingGroup.name
-            "
-            :style="{ width: '50rem' }"
-            :pt="{
-              root: {
-                class: 'modal-dialog p-3 rounded shadow border',
-              },
-              header: {
-                class: 'd-flex justify-content-between align-items-center pb-2',
-              },
-              title: {
-                class: 'modal-title fw-bold',
-              },
-              closeButton: {
-                class: 'btn btn-outline-dark btn-sm',
-              },
-              closeButtonIcon: {
-                class: 'fa-solid fa-x',
-              },
-              transition: {
-                name: 'slide-fade',
-              },
-            }"
-          >
-            <FormKit
-              type="form"
-              :actions="false"
-              @submit="sendUpdateGroup"
-              :value="currentlyModifyingGroup"
-              :incomplete-message="
-                messages.pages.groupManagementPage.editGroupDialog
-                  .validationMessages.matchAllValidationMessage
-              "
-            >
-              <FormKit
-                type="text"
-                name="name"
-                :label="
-                  messages.pages.groupManagementPage.editGroupDialog.nameLabel
-                "
-                validation="required|length:0,100"
-                :validation-messages="{
-                  required:
-                    messages.pages.groupManagementPage.editGroupDialog
-                      .validationMessages.nameRequired,
-                  length:
-                    messages.pages.groupManagementPage.editGroupDialog
-                      .validationMessages.nameLength,
-                }"
-                :classes="{
-                  input: {
-                    'mb-1': true,
-                    'form-control': true,
-                  },
-                }"
-              />
-              {{ currentlyModifyingGroup }}
-              <DataTable
-                :value="users"
-                tableStyle="min-width: 40rem"
-                sortField="name"
-                :sortOrder="1"
-                v-model:filters="userFilters"
-                filterDisplay="row"
-                v-model:selection="currentlyModifyingGroup.selectedUsers"
-                selectionMode="multiple"
-                dataKey="id"
-                :metaKeySelection="false"
-                :pt="{
-                  table: {
-                    class: 'table table-responsive align-middle',
-                  },
-                }"
-              >
-                <Column>
-                  <template #header>
-                    <div class="d-flex justify-content-center">
-                      <button
-                        type="button"
-                        class="btn"
-                        style="
-                          --bs-btn-padding-y: 0.25rem;
-                          --bs-btn-padding-x: 0.5rem;
-                          --bs-btn-font-size: 0.75rem;
-                          width: 28px;
-                        "
-                        @click="selectAllGroups"
-                      >
-                        <i
-                          class="fa-solid fa-x text-danger"
-                          v-if="
-                            currentlyModifyingGroup.selectedUsers.length == 0
-                          "
-                        ></i>
-                        <i class="fa-solid fa-check text-success" v-else></i>
-                      </button>
-                    </div>
-                  </template>
-                  <template #body="slotProp">
-                    <div class="d-flex justify-content-center">
-                      <i
-                        class="fa-solid fa-check text-success"
-                        v-if="
-                          currentlyModifyingGroup.selectedUsers.findIndex(
-                            (x) => x == slotProp.data
-                          ) != -1
-                        "
-                      ></i>
-                      <i class="fa-solid fa-x text-danger" v-else></i>
-                    </div>
-                  </template>
-                </Column>
-                <Column
-                  field="id"
-                  :header="
-                    messages.pages.groupManagementPage.editGroupDialog.idLabel
-                  "
-                  sortable
-                ></Column>
-                <Column
-                  field="name"
-                  :header="
-                    messages.pages.groupManagementPage.editGroupDialog.nameLabel
-                  "
-                  sortable
-                  :pt="{
-                    columnfilter: {
-                      class: 'd-flex',
-                    },
-                    filtermenubutton: {
-                      class: 'btn ms-1',
-                    },
-                    headerfilterclearbutton: {
-                      class: 'btn ms-1',
-                    },
-                  }"
-                >
-                  <template #filter="{ filterModel, filterCallback }">
-                    <InputText
-                      v-model="filterModel.value"
-                      type="text"
-                      @input="filterCallback()"
-                      class="form-control"
-                      :placeholder="
-                        messages.pages.groupManagementPage.editGroupDialog
-                          .namePlaceholder
-                      "
-                    />
-                  </template>
-                </Column>
-                <Column
-                  field="email"
-                  :header="
-                    messages.pages.groupManagementPage.editGroupDialog
-                      .emailLabel
-                  "
-                  sortable
-                  :pt="{
-                    columnfilter: {
-                      class: 'd-flex',
-                    },
-                    filtermenubutton: {
-                      class: 'btn ms-1',
-                    },
-                    headerfilterclearbutton: {
-                      class: 'btn ms-1',
-                    },
-                  }"
-                >
-                  <template #filter="{ filterModel, filterCallback }">
-                    <InputText
-                      v-model="filterModel.value"
-                      type="text"
-                      @input="filterCallback()"
-                      class="form-control"
-                      :placeholder="
-                        messages.pages.groupManagementPage.editGroupDialog
-                          .emailPlaceholder
-                      "
-                    />
-                  </template>
-                </Column>
-                <Column
-                  field="permission"
-                  :header="
-                    messages.pages.groupManagementPage.editGroupDialog
-                      .permissionLabel
-                  "
-                  :pt="{
-                    columnfilter: {
-                      class: 'd-flex',
-                    },
-                    filtermenubutton: {
-                      class: 'btn ms-1',
-                    },
-                    headerfilterclearbutton: {
-                      class: 'btn ms-1',
-                    },
-                  }"
-                >
-                  <template #body="slotProp">
-                    <select
-                      v-model="slotProp.data.permission"
-                      class="form-select"
-                    >
-                      <option value="Tanár">Tanár</option>
-                      <option value="Tanuló">Tanuló</option>
-                    </select>
-                  </template>
-                </Column>
-              </DataTable>
-              <div class="d-flex justify-content-end mt-2 mb-3">
-                <Button
-                  type="button"
-                  :label="messages.pages.groupManagementPage.editGroupDialog.cancelButton"
-                  class="btn btn-outline-danger mx-1"
-                  @click="modifyGroupDialogVisible = false"
-                ></Button>
-                <FormKit
-                  type="submit"
-                  :label="messages.pages.groupManagementPage.editGroupDialog.saveButton"
-                  :classes="{
-                    input: {
-                      btn: true,
-                      'btn-success': true,
-                      'w-auto': true,
-                    },
-                  }"
-                />
-              </div>
-            </FormKit>
-          </Dialog>
         </div>
       </div>
     </div>
@@ -777,6 +500,8 @@ import { themeStore } from "@stores/ThemeStore.mjs";
 import { userStore } from "@stores/UserStore";
 import { permissionStore } from "@stores/PermissionStore.mjs";
 import { languageStore } from "@stores/LanguageStore.mjs";
+import BaseDialog from "@components/BaseDialog.vue";
+
 export default {
   components: {
     BaseLayout,
@@ -791,6 +516,7 @@ export default {
     Toast,
     RadioButton,
     Dropdown,
+    BaseDialog,
   },
   data() {
     return {
@@ -811,7 +537,7 @@ export default {
   },
   computed: {
     ...mapState(userStore, ["token"]),
-    ...mapState(groupStore, ["groups"]),
+    ...mapState(groupStore, ["groups", 'addGroup', 'modifyGroup']),
     ...mapState(themeStore, ["isDarkMode"]),
     ...mapState(permissionStore, ["permissions"]),
     ...mapState(languageStore, ["messages"]),
