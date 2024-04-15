@@ -193,11 +193,6 @@ export default {
           },
         ];
 
-        this.name = null;
-        this.email = null;
-        this.password = null;
-        this.password_confirm = null;
-
         setTimeout(() => {
           this.$router.push("/login");
         }, 2500);

@@ -1,5 +1,13 @@
 export default {
   pages: {
+    loginPage: {
+      title: "Bejelentkezés",
+      emailPlaceholder: "E-mail",
+      passwordPlaceholder: "Jelszó",
+      loginButtonText: "Bejelentkezés",
+      accountText: "Még nincs fiókja?",
+      loginFailed: "Sikertelen belépés!"
+    },
     homePage: {
       title: "Üdvözöllek",
       taskTitle: "Elkészítendő feladatok",
