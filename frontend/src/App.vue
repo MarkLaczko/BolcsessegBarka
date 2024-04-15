@@ -20,10 +20,3 @@ export default {
     <ScrollBackToTopButton/>
   </div>
 </template>
-
-<style>
-.backgroundColor {
-  background: linear-gradient(#ffffff, #3faeec);
-  height: 100%;
-}
-</style>
