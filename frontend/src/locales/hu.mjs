@@ -1,5 +1,29 @@
 export default {
   pages: {
+    registerPage: {
+      title: "Regisztráció",
+      submitButton: "Regisztráció",
+      accountText: "Még nincs fiókja?",
+      namePlaceholder: "Név",
+      emailPlaceholder: "E-mail",
+      passwordPlaceholder: "Jelszó",
+      passwordConfirmPlaceholder: "Jelszó megerősítés",
+      validationMessages: {
+        matchAllValidationMessage:
+        "Sajnáljuk, nem minden mezőt töltöttek ki helyesen.",
+        nameRequired: "A felhasználónév kitöltése kötelező.",
+        nameLength: "A felhasználónévnek kevesebbnek kell lennie, mint 255 karakter.",
+        emailRequired: "Az email kitöltése kötelező.",
+        validEmail: "Adjon meg egy érvényes email címet.",
+        passwordRequired: "A jelszó kitöltése kötelező.",
+        passwordLength: "Legalább 8, maximum 255 karakter hosszú lehet a jelszó.",
+        confirmPasswordRequired: "A jelszó megerősítés kitöltése kötelező.",
+        confirmPasswordLength: "Legalább 8, maximum 255 karakter hosszú lehet a jelszó megerősítés.",
+        confirmPasswordConfirm: "A jelszavak nem egyeznek."
+      },
+      registerFailed: "Sikertelen regisztráció!",
+      registerSucceeded: "Sikeres regisztráció!"
+    },
     loginPage: {
       title: "Bejelentkezés",
       emailPlaceholder: "E-mail",
