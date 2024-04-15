@@ -13,7 +13,6 @@
       <h1 class="text-center my-3">
         {{ messages.pages.homePage.title }} {{ currentUserData.name }}!
       </h1>
-      <ScrollBackToTopButton />
       <h1 class="text-center my-3">Üdvözöllek {{ currentUserData.name }}!</h1>
 
       <div class="rounded-3 pt-3">
@@ -76,7 +75,6 @@ import { userStore } from "@stores/UserStore.mjs";
 import { mapActions, mapState } from "pinia";
 import Paginator from "@components/BasePaginator.vue";
 import { languageStore } from "@stores/LanguageStore.mjs";
-import ScrollBackToTopButton from "@components/ScrollBackToTopButton.vue";
 
 export default {
   data() {
@@ -202,7 +200,6 @@ export default {
     BaseAssignmentCard,
     BaseLearningMaterialCard,
     Paginator,
-    ScrollBackToTopButton,
   },
   methods: {
     ...mapActions(userStore, ["getUser"]),
