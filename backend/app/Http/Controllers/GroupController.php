@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkDeleteGroupRequest;
 use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateGroupRequest;
 use App\Http\Resources\GroupResource;
 use App\Models\Group;
+use Exception;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
@@ -71,5 +73,21 @@ class GroupController extends Controller
         $group->delete();
 
         return response()->noContent();
+    }
+
+    /**
+     * Remove a listing of resources from storage.
+     */
+    public function bulkDelete(BulkDeleteGroupRequest $request)
+    {
+        $data = $request->validated();
+        try {
+            Group::whereIn('id', $data['bulk'])
+                ->delete();
+
+            return response()->json(['message' => 'Users deleted successfully'], 200);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 }
