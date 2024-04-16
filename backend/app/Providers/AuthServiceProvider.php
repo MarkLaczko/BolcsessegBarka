@@ -26,25 +26,44 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('users.get', function (User $user) {
             return ($user->is_admin == 1)
                 ? Response::allow()
-                : Response::deny("Csak adminisztrátor kérhet le felhasználókat!");
+                : Response::deny("Only administrators can get users!");
         });
 
         Gate::define('users.show', function (User $user) {
             return ($user->is_admin == 1)
                 ? Response::allow()
-                : Response::deny("Csak adminisztrátor kérhet le felhasználót!");
+                : Response::deny("Only administrators can get a user!");
         });
 
         Gate::define('users.delete', function (User $user) {
             return ($user->is_admin == 1)
                 ? Response::allow()
-                : Response::deny("Csak adminisztrátor törölhet felhasználót!");
+                : Response::deny("Only administrators can delete users!");
         });
 
         Gate::define('users.update', function (User $user) {
             return ($user->is_admin == 1)
                 ? Response::allow()
-                : Response::deny("Csak adminisztrátor frissítheti a felhasználókat!");
+                : Response::deny("Only administrators can update users!");
         });
+        
+        Gate::define('groups.store', function (User $user) {
+            return ($user->is_admin == 1)
+                ? Response::allow()
+                : Response::deny("Only administrators can store groups!");
+        });
+
+        Gate::define('groups.update', function (User $user) {
+            return ($user->is_admin == 1)
+                ? Response::allow()
+                : Response::deny("Only administrators can update groups!");
+        });
+
+        Gate::define('groups.delete', function (User $user) {
+            return ($user->is_admin == 1)
+                ? Response::allow()
+                : Response::deny("Only administrators can delete groups!");
+        });
+
     }
 }
