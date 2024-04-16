@@ -157,7 +157,7 @@ export default {
           {
             color: "danger",
             icon: "triangle-exclamation",
-            content: messages.pages.loginPage.loginFailed,
+            content: this.messages.pages.loginPage.loginFailed,
             id: this.count++,
           },
         ];
