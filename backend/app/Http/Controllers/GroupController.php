@@ -9,6 +9,7 @@ use App\Http\Resources\GroupResource;
 use App\Models\Group;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class GroupController extends Controller
 {
@@ -25,6 +26,7 @@ class GroupController extends Controller
      */
     public function store(StoreGroupRequest $request)
     {
+        Gate::authorize('groups.store');
         $data = $request->validated();
         $group = Group::create($data);
 
@@ -46,6 +48,7 @@ class GroupController extends Controller
      */
     public function update(UpdateGroupRequest $request, string $id)
     {
+        Gate::authorize('groups.update');
         $data = $request->validated();
         $group = Group::findOrFail($id);
         $group->update([
@@ -69,6 +72,7 @@ class GroupController extends Controller
      */
     public function destroy(string $id)
     {
+        Gate::authorize('groups.delete');
         $group = Group::findOrFail($id);
         $group->delete();
 
@@ -80,12 +84,13 @@ class GroupController extends Controller
      */
     public function bulkDelete(BulkDeleteGroupRequest $request)
     {
+        Gate::authorize('groups.delete');
         $data = $request->validated();
         try {
             Group::whereIn('id', $data['bulk'])
                 ->delete();
 
-            return response()->json(['message' => 'Users deleted successfully'], 200);
+            return response()->json(['message' => 'Groups deleted successfully'], 200);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
