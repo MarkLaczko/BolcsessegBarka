@@ -65,6 +65,8 @@ Route::middleware('auth:sanctum')->put('/groups/{id}', [GroupController::class, 
     ->name('groups.update');
 Route::middleware('auth:sanctum')->delete('/groups/{id}', [GroupController::class, 'destroy'])
     ->name('groups.destroy');
+Route::middleware('auth:sanctum')->delete('/groups', [GroupController::class, 'bulkDelete'])
+    ->name('groups.bulkDelete');
 
 
 Route::middleware('auth:sanctum')->get('/notes', [NoteController::class,'index'])
