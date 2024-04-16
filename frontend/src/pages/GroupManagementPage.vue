@@ -52,7 +52,7 @@
         <FormKit
           type="form"
           :actions="false"
-          @submit="postGroup"
+          @submit="addGroup"
           :incomplete-message="
             messages.pages.groupManagementPage.newGroupDialog
               .matchAllValidationMessage
@@ -107,7 +107,7 @@
         v-if="modifyGroupDialogVisible"
         :visible="modifyGroupDialogVisible"
         :header="messages.pages.groupManagementPage.editGroupDialog.title+' '+currentlyModifyingGroup.name"
-        :style="'50'"
+        :width="'60rem'"
       >
         <FormKit
           type="form"
@@ -136,7 +136,7 @@
 
           <DataTable
             :value="users"
-            tableStyle="min-width: 40rem"
+            tableStyle="max-width: 90wv"
             sortField="name"
             :sortOrder="1"
             v-model:filters="userFilters"
@@ -367,7 +367,7 @@
             exportFilename="groups"
             ref="dt"
             :value="groups"
-            tableStyle="min-width: 50rem"
+            tableStyle="min-width: 50wv"
             sortField="id"
             :sortOrder="1"
             v-model:filters="filters"
@@ -537,7 +537,7 @@ export default {
   },
   computed: {
     ...mapState(userStore, ["token"]),
-    ...mapState(groupStore, ["groups", 'addGroup', 'modifyGroup']),
+    ...mapState(groupStore, ["groups"]),
     ...mapState(themeStore, ["isDarkMode"]),
     ...mapState(permissionStore, ["permissions"]),
     ...mapState(languageStore, ["messages"]),
@@ -552,6 +552,7 @@ export default {
       "postGroup",
       "updateGroup",
       "deleteGroup",
+      "bulkDeleteGroups"
     ]),
     ...mapActions(permissionStore, ["getPermissions"]),
     selectAllGroups() {
@@ -570,23 +571,14 @@ export default {
       this.users = response.data.data;
     },
     async deleteMultipleGroups() {
+      await this.bulkDeleteGroups(this.selectedGroups);
       try {
-        let userIds = this.selectedGroups.map((x) => x.id);
-        await http.post(
-          "/users/delete",
-          { userIds: userIds },
-          {
-            headers: {
-              Authorization: `Bearer ${this.token}`,
-            },
-          }
-        );
 
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "success",
             detail:
-              this.messages.groupManagementPage.toastMessages
+              this.messages.pages.groupManagementPage.toastMessages
                 .successfullyDeletedMultipleGroups,
             life: 3000,
           });
@@ -594,20 +586,18 @@ export default {
           this.$toast.add({
             severity: "success",
             detail:
-              this.messages.groupManagementPage.toastMessages
+              this.messages.pages.groupManagementPage.toastMessages
                 .successfullyDeletedMultipleGroups,
             styleClass: "bg-success text-white",
             life: 3000,
           });
         }
-
-        await this.getUsers();
       } catch (error) {
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "error",
             detail:
-              this.messages.groupManagementPage.toastMessages
+              this.messages.pages.groupManagementPage.toastMessages
                 .failedToDeleteMultipleGroups,
             life: 3000,
           });
@@ -615,7 +605,7 @@ export default {
           this.$toast.add({
             severity: "error",
             detail:
-              this.messages.groupManagementPage.toastMessages
+              this.messages.pages.groupManagementPage.toastMessages
                 .failedToDeleteMultipleGroups,
             styleClass: "bg-danger text-white",
             life: 3000,
@@ -623,13 +613,51 @@ export default {
         }
       }
     },
-    async sendUpdateGroup(data) {
-      data.selectedUsers = this.currentlyModifyingGroup.selectedUsers;
-      await this.updateGroup(data);
+    async addGroup(data){
+      try {
+        await this.postGroup(data);
+        this.$toast.add({
+          severity: "error",
+          detail:
+            this.messages.pages.groupManagementPage.toastMessages
+              .successfullyDeletedGroup,
+          styleClass: "bg-success text-white",
+          life: 3000,
+        });
+      } catch (error) {
+        this.$toast.add({
+          severity: "error",
+          detail:
+            this.messages.pages.groupManagementPage.toastMessages
+              .failedToDeleteGroup,
+          styleClass: "bg-danger text-white",
+          life: 3000,
+        });
+      }
+      this.addGroupDialogVisible = false;
     },
     async sendUpdateGroup(data) {
       data.selectedUsers = this.currentlyModifyingGroup.selectedUsers;
-      await this.updateGroup(data);
+      try {
+        await this.updateGroup(data);
+        this.$toast.add({
+          severity: "error",
+          detail:
+            this.messages.pages.groupManagementPage.toastMessages
+              .successfullyUpdatedGroup,
+          styleClass: "bg-success text-white",
+          life: 3000,
+        });
+      } catch (error) {
+        this.$toast.add({
+          severity: "error",
+          detail:
+            this.messages.pages.groupManagementPage.toastMessages
+              .failedToUpdateGroup,
+          styleClass: "bg-danger text-white",
+          life: 3000,
+        });
+      }
       this.closeModifyWindow();
     },
     selectUser(data) {
