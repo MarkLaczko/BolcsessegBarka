@@ -3,13 +3,14 @@
 ## Tartalomjegyzék
 
 1. [API dokumentáció](#api-dokumentáció)
+1. [Komponensek](#komponensek)
 
 ## API Dokumentáció
 
-| Method | URI                 | Name           | Controller     | Action       |
-|--------|---------------------|----------------|----------------|--------------|
-| POST   | /api/users/register | users.register | UserController | store        |
-| POST   | /api/users/login    | users.login    | AuthController | authenticate |
+| Method | URI                 | Name           | Controller      | Action       |
+|--------|---------------------|----------------|-----------------|--------------|
+| POST   | /api/users/register | users.register | UserController  | store        |
+| POST   | /api/users/login    | users.login    | AuthController  | authenticate |
 
 ### `POST /api/users/register`
 
@@ -110,3 +111,24 @@ Az alábbi hibakódokat adhatja vissza a végpont:
 - `401 Unauthorized`: Sikertelen a belépés.
 - `422 Unprocessable Content`: Hiba a törzs adataiban.
 - `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+## Komponensek
+
+### `BaseDialog`
+
+PrimeVue Dialog felugró ablak.
+
+#### Átvett tulajdonságok:
+- `visible`: Logikai tulajdonság, amely meghatározza, mikor látható a felugró ablak.
+- `header`: Szöveges tulajdonság, a fejlécben megjelenő szöveg.
+- `width`: Szöveges tulajdonság, a felugró ablak szélessége (alapértelmezetten: `50rem`).
+
+#### Példa használatra:
+
+```html
+<BaseDialog :visible="visible" header="Felugró ablak" width="60rem">
+    <!-- A felugró ablak tartalma -->
+</BaseDialog>
+```
+
+[PrimeVue Dialog dokumentáció](https://primevue.org/dialog/)
