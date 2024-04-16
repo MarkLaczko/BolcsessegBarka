@@ -100,6 +100,7 @@
   --loginLink-bg-color: #{$lightGray};
   --loginLink-color: #{$black};
   --loginAndRegister-bg-color: linear-gradient(#{$white}, #{$cyan});
+  --backToTopButton-bg-color: #{$cyan};
 }
 
 [data-theme="dark"] {
@@ -142,6 +143,7 @@
   --loginLink-bg-color: #{$darkerGrey};
   --loginLink-color: #{$white};
   --loginAndRegister-bg-color: linear-gradient(#{$white}, #{$gray});
+  --backToTopButton-bg-color: #{$lightGray};
 }
 
 body {
@@ -288,7 +290,8 @@ i.fa-gear {
   color: white;
 }
 
-.formButton:hover, .formLink:hover {
+.formButton:hover,
+.formLink:hover {
   background-color: darken($white, 50%);
 }
 
@@ -301,4 +304,8 @@ i.fa-gear {
 .backgroundColor {
   background: var(--loginAndRegister-bg-color);
   height: 100%;
+}
+
+#toTopBtn {
+  background-color: var(--backToTopButton-bg-color);
 }
