@@ -5,6 +5,7 @@
         :closable="false"
         :header="props.header"
         :style="{ width: `${props.width == null ? '50rem' : props.width}` }"
+        :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
         :pt="{
           root: {
             class: 'modal-dialog p-3 rounded shadow border',
