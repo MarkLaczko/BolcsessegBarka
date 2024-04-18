@@ -9,9 +9,11 @@
     </div>
     <div class="card-body text-center">
       <h5 class="card-title">{{ title }}</h5>
-      <a href="#" class="btn text-white mt-3 buttons">{{
-        messages.components.BaseCourseCard.viewButton
-      }}</a>
+      <RouterLink
+        class="btn text-white mt-3 buttons"
+        :to="{ name: 'course', params: { id: courseId } }"
+        >{{ messages.components.BaseCourseCard.viewButton }}</RouterLink
+      >
     </div>
   </div>
 </template>
@@ -26,6 +28,7 @@ export default {
   props: {
     title: String,
     image: String,
+    courseId: Number,
   },
 };
 </script>

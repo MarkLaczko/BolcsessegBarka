@@ -10,19 +10,22 @@ export default {
       passwordConfirmPlaceholder: "Jelszó megerősítés",
       validationMessages: {
         matchAllValidationMessage:
-        "Sajnáljuk, nem minden mezőt töltöttek ki helyesen.",
+          "Sajnáljuk, nem minden mezőt töltöttek ki helyesen.",
         nameRequired: "A felhasználónév kitöltése kötelező.",
-        nameLength: "A felhasználónévnek kevesebbnek kell lennie, mint 255 karakter.",
+        nameLength:
+          "A felhasználónévnek kevesebbnek kell lennie, mint 255 karakter.",
         emailRequired: "Az email kitöltése kötelező.",
         validEmail: "Adjon meg egy érvényes email címet.",
         passwordRequired: "A jelszó kitöltése kötelező.",
-        passwordLength: "Legalább 8, maximum 255 karakter hosszú lehet a jelszó.",
+        passwordLength:
+          "Legalább 8, maximum 255 karakter hosszú lehet a jelszó.",
         confirmPasswordRequired: "A jelszó megerősítés kitöltése kötelező.",
-        confirmPasswordLength: "Legalább 8, maximum 255 karakter hosszú lehet a jelszó megerősítés.",
-        confirmPasswordConfirm: "A jelszavak nem egyeznek."
+        confirmPasswordLength:
+          "Legalább 8, maximum 255 karakter hosszú lehet a jelszó megerősítés.",
+        confirmPasswordConfirm: "A jelszavak nem egyeznek.",
       },
       registerFailed: "Sikertelen regisztráció!",
-      registerSucceeded: "Sikeres regisztráció!"
+      registerSucceeded: "Sikeres regisztráció!",
     },
     loginPage: {
       title: "Bejelentkezés",
@@ -30,7 +33,7 @@ export default {
       passwordPlaceholder: "Jelszó",
       loginButtonText: "Bejelentkezés",
       accountText: "Még nincs fiókja?",
-      loginFailed: "Sikertelen belépés!"
+      loginFailed: "Sikertelen belépés!",
     },
     homePage: {
       title: "Üdvözöllek",
@@ -210,6 +213,10 @@ export default {
           fileUpload: "Kép hozzáadása",
           nameLength:
             "A kurzus nevének kevesebbnek kell lennie, mint 255 karakter.",
+        },
+        multiSelect: {
+          title: "Csoportok hozzárendelése",
+          searchPlaceholder: "Keresés...",
         },
       },
       toastMessages: {

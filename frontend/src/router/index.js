@@ -90,6 +90,14 @@ export const router = createRouter({
         title: "Feladat beadó felület",
       },
     },
+    {
+      path: "/course/:id",
+      name: "course",
+      component: () => import("@pages/CoursePage.vue"),
+      meta: {
+        requiresAuth: true,
+      },
+    },
   ],
 });
 
