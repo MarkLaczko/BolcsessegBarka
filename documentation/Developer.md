@@ -329,7 +329,7 @@ Egy JSON objektumot ad vissza `data` néven a következőkkel:
 
 - `id`: A csoport azonosítója.
 - `name`: A csoport neve.
-- `users`: A csoport tagjai.
+- `users`: A csoport tagjai, ahol az `id` a felhasználó azonosítóját, a `permission` a felhasználó jogosultsági szintjét ("Tanár vagy "Tanuló") adja meg.
 - `courses`: A csoporthoz tartozó kurzusok.
 - `errors`: Ha hiba keletkezett, egy objektumban visszaadja a hibákat.
 
@@ -347,6 +347,7 @@ Törzs:
     "selectedUsers": [
         {
             "id": 2
+            "permission": "Tanár"
         }
     ]
 }
