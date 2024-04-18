@@ -1,47 +1,47 @@
 <template>
-    <Dialog
-        v-model:visible="props.visible"
-        modal
-        :closable="false"
-        :header="props.header"
-        :style="{ width: `${props.width == null ? '50rem' : props.width}` }"
-        :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
-        :pt="{
-          root: {
-            class: 'modal-dialog p-3 rounded shadow border',
-          },
-          header: {
-            class: 'd-flex justify-content-between align-items-center pb-2',
-          },
-          title: {
-            class: 'modal-title fw-bold',
-          },
-          closeButton: {
-            class: 'btn btn-outline-dark btn-sm',
-          },
-          closeButtonIcon: {
-            class: 'fa-solid fa-x',
-          },
-          transition: {
-            name: 'slide-fade',
-          },
-        }"
-      >
-        <slot />
-    </Dialog>
+  <Dialog
+    v-model:visible="props.visible"
+    modal
+    :closable="false"
+    :header="props.header"
+    :style="{ width: `${props.width == null ? '50rem' : props.width}` }"
+    :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+    :pt="{
+      root: {
+        class: 'modal-dialog p-3 rounded shadow border',
+      },
+      header: {
+        class: 'd-flex justify-content-between align-items-center pb-2',
+      },
+      title: {
+        class: 'modal-title fw-bold',
+      },
+      closeButton: {
+        class: 'btn btn-outline-dark btn-sm',
+      },
+      closeButtonIcon: {
+        class: 'fa-solid fa-x',
+      },
+      transition: {
+        name: 'slide-fade',
+      },
+    }"
+  >
+    <slot />
+  </Dialog>
 </template>
 
 <script setup>
-import Dialog from 'primevue/dialog';
+import Dialog from "primevue/dialog";
 
 const props = defineProps({
-    visible: Boolean,
-    header: String,
-    width: String
-})
+  visible: Boolean,
+  header: String,
+  width: String,
+});
 </script>
 
-<style scoped>
+<style>
 .slide-fade-enter-active {
   transition: all 0.3s ease-out;
 }
