@@ -7,17 +7,15 @@
         form: {
           container: true,
           'form-control-width': true,
-          'bg-info': true,
           'rounded-4': true,
-          'px-5': true,
           'pb-2': true,
         },
       }"
       @submit="register"
-      incomplete-message="Sajnáljuk, nem minden mezőt töltöttek ki helyesen."
+      :incomplete-message="messages.pages.registerPage.validationMessages.matchAllValidationMessage"
     >
       <Message
-        v-for="msg of messages"
+        v-for="msg of message"
         :key="msg.id"
         :icon="`fa-solid fa-${msg.icon}`"
         :pt="{
@@ -31,18 +29,56 @@
         </template>
       </Message>
 
-      <h1 class="text-center my-4">Regisztráció</h1>
+      <div class="dropdown d-flex justify-content-end">
+          <button class="btn dropdown-toggle p-0 pt-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-gear"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+            <div class="d-flex justify-content-center align-items-center">
+                  <li class="ms-3 mb-md-3 mt-md-3">
+                    <i
+                      :class="`fa-regular ${
+                        !isDarkMode ? 'fa-moon' : 'fa-sun'
+                      } fa-xl my-2`"
+                      id="icon"
+                      @click="toggleTheme"
+                    ></i>
+                  </li>
+                  <li>
+                    <a class="dropdown-item">
+                      <div class="form-check form-switch">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          @input="switchLanguage"
+                          id="languageSwitch"
+                          :checked="language === 'EN'"
+                        />
+                        <label
+                          class="form-check-label text-white"
+                          for="languageSwitch"
+                          id="switchLabel"
+                          >{{ language }}</label
+                        >
+                      </div></a
+                    >
+                  </li>
+                </div>
+          </ul>
+        </div>
+
+      <h1 class="text-center">{{ messages.pages.registerPage.title }}</h1>
 
       <FormKit
         type="text"
         name="name"
         v-model="name"
-        placeholder="Felhasználónév"
+        :placeholder="messages.pages.registerPage.namePlaceholder"
         validation="required|length:0,255"
         :validation-messages="{
-          required: 'A felhasználónév kitöltése kötelező.',
+          required: messages.pages.registerPage.validationMessages.nameRequired,
           length:
-            'A felhasználónévnek kevesebbnek kell lennie, mint 255 karakter.',
+            messages.pages.registerPage.validationMessages.nameLength,
         }"
         :classes="{
           input: {
@@ -56,17 +92,20 @@
             'text-danger': true,
             'p-0': true,
           },
+          outer: {
+            'px-5': true,
+          }
         }"
       />
       <FormKit
         type="email"
         name="email"
         v-model="email"
-        placeholder="E-mail"
+        :placeholder="messages.pages.registerPage.emailPlaceholder"
         validation="required|email"
         :validation-messages="{
-          required: 'Az email kitöltése kötelező.',
-          email: 'Adjon meg egy érvényes email címet.',
+          required: messages.pages.registerPage.validationMessages.emailRequired,
+          email: messages.pages.registerPage.validationMessages.validEmail,
         }"
         :classes="{
           input: {
@@ -81,17 +120,20 @@
             'text-danger': true,
             'p-0': true,
           },
+          outer: {
+            'px-5': true,
+          }
         }"
       />
       <FormKit
         type="password"
         name="password"
         v-model="password"
-        placeholder="Jelszó"
+        :placeholder="messages.pages.registerPage.passwordPlaceholder"
         validation="required|length:8,255"
         :validation-messages="{
-          required: 'A jelszó kitöltése kötelező.',
-          length: 'Legalább 8, maximum 255 karakter hosszú lehet a jelszó.',
+          required: messages.pages.registerPage.validationMessages.passwordRequired,
+          length: messages.pages.registerPage.validationMessages.passwordLength,
         }"
         :classes="{
           input: {
@@ -106,19 +148,22 @@
             'text-danger': true,
             'p-0': true,
           },
+          outer: {
+            'px-5': true,
+          }
         }"
       />
       <FormKit
         type="password"
         name="password_confirm"
         v-model="password_confirm"
-        placeholder="Jelszó megerősítés"
+        :placeholder="messages.pages.registerPage.passwordConfirmPlaceholder"
         validation="required|length:8,255|confirm"
         :validation-messages="{
-          required: 'A jelszó megerősítés kitöltése kötelező.',
+          required: messages.pages.registerPage.validationMessages.confirmPasswordRequired,
           length:
-            'Legalább 8, maximum 255 karakter hosszú lehet a jelszó megerősítés.',
-          confirm: 'A jelszavak nem egyeznek.',
+          messages.pages.registerPage.validationMessages.confirmPasswordLength,
+          confirm: messages.pages.registerPage.validationMessages.confirmPasswordConfirm,
         }"
         :classes="{
           input: {
@@ -133,6 +178,9 @@
             'text-danger': true,
             'p-0': true,
           },
+          outer: {
+            'px-5': true,
+          }
         }"
       />
       <div class="d-flex gap-2 justify-content-center mt-3 mb-2">
@@ -141,17 +189,15 @@
           :classes="{
             input: {
               btn: true,
-              'btn-primary': true,
-              'btn-info': false,
-              'form-control': false,
+              'formButton' : true,
               'px-3': true,
             },
           }"
         >
-          Regisztráció
+          {{ messages.pages.registerPage.submitButton }}
         </FormKit>
-        <RouterLink :to="{ name: 'login' }" class="btn btn-secondary h-100">
-          Már van fiókja?
+        <RouterLink :to="{ name: 'login' }" class="btn formLink h-100">
+          {{ messages.pages.registerPage.accountText }}
         </RouterLink>
       </div>
     </FormKit>
@@ -162,6 +208,9 @@
 import { http } from "@utils/http";
 import Message from "primevue/message";
 import { RouterLink } from "vue-router";
+import { themeStore } from "@stores/ThemeStore.mjs";
+import { languageStore } from "@stores/LanguageStore.mjs";
+import { mapState, mapActions } from "pinia";
 
 export default {
   components: {
@@ -170,7 +219,7 @@ export default {
   },
   data() {
     return {
-      messages: [],
+      message: [],
       count: 0,
       name: "",
       email: "",
@@ -178,17 +227,27 @@ export default {
       password_confirm: "",
     };
   },
+  computed: {
+    ...mapState(languageStore, ["messages","language"]),
+    ...mapState(themeStore, ["isDarkMode"]),
+  },
   methods: {
+    ...mapActions(languageStore, ["switchLanguage"]),
+
+    toggleTheme() {
+      themeStore().toggleTheme();
+    },
+
     async register(data) {
       try {
         let formData = { ...data };
         formData.password_confirmation = formData.password_confirm;
         await http.post("/users/register", formData);
-        this.messages = [
+        this.message = [
           {
             color: "success",
             icon: "check",
-            content: "Sikeres regisztráció!",
+            content: this.messages.pages.registerPage.registerSucceeded,
             id: this.count++,
           },
         ];
@@ -201,7 +260,7 @@ export default {
           {
             color: "danger",
             icon: "triangle-exclamation",
-            content: "Sikertelen regisztráció!",
+            content: this.messages.pages.registerPage.registerFailed,
             id: this.count++,
           },
         ];
@@ -220,5 +279,13 @@ export default {
   .form-control-width {
     width: 80%;
   }
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+.btn.dropdown-toggle{
+  border: none;
 }
 </style>

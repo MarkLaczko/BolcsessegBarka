@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCourseRequest;
+use App\Http\Requests\StoreGroupIdRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
+use App\Models\Topic;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -72,5 +74,37 @@ class CourseController extends Controller
         }
 
         return response()->json(['message' => 'No Courses to delete'], 400);
+    }
+
+    public function assignGroups(StoreGroupIdRequest $request, Course $course)
+    {
+        $data = $request->validated();
+
+        $course->groups()->sync($data['group_ids']);
+
+        return response()->json([
+            'message' => 'Groups successfully assigned to the course.',
+            'course' => $course->load('groups')
+        ]);
+    }
+
+    public function assignTopics(Request $request, $courseId)
+    {
+        $course = Course::find($courseId);
+        if (!$course) {
+            return response()->json(['message' => 'Course not found'], 404);
+        }
+    
+        $topicIds = $request->input('topic_ids');
+        foreach ($topicIds as $topicId) {
+            $topic = Topic::find($topicId);
+            if ($topic) {
+                $topic->course_id = $courseId;
+                $topic->save();
+            }
+        }
+    
+        $course->load('topics');
+        return new CourseResource($course);
     }
 }

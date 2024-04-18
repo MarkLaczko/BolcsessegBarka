@@ -42,37 +42,17 @@
           },
         }"
       />
-      <Dialog
+
+      <BaseDialog
         v-if="addGroupDialogVisible"
-        v-model:visible="addGroupDialogVisible"
-        modal
+        :visible="addGroupDialogVisible"
         :header="messages.pages.groupManagementPage.newGroupDialog.title"
-        :style="{ width: '25rem' }"
-        :pt="{
-          root: {
-            class: 'modal-dialog p-3 rounded shadow border',
-          },
-          header: {
-            class: 'd-flex justify-content-between align-items-center pb-2',
-          },
-          title: {
-            class: 'modal-title fw-bold',
-          },
-          closeButton: {
-            class: 'btn btn-outline-dark btn-sm',
-          },
-          closeButtonIcon: {
-            class: 'fa-solid fa-x',
-          },
-          transition: {
-            name: 'slide-fade',
-          },
-        }"
+        :width="'25rem'"
       >
         <FormKit
           type="form"
           :actions="false"
-          @submit="postGroup"
+          @submit="addGroup"
           :incomplete-message="
             messages.pages.groupManagementPage.newGroupDialog
               .matchAllValidationMessage
@@ -120,50 +100,42 @@
             />
           </div>
         </FormKit>
-      </Dialog>
-      <Dialog
+      </BaseDialog>
+
+      <BaseDialog
         v-if="modifyGroupDialogVisible"
-        v-model:visible="modifyGroupDialogVisible"
-        modal
-        :header="messages.pages.groupManagementPage.editGroupDialog.title+' '+currentlyModifyingGroup.name"
-        :style="{ width: '50rem' }"
-        :pt="{
-          root: {
-            class: 'modal-dialog p-3 rounded shadow border',
-          },
-          header: {
-            class: 'd-flex justify-content-between align-items-center pb-2',
-          },
-          title: {
-            class: 'modal-title fw-bold',
-          },
-          closeButton: {
-            class: 'btn btn-outline-dark btn-sm',
-          },
-          closeButtonIcon: {
-            class: 'fa-solid fa-x',
-          },
-          transition: {
-            name: 'slide-fade',
-          },
-        }"
+        :visible="modifyGroupDialogVisible"
+        :header="
+          messages.pages.groupManagementPage.editGroupDialog.title +
+          ' ' +
+          currentlyModifyingGroup.name
+        "
+        :width="'60rem'"
       >
         <FormKit
           type="form"
           :actions="false"
           @submit="sendUpdateGroup"
           :value="currentlyModifyingGroup"
-          :incomplete-message="messages.pages.groupManagementPage.editGroupDialog.matchAllValidationMessage"
+          :incomplete-message="
+            messages.pages.groupManagementPage.editGroupDialog
+              .matchAllValidationMessage
+          "
         >
           <FormKit
             type="text"
             name="name"
-            :label="messages.pages.groupManagementPage.editGroupDialog.nameLabel"
+            :label="
+              messages.pages.groupManagementPage.editGroupDialog.nameLabel
+            "
             validation="required|length:0,100"
             :validation-messages="{
-              required: messages.pages.groupManagementPage.editGroupDialog.validationMessages.nameRequired,
+              required:
+                messages.pages.groupManagementPage.editGroupDialog
+                  .validationMessages.nameRequired,
               length:
-              messages.pages.groupManagementPage.editGroupDialog.validationMessages.nameLength,
+                messages.pages.groupManagementPage.editGroupDialog
+                  .validationMessages.nameLength,
             }"
             :classes="{
               input: {
@@ -175,7 +147,7 @@
 
           <DataTable
             :value="users"
-            tableStyle="min-width: 40rem"
+            tableStyle="max-width: 90wv"
             sortField="name"
             :sortOrder="1"
             v-model:filters="userFilters"
@@ -245,10 +217,18 @@
                 </div>
               </template>
             </Column>
-            <Column field="id" :header="messages.pages.groupManagementPage.editGroupDialog.idLabel" sortable></Column>
+            <Column
+              field="id"
+              :header="
+                messages.pages.groupManagementPage.editGroupDialog.idLabel
+              "
+              sortable
+            ></Column>
             <Column
               field="name"
-              :header="messages.pages.groupManagementPage.editGroupDialog.nameLabel"
+              :header="
+                messages.pages.groupManagementPage.editGroupDialog.nameLabel
+              "
               sortable
               :pt="{
                 columnfilter: {
@@ -268,13 +248,18 @@
                   type="text"
                   @input="filterCallback()"
                   class="form-control"
-                  :placeholder="messages.pages.groupManagementPage.editGroupDialog.namePlaceholder"
+                  :placeholder="
+                    messages.pages.groupManagementPage.editGroupDialog
+                      .namePlaceholder
+                  "
                 />
               </template>
             </Column>
             <Column
               field="email"
-              :header="messages.pages.groupManagementPage.editGroupDialog.emailLabel"
+              :header="
+                messages.pages.groupManagementPage.editGroupDialog.emailLabel
+              "
               sortable
               :pt="{
                 columnfilter: {
@@ -294,13 +279,19 @@
                   type="text"
                   @input="filterCallback()"
                   class="form-control"
-                  :placeholder="messages.pages.groupManagementPage.editGroupDialog.emailPlaceholder"
+                  :placeholder="
+                    messages.pages.groupManagementPage.editGroupDialog
+                      .emailPlaceholder
+                  "
                 />
               </template>
             </Column>
             <Column
               field="permission"
-              :header="messages.pages.groupManagementPage.editGroupDialog.permissionLabel"
+              :header="
+                messages.pages.groupManagementPage.editGroupDialog
+                  .permissionLabel
+              "
               :pt="{
                 columnfilter: {
                   class: 'd-flex',
@@ -339,13 +330,17 @@
           <div class="d-flex justify-content-end mt-2 mb-3">
             <Button
               type="button"
-              :label="messages.pages.groupManagementPage.editGroupDialog.cancelButton"
+              :label="
+                messages.pages.groupManagementPage.editGroupDialog.cancelButton
+              "
               class="btn btn-outline-danger mx-1"
               @click="closeModifyWindow"
             ></Button>
             <FormKit
               type="submit"
-              :label="messages.pages.groupManagementPage.editGroupDialog.saveButton"
+              :label="
+                messages.pages.groupManagementPage.editGroupDialog.saveButton
+              "
               :classes="{
                 input: {
                   btn: true,
@@ -356,7 +351,8 @@
             />
           </div>
         </FormKit>
-      </Dialog>
+      </BaseDialog>
+
       <div>
         <div class="card darkTheme">
           <Toolbar
@@ -405,7 +401,7 @@
             exportFilename="groups"
             ref="dt"
             :value="groups"
-            tableStyle="min-width: 50rem"
+            tableStyle="min-width: 50wv"
             sortField="id"
             :sortOrder="1"
             v-model:filters="filters"
@@ -454,10 +450,18 @@
                 </div>
               </template>
             </Column>
-            <Column field="id" :header="messages.pages.groupManagementPage.editGroupDialog.idLabel" sortable></Column>
+            <Column
+              field="id"
+              :header="
+                messages.pages.groupManagementPage.editGroupDialog.idLabel
+              "
+              sortable
+            ></Column>
             <Column
               field="name"
-              :header="messages.pages.groupManagementPage.editGroupDialog.nameLabel"
+              :header="
+                messages.pages.groupManagementPage.editGroupDialog.nameLabel
+              "
               sortable
               :pt="{
                 columnfilter: {
@@ -477,18 +481,31 @@
                   type="text"
                   @input="filterCallback()"
                   class="form-control"
-                  :placeholder="messages.pages.groupManagementPage.editGroupDialog.namePlaceholder"
+                  :placeholder="
+                    messages.pages.groupManagementPage.editGroupDialog
+                      .namePlaceholder
+                  "
                 />
               </template>
             </Column>
-            <Column field="users.length" :header="messages.pages.groupManagementPage.memberText" sortable>
+            <Column
+              field="users.length"
+              :header="messages.pages.groupManagementPage.memberText"
+              sortable
+            >
               <template #body="slotProp">
-                {{ slotProp.data.users.length }} {{ messages.pages.groupManagementPage.member }}
+                {{ slotProp.data.users.length }}
+                {{ messages.pages.groupManagementPage.member }}
               </template>
             </Column>
-            <Column field="courses.length" :header="messages.pages.groupManagementPage.courseText" sortable>
+            <Column
+              field="courses.length"
+              :header="messages.pages.groupManagementPage.courseText"
+              sortable
+            >
               <template #body="slotProp">
-                {{ slotProp.data.courses.length }} {{ messages.pages.groupManagementPage.course }}
+                {{ slotProp.data.courses.length }}
+                {{ messages.pages.groupManagementPage.course }}
               </template>
             </Column>
             <Column :header="messages.pages.groupManagementPage.modifyText">
@@ -512,245 +529,6 @@
               </template>
             </Column>
           </DataTable>
-          <Dialog
-            v-if="modifyGroupDialogVisible"
-            v-model:visible="modifyGroupDialogVisible"
-            modal
-            :header="
-              messages.pages.groupManagementPage.editGroupDialog.title +
-              ' ' +
-              currentlyModifyingGroup.name
-            "
-            :style="{ width: '50rem' }"
-            :pt="{
-              root: {
-                class: 'modal-dialog p-3 rounded shadow border',
-              },
-              header: {
-                class: 'd-flex justify-content-between align-items-center pb-2',
-              },
-              title: {
-                class: 'modal-title fw-bold',
-              },
-              closeButton: {
-                class: 'btn btn-outline-dark btn-sm',
-              },
-              closeButtonIcon: {
-                class: 'fa-solid fa-x',
-              },
-              transition: {
-                name: 'slide-fade',
-              },
-            }"
-          >
-            <FormKit
-              type="form"
-              :actions="false"
-              @submit="sendUpdateGroup"
-              :value="currentlyModifyingGroup"
-              :incomplete-message="
-                messages.pages.groupManagementPage.editGroupDialog
-                  .validationMessages.matchAllValidationMessage
-              "
-            >
-              <FormKit
-                type="text"
-                name="name"
-                :label="
-                  messages.pages.groupManagementPage.editGroupDialog.nameLabel
-                "
-                validation="required|length:0,100"
-                :validation-messages="{
-                  required:
-                    messages.pages.groupManagementPage.editGroupDialog
-                      .validationMessages.nameRequired,
-                  length:
-                    messages.pages.groupManagementPage.editGroupDialog
-                      .validationMessages.nameLength,
-                }"
-                :classes="{
-                  input: {
-                    'mb-1': true,
-                    'form-control': true,
-                  },
-                }"
-              />
-              {{ currentlyModifyingGroup }}
-              <DataTable
-                :value="users"
-                tableStyle="min-width: 40rem"
-                sortField="name"
-                :sortOrder="1"
-                v-model:filters="userFilters"
-                filterDisplay="row"
-                v-model:selection="currentlyModifyingGroup.selectedUsers"
-                selectionMode="multiple"
-                dataKey="id"
-                :metaKeySelection="false"
-                :pt="{
-                  table: {
-                    class: 'table table-responsive align-middle',
-                  },
-                }"
-              >
-                <Column>
-                  <template #header>
-                    <div class="d-flex justify-content-center">
-                      <button
-                        type="button"
-                        class="btn"
-                        style="
-                          --bs-btn-padding-y: 0.25rem;
-                          --bs-btn-padding-x: 0.5rem;
-                          --bs-btn-font-size: 0.75rem;
-                          width: 28px;
-                        "
-                        @click="selectAllGroups"
-                      >
-                        <i
-                          class="fa-solid fa-x text-danger"
-                          v-if="
-                            currentlyModifyingGroup.selectedUsers.length == 0
-                          "
-                        ></i>
-                        <i class="fa-solid fa-check text-success" v-else></i>
-                      </button>
-                    </div>
-                  </template>
-                  <template #body="slotProp">
-                    <div class="d-flex justify-content-center">
-                      <i
-                        class="fa-solid fa-check text-success"
-                        v-if="
-                          currentlyModifyingGroup.selectedUsers.findIndex(
-                            (x) => x == slotProp.data
-                          ) != -1
-                        "
-                      ></i>
-                      <i class="fa-solid fa-x text-danger" v-else></i>
-                    </div>
-                  </template>
-                </Column>
-                <Column
-                  field="id"
-                  :header="
-                    messages.pages.groupManagementPage.editGroupDialog.idLabel
-                  "
-                  sortable
-                ></Column>
-                <Column
-                  field="name"
-                  :header="
-                    messages.pages.groupManagementPage.editGroupDialog.nameLabel
-                  "
-                  sortable
-                  :pt="{
-                    columnfilter: {
-                      class: 'd-flex',
-                    },
-                    filtermenubutton: {
-                      class: 'btn ms-1',
-                    },
-                    headerfilterclearbutton: {
-                      class: 'btn ms-1',
-                    },
-                  }"
-                >
-                  <template #filter="{ filterModel, filterCallback }">
-                    <InputText
-                      v-model="filterModel.value"
-                      type="text"
-                      @input="filterCallback()"
-                      class="form-control"
-                      :placeholder="
-                        messages.pages.groupManagementPage.editGroupDialog
-                          .namePlaceholder
-                      "
-                    />
-                  </template>
-                </Column>
-                <Column
-                  field="email"
-                  :header="
-                    messages.pages.groupManagementPage.editGroupDialog
-                      .emailLabel
-                  "
-                  sortable
-                  :pt="{
-                    columnfilter: {
-                      class: 'd-flex',
-                    },
-                    filtermenubutton: {
-                      class: 'btn ms-1',
-                    },
-                    headerfilterclearbutton: {
-                      class: 'btn ms-1',
-                    },
-                  }"
-                >
-                  <template #filter="{ filterModel, filterCallback }">
-                    <InputText
-                      v-model="filterModel.value"
-                      type="text"
-                      @input="filterCallback()"
-                      class="form-control"
-                      :placeholder="
-                        messages.pages.groupManagementPage.editGroupDialog
-                          .emailPlaceholder
-                      "
-                    />
-                  </template>
-                </Column>
-                <Column
-                  field="permission"
-                  :header="
-                    messages.pages.groupManagementPage.editGroupDialog
-                      .permissionLabel
-                  "
-                  :pt="{
-                    columnfilter: {
-                      class: 'd-flex',
-                    },
-                    filtermenubutton: {
-                      class: 'btn ms-1',
-                    },
-                    headerfilterclearbutton: {
-                      class: 'btn ms-1',
-                    },
-                  }"
-                >
-                  <template #body="slotProp">
-                    <select
-                      v-model="slotProp.data.permission"
-                      class="form-select"
-                    >
-                      <option value="Tanár">Tanár</option>
-                      <option value="Tanuló">Tanuló</option>
-                    </select>
-                  </template>
-                </Column>
-              </DataTable>
-              <div class="d-flex justify-content-end mt-2 mb-3">
-                <Button
-                  type="button"
-                  :label="messages.pages.groupManagementPage.editGroupDialog.cancelButton"
-                  class="btn btn-outline-danger mx-1"
-                  @click="modifyGroupDialogVisible = false"
-                ></Button>
-                <FormKit
-                  type="submit"
-                  :label="messages.pages.groupManagementPage.editGroupDialog.saveButton"
-                  :classes="{
-                    input: {
-                      btn: true,
-                      'btn-success': true,
-                      'w-auto': true,
-                    },
-                  }"
-                />
-              </div>
-            </FormKit>
-          </Dialog>
         </div>
       </div>
     </div>
@@ -777,6 +555,8 @@ import { themeStore } from "@stores/ThemeStore.mjs";
 import { userStore } from "@stores/UserStore";
 import { permissionStore } from "@stores/PermissionStore.mjs";
 import { languageStore } from "@stores/LanguageStore.mjs";
+import BaseDialog from "@components/BaseDialog.vue";
+
 export default {
   components: {
     BaseLayout,
@@ -791,6 +571,7 @@ export default {
     Toast,
     RadioButton,
     Dropdown,
+    BaseDialog,
   },
   data() {
     return {
@@ -807,6 +588,7 @@ export default {
       currentlyModifyingGroup: [],
       checked: true,
       users: [],
+      loading: true,
     };
   },
   computed: {
@@ -815,9 +597,6 @@ export default {
     ...mapState(themeStore, ["isDarkMode"]),
     ...mapState(permissionStore, ["permissions"]),
     ...mapState(languageStore, ["messages"]),
-    loading() {
-      return this.groups == null;
-    },
   },
   methods: {
     ...mapActions(groupStore, [
@@ -826,6 +605,7 @@ export default {
       "postGroup",
       "updateGroup",
       "deleteGroup",
+      "bulkDeleteGroups",
     ]),
     ...mapActions(permissionStore, ["getPermissions"]),
     selectAllGroups() {
@@ -844,23 +624,13 @@ export default {
       this.users = response.data.data;
     },
     async deleteMultipleGroups() {
+      await this.bulkDeleteGroups(this.selectedGroups);
       try {
-        let userIds = this.selectedGroups.map((x) => x.id);
-        await http.post(
-          "/users/delete",
-          { userIds: userIds },
-          {
-            headers: {
-              Authorization: `Bearer ${this.token}`,
-            },
-          }
-        );
-
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "success",
             detail:
-              this.messages.groupManagementPage.toastMessages
+              this.messages.pages.groupManagementPage.toastMessages
                 .successfullyDeletedMultipleGroups,
             life: 3000,
           });
@@ -868,20 +638,18 @@ export default {
           this.$toast.add({
             severity: "success",
             detail:
-              this.messages.groupManagementPage.toastMessages
+              this.messages.pages.groupManagementPage.toastMessages
                 .successfullyDeletedMultipleGroups,
             styleClass: "bg-success text-white",
             life: 3000,
           });
         }
-
-        await this.getUsers();
       } catch (error) {
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "error",
             detail:
-              this.messages.groupManagementPage.toastMessages
+              this.messages.pages.groupManagementPage.toastMessages
                 .failedToDeleteMultipleGroups,
             life: 3000,
           });
@@ -889,7 +657,7 @@ export default {
           this.$toast.add({
             severity: "error",
             detail:
-              this.messages.groupManagementPage.toastMessages
+              this.messages.pages.groupManagementPage.toastMessages
                 .failedToDeleteMultipleGroups,
             styleClass: "bg-danger text-white",
             life: 3000,
@@ -897,13 +665,52 @@ export default {
         }
       }
     },
-    async sendUpdateGroup(data) {
-      data.selectedUsers = this.currentlyModifyingGroup.selectedUsers;
-      await this.updateGroup(data);
+    async addGroup(data) {
+      try {
+        await this.postGroup(data);
+        this.$toast.add({
+          severity: "error",
+          detail:
+            this.messages.pages.groupManagementPage.toastMessages
+              .successfullyDeletedGroup,
+          styleClass: "bg-success text-white",
+          life: 3000,
+        });
+      } catch (error) {
+        this.$toast.add({
+          severity: "error",
+          detail:
+            this.messages.pages.groupManagementPage.toastMessages
+              .failedToDeleteGroup,
+          styleClass: "bg-danger text-white",
+          life: 3000,
+        });
+      }
+      this.addGroupDialogVisible = false;
     },
     async sendUpdateGroup(data) {
-      data.selectedUsers = this.currentlyModifyingGroup.selectedUsers;
-      await this.updateGroup(data);
+      data.selectedUsers = this.currentlyModifyingGroup.selectedUsers.map((x) => ({id: x.id, permission: x.permission}));
+      data.users = data.users.map((x) => x.id);
+      try {
+        await this.updateGroup(data);
+        this.$toast.add({
+          severity: "error",
+          detail:
+            this.messages.pages.groupManagementPage.toastMessages
+              .successfullyUpdatedGroup,
+          styleClass: "bg-success text-white",
+          life: 3000,
+        });
+      } catch (error) {
+        this.$toast.add({
+          severity: "error",
+          detail:
+            this.messages.pages.groupManagementPage.toastMessages
+              .failedToUpdateGroup,
+          styleClass: "bg-danger text-white",
+          life: 3000,
+        });
+      }
       this.closeModifyWindow();
     },
     selectUser(data) {
@@ -945,10 +752,11 @@ export default {
       this.$refs.dt.exportCSV();
     },
   },
-  mounted() {
-    this.getGroups();
-    this.getUsers();
-    this.addPermissionFieldToAllGroups();
+  async mounted() {
+    await this.getGroups();
+    await this.getUsers();
+    await this.addPermissionFieldToAllGroups();
+    this.loading = false;
   },
   exportCSV() {
     this.$refs.dt.exportCSV();
@@ -982,4 +790,3 @@ export default {
   opacity: 0;
 }
 </style>
-

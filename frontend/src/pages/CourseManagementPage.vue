@@ -214,6 +214,56 @@
               },
             }"
           />
+
+          <MultiSelect
+            v-model="currentlyModifyingCourse.groups"
+            :options="groups"
+            filter
+            :maxSelectedLabels="3"
+            optionLabel="name"
+            :placeholder="
+              messages.pages.courseManagementPage.editCourseDialog.multiSelect
+                .title
+            "
+            display="chip"
+            :pt="{
+              list: {
+                class: 'rounded-3 w-75 list-style-none p-2',
+              },
+              header: {
+                class:
+                  'rounded-3 w-75 mb-2 d-flex justify-content-center align-items-center p-1',
+              },
+              closeButton: {
+                class: 'btn mb-1',
+              },
+              filterIcon: {
+                class: 'd-none',
+              },
+              filterInput: {
+                class: 'form-control mx-2',
+                placeholder:
+                  messages.pages.courseManagementPage.editCourseDialog
+                    .multiSelect.searchPlaceholder,
+              },
+              headerCheckbox: {
+                input: 'form-check-input',
+              },
+              itemCheckbox: {
+                input: 'form-check-input me-2',
+              },
+              transition: {
+                name: 'slide-fade',
+              },
+              item: {
+                class: 'd-flex',
+              },
+              removeTokenIcon: {
+                class: 'ms-1',
+              },
+            }"
+          />
+
           <div class="d-flex justify-content-end mt-2 mb-3">
             <Button
               type="button"
@@ -432,6 +482,8 @@ import { FilterMatchMode } from "primevue/api";
 import { themeStore } from "@stores/ThemeStore.mjs";
 import { courseStore } from "@stores/CourseStore.mjs";
 import { languageStore } from "@stores/LanguageStore.mjs";
+import MultiSelect from "primevue/multiselect";
+import { groupStore } from "@stores/GroupStore.mjs";
 
 export default {
   components: {
@@ -446,6 +498,7 @@ export default {
     Dialog,
     Toast,
     RadioButton,
+    MultiSelect,
   },
   data() {
     return {
@@ -462,11 +515,14 @@ export default {
   },
   computed: {
     ...mapState(userStore, ["token", "currentUserData"]),
+
     ...mapState(themeStore, ["isDarkMode"]),
     ...mapState(courseStore, ["courses"]),
     ...mapState(languageStore, ["messages"]),
+    ...mapState(groupStore, ["groups"]),
   },
   methods: {
+    ...mapActions(groupStore, ["getGroups"]),
     ...mapActions(courseStore, [
       "getCourses",
       "postCourse",
@@ -497,7 +553,7 @@ export default {
         let toast = {
           severity: "success",
           detail:
-            messages.pages.courseManagementPage.toastMessages
+            this.messages.pages.courseManagementPage.toastMessages
               .successfullyCreatedCourse,
           life: 3000,
         };
@@ -512,7 +568,7 @@ export default {
         let toast = {
           severity: "error",
           detail:
-            messages.pages.courseManagementPage.toastMessages
+            this.messages.pages.courseManagementPage.toastMessages
               .failedToCreateCourse,
           life: 3000,
         };
@@ -539,7 +595,7 @@ export default {
           this.$toast.add({
             severity: "success",
             detail:
-              messages.pages.courseManagementPage.toastMessages
+              this.messages.pages.courseManagementPage.toastMessages
                 .successfullyDeletedCourse,
             life: 3000,
           });
@@ -547,7 +603,7 @@ export default {
           this.$toast.add({
             severity: "success",
             detail:
-              messages.pages.courseManagementPage.toastMessages
+              this.messages.pages.courseManagementPage.toastMessages
                 .successfullyDeletedCourse,
             styleClass: "bg-success text-white",
             life: 3000,
@@ -560,7 +616,7 @@ export default {
           this.$toast.add({
             severity: "error",
             detail:
-              messages.pages.courseManagementPage.toastMessages
+              this.messages.pages.courseManagementPage.toastMessages
                 .failedToDeleteCourse,
             life: 3000,
           });
@@ -568,7 +624,7 @@ export default {
           this.$toast.add({
             severity: "error",
             detail:
-              messages.pages.courseManagementPage.toastMessages
+              this.messages.pages.courseManagementPage.toastMessages
                 .failedToDeleteCourse,
             styleClass: "bg-danger text-white",
             life: 3000,
@@ -593,7 +649,7 @@ export default {
           this.$toast.add({
             severity: "success",
             detail:
-              messages.pages.courseManagementPage.toastMessages
+              this.messages.pages.courseManagementPage.toastMessages
                 .successfullyDeletedMultipleCourses,
             life: 3000,
           });
@@ -601,7 +657,7 @@ export default {
           this.$toast.add({
             severity: "success",
             detail:
-              messages.pages.courseManagementPage.toastMessages
+              this.messages.pages.courseManagementPage.toastMessages
                 .successfullyDeletedMultipleCourses,
             styleClass: "bg-success text-white",
             life: 3000,
@@ -614,7 +670,7 @@ export default {
           this.$toast.add({
             severity: "error",
             detail:
-              messages.pages.courseManagementPage.toastMessages
+              this.messages.pages.courseManagementPage.toastMessages
                 .failedToDeleteMultipleCourses,
             life: 3000,
           });
@@ -622,7 +678,7 @@ export default {
           this.$toast.add({
             severity: "error",
             detail:
-              messages.pages.courseManagementPage.toastMessages
+              this.messages.pages.courseManagementPage.toastMessages
                 .failedToDeleteMultipleCourses,
             styleClass: "bg-danger text-white",
             life: 3000,
@@ -634,19 +690,33 @@ export default {
       try {
         const base64Image = this.currentlyModifyingCourse.image.split(",")[1];
 
+        const group_ids = this.currentlyModifyingCourse.groups.map(
+          (group) => group.id
+        );
         const formData = {
           name: data.name,
           image: base64Image,
         };
 
         await this.putCourse(data.id, formData);
+        await http.post(
+          `/courses/${this.currentlyModifyingCourse.id}/groups`,
+          {
+            group_ids: group_ids,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
         this.modifyCourseDialogVisible = false;
 
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "success",
             detail:
-              messages.pages.courseManagementPage.toastMessages
+              this.messages.pages.courseManagementPage.toastMessages
                 .successfullyUpdatedCourse,
             life: 3000,
           });
@@ -654,7 +724,7 @@ export default {
           this.$toast.add({
             severity: "success",
             detail:
-              messages.pages.courseManagementPage.toastMessages
+              this.messages.pages.courseManagementPage.toastMessages
                 .successfullyUpdatedCourse,
             styleClass: "bg-success text-white",
             life: 3000,
@@ -667,7 +737,7 @@ export default {
           this.$toast.add({
             severity: "error",
             detail:
-              messages.pages.courseManagementPage.toastMessages
+              this.messages.pages.courseManagementPage.toastMessages
                 .failedToUpdateCourse,
             life: 3000,
           });
@@ -675,7 +745,7 @@ export default {
           this.$toast.add({
             severity: "error",
             detail:
-              messages.pages.courseManagementPage.toastMessages
+              this.messages.pages.courseManagementPage.toastMessages
                 .failedToUpdateCourse,
             styleClass: "bg-danger text-white",
             life: 3000,
@@ -688,7 +758,8 @@ export default {
     },
   },
   async mounted() {
-    this.getCourses();
+    await this.getCourses();
+    await this.getGroups();
     this.loading = false;
   },
 };
@@ -720,6 +791,10 @@ export default {
 }
 
 span.formkit-no-files {
+  display: none;
+}
+
+div[data-pc-section="box"] {
   display: none;
 }
 </style>

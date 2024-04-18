@@ -165,5 +165,16 @@ namespace BolcsessegBarkaAPITests
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual("admin", user.Name);
         }
+        
+        [TestMethod]
+        public async Task GetAllGroups_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync("groups");
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
     }
 }

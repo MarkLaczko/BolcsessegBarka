@@ -332,10 +332,59 @@ public class BolcsessegBarkaTests
     public void Test09_TestAboutLogoutFunctionality() 
     {
         LoginAsAdmin();
-        Navigate("Kijelentkezés")!.Click();
+
+        SelectElement("a.dropdown-toggle>div.user-icon","CssSelector",true);
+
+        SelectElement("ul.dropdown-menu li:last-child>a", "CssSelector", true);
 
         Wait(ExpectedConditions.TitleIs("Bejelentkezés"),TimeSpan.FromSeconds(10));
 
         Assert.AreEqual("Bejelentkezés", _webDriver!.Title);
+    }
+
+    [TestMethod]
+    public void Test10_TestLanguageSwitchFunctionality()
+    {
+        _webDriver!.Url = _sut + "/login";
+
+        Wait(ExpectedConditions.ElementExists(By.CssSelector("a.dropdown-item input")),TimeSpan.FromSeconds(10));
+
+        SelectElement("button.dropdown-toggle","CssSelector",true);
+
+        Assert.AreEqual("Bejelentkezés",_webDriver.FindElement(By.TagName("h1")).Text);
+
+        SelectElement("a.dropdown-item input","CssSelector",true);
+
+        WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10));
+        wait.Until(ExpectedConditions.TextToBePresentInElementLocated(By.TagName("h1"), "Login"));
+
+        Assert.AreEqual("Login", _webDriver.FindElement(By.CssSelector("h1")).Text);
+
+        LoginAsAdmin();
+
+        Wait(ExpectedConditions.ElementExists(By.TagName("h1")), TimeSpan.FromSeconds(10));
+
+        Assert.AreEqual("Welcome admin!", _webDriver.FindElement(By.TagName("h1")).Text);
+    }
+
+    [TestMethod]
+    public void Test11_TestDarkModeFunctionality()
+    {
+        _webDriver!.Url = _sut + "/login";
+
+        Wait(ExpectedConditions.ElementExists(By.CssSelector("a.dropdown-item")), TimeSpan.FromSeconds(10));
+
+
+        Assert.AreEqual("rgb(63, 174, 236)", _webDriver.FindElement(By.CssSelector("form.rounded-4")).GetCssValue("background-color"));
+
+        SelectElement("button.dropdown-toggle", "CssSelector", true);
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("i.fa-moon")), TimeSpan.FromSeconds(10));
+        SelectElement("i.fa-moon", "CssSelector", true);
+
+        Assert.AreEqual("rgb(27, 27, 27)", _webDriver.FindElement(By.CssSelector("form.rounded-4")).GetCssValue("background-color"));
+
+        LoginAsAdmin();
+
+        Assert.AreEqual("rgb(255, 255, 255)", _webDriver.FindElement(By.CssSelector("body")).GetCssValue("background-color"));
     }
 }

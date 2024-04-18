@@ -1,12 +1,38 @@
 export default {
   pages: {
+    registerPage: {
+      title: "Registration",
+      submitButton: "Register",
+      accountText: "Don't have an account yet?",
+      namePlaceholder: "Name",
+      emailPlaceholder: "E-mail",
+      passwordPlaceholder: "Password",
+      passwordConfirmPlaceholder: "Confirm Password",
+      validationMessages: {
+        matchAllValidationMessage:
+          "Sorry, not all fields have been filled out correctly.",
+        nameRequired: "Username is required.",
+        nameLength: "Username must be less than 255 characters.",
+        emailRequired: "Email is required.",
+        validEmail: "Please provide a valid email address.",
+        passwordRequired: "Password is required.",
+        passwordLength:
+          "Password must be at least 8 and maximum 255 characters long.",
+        confirmPasswordRequired: "Confirm password is required.",
+        confirmPasswordLength:
+          "Confirm password must be at least 8 and maximum 255 characters long.",
+        confirmPasswordConfirm: "Passwords do not match.",
+      },
+      registerFailed: "Registration failed!",
+      registerSucceeded: "Registration successful!",
+    },
     loginPage: {
       title: "Login",
       emailPlaceholder: "Email",
       passwordPlaceholder: "Password",
       loginButtonText: "Login",
       accountText: "Don't have an account yet?",
-      loginFailed: "Login failed!"
+      loginFailed: "Login failed!",
     },
     homePage: {
       title: "Welcome",
@@ -180,6 +206,10 @@ export default {
             "Sorry, not all fields were filled out correctly.",
           fileUpload: "Add Image",
           nameLength: "The course name must be less than 255 characters.",
+        },
+        multiSelect: {
+          title: "Assigning Groups",
+          searchPlaceholder: "Search...",
         },
       },
       toastMessages: {

@@ -99,6 +99,14 @@ export const router = createRouter({
         title: "Új feladat létrehozása",
       },
     },
+    {
+      path: "/course/:id",
+      name: "course",
+      component: () => import("@pages/CoursePage.vue"),
+      meta: {
+        requiresAuth: true,
+      },
+    },
   ],
 });
 

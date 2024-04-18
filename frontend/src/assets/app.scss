@@ -94,6 +94,15 @@
   --switched-switchButton-bg-color: #{$blue};
   --switchButton-bg-color: #{$cyan};
   --dropdownMenu-border-color: #{$black};
+  --form-bg-color: #{$cyan};
+  --gear-color: #{$dark};
+  --loginButton-bg-color: #{$blue};
+  --loginLink-bg-color: #{$lightGray};
+  --loginLink-color: #{$black};
+  --loginAndRegister-bg-color: linear-gradient(#{$white}, #{$cyan});
+  --backToTopButton-bg-color: #{$cyan};
+  --multiSelect-bg-color: #{$cyan};
+  --closeButton-color: #{$black};
 }
 
 [data-theme="dark"] {
@@ -130,6 +139,15 @@
   --switched-switchButton-bg-color: #{$gray};
   --switchButton-bg-color: #{$lightGray};
   --dropdownMenu-border-color: #{$white};
+  --form-bg-color: #{$gray};
+  --gear-color: #{$white};
+  --loginButton-bg-color: #{$darkerGrey};
+  --loginLink-bg-color: #{$darkerGrey};
+  --loginLink-color: #{$white};
+  --loginAndRegister-bg-color: linear-gradient(#{$white}, #{$gray});
+  --backToTopButton-bg-color: #{$lightGray};
+  --multiSelect-bg-color: #{$gray};
+  --closeButton-color: #{$white};
 }
 
 body {
@@ -255,4 +273,65 @@ div.user-icon {
 .form-switch .form-check-input {
   --bs-form-switch-bg: var(--formSwitch-color);
   background-image: var(--bs-form-switch-bg);
+}
+
+form.rounded-4 {
+  background-color: var(--form-bg-color);
+  border: var(--border);
+}
+
+i.fa-gear {
+  color: var(--gear-color);
+}
+
+.form-check-input:checked#languageSwitch {
+  border: var(--border);
+}
+
+.formButton {
+  background-color: var(--loginButton-bg-color);
+  border: var(--border);
+  color: white;
+}
+
+.formButton:hover,
+.formLink:hover {
+  background-color: darken($white, 50%);
+}
+
+.formLink {
+  background-color: var(--loginLink-bg-color);
+  border: var(--border);
+  color: var(--loginLink-color);
+}
+
+.backgroundColor {
+  background: var(--loginAndRegister-bg-color);
+  height: 100%;
+}
+
+#toTopBtn {
+  background-color: var(--backToTopButton-bg-color);
+}
+
+div[data-pc-section="panel"] div[data-pc-section="header"],
+div[data-pc-section="panel"]
+  div[data-pc-section="wrapper"]
+  ul[data-pc-section="list"],
+div[data-pc-name="headercheckbox"] input,
+div[data-pc-name="itemcheckbox"] input {
+  background-color: var(--multiSelect-bg-color);
+}
+
+div[data-pc-section="panel"] div[data-pc-section="header"],
+ul[data-pc-section="list"] {
+  border: var(--border);
+}
+
+div[data-pc-section="header"] button[data-pc-section="closebutton"] {
+  color: var(--closeButton-color);
+}
+
+div[data-pc-section="panel"] .form-check-input:checked {
+  border: var(--border);
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -54,6 +55,10 @@ Route::middleware('auth:sanctum')->delete('/courses/{id}', [CourseController::cl
     ->name('courses.destroy');
 Route::middleware('auth:sanctum')->post('/courses/delete', [CourseController::class, 'bulkDelete'])
     ->name('courses.bulkDelete');
+Route::middleware('auth:sanctum')->post('/courses/{course}/groups', [CourseController::class, 'assignGroups'])
+    ->name('courses.assignGroups');
+Route::middleware('auth:sanctum')->post('/courses/{course}/topics', [CourseController::class, 'assignTopics'])
+    ->name('courses.assignTopics');
 
 Route::middleware('auth:sanctum')->get('/groups', [GroupController::class, 'index'])
     ->name('groups.index');
@@ -65,6 +70,8 @@ Route::middleware('auth:sanctum')->put('/groups/{id}', [GroupController::class, 
     ->name('groups.update');
 Route::middleware('auth:sanctum')->delete('/groups/{id}', [GroupController::class, 'destroy'])
     ->name('groups.destroy');
+Route::middleware('auth:sanctum')->delete('/groups', [GroupController::class, 'bulkDelete'])
+    ->name('groups.bulkDelete');
 
 
 Route::middleware('auth:sanctum')->get('/notes', [NoteController::class,'index'])
@@ -88,3 +95,14 @@ Route::middleware('auth:sanctum')->put('/assignments/{id}', [AssignmentControlle
     ->name('assignments.update');
 Route::middleware('auth:sanctum')->delete('/assignments/{id}', [AssignmentController::class,'destroy'])
     ->name('assignments.destroy');
+
+Route::middleware('auth:sanctum')->get('/topics', [TopicController::class,'index'])
+    ->name('topics.index'); 
+Route::middleware('auth:sanctum')->get('/topics/{id}', [TopicController::class,'show'])
+    ->name('topics.show'); 
+Route::middleware('auth:sanctum')->post('/topics', [TopicController::class,'store'])
+    ->name('topics.store');
+Route::middleware('auth:sanctum')->put('/topics/{id}', [TopicController::class,'update'])
+    ->name('topics.update');
+Route::middleware('auth:sanctum')->delete('/topics/{id}', [TopicController::class,'destroy'])
+    ->name('topics.destroy');

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkDeleteGroupRequest;
 use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateGroupRequest;
 use App\Http\Resources\GroupResource;
 use App\Models\Group;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class GroupController extends Controller
 {
@@ -23,6 +26,7 @@ class GroupController extends Controller
      */
     public function store(StoreGroupRequest $request)
     {
+        Gate::authorize('groups.store');
         $data = $request->validated();
         $group = Group::create($data);
 
@@ -44,17 +48,19 @@ class GroupController extends Controller
      */
     public function update(UpdateGroupRequest $request, string $id)
     {
+        Gate::authorize('groups.update');
         $data = $request->validated();
-        $group = Group::findOrFail($id);
+        $group = Group::with(['users'])->findOrFail($id);
         $group->update([
             'name' => $data['name']
         ]);
+
+        $group->users()->detach($group->users);
 
         if(!empty($data['selectedUsers'])){
             $users = [];
             foreach($data['selectedUsers'] as $user){
                 $users[$user['id']] = ['permission' => $user['permission']];
-                $group->users()->detach($user['id']);
             }
             $group->users()->attach($users);
         }
@@ -67,9 +73,27 @@ class GroupController extends Controller
      */
     public function destroy(string $id)
     {
+        Gate::authorize('groups.delete');
         $group = Group::findOrFail($id);
         $group->delete();
 
         return response()->noContent();
+    }
+
+    /**
+     * Remove a listing of resources from storage.
+     */
+    public function bulkDelete(BulkDeleteGroupRequest $request)
+    {
+        Gate::authorize('groups.delete');
+        $data = $request->validated();
+        try {
+            Group::whereIn('id', $data['bulk'])
+                ->delete();
+
+            return response()->json(['message' => 'Groups deleted successfully'], 200);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 }

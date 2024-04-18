@@ -38,7 +38,6 @@ export const groupStore = defineStore("groupStore", {
         },
         async updateGroup(data) {
             const user = userStore();
-            console.log(data);
             const response = await http.put(`/groups/${data.id}`, data, {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
@@ -56,6 +55,19 @@ export const groupStore = defineStore("groupStore", {
             });
             const idx = this.groups.findIndex(x => x.id == id);
             this.groups.splice(idx, 1);
+        },
+        async bulkDeleteGroups(data) {
+            const toDelete = data.map((x) => x.id);
+            const user = userStore();
+            const response = await http.delete(`/groups`, {
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+                data: {
+                    bulk: toDelete
+                }
+            });
+            this.groups = this.groups.filter((x) => !toDelete.includes(x.id));
         },
     }
 });
