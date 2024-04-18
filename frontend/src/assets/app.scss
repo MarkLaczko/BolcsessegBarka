@@ -101,6 +101,8 @@
   --loginLink-color: #{$black};
   --loginAndRegister-bg-color: linear-gradient(#{$white}, #{$cyan});
   --backToTopButton-bg-color: #{$cyan};
+  --multiSelect-bg-color: #{$cyan};
+  --closeButton-color: #{$black};
 }
 
 [data-theme="dark"] {
@@ -144,6 +146,8 @@
   --loginLink-color: #{$white};
   --loginAndRegister-bg-color: linear-gradient(#{$white}, #{$gray});
   --backToTopButton-bg-color: #{$lightGray};
+  --multiSelect-bg-color: #{$gray};
+  --closeButton-color: #{$white};
 }
 
 body {
@@ -308,4 +312,26 @@ i.fa-gear {
 
 #toTopBtn {
   background-color: var(--backToTopButton-bg-color);
+}
+
+div[data-pc-section="panel"] div[data-pc-section="header"],
+div[data-pc-section="panel"]
+  div[data-pc-section="wrapper"]
+  ul[data-pc-section="list"],
+div[data-pc-name="headercheckbox"] input,
+div[data-pc-name="itemcheckbox"] input {
+  background-color: var(--multiSelect-bg-color);
+}
+
+div[data-pc-section="panel"] div[data-pc-section="header"],
+ul[data-pc-section="list"] {
+  border: var(--border);
+}
+
+div[data-pc-section="header"] button[data-pc-section="closebutton"] {
+  color: var(--closeButton-color);
+}
+
+div[data-pc-section="panel"] .form-check-input:checked {
+  border: var(--border);
 }
