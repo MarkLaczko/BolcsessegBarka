@@ -50,16 +50,17 @@ class GroupController extends Controller
     {
         Gate::authorize('groups.update');
         $data = $request->validated();
-        $group = Group::findOrFail($id);
+        $group = Group::with(['users'])->findOrFail($id);
         $group->update([
             'name' => $data['name']
         ]);
+
+        $group->users()->detach($group->users);
 
         if(!empty($data['selectedUsers'])){
             $users = [];
             foreach($data['selectedUsers'] as $user){
                 $users[$user['id']] = ['permission' => $user['permission']];
-                $group->users()->detach($user['id']);
             }
             $group->users()->attach($users);
         }
