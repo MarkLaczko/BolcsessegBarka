@@ -23,7 +23,8 @@ class UpdateAssignmentRequest extends FormRequest
     {
         return [
             'task_name' => "nullable",
-            'task' => 'required',
+            'student_task' => 'required',
+            'teacher_task' => 'nullable',
             'comment' => 'nullable',
             'deadline' => 'nullable',
             'grade' => 'nullable'

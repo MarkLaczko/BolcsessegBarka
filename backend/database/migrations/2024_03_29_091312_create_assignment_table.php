@@ -22,7 +22,8 @@ return new class extends Migration
             $table->string("courseable_type");
         });
 
-        DB::statement("ALTER TABLE assignment ADD task LONGBLOB");
+        DB::statement("ALTER TABLE assignment ADD student_task LONGBLOB");
+        DB::statement("ALTER TABLE assignment ADD teacher_task LONGBLOB");
     }
 
     /**

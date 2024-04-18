@@ -2,10 +2,10 @@
   <BaseLayout>
     <div class="rounded-3 my-5 py-2">
       <div class="rounded-3 m-3 p-2 bg-white">
-        <p>
-          Beadandó feladat neve <br />
-          Tantárgy <br />
-          Leadási határidő
+        <p v-for="assignment in assignments" :key="assignment.id">
+          {{ assignment.task_name }} <br />
+          {{ assignment.course.name }} <br />
+          {{ assignment.deadline }}
         </p>
         <div class="card">
           <Toast />
@@ -170,6 +170,8 @@ import Toast from "primevue/toast";
 import ProgressBar from "primevue/progressbar";
 import { mapState } from "pinia";
 import { languageStore } from "@stores/LanguageStore.mjs";
+import { http } from "@utils/http";
+import { userStore } from "@stores/UserStore";
 
 export default {
   components: {
@@ -185,12 +187,22 @@ export default {
       files: [],
       totalSize: 0,
       totalSizePercent: 0,
+      assignments: [],
     };
   },
   computed: {
     ...mapState(languageStore, ["messages"]),
   },
   methods: {
+    async getAssignments(){
+      const user = userStore();
+      const response = await http.get(`/assignments/${this.$route.params.id}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      this.assignments.push(response.data.data);
+    },
     onRemoveTemplatingFile(file, removeFileCallback, index) {
       removeFileCallback(index);
       this.totalSize -= parseInt(this.formatSize(file.size));
@@ -232,6 +244,9 @@ export default {
 
       return `${formattedSize} ${sizes[i]}`;
     },
+  },
+  mounted(){
+    this.getAssignments();
   },
 };
 </script>

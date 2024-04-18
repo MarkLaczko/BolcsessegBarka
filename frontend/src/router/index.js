@@ -82,12 +82,21 @@ export const router = createRouter({
       },
     },
     {
-      path: "/assignment",
+      path: "/assignment/:id",
       name: "assignment",
       component: () => import("@pages/AssignmentPage.vue"),
       meta: {
         requiresAuth: true,
         title: "Feladat beadó felület",
+      },
+    },
+    {
+      path: "/newassignment",
+      name: "newassignment",
+      component: () => import("@pages/NewAssignmentPage.vue"),
+      meta: {
+        requiresAuth: true,
+        title: "Új feladat létrehozása",
       },
     },
     {

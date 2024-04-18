@@ -234,6 +234,23 @@ export default {
       dragFileText: "Húzza ide a fájlokat a feltöltéshez",
       cancelButton: "Mégsem",
     },
+    newAssignmentPage: {
+      title: "Új feladat létrehozása",
+      task_nameLabel: "Feladat címe",
+      saveButton: "Mentés",
+      cancelButton: "Mégsem",
+      comment: "Hozzászólás",
+      deadline: "Határidő",
+      courseName: "Kurzus neve",
+      teacher_task: "Feladat / jegyzet feltöltése diákok számára.",
+      validationMessages: {
+        task_nameRequired: "A feladat címének kitöltése kötelező.",
+        task_nameLength:
+          "A feladat címének kevesebbnek kell lennie, mint 255 karakter.",
+        commentLength: "A hozzászólásnak kevesebbnek kell lennie, mint 255 karakter.",
+        deadlineRequired: "Kötelező határidőt beállítani.",
+      },
+    },
     notePage: {
       title: "Jegyzet létrehozása",
       notesNameText: "Jegyzet neve:",

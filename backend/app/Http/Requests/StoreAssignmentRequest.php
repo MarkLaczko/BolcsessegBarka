@@ -23,7 +23,8 @@ class StoreAssignmentRequest extends FormRequest
     {
         return [
             'task_name' => 'required',
-            'task' => 'nullable',
+            'student_task' => 'nullable',
+            'teacher_task' => 'nullable',
             'comment' => 'nullable',
             'deadline' => 'required',
             'grade' => 'nullable'
