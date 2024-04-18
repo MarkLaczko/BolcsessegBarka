@@ -221,7 +221,10 @@
             filter
             :maxSelectedLabels="3"
             optionLabel="name"
-            placeholder="Csoportok hozzárendelése"
+            :placeholder="
+              messages.pages.courseManagementPage.editCourseDialog.multiSelect
+                .title
+            "
             display="chip"
             :pt="{
               list: {
@@ -239,7 +242,9 @@
               },
               filterInput: {
                 class: 'form-control mx-2',
-                placeholder: 'Keresés...',
+                placeholder:
+                  messages.pages.courseManagementPage.editCourseDialog
+                    .multiSelect.searchPlaceholder,
               },
               headerCheckbox: {
                 input: 'form-check-input',
