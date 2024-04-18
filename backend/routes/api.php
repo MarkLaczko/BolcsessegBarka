@@ -54,6 +54,8 @@ Route::middleware('auth:sanctum')->delete('/courses/{id}', [CourseController::cl
     ->name('courses.destroy');
 Route::middleware('auth:sanctum')->post('/courses/delete', [CourseController::class, 'bulkDelete'])
     ->name('courses.bulkDelete');
+Route::middleware('auth:sanctum')->post('/courses/{course}/groups', [CourseController::class, 'assignGroups'])
+    ->name('courses.assignGroups');
 
 Route::middleware('auth:sanctum')->get('/groups', [GroupController::class, 'index'])
     ->name('groups.index');
