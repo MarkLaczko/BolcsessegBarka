@@ -102,11 +102,14 @@
         </FormKit>
       </BaseDialog>
 
-
       <BaseDialog
         v-if="modifyGroupDialogVisible"
         :visible="modifyGroupDialogVisible"
-        :header="messages.pages.groupManagementPage.editGroupDialog.title+' '+currentlyModifyingGroup.name"
+        :header="
+          messages.pages.groupManagementPage.editGroupDialog.title +
+          ' ' +
+          currentlyModifyingGroup.name
+        "
         :width="'60rem'"
       >
         <FormKit
@@ -114,17 +117,25 @@
           :actions="false"
           @submit="sendUpdateGroup"
           :value="currentlyModifyingGroup"
-          :incomplete-message="messages.pages.groupManagementPage.editGroupDialog.matchAllValidationMessage"
+          :incomplete-message="
+            messages.pages.groupManagementPage.editGroupDialog
+              .matchAllValidationMessage
+          "
         >
           <FormKit
             type="text"
             name="name"
-            :label="messages.pages.groupManagementPage.editGroupDialog.nameLabel"
+            :label="
+              messages.pages.groupManagementPage.editGroupDialog.nameLabel
+            "
             validation="required|length:0,100"
             :validation-messages="{
-              required: messages.pages.groupManagementPage.editGroupDialog.validationMessages.nameRequired,
+              required:
+                messages.pages.groupManagementPage.editGroupDialog
+                  .validationMessages.nameRequired,
               length:
-              messages.pages.groupManagementPage.editGroupDialog.validationMessages.nameLength,
+                messages.pages.groupManagementPage.editGroupDialog
+                  .validationMessages.nameLength,
             }"
             :classes="{
               input: {
@@ -206,10 +217,18 @@
                 </div>
               </template>
             </Column>
-            <Column field="id" :header="messages.pages.groupManagementPage.editGroupDialog.idLabel" sortable></Column>
+            <Column
+              field="id"
+              :header="
+                messages.pages.groupManagementPage.editGroupDialog.idLabel
+              "
+              sortable
+            ></Column>
             <Column
               field="name"
-              :header="messages.pages.groupManagementPage.editGroupDialog.nameLabel"
+              :header="
+                messages.pages.groupManagementPage.editGroupDialog.nameLabel
+              "
               sortable
               :pt="{
                 columnfilter: {
@@ -229,13 +248,18 @@
                   type="text"
                   @input="filterCallback()"
                   class="form-control"
-                  :placeholder="messages.pages.groupManagementPage.editGroupDialog.namePlaceholder"
+                  :placeholder="
+                    messages.pages.groupManagementPage.editGroupDialog
+                      .namePlaceholder
+                  "
                 />
               </template>
             </Column>
             <Column
               field="email"
-              :header="messages.pages.groupManagementPage.editGroupDialog.emailLabel"
+              :header="
+                messages.pages.groupManagementPage.editGroupDialog.emailLabel
+              "
               sortable
               :pt="{
                 columnfilter: {
@@ -255,13 +279,19 @@
                   type="text"
                   @input="filterCallback()"
                   class="form-control"
-                  :placeholder="messages.pages.groupManagementPage.editGroupDialog.emailPlaceholder"
+                  :placeholder="
+                    messages.pages.groupManagementPage.editGroupDialog
+                      .emailPlaceholder
+                  "
                 />
               </template>
             </Column>
             <Column
               field="permission"
-              :header="messages.pages.groupManagementPage.editGroupDialog.permissionLabel"
+              :header="
+                messages.pages.groupManagementPage.editGroupDialog
+                  .permissionLabel
+              "
               :pt="{
                 columnfilter: {
                   class: 'd-flex',
@@ -300,13 +330,17 @@
           <div class="d-flex justify-content-end mt-2 mb-3">
             <Button
               type="button"
-              :label="messages.pages.groupManagementPage.editGroupDialog.cancelButton"
+              :label="
+                messages.pages.groupManagementPage.editGroupDialog.cancelButton
+              "
               class="btn btn-outline-danger mx-1"
               @click="closeModifyWindow"
             ></Button>
             <FormKit
               type="submit"
-              :label="messages.pages.groupManagementPage.editGroupDialog.saveButton"
+              :label="
+                messages.pages.groupManagementPage.editGroupDialog.saveButton
+              "
               :classes="{
                 input: {
                   btn: true,
@@ -416,10 +450,18 @@
                 </div>
               </template>
             </Column>
-            <Column field="id" :header="messages.pages.groupManagementPage.editGroupDialog.idLabel" sortable></Column>
+            <Column
+              field="id"
+              :header="
+                messages.pages.groupManagementPage.editGroupDialog.idLabel
+              "
+              sortable
+            ></Column>
             <Column
               field="name"
-              :header="messages.pages.groupManagementPage.editGroupDialog.nameLabel"
+              :header="
+                messages.pages.groupManagementPage.editGroupDialog.nameLabel
+              "
               sortable
               :pt="{
                 columnfilter: {
@@ -439,18 +481,31 @@
                   type="text"
                   @input="filterCallback()"
                   class="form-control"
-                  :placeholder="messages.pages.groupManagementPage.editGroupDialog.namePlaceholder"
+                  :placeholder="
+                    messages.pages.groupManagementPage.editGroupDialog
+                      .namePlaceholder
+                  "
                 />
               </template>
             </Column>
-            <Column field="users.length" :header="messages.pages.groupManagementPage.memberText" sortable>
+            <Column
+              field="users.length"
+              :header="messages.pages.groupManagementPage.memberText"
+              sortable
+            >
               <template #body="slotProp">
-                {{ slotProp.data.users.length }} {{ messages.pages.groupManagementPage.member }}
+                {{ slotProp.data.users.length }}
+                {{ messages.pages.groupManagementPage.member }}
               </template>
             </Column>
-            <Column field="courses.length" :header="messages.pages.groupManagementPage.courseText" sortable>
+            <Column
+              field="courses.length"
+              :header="messages.pages.groupManagementPage.courseText"
+              sortable
+            >
               <template #body="slotProp">
-                {{ slotProp.data.courses.length }} {{ messages.pages.groupManagementPage.course }}
+                {{ slotProp.data.courses.length }}
+                {{ messages.pages.groupManagementPage.course }}
               </template>
             </Column>
             <Column :header="messages.pages.groupManagementPage.modifyText">
@@ -533,6 +588,7 @@ export default {
       currentlyModifyingGroup: [],
       checked: true,
       users: [],
+      loading: true,
     };
   },
   computed: {
@@ -541,9 +597,6 @@ export default {
     ...mapState(themeStore, ["isDarkMode"]),
     ...mapState(permissionStore, ["permissions"]),
     ...mapState(languageStore, ["messages"]),
-    loading() {
-      return this.groups == null;
-    },
   },
   methods: {
     ...mapActions(groupStore, [
@@ -552,7 +605,7 @@ export default {
       "postGroup",
       "updateGroup",
       "deleteGroup",
-      "bulkDeleteGroups"
+      "bulkDeleteGroups",
     ]),
     ...mapActions(permissionStore, ["getPermissions"]),
     selectAllGroups() {
@@ -573,7 +626,6 @@ export default {
     async deleteMultipleGroups() {
       await this.bulkDeleteGroups(this.selectedGroups);
       try {
-
         if (this.isDarkMode) {
           this.$toast.add({
             severity: "success",
@@ -613,7 +665,7 @@ export default {
         }
       }
     },
-    async addGroup(data){
+    async addGroup(data) {
       try {
         await this.postGroup(data);
         this.$toast.add({
@@ -699,10 +751,11 @@ export default {
       this.$refs.dt.exportCSV();
     },
   },
-  mounted() {
-    this.getGroups();
-    this.getUsers();
-    this.addPermissionFieldToAllGroups();
+  async mounted() {
+    await this.getGroups();
+    await this.getUsers();
+    await this.addPermissionFieldToAllGroups();
+    this.loading = false;
   },
   exportCSV() {
     this.$refs.dt.exportCSV();
@@ -736,4 +789,3 @@ export default {
   opacity: 0;
 }
 </style>
-
