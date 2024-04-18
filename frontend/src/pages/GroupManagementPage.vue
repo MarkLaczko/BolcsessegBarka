@@ -689,7 +689,8 @@ export default {
       this.addGroupDialogVisible = false;
     },
     async sendUpdateGroup(data) {
-      data.selectedUsers = this.currentlyModifyingGroup.selectedUsers;
+      data.selectedUsers = this.currentlyModifyingGroup.selectedUsers.map((x) => ({id: x.id, permission: x.permission}));
+      data.users = data.users.map((x) => x.id);
       try {
         await this.updateGroup(data);
         this.$toast.add({
