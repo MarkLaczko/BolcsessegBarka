@@ -3,6 +3,7 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Course extends Model
@@ -19,18 +20,8 @@ class Course extends Model
         return $this->belongsToMany(Group::class, "course_group");
     }
 
-    public function notes() : MorphMany
+    public function topics() : HasMany 
     {
-        return $this->morphMany(Note::class, "courseable");
-    }
-
-    public function quizzes() : MorphMany
-    {
-        return $this->morphMany(Quiz::class, "courseable");
-    }
-
-    public function assignments() : MorphMany
-    {
-        return $this->morphMany(Assignment::class, "courseable");
+        return $this->hasMany(Topic::class);
     }
 }
