@@ -36,7 +36,7 @@ class CourseController extends Controller
      */
     public function show(string $id)
     {
-        $course = Course::findOrFail($id);
+        $course = Course::with("topics")->findOrFail($id);
 
         return new CourseResource($course);
     }
