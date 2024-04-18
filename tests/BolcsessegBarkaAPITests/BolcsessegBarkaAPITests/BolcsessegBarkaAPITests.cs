@@ -176,5 +176,119 @@ namespace BolcsessegBarkaAPITests
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
+        
+        [TestMethod]
+        public async Task GetAllGroups_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _client!.GetAsync("groups");
+            var groups = await Deserialize<GroupResponse>(response);
+
+            Assert.IsNotNull(groups);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual(1, groups.Data![0].Id);
+        }
+        
+        [TestMethod]
+        public async Task GetGroup_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync("groups/1");
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetGroup_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _client!.GetAsync("groups/1");
+            var group = await Deserialize<Group>(response);
+
+            Assert.IsNotNull(group);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual(1, group.Id);
+        }
+        
+        [TestMethod]
+        public async Task CreateGroup_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var group = new StringContent(
+                JsonConvert.SerializeObject(new { name = "Teszt Csoport" }),
+                Encoding.UTF8,
+                "application/json");
+            
+            var response = await _client!.PostAsync("groups", group);
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task CreateGroup_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var group = new StringContent(
+                JsonConvert.SerializeObject(new { name = "Teszt Csoport 2" }),
+                Encoding.UTF8,
+                "application/json");
+            
+            var response = await _client!.PostAsync("groups", group);
+            var repsonseData = await Deserialize<Group>(response);
+            
+            Assert.IsNotNull(group);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("Teszt Csoport 2", repsonseData.Name);
+        }
+        
+        [TestMethod]
+        public async Task UpdateGroup_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+           
+            var group = new StringContent("{\"name\": \"Teszt Csoport 3\", \"selectedUsers\": [{\"id\": 2, \"permission\": \"Tanár\"}]}", null, "application/json");
+            var response = await _client!.PutAsync("groups/1", group);
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task UpdateGroup_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var group = new StringContent("{\"name\": \"Teszt Csoport 3\", \"selectedUsers\": [{\"id\": 2, \"permission\": \"Tanár\"}]}", null, "application/json");
+            
+            var response = await _client!.PutAsync("groups/1", group);
+            var repsonseData = await Deserialize<Group>(response);
+            
+            Assert.IsNotNull(group);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.IsTrue(repsonseData.Users.Exists(x => x.Id == 2));
+        }
+        
+        [TestMethod]
+        public async Task DeleteGroup_ReturnsNoContent()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.DeleteAsync("groups/5");
+            
+            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+        }
+        
     }
 }
