@@ -197,6 +197,23 @@ export default {
       dragFileText: "Drag files here to upload",
       cancelButton: "Cancel",
     },
+    newAssignmentPage: {
+      title: "Create a new task",
+      task_nameLabel: "Task title",
+      saveButton: "Save",
+      cancelButton: "Cancel",
+      comment: "Comment",
+      deadline: "Deadline",
+      courseName: "Course name",
+      teacher_task: "Upload assignment / note for students.",
+      validationMessages: {
+        task_nameRequired: "Filling in the title of the task is required.",
+        task_nameLength:
+          "The title of the task must be less than 255 characters.",
+        commentLength: "Comments must be less than 255 characters.",
+        deadlineRequired: "You must set a deadline.",
+      },
+    },
     notePage: {
       title: "Create Note",
       notesNameText: "Note name:",
