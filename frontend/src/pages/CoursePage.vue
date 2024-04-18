@@ -157,6 +157,7 @@ import { userStore } from "@stores/UserStore.mjs";
 import { topicStore } from "@stores/TopicStore.mjs";
 import BaseDialog from "@components/BaseDialog.vue";
 import { http } from "@utils/http.mjs";
+import Button from "primevue/button";
 
 export default {
   data() {
@@ -171,6 +172,7 @@ export default {
   components: {
     BaseLayout,
     BaseDialog,
+    Button,
   },
   methods: {
     ...mapActions(courseStore, ["getCourse"]),
