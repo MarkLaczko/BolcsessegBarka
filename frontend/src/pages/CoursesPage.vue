@@ -25,6 +25,7 @@
           <BaseCourseCard
             :title="`${course.name}`"
             :image="`${course.image}`"
+            :courseId="course.id"
           />
         </div>
       </div>
