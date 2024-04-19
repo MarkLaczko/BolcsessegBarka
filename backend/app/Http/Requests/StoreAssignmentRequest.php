@@ -27,7 +27,11 @@ class StoreAssignmentRequest extends FormRequest
             'teacher_task' => 'nullable',
             'comment' => 'nullable',
             'deadline' => 'required',
-            'grade' => 'nullable'
+            'grade' => 'nullable',
+            'courseable_id' => 'required',
+            'courseable_type' => 'required',
+            'student_task_name' => 'nullable',
+            'teacher_task_name' => 'nullable',
         ];
     }
 }
