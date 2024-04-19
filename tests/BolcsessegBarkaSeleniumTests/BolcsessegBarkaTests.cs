@@ -176,9 +176,9 @@ public class BolcsessegBarkaTests
         Navigate("Adminisztráció")!.Click();
         SelectElement("a[href='/user-administration']", "CssSelector", true);
 
-        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(6) > button")), TimeSpan.FromSeconds(10));
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(6) > button")), TimeSpan.FromSeconds(10));
 
-        SelectElement("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(6) > button", "CssSelector", true);
+        SelectElement("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(6) > button", "CssSelector", true);
 
         var name = _webDriver!.FindElement(By.Name("name"));
         name.Clear();
@@ -386,5 +386,86 @@ public class BolcsessegBarkaTests
         LoginAsAdmin();
 
         Assert.AreEqual("rgb(255, 255, 255)", _webDriver.FindElement(By.CssSelector("body")).GetCssValue("background-color"));
+    }
+    
+    [TestMethod]
+    public void Test12_TestCreateGroup()
+    {
+        LoginAsAdmin();
+
+        Wait(ExpectedConditions.ElementIsVisible(By.LinkText("Adminisztráció")), TimeSpan.FromSeconds(10));
+
+        Navigate("Adminisztráció")!.Click();
+        SelectElement("a[href='/group-administration']", "CssSelector", true);
+
+        Wait(ExpectedConditions.ElementIsVisible(By.Id("newGroup")), TimeSpan.FromSeconds(10));
+
+        SelectElement("newGroup", "Id", true);
+
+        var name = _webDriver!.FindElement(By.Name("name"));
+        name.SendKeys("Új csoport");
+
+        SelectElement("addGroupButton", "Id", true);
+
+        Wait(ExpectedConditions.ElementExists(By.CssSelector("tr:last-child")), TimeSpan.FromSeconds(10));
+        Assert.AreEqual("Új csoport", _webDriver.FindElement(By.CssSelector("tr:last-child>td:nth-child(3)")).Text);
+    }
+    
+    [TestMethod]
+    public void Test13_TestUpdateGroup()
+    {
+        LoginAsAdmin();
+
+        Wait(ExpectedConditions.ElementIsVisible(By.LinkText("Adminisztráció")), TimeSpan.FromSeconds(10));
+
+        Navigate("Adminisztráció")!.Click();
+        SelectElement("a[href='/group-administration']", "CssSelector", true);
+
+        Wait(ExpectedConditions.ElementIsVisible(By.Id("newGroup")), TimeSpan.FromSeconds(10));
+
+        SelectElement("#app > div > main > div > div > div > div:last-child > div:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(6) > button", "CssSelector", true);
+
+        var name = _webDriver!.FindElement(By.Name("name"));
+        name.Clear();
+        name.SendKeys("Módosított csoport");
+        
+        SelectElement("form > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(1) > div > button", "CssSelector", true);
+
+        SelectElement("modifyGroupButton", "Id", true);
+
+        IWebElement text = _webDriver.FindElement(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(3)"));
+        Wait(ExpectedConditions.ElementExists(By.CssSelector("tr:last-child")), TimeSpan.FromSeconds(10));
+        var groupName = _webDriver.FindElement(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(3)"));
+        var groupMemberCount = _webDriver.FindElement(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(4)"));
+        
+        Assert.AreEqual("Módosított csoport", groupName.Text);
+        Assert.AreEqual("1 tag", groupMemberCount.Text);
+    }
+    
+    [TestMethod]
+    public void Test14_TestDeleteGroup()
+    {
+        LoginAsAdmin();
+
+        Wait(ExpectedConditions.ElementIsVisible(By.LinkText("Adminisztráció")), TimeSpan.FromSeconds(10));
+
+        Navigate("Adminisztráció")!.Click();
+        SelectElement("a[href='/group-administration']", "CssSelector", true);
+
+        Wait(ExpectedConditions.ElementIsVisible(By.Id("newGroup")), TimeSpan.FromSeconds(10));
+
+        string oldGroupName = _webDriver.FindElement(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(3)")).Text;
+        
+        SelectElement("#app > div > main > div > div > div > div:last-child > div:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(7) > button", "CssSelector", true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("body > div:nth-child(6) > div > div.d-flex.justify-content-end.align-items-center.gap-1.mt-2 > button.btn.btn-success > span")), TimeSpan.FromSeconds(10));
+        
+        SelectElement("body > div:nth-child(6) > div > div.d-flex.justify-content-end.align-items-center.gap-1.mt-2 > button.btn.btn-success > span", "CssSelector", true);
+
+        IWebElement text = _webDriver.FindElement(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(3)"));
+        Wait(ExpectedConditions.ElementExists(By.CssSelector("tr:last-child")), TimeSpan.FromSeconds(10));
+        string groupName = _webDriver.FindElement(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(3)")).Text;
+        
+        Assert.AreNotEqual(oldGroupName, groupName);
     }
 }
