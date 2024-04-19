@@ -25,7 +25,8 @@ class AssignmentController extends Controller
     {
         $data = $request->validated();
         $assignment = Assignment::create($data);
-
+        $assignment->teacher_task = $request->file("teacher_task")->get();
+        $assignment->save();
         return new AssignmentResource($assignment);
     }
 
