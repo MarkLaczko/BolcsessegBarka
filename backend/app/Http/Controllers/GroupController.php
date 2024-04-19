@@ -75,6 +75,8 @@ class GroupController extends Controller
     {
         Gate::authorize('groups.delete');
         $group = Group::findOrFail($id);
+        $group->users()->detach();
+        $group->courses()->detach();
         $group->delete();
 
         return response()->noContent();
@@ -88,8 +90,14 @@ class GroupController extends Controller
         Gate::authorize('groups.delete');
         $data = $request->validated();
         try {
-            Group::whereIn('id', $data['bulk'])
-                ->delete();
+            $groups = Group::whereIn('id', $data['bulk'])
+                ->get();
+            
+            foreach ($groups as $group) {
+                $group->users()->detach();
+                $group->courses()->detach();
+                $group->delete();
+            }
 
             return response()->json(['message' => 'Groups deleted successfully'], 200);
         } catch (Exception $e) {
