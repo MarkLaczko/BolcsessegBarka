@@ -42,6 +42,27 @@ export default {
     },
     coursesPage: {
       title: "Kurzusok",
+      youDontHaveCoursesText: "Nincsenek kurzusaid!",
+    },
+    coursePage: {
+      newTopicButton: "Új téma",
+      deleteButton: "Törlés",
+      editButton: "Szerkesztés",
+      newTopicDialog: {
+        title: "Új téma felvétele",
+        nameLabel: "Név",
+        orderLabel: "Sorrend",
+        saveButton: "Mentés",
+        cancelButton: "Mégsem",
+        validationMessages: {
+          nameRequired: "A téma nevének kiválasztása kötelező.",
+          nameLength:
+            "A téma nevének kevesebbnek kell lennie, mint 60 karakter.",
+          orderNumber: "A sorrend csak szám lehet.",
+          matchAllValidationMessage:
+            "Sajnáljuk, nem minden mezőt töltöttek ki helyesen.",
+        },
+      },
     },
     userManagementPage: {
       title: "Felhasználók kezelése",
@@ -190,7 +211,7 @@ export default {
         validationMessages: {
           nameRequired: "A kurzus nevének kitöltése kötelező.",
           nameLength:
-            "A kurzus nevének kevesebbnek kell lennie, mint 255 karakter.",
+            "A kurzus nevének 5-nél több és 100-nál kevesebb karakterből kell állnia.",
           imageRequired: "A kép kitöltése kötelező.",
           fileUpload: "Kép feltöltése",
           matchAllValidationMessage:
@@ -247,7 +268,8 @@ export default {
         task_nameRequired: "A feladat címének kitöltése kötelező.",
         task_nameLength:
           "A feladat címének kevesebbnek kell lennie, mint 255 karakter.",
-        commentLength: "A hozzászólásnak kevesebbnek kell lennie, mint 255 karakter.",
+        commentLength:
+          "A hozzászólásnak kevesebbnek kell lennie, mint 255 karakter.",
         deadlineRequired: "Kötelező határidőt beállítani.",
       },
     },

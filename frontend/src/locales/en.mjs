@@ -41,6 +41,26 @@ export default {
     },
     coursesPage: {
       title: "Courses",
+      youDontHaveCoursesText: "You don't have any courses!",
+    },
+    coursePage: {
+      newTopicButton: "New Topic",
+      deleteButton: "Delete",
+      editButton: "Edit",
+      newTopicDialog: {
+        title: "Add New Topic",
+        nameLabel: "Name",
+        orderLabel: "Order",
+        saveButton: "Save",
+        cancelButton: "Cancel",
+        validationMessages: {
+          nameRequired: "Selecting a topic name is required.",
+          nameLength: "The topic name must be less than 60 characters.",
+          orderNumber: "Order must be a number.",
+          matchAllValidationMessage:
+            "Sorry, not all fields have been filled out correctly.",
+        },
+      },
     },
     userManagementPage: {
       title: "User Management",
@@ -184,7 +204,8 @@ export default {
         cancelButton: "Cancel",
         validationMessages: {
           nameRequired: "Filling out the course name is mandatory.",
-          nameLength: "The course name must be less than 255 characters.",
+          nameLength:
+            "The Course Name Must Be Between 5 and 100 Characters Long.",
           imageRequired: "Filling out the image is mandatory.",
           fileUpload: "Upload Image",
           matchAllValidationMessage:
