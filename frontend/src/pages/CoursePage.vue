@@ -2,7 +2,7 @@
   <BaseLayout>
     <BaseSpinner :loading="loading" />
 
-    <BaseDialog v-if="topicDialogVisible" :visible="topicDialogVisible"
+    <BaseDialog v-if="newTopicDialogVisible" :visible="newTopicDialogVisible"
       :header="messages.pages.coursePage.newTopicDialog.title" :width="'25rem'">
       <FormKit type="form" :actions="false" @submit="addTopic" :incomplete-message="messages.pages.coursePage.newTopicDialog.validationMessages
         .matchAllValidationMessage
@@ -35,7 +35,50 @@
           }" />
 
         <div class="d-flex justify-content-end mt-2 mb-3">
-          <Button type="button" class="btn btn-outline-danger mx-1" @click="topicDialogVisible = false">{{
+          <Button type="button" class="btn btn-outline-danger mx-1" @click="newTopicDialogVisible = false">{{
+            messages.pages.coursePage.newTopicDialog.cancelButton }}</Button>
+          <FormKit type="submit" :label="messages.pages.coursePage.newTopicDialog.saveButton" :classes="{
+            input: {
+              btn: true,
+              'btn-success': true,
+              'w-auto': true,
+            },
+          }" />
+        </div>
+      </FormKit>
+    </BaseDialog>
+
+    <BaseDialog v-if="editTopicDialogVisible" :visible="editTopicDialogVisible"
+      :header="messages.pages.coursePage.newTopicDialog.title" :width="'25rem'">
+      <FormKit type="form" :actions="false" @submit="editTopic" :incomplete-message="messages.pages.coursePage.newTopicDialog.validationMessages
+        .matchAllValidationMessage
+        ">
+        <FormKit type="text" name="name" :label="messages.pages.coursePage.newTopicDialog.nameLabel"
+          validation="length:0,60" :validation-messages="{
+            length:
+              messages.pages.coursePage.newTopicDialog.validationMessages
+                .nameLength,
+          }" :classes="{
+            input: {
+              'mb-1': true,
+              'form-control': true,
+            },
+          }" />
+
+        <FormKit type="text" name="order" :label="messages.pages.coursePage.newTopicDialog.orderLabel"
+          validation="number" :validation-messages="{
+            number:
+              messages.pages.coursePage.newTopicDialog.validationMessages
+                .orderNumber,
+          }" :classes="{
+            input: {
+              'mb-1': true,
+              'form-control': true,
+            },
+          }" />
+
+        <div class="d-flex justify-content-end mt-2 mb-3">
+          <Button type="button" class="btn btn-outline-danger mx-1" @click="editTopicDialogVisible = false">{{
             messages.pages.coursePage.newTopicDialog.cancelButton }}</Button>
           <FormKit type="submit" :label="messages.pages.coursePage.newTopicDialog.saveButton" :classes="{
             input: {
@@ -55,7 +98,7 @@
           currentUserData.is_admin ||
           member.permission == 'Tanár' ||
           (currentUserData.is_admin && member.permission == 'Tanár')
-        " @click="topicDialogVisible = true">
+        " @click="newTopicDialogVisible = true">
           {{ messages.pages.coursePage.newTopicButton }}
         </button>
       </h1>
@@ -71,7 +114,8 @@
                 currentUserData.is_admin ||
                 member.permission == 'Tanár' ||
                 (currentUserData.is_admin && member.permission == 'Tanár')
-              " class="ms-2 btn btn-success text-light">
+              " class="ms-2 btn btn-success text-light"
+                @click="editTopicDialogVisible = true, activeTopicId = topic.id">
                 {{ messages.pages.coursePage.editButton }}
               </button>
               <button v-if="
@@ -123,7 +167,8 @@ export default {
       topics: [],
       member: {},
       loading: true,
-      topicDialogVisible: false,
+      newTopicDialogVisible: false,
+      editTopicDialogVisible: false,
       activeTopicId: null,
     };
   },
@@ -161,7 +206,17 @@ export default {
 
       this.course = await this.getCourse(this.$route.params.id);
       this.topics = this.course.topics;
-      this.topicDialogVisible = false;
+      this.newTopicDialogVisible = false;
+    },
+
+    async editTopic(data) {
+      await this.putTopic(this.activeTopicId, data);
+
+      const updatedTopicIndex = this.topics.findIndex(topic => topic.id === this.activeTopicId);
+      if (updatedTopicIndex !== -1) {
+        this.topics[updatedTopicIndex] = { ...this.topics[updatedTopicIndex], ...data };
+      }
+      this.editTopicDialogVisible = false;
     },
 
     async findUserDetails(courseId, userId, groupName) {
