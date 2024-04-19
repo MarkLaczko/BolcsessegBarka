@@ -14,34 +14,8 @@
         {{ messages.pages.groupManagementPage.title }}
       </h1>
 
-      <Toast
-        :pt="{
-          root: {
-            class: 'w-25',
-          },
-          detail: {
-            class: 'text-center',
-          },
-          icon: {
-            class: 'mt-1 ms-1',
-          },
-          text: {
-            class: 'w-75 mx-auto',
-          },
-          container: {
-            class: ' rounded w-75',
-          },
-          buttonContainer: {
-            class: 'w-25 d-flex justify-content-center ms-auto',
-          },
-          button: {
-            class: 'btn mb-2',
-          },
-          transition: {
-            name: 'slide-fade',
-          },
-        }"
-      />
+      <BaseConfirmDialog />
+      <BaseToast />
 
       <BaseDialog
         v-if="addGroupDialogVisible"
@@ -90,6 +64,7 @@
               :label="
                 messages.pages.groupManagementPage.newGroupDialog.saveButton
               "
+              id="addGroupButton"
               :classes="{
                 input: {
                   btn: true,
@@ -248,18 +223,13 @@
                   type="text"
                   @input="filterCallback()"
                   class="form-control"
-                  :placeholder="
-                    messages.pages.groupManagementPage.editGroupDialog
-                      .namePlaceholder
-                  "
+                  :placeholder="messages.pages.groupManagementPage.editGroupDialog.namePlaceholder"
                 />
               </template>
             </Column>
             <Column
               field="email"
-              :header="
-                messages.pages.groupManagementPage.editGroupDialog.emailLabel
-              "
+              :header="messages.pages.groupManagementPage.editGroupDialog.emailLabel"
               sortable
               :pt="{
                 columnfilter: {
@@ -341,6 +311,7 @@
               :label="
                 messages.pages.groupManagementPage.editGroupDialog.saveButton
               "
+              id="modifyGroupButton"
               :classes="{
                 input: {
                   btn: true,
@@ -376,16 +347,17 @@
             <template #start>
               <Button
                 :label="messages.pages.groupManagementPage.newGroup"
-                id="newUser"
+                id="newGroup"
                 icon="pi pi-plus"
                 class="mr-2 btn btn-success text-white me-1 mt-2 ms-2"
                 @click="addGroupDialogVisible = true"
               />
               <Button
                 :label="messages.pages.groupManagementPage.deleteGroup"
+                id="deleteGroups"
                 icon="pi pi-trash"
                 class="btn btn-danger text-white mt-2"
-                @click="deleteMultipleGroups"
+                @click="confirmBulkDelete"
               />
             </template>
             <template #end>
@@ -510,7 +482,7 @@
             </Column>
             <Column :header="messages.pages.groupManagementPage.modifyText">
               <template #body="slotProp">
-                <button type="button" class="btn btn-warning">
+                <button type="button" class="btn btn-warning modifyGroup">
                   <i
                     class="fa-solid fa-pen-to-square"
                     @click="openModifyWindow(slotProp.data)"
@@ -520,10 +492,10 @@
             </Column>
             <Column :header="messages.pages.groupManagementPage.deleteText">
               <template #body="slotProp">
-                <button type="button" class="btn btn-danger">
+                <button type="button" class="btn btn-danger deleteGroup">
                   <i
                     class="fa-solid fa-trash"
-                    @click="deleteGroup(slotProp.data.id)"
+                    @click="confirmDelete(slotProp.data.id)"
                   ></i>
                 </button>
               </template>
@@ -544,8 +516,6 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import RadioButton from "primevue/radiobutton";
 import InputText from "primevue/inputtext";
-import Dialog from "primevue/dialog";
-import Toast from "primevue/toast";
 import Dropdown from "primevue/dropdown";
 import { http } from "@utils/http";
 import { mapActions, mapState } from "pinia";
@@ -556,6 +526,8 @@ import { userStore } from "@stores/UserStore";
 import { permissionStore } from "@stores/PermissionStore.mjs";
 import { languageStore } from "@stores/LanguageStore.mjs";
 import BaseDialog from "@components/BaseDialog.vue";
+import BaseToast from "@components/BaseToast.vue";
+import BaseConfirmDialog from "@components/BaseConfirmDialog.vue";
 
 export default {
   components: {
@@ -567,11 +539,11 @@ export default {
     Column,
     RadioButton,
     InputText,
-    Dialog,
-    Toast,
     RadioButton,
     Dropdown,
     BaseDialog,
+    BaseToast,
+    BaseConfirmDialog,
   },
   data() {
     return {
@@ -589,6 +561,7 @@ export default {
       checked: true,
       users: [],
       loading: true,
+      toDelete: null,
     };
   },
   computed: {
@@ -669,7 +642,7 @@ export default {
       try {
         await this.postGroup(data);
         this.$toast.add({
-          severity: "error",
+          severity: "success",
           detail:
             this.messages.pages.groupManagementPage.toastMessages
               .successfullyDeletedGroup,
@@ -694,7 +667,7 @@ export default {
       try {
         await this.updateGroup(data);
         this.$toast.add({
-          severity: "error",
+          severity: "success",
           detail:
             this.messages.pages.groupManagementPage.toastMessages
               .successfullyUpdatedGroup,
@@ -750,6 +723,51 @@ export default {
     },
     exportCSV() {
       this.$refs.dt.exportCSV();
+    },
+    confirmDelete(id) {
+      this.$confirm.require({
+        message: this.messages.pages.groupManagementPage.confirmDialogs.delete,
+        icon: 'pi pi-exclamation-triangle',
+        rejectClass: 'btn btn-danger',
+        acceptClass: 'btn btn-success ',
+        rejectLabel: 'Mégse',
+        acceptLabel: 'Törlés',
+        accept: () => {
+          try {
+            this.deleteGroup(id);
+            this.$toast.add({
+              severity: "success",
+              detail:
+                this.messages.pages.groupManagementPage.toastMessages
+                  .successfullyDeletedGroup,
+              styleClass: "bg-success text-white",
+              life: 3000,
+            });
+          } catch (error) {
+            this.$toast.add({
+              severity: "error",
+              detail:
+                this.messages.pages.groupManagementPage.toastMessages
+                  .failedToDeleteGroup,
+              styleClass: "bg-danger text-white",
+              life: 3000,
+            });
+          }
+        }
+      });
+    },
+    confirmBulkDelete() {
+      this.$confirm.require({
+        message: this.messages.pages.groupManagementPage.confirmDialogs.bulkDelete,
+        icon: 'pi pi-exclamation-triangle',
+        rejectClass: 'btn btn-danger',
+        acceptClass: 'btn btn-success ',
+        rejectLabel: 'Mégse',
+        acceptLabel: 'Törlés',
+        accept: () => {
+          this.deleteMultipleGroups();
+        }
+      });
     },
   },
   async mounted() {
