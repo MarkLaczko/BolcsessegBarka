@@ -155,6 +155,10 @@ export default {
           nameLength: "The group name must be less than 100 characters.",
         },
       },
+      confirmDialogs: {
+        delete: "Are you sure you want to delete this group?",
+        bulkDelete: "Are you sure you want to delete these groups?",
+      },
       toastMessages: {
         successfullyCreatedGroup: "Successfully added group!",
         failedToCreateGroup: "Failed to add group!",
