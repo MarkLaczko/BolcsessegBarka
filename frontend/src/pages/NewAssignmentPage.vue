@@ -4,10 +4,39 @@
         <div class="rounded-3 m-3 p-2 bg-white">
           <h2 class="text-center">{{ messages.pages.newAssignmentPage.title }}</h2>
 
+          <Toast
+            :pt="{
+              root: {
+                class: 'w-25',
+              },
+              detail: {
+                class: 'text-center',
+              },
+              icon: {
+                class: 'mt-1 ms-1',
+              },
+              text: {
+                class: 'w-75 mx-auto',
+              },
+              container: {
+                class: ' rounded w-75',
+              },
+              buttonContainer: {
+                class: 'w-25 d-flex justify-content-center ms-auto',
+              },
+              button: {
+                class: 'btn mb-2',
+              },
+              transition: {
+                name: 'slide-fade',
+              },
+            }"
+          />
+
           <FormKit
           type="form"
           :actions="false"
-          @submit="postAssignment"
+          @submit="postNewAssignment"
           :incomplete-message="
             messages.pages.userManagementPage.newUserDialog.validationMessages
               .matchAllValidationMessage
@@ -92,7 +121,7 @@
                 messages.pages.newAssignmentPage.cancelButton
               "
               class="btn btn-outline-danger mx-1 px-5"
-              @click="addUserDialogVisible = false"
+              
             ></Button>
             <FormKit
               type="submit"
@@ -124,6 +153,7 @@
   import Button from 'primevue/button';
   import { http } from "@utils/http";
   import { userStore } from "@stores/UserStore"; 
+  import { themeStore } from "@stores/ThemeStore.mjs";
   
 
   
@@ -133,16 +163,60 @@
       Toast,
       Button
     },
-    data() {
-      return {
-
-      };
-    },
     computed: {
       ...mapState(languageStore, ["messages"]),
+      ...mapState(themeStore, ["isDarkMode"]),
     },
     methods: {
-      
+      async postNewAssignment(data) {
+      try {
+        const formData = new FormData();
+          formData.append('task_name', data.task_name);
+          formData.append('comment', data.comment);
+          formData.append('deadline', new Date(data.deadline).toISOString().slice(0, 19).replace('T', ' '));
+          formData.append('teacher_task', data.teacher_task[0].file);
+          formData.append('courseable_id', 1);
+          formData.append('courseable_type', 'App\\Models\\Course');
+          formData.append('teacher_task_name', data.teacher_task[0].name);
+
+        console.log(formData)
+        console.log(data.teacher_task[0].name);
+        
+
+        const user = userStore();
+        await http.post(`/assignments`, formData, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            'Content-Type': 'application/x-www-form-urlencoded' 
+          },
+        });
+
+
+        let toast = {
+          severity: "success",
+          detail:
+            this.messages.pages,
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-success text-white";
+        }
+
+        this.$toast.add(toast);
+
+      } catch (error) {
+        let toast = {
+          severity: "error",
+          detail:
+            this.messages.pages,
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-danger text-white";
+        }
+        this.$toast.add(toast);
+      }
+    },
     },
     mounted(){
 

@@ -15,7 +15,11 @@ class Assignment extends Model
         "task",
         "comment",
         "deadline",
-        "grade"
+        "grade",
+        "courseable_id",
+        "courseable_type",
+        "student_task_name" ,
+        "teacher_task_name"
     ];
 
     public function courseable() : MorphTo
