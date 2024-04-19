@@ -27,7 +27,9 @@ class UpdateAssignmentRequest extends FormRequest
             'teacher_task' => 'nullable',
             'comment' => 'nullable',
             'deadline' => 'nullable',
-            'grade' => 'nullable'
+            'grade' => 'nullable',
+            'student_task_name' => 'nullable',
+            'teacher_task_name' => 'nullable',
         ];
     }
 }
