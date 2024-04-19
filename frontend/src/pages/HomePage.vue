@@ -1,13 +1,6 @@
 <template>
   <BaseLayout>
-    <div class="d-flex justify-content-center" v-if="loading">
-      <img
-        src="../assets/images/logo.png"
-        alt="logo"
-        width="300px"
-        class="rotating-pulsating"
-      />
-    </div>
+    <BaseSpinner :loading="loading" />
 
     <div v-if="!loading">
       <h1 class="text-center my-3">
@@ -20,47 +13,23 @@
         </h2>
         <div class="row px-5 pb-5 g-4">
           <TransitionGroup :name="`slide-${animationDirection}`">
-            <div
-              class="col-12 col-lg-4 col-md-6"
-              v-for="assignment in paginatedAssignments"
-              :key="assignment.id"
-            >
-              <BaseAssignmentCard
-                :title="assignment.title"
-                :image="assignment.image"
-                :deadline="assignment.deadline"
-              />
+            <div class="col-12 col-lg-4 col-md-6" v-for="assignment in paginatedAssignments" :key="assignment.id">
+              <BaseAssignmentCard :title="assignment.title" :image="assignment.image" :deadline="assignment.deadline" />
             </div>
           </TransitionGroup>
         </div>
-        <Paginator
-          :total-pages="totalPages"
-          :current-page="currentPage"
-          @page-changed="onPageChanged"
-        />
+        <Paginator :total-pages="totalPages" :current-page="currentPage" @page-changed="onPageChanged" />
       </div>
       <div class="rounded-3 pt-3 pb-2 mb-2">
         <h2 class="text-center mb-3">
           <b>{{ messages.pages.homePage.materialsTitle }}</b>
         </h2>
-        <BaseLearningMaterialCard
-          :course="'Szoftverfejlesztő'"
-          :learningMaterial="'Tesztelés'"
-          :image="'asd.jpeg'"
-          :releaseData="'2024.06.05'"
-        />
-        <BaseLearningMaterialCard
-          :course="'Frontend'"
-          :learningMaterial="'Vue'"
-          :image="'asd.jpeg'"
-          :releaseData="'2024.06.10'"
-        />
-        <BaseLearningMaterialCard
-          :course="'Backend'"
-          :learningMaterial="'Rest API'"
-          :image="'asd.jpeg'"
-          :releaseData="'2024.06.12'"
-        />
+        <BaseLearningMaterialCard :course="'Szoftverfejlesztő'" :learningMaterial="'Tesztelés'" :image="'asd.jpeg'"
+          :releaseData="'2024.06.05'" />
+        <BaseLearningMaterialCard :course="'Frontend'" :learningMaterial="'Vue'" :image="'asd.jpeg'"
+          :releaseData="'2024.06.10'" />
+        <BaseLearningMaterialCard :course="'Backend'" :learningMaterial="'Rest API'" :image="'asd.jpeg'"
+          :releaseData="'2024.06.12'" />
       </div>
     </div>
   </BaseLayout>
@@ -69,6 +38,7 @@
 <script>
 import BaseLayout from "@layouts/BaseLayout.vue";
 import BaseAssignmentCard from "@components/BaseAssignmentCard.vue";
+import BaseSpinner from "@components/BaseSpinner.vue";
 import BaseLearningMaterialCard from "@components/BaseLearningMaterialCard.vue";
 import { userStore } from "@stores/UserStore.mjs";
 import { mapActions, mapState } from "pinia";
@@ -199,6 +169,7 @@ export default {
     BaseAssignmentCard,
     BaseLearningMaterialCard,
     Paginator,
+    BaseSpinner
   },
   methods: {
     ...mapActions(userStore, ["getUser"]),
@@ -243,10 +214,12 @@ export default {
 .slide-right-leave-active {
   transition: transform 0.5s ease-in-out, opacity 0.5s ease;
 }
+
 .slide-right-enter-from,
 .slide-right-leave-to {
   transform: translateX(100%);
 }
+
 .slide-right-leave-to {
   position: absolute;
   transform: translateX(-100%) scale(0.8) rotate(-10deg);
@@ -257,6 +230,7 @@ export default {
 .slide-left-leave-active {
   transition: transform 0.5s ease-in-out, opacity 0.5s ease;
 }
+
 .slide-left-enter-from,
 .slide-left-leave-to {
   transform: translateX(-100%);

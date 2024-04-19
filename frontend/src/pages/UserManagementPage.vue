@@ -1,54 +1,40 @@
 <template>
   <BaseLayout>
-    <div class="d-flex justify-content-center" v-if="loading">
-      <img
-        src="../assets/images/logo.png"
-        alt="logo"
-        width="300px"
-        class="rotating-pulsating"
-      />
-    </div>
+    <BaseSpinner :loading="loading" />
 
     <div v-if="!loading">
       <h1 class="text-center my-3">
         {{ messages.pages.userManagementPage.title }}
       </h1>
 
-      <Toast
-        :pt="{
-          root: {
-            class: 'w-25',
-          },
-          detail: {
-            class: 'text-center',
-          },
-          icon: {
-            class: 'mt-1 ms-1',
-          },
-          text: {
-            class: 'w-75 mx-auto',
-          },
-          container: {
-            class: ' rounded w-75',
-          },
-          buttonContainer: {
-            class: 'w-25 d-flex justify-content-center ms-auto',
-          },
-          button: {
-            class: 'btn mb-2',
-          },
-          transition: {
-            name: 'slide-fade',
-          },
-        }"
-      />
-      <Dialog
-        v-if="addUserDialogVisible"
-        v-model:visible="addUserDialogVisible"
-        modal
-        :header="messages.pages.userManagementPage.newUserDialog.title"
-        :style="{ width: '25rem' }"
-        :pt="{
+      <Toast :pt="{
+        root: {
+          class: 'w-25',
+        },
+        detail: {
+          class: 'text-center',
+        },
+        icon: {
+          class: 'mt-1 ms-1',
+        },
+        text: {
+          class: 'w-75 mx-auto',
+        },
+        container: {
+          class: ' rounded w-75',
+        },
+        buttonContainer: {
+          class: 'w-25 d-flex justify-content-center ms-auto',
+        },
+        button: {
+          class: 'btn mb-2',
+        },
+        transition: {
+          name: 'slide-fade',
+        },
+      }" />
+      <Dialog v-if="addUserDialogVisible" v-model:visible="addUserDialogVisible" modal
+        :header="messages.pages.userManagementPage.newUserDialog.title" :style="{ width: '25rem' }" :pt="{
           root: {
             class: 'modal-dialog p-3 rounded shadow border',
           },
@@ -67,88 +53,55 @@
           transition: {
             name: 'slide-fade',
           },
-        }"
-      >
-        <FormKit
-          type="form"
-          :actions="false"
-          @submit="postUser"
-          :incomplete-message="
-            messages.pages.userManagementPage.newUserDialog.validationMessages
-              .matchAllValidationMessage
-          "
-        >
-          <FormKit
-            type="text"
-            name="name"
-            :label="messages.pages.userManagementPage.newUserDialog.nameLabel"
-            validation="required|length:0,255"
-            :validation-messages="{
+        }">
+        <FormKit type="form" :actions="false" @submit="postUser" :incomplete-message="messages.pages.userManagementPage.newUserDialog.validationMessages
+            .matchAllValidationMessage
+          ">
+          <FormKit type="text" name="name" :label="messages.pages.userManagementPage.newUserDialog.nameLabel"
+            validation="required|length:0,255" :validation-messages="{
               required:
                 messages.pages.userManagementPage.newUserDialog
                   .validationMessages.nameRequired,
               length:
                 messages.pages.userManagementPage.newUserDialog
                   .validationMessages.nameLength,
-            }"
-            :classes="{
+            }" :classes="{
               input: {
                 'mb-1': true,
                 'form-control': true,
               },
-            }"
-          />
-          <FormKit
-            type="email"
-            name="email"
-            :label="messages.pages.userManagementPage.newUserDialog.emailLabel"
-            validation="required|email"
-            :validation-messages="{
+            }" />
+          <FormKit type="email" name="email" :label="messages.pages.userManagementPage.newUserDialog.emailLabel"
+            validation="required|email" :validation-messages="{
               required:
                 messages.pages.userManagementPage.newUserDialog
                   .validationMessages.emailRequired,
               email:
                 messages.pages.userManagementPage.newUserDialog
                   .validationMessages.validEmail,
-            }"
-            :classes="{
+            }" :classes="{
               input: {
                 'mb-1': true,
                 'form-control': true,
               },
-            }"
-          />
-          <FormKit
-            type="password"
-            name="password"
-            :label="
-              messages.pages.userManagementPage.newUserDialog.passwordLabel
-            "
-            validation="required|length:8,255"
-            :validation-messages="{
+            }" />
+          <FormKit type="password" name="password" :label="messages.pages.userManagementPage.newUserDialog.passwordLabel
+            " validation="required|length:8,255" :validation-messages="{
               required:
                 messages.pages.userManagementPage.newUserDialog
                   .validationMessages.passwordRequired,
               length:
                 messages.pages.userManagementPage.newUserDialog
                   .validationMessages.passwordLength,
-            }"
-            :classes="{
+            }" :classes="{
               input: {
                 'mb-1': true,
                 'form-control': true,
               },
-            }"
-          />
-          <FormKit
-            type="password"
-            name="password_confirm"
-            :label="
-              messages.pages.userManagementPage.newUserDialog
-                .confirmPasswordLabel
-            "
-            validation="required|length:8,255|confirm"
-            :validation-messages="{
+            }" />
+          <FormKit type="password" name="password_confirm" :label="messages.pages.userManagementPage.newUserDialog
+              .confirmPasswordLabel
+            " validation="required|length:8,255|confirm" :validation-messages="{
               required:
                 messages.pages.userManagementPage.newUserDialog
                   .validationMessages.confirmPasswordRequired,
@@ -158,51 +111,30 @@
               confirm:
                 messages.pages.userManagementPage.newUserDialog
                   .validationMessages.confirmPasswordConfirm,
-            }"
-            :classes="{
+            }" :classes="{
               input: {
                 'mb-1': true,
                 'form-control': true,
               },
-            }"
-          />
+            }" />
           <div class="d-flex justify-content-end mt-2 mb-3">
-            <Button
-              type="button"
-              :label="
-                messages.pages.userManagementPage.newUserDialog.cancelButton
-              "
-              class="btn btn-outline-danger mx-1"
-              @click="addUserDialogVisible = false"
-            ></Button>
-            <FormKit
-              type="submit"
-              :label="
-                messages.pages.userManagementPage.newUserDialog.saveButton
-              "
-              id="addUserButton"
-              :classes="{
+            <Button type="button" :label="messages.pages.userManagementPage.newUserDialog.cancelButton
+              " class="btn btn-outline-danger mx-1" @click="addUserDialogVisible = false"></Button>
+            <FormKit type="submit" :label="messages.pages.userManagementPage.newUserDialog.saveButton
+              " id="addUserButton" :classes="{
                 input: {
                   btn: true,
                   'btn-success': true,
                   'w-auto': true,
                 },
-              }"
-            />
+              }" />
           </div>
         </FormKit>
       </Dialog>
-      <Dialog
-        v-if="modifyUserDialogVisible"
-        v-model:visible="modifyUserDialogVisible"
-        modal
-        :header="
-          messages.pages.userManagementPage.editUserDialog.title +
-          ': ' +
-          currentlyModifyingUser.name
-        "
-        :style="{ width: '25rem' }"
-        :pt="{
+      <Dialog v-if="modifyUserDialogVisible" v-model:visible="modifyUserDialogVisible" modal :header="messages.pages.userManagementPage.editUserDialog.title +
+        ': ' +
+        currentlyModifyingUser.name
+        " :style="{ width: '25rem' }" :pt="{
           root: {
             class: 'modal-dialog p-3 rounded shadow border',
           },
@@ -221,336 +153,201 @@
           transition: {
             name: 'slide-fade',
           },
-        }"
-      >
-        <FormKit
-          type="form"
-          :actions="false"
-          @submit="updateUser"
-          :value="currentlyModifyingUser"
-          :incomplete-message="
-            messages.pages.userManagementPage.editUserDialog.validationMessages
-              .matchAllValidationMessage
-          "
-        >
-          <FormKit
-            type="text"
-            name="name"
-            :label="messages.pages.userManagementPage.editUserDialog.nameLabel"
-            validation="required|length:0,255"
-            :validation-messages="{
+        }">
+        <FormKit type="form" :actions="false" @submit="updateUser" :value="currentlyModifyingUser" :incomplete-message="messages.pages.userManagementPage.editUserDialog.validationMessages
+            .matchAllValidationMessage
+          ">
+          <FormKit type="text" name="name" :label="messages.pages.userManagementPage.editUserDialog.nameLabel"
+            validation="required|length:0,255" :validation-messages="{
               required:
                 messages.pages.userManagementPage.editUserDialog
                   .validationMessages.nameRequired,
               length:
                 messages.pages.userManagementPage.editUserDialog
                   .validationMessages.nameLength,
-            }"
-            :classes="{
+            }" :classes="{
               input: {
                 'mb-1': true,
                 'form-control': true,
               },
-            }"
-          />
-          <FormKit
-            type="email"
-            name="email"
-            :label="messages.pages.userManagementPage.editUserDialog.emailLabel"
-            validation="required|email"
-            :validation-messages="{
+            }" />
+          <FormKit type="email" name="email" :label="messages.pages.userManagementPage.editUserDialog.emailLabel"
+            validation="required|email" :validation-messages="{
               required:
                 messages.pages.userManagementPage.editUserDialog
                   .validationMessages.emailRequired,
               email:
                 messages.pages.userManagementPage.editUserDialog
                   .validationMessages.validEmail,
-            }"
-            :classes="{
+            }" :classes="{
               input: {
                 'mb-1': true,
                 'form-control': true,
               },
-            }"
-          />
-          <FormKit
-            type="password"
-            name="password"
-            :label="
-              messages.pages.userManagementPage.editUserDialog.passwordLabel
-            "
-            validation="length:8,255"
-            :validation-messages="{
+            }" />
+          <FormKit type="password" name="password" :label="messages.pages.userManagementPage.editUserDialog.passwordLabel
+            " validation="length:8,255" :validation-messages="{
               length:
                 messages.pages.userManagementPage.editUserDialog
                   .validationMessages.passwordLength,
-            }"
-            :classes="{
+            }" :classes="{
               input: {
                 'mb-1': true,
                 'form-control': true,
               },
-            }"
-          />
-          <FormKit
-            type="password"
-            name="password_confirm"
-            :label="
-              messages.pages.userManagementPage.editUserDialog
-                .confirmPasswordLabel
-            "
-            validation="length:8,255|confirm"
-            :validation-messages="{
+            }" />
+          <FormKit type="password" name="password_confirm" :label="messages.pages.userManagementPage.editUserDialog
+              .confirmPasswordLabel
+            " validation="length:8,255|confirm" :validation-messages="{
               length:
                 messages.pages.userManagementPage.editUserDialog
                   .validationMessages.confirmPasswordLength,
               confirm:
                 messages.pages.userManagementPage.editUserDialog
                   .validationMessages.confirmPasswordConfirm,
-            }"
-            :classes="{
+            }" :classes="{
               input: {
                 'mb-1': true,
                 'form-control': true,
               },
-            }"
-          />
-          <FormKit
-            type="checkbox"
-            label="Admin-E"
-            name="is_admin"
-            :classes="{
-              input: {
-                'mb-1': true,
-                'form-check-input': true,
-                'me-2': true,
-              },
-            }"
-          />
+            }" />
+          <FormKit type="checkbox" label="Admin-E" name="is_admin" :classes="{
+            input: {
+              'mb-1': true,
+              'form-check-input': true,
+              'me-2': true,
+            },
+          }" />
           <div class="d-flex justify-content-end mt-2 mb-3">
-            <Button
-              type="button"
-              label="Mégse"
-              class="btn btn-outline-danger mx-1"
-              @click="modifyUserDialogVisible = false"
-            ></Button>
-            <FormKit
-              type="submit"
-              label="Mentés"
-              :classes="{
-                input: {
-                  btn: true,
-                  'btn-success': true,
-                  'w-auto': true,
-                },
-              }"
-            />
+            <Button type="button" label="Mégse" class="btn btn-outline-danger mx-1"
+              @click="modifyUserDialogVisible = false"></Button>
+            <FormKit type="submit" label="Mentés" :classes="{
+              input: {
+                btn: true,
+                'btn-success': true,
+                'w-auto': true,
+              },
+            }" />
           </div>
         </FormKit>
       </Dialog>
       <div>
         <div class="card darkTheme">
-          <Toolbar
-            :pt="{
-              start: {
-                class:
-                  'col-sm-12 col-md-5 d-flex justify-content-md-start align-items-center justify-content-center',
-              },
-              center: {
-                class: 'col-sm-12 col-md-2',
-              },
-              end: {
-                class:
-                  'col-sm-12 col-md-5 d-flex justify-content-md-end align-items-center justify-content-center',
-              },
-              root: {
-                class: 'row mb-2',
-              },
-            }"
-          >
+          <Toolbar :pt="{
+            start: {
+              class:
+                'col-sm-12 col-md-5 d-flex justify-content-md-start align-items-center justify-content-center',
+            },
+            center: {
+              class: 'col-sm-12 col-md-2',
+            },
+            end: {
+              class:
+                'col-sm-12 col-md-5 d-flex justify-content-md-end align-items-center justify-content-center',
+            },
+            root: {
+              class: 'row mb-2',
+            },
+          }">
             <template #start>
-              <Button
-                :label="messages.pages.userManagementPage.newUser"
-                id="newUser"
-                icon="pi pi-plus"
-                class="mr-2 btn btn-success text-white me-1 mt-2 ms-2"
-                @click="addUserDialogVisible = true"
-              />
-              <Button
-                :label="messages.pages.userManagementPage.deleteUser"
-                icon="pi pi-trash"
-                class="btn btn-danger text-white mt-2"
-                @click="deleteMultipleUsers"
-              />
+              <Button :label="messages.pages.userManagementPage.newUser" id="newUser" icon="pi pi-plus"
+                class="mr-2 btn btn-success text-white me-1 mt-2 ms-2" @click="addUserDialogVisible = true" />
+              <Button :label="messages.pages.userManagementPage.deleteUser" icon="pi pi-trash"
+                class="btn btn-danger text-white mt-2" @click="deleteMultipleUsers" />
             </template>
             <template #end>
-              <Button
-                :label="messages.pages.userManagementPage.exportButton"
-                icon="pi pi-upload"
-                class="btn btn-warning text-white mt-2 me-2"
-                @click="exportCSV($event)"
-              />
+              <Button :label="messages.pages.userManagementPage.exportButton" icon="pi pi-upload"
+                class="btn btn-warning text-white mt-2 me-2" @click="exportCSV($event)" />
             </template>
           </Toolbar>
-          <DataTable
-            exportFilename="users"
-            ref="dt"
-            :value="users"
-            tableStyle="min-width: 50rem"
-            sortField="id"
-            :sortOrder="1"
-            v-model:filters="filters"
-            filterDisplay="row"
-            v-model:selection="selectedUsers"
-            selectionMode="multiple"
-            dataKey="id"
-            :metaKeySelection="false"
-            :pt="{
+          <DataTable exportFilename="users" ref="dt" :value="users" tableStyle="min-width: 50rem" sortField="id"
+            :sortOrder="1" v-model:filters="filters" filterDisplay="row" v-model:selection="selectedUsers"
+            selectionMode="multiple" dataKey="id" :metaKeySelection="false" :pt="{
               table: {
                 class: 'table table-responsive align-middle',
               },
-            }"
-          >
+            }">
             <Column>
               <template #header>
                 <div class="d-flex justify-content-center">
-                  <button
-                    type="button"
-                    class="btn"
-                    style="
+                  <button type="button" class="btn" style="
                       --bs-btn-padding-y: 0.25rem;
                       --bs-btn-padding-x: 0.5rem;
                       --bs-btn-font-size: 0.75rem;
                       width: 28px;
-                    "
-                    @click="selectAllUsers"
-                  >
-                    <i
-                      class="fa-solid fa-x text-danger"
-                      v-if="selectedUsers.length == 0"
-                    ></i>
+                    " @click="selectAllUsers">
+                    <i class="fa-solid fa-x text-danger" v-if="selectedUsers.length == 0"></i>
                     <i class="fa-solid fa-check text-success" v-else></i>
                   </button>
                 </div>
               </template>
               <template #body="slotProp">
                 <div class="d-flex justify-content-center">
-                  <i
-                    class="fa-solid fa-check text-success"
-                    v-if="
-                      selectedUsers.findIndex((x) => x == slotProp.data) != -1
-                    "
-                  ></i>
+                  <i class="fa-solid fa-check text-success" v-if="
+                    selectedUsers.findIndex((x) => x == slotProp.data) != -1
+                  "></i>
                   <i class="fa-solid fa-x text-danger" v-else></i>
                 </div>
               </template>
             </Column>
-            <Column
-              field="id"
-              :header="messages.pages.userManagementPage.idText"
-              sortable
-            ></Column>
-            <Column
-              field="name"
-              :header="messages.pages.userManagementPage.nameText"
-              sortable
-              :pt="{
-                columnfilter: {
-                  class: 'd-flex',
-                },
-                filtermenubutton: {
-                  class: 'btn ms-1',
-                },
-                headerfilterclearbutton: {
-                  class: 'btn ms-1',
-                },
-              }"
-            >
+            <Column field="id" :header="messages.pages.userManagementPage.idText" sortable></Column>
+            <Column field="name" :header="messages.pages.userManagementPage.nameText" sortable :pt="{
+              columnfilter: {
+                class: 'd-flex',
+              },
+              filtermenubutton: {
+                class: 'btn ms-1',
+              },
+              headerfilterclearbutton: {
+                class: 'btn ms-1',
+              },
+            }">
               <template #filter="{ filterModel, filterCallback }">
-                <InputText
-                  v-model="filterModel.value"
-                  type="text"
-                  @input="filterCallback()"
-                  class="form-control"
-                  :placeholder="
-                    messages.pages.userManagementPage.namePlaceholder
-                  "
-                />
+                <InputText v-model="filterModel.value" type="text" @input="filterCallback()" class="form-control"
+                  :placeholder="messages.pages.userManagementPage.namePlaceholder
+                    " />
               </template>
             </Column>
-            <Column
-              field="email"
-              header="Email"
-              sortable
-              :pt="{
-                columnfilter: {
-                  class: 'd-flex',
-                },
-                filtermenubutton: {
-                  class: 'btn ms-1',
-                },
-                headerfilterclearbutton: {
-                  class: 'btn ms-1',
-                },
-              }"
-            >
+            <Column field="email" header="Email" sortable :pt="{
+              columnfilter: {
+                class: 'd-flex',
+              },
+              filtermenubutton: {
+                class: 'btn ms-1',
+              },
+              headerfilterclearbutton: {
+                class: 'btn ms-1',
+              },
+            }">
               <template #filter="{ filterModel, filterCallback }">
-                <InputText
-                  v-model="filterModel.value"
-                  type="text"
-                  @input="filterCallback()"
-                  class="form-control"
-                  placeholder="Email..."
-                />
+                <InputText v-model="filterModel.value" type="text" @input="filterCallback()" class="form-control"
+                  placeholder="Email..." />
               </template>
             </Column>
-            <Column
-              field="is_admin"
-              :header="messages.pages.userManagementPage.adminText"
-              sortable
-            >
+            <Column field="is_admin" :header="messages.pages.userManagementPage.adminText" sortable>
               <template #body="slotProp">
                 <div class="d-flex justify-content-center">
-                  <RadioButton
-                    v-model="checked"
-                    :value="slotProp.data.is_admin == 1"
-                    ű
-                    class="radioButton"
-                  />
+                  <RadioButton v-model="checked" :value="slotProp.data.is_admin == 1" ű class="radioButton" />
                 </div>
               </template>
             </Column>
             <Column :header="messages.pages.userManagementPage.modifyText">
               <template #body="slotProp">
-                <button
-                  type="button"
-                  class="btn btn-warning"
-                  v-if="slotProp.data.email != currentUserData.email"
-                >
-                  <i
-                    class="fa-solid fa-pen-to-square"
-                    @click="
-                      (modifyUserDialogVisible = true),
-                        (currentlyModifyingUser = {
-                          ...slotProp.data,
-                          password: '',
-                        })
-                    "
-                  ></i>
+                <button type="button" class="btn btn-warning" v-if="slotProp.data.email != currentUserData.email">
+                  <i class="fa-solid fa-pen-to-square" @click="
+                    (modifyUserDialogVisible = true),
+                    (currentlyModifyingUser = {
+                      ...slotProp.data,
+                      password: '',
+                    })
+                    "></i>
                 </button>
               </template>
             </Column>
             <Column :header="messages.pages.userManagementPage.deleteText">
               <template #body="slotProp">
-                <button
-                  type="button"
-                  class="btn btn-danger"
-                  v-if="slotProp.data.email != currentUserData.email"
-                >
-                  <i
-                    class="fa-solid fa-trash"
-                    @click="deleteUser(slotProp.data.id)"
-                  ></i>
+                <button type="button" class="btn btn-danger" v-if="slotProp.data.email != currentUserData.email">
+                  <i class="fa-solid fa-trash" @click="deleteUser(slotProp.data.id)"></i>
                 </button>
               </template>
             </Column>
@@ -571,6 +368,7 @@ import RadioButton from "primevue/radiobutton";
 import InputText from "primevue/inputtext";
 import Dialog from "primevue/dialog";
 import Toast from "primevue/toast";
+import BaseSpinner from "@components/BaseSpinner.vue";
 import { http } from "@utils/http";
 import { mapState } from "pinia";
 import { userStore } from "@stores/UserStore";
@@ -590,6 +388,7 @@ export default {
     Dialog,
     Toast,
     RadioButton,
+    BaseSpinner
   },
   data() {
     return {
