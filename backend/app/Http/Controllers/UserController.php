@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BulkDeleteUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Gate;
 
@@ -76,10 +76,10 @@ class UserController extends Controller
         return response()->noContent();
     }
 
-    public function bulkDelete(Request $request)
+    public function bulkDelete(BulkDeleteUserRequest $request)
     {
         Gate::authorize('users.delete');
-        $userIds = $request->input('userIds');
+        $userIds = $request->validated()['userIds'];
 
         if (!empty($userIds)) {
             User::destroy($userIds);
