@@ -178,9 +178,6 @@
           formData.append('courseable_id', 1);
           formData.append('courseable_type', 'App\\Models\\Course');
           formData.append('teacher_task_name', data.teacher_task[0].name);
-
-        console.log(formData)
-        console.log(data.teacher_task[0].name);
         
 
         const user = userStore();
@@ -195,7 +192,7 @@
         let toast = {
           severity: "success",
           detail:
-            this.messages.pages,
+            this.messages.pages.newAssignmentPage.toastMessages.successfullyCreatedAssignment,
           life: 3000,
         };
         if (!this.isDarkMode) {
@@ -208,7 +205,7 @@
         let toast = {
           severity: "error",
           detail:
-            this.messages.pages,
+            this.messages.pages.newAssignmentPage.toastMessages.failedToCreateAssignment,
           life: 3000,
         };
         if (!this.isDarkMode) {
