@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DeleteCoursesRequest;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\StoreGroupIdRequest;
+use App\Http\Requests\StoreTopicIdRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\GroupsWithUsersResource;
 use App\Models\Course;
 use App\Models\Topic;
-use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
@@ -97,14 +97,14 @@ class CourseController extends Controller
         ]);
     }
 
-    public function assignTopics(Request $request, $courseId)
+    public function assignTopics(StoreTopicIdRequest $request, $courseId)
     {
         $course = Course::find($courseId);
         if (!$course) {
             return response()->json(['message' => 'Course not found'], 404);
         }
     
-        $topicIds = $request->input('topic_ids');
+        $topicIds = $request->validated()['topic_ids'];
         foreach ($topicIds as $topicId) {
             $topic = Topic::find($topicId);
             if ($topic) {
