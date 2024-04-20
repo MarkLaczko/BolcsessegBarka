@@ -250,6 +250,10 @@ export default {
         commentLength: "A hozzászólásnak kevesebbnek kell lennie, mint 255 karakter.",
         deadlineRequired: "Kötelező határidőt beállítani.",
       },
+      toastMessages: {
+        successfullyCreatedAssignment: "Feladat hozzáadása sikeres volt!",
+        failedToCreateAssignment: "Feladat hozzáadása sikertelen volt!",
+      },
     },
     notePage: {
       title: "Jegyzet létrehozása",
