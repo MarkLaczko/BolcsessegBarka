@@ -59,6 +59,8 @@ Route::middleware('auth:sanctum')->post('/courses/{course}/groups', [CourseContr
     ->name('courses.assignGroups');
 Route::middleware('auth:sanctum')->post('/courses/{course}/topics', [CourseController::class, 'assignTopics'])
     ->name('courses.assignTopics');
+Route::middleware('auth:sanctum')->get('/courses/{id}/with-users', [CourseController::class, 'showCourseWithUsers'])
+    ->name('courses.showCourseWithUsers');
 
 Route::middleware('auth:sanctum')->get('/groups', [GroupController::class, 'index'])
     ->name('groups.index');

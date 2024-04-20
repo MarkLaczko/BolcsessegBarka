@@ -1,54 +1,40 @@
 <template>
   <BaseLayout>
-    <div class="d-flex justify-content-center" v-if="loading">
-      <img
-        src="../assets/images/logo.png"
-        alt="logo"
-        width="300px"
-        class="rotating-pulsating"
-      />
-    </div>
+    <BaseSpinner :loading="loading" />
 
     <div v-if="!loading">
       <h1 class="text-center my-3">
         {{ messages.pages.courseManagementPage.title }}
       </h1>
 
-      <Toast
-        :pt="{
-          root: {
-            class: 'w-25',
-          },
-          detail: {
-            class: 'text-center',
-          },
-          icon: {
-            class: 'mt-1 ms-1',
-          },
-          text: {
-            class: 'w-75 mx-auto',
-          },
-          container: {
-            class: ' rounded w-75',
-          },
-          buttonContainer: {
-            class: 'w-25 d-flex justify-content-center ms-auto',
-          },
-          button: {
-            class: 'btn mb-2',
-          },
-          transition: {
-            name: 'slide-fade',
-          },
-        }"
-      />
-      <Dialog
-        v-if="addCourseDialogVisible"
-        v-model:visible="addCourseDialogVisible"
-        modal
-        :header="messages.pages.courseManagementPage.newCourseDialog.title"
-        :style="{ width: '25rem' }"
-        :pt="{
+      <Toast :pt="{
+        root: {
+          class: 'w-25',
+        },
+        detail: {
+          class: 'text-center',
+        },
+        icon: {
+          class: 'mt-1 ms-1',
+        },
+        text: {
+          class: 'w-75 mx-auto',
+        },
+        container: {
+          class: ' rounded w-75',
+        },
+        buttonContainer: {
+          class: 'w-25 d-flex justify-content-center ms-auto',
+        },
+        button: {
+          class: 'btn mb-2',
+        },
+        transition: {
+          name: 'slide-fade',
+        },
+      }" />
+      <Dialog v-if="addCourseDialogVisible" v-model:visible="addCourseDialogVisible" modal
+        :header="messages.pages.courseManagementPage.newCourseDialog.title" :style="{ width: '25rem' }" :pt="{
           root: {
             class: 'modal-dialog p-3 rounded shadow border',
           },
@@ -67,90 +53,52 @@
           transition: {
             name: 'slide-fade',
           },
-        }"
-      >
-        <FormKit
-          type="form"
-          :actions="false"
-          @submit="postCourses"
-          :incomplete-message="
-            messages.pages.courseManagementPage.newCourseDialog
-              .validationMessages.matchAllValidationMessage
-          "
-        >
-          <FormKit
-            type="text"
-            name="name"
-            label="Kurzus neve"
-            validation="required|length:0,255"
-            :validation-messages="{
-              required:
-                messages.pages.courseManagementPage.newCourseDialog
-                  .validationMessages.nameRequired,
-              length:
-                messages.pages.courseManagementPage.newCourseDialog
-                  .validationMessages.nameLength,
-            }"
-            :classes="{
+        }">
+        <FormKit type="form" :actions="false" @submit="postCourses" :incomplete-message="messages.pages.courseManagementPage.newCourseDialog
+            .validationMessages.matchAllValidationMessage
+          ">
+          <FormKit type="text" name="name" label="Kurzus neve" validation="required|length:5,100" :validation-messages="{
+            required:
+              messages.pages.courseManagementPage.newCourseDialog
+                .validationMessages.nameRequired,
+            length:
+              messages.pages.courseManagementPage.newCourseDialog
+                .validationMessages.nameLength,
+          }" :classes="{
               input: {
                 'mb-1': true,
                 'form-control': true,
               },
-            }"
-          />
-          <FormKit
-            type="file"
-            name="image"
-            @change="handleFileChange"
-            label="Kép hozzáadása"
-            accept=".JPEG,.PNG,.JPG,.BMP"
-            :validation-messages="{
+            }" />
+          <FormKit type="file" name="image" @change="handleFileChange" label="Kép hozzáadása"
+            accept=".JPEG,.PNG,.JPG,.BMP" :validation-messages="{
               required:
                 messages.pages.courseManagementPage.newCourseDialog
                   .validationMessages.imageRequired,
-            }"
-            :classes="{
+            }" :classes="{
               input: {
                 'mb-1': true,
                 'form-control': true,
               },
-            }"
-            :title="
-              messages.pages.courseManagementPage.newCourseDialog.fileUpload
-            "
-          />
+            }" :title="messages.pages.courseManagementPage.newCourseDialog.fileUpload
+              " />
           <div class="d-flex justify-content-end mt-2 mb-3">
-            <Button
-              type="button"
-              label="Mégse"
-              class="btn btn-outline-danger mx-1"
-              @click="addCourseDialogVisible = false"
-            ></Button>
-            <FormKit
-              type="submit"
-              label="Mentés"
-              :classes="{
-                input: {
-                  btn: true,
-                  'btn-success': true,
-                  'w-auto': true,
-                },
-              }"
-            />
+            <Button type="button" label="Mégse" class="btn btn-outline-danger mx-1"
+              @click="addCourseDialogVisible = false"></Button>
+            <FormKit type="submit" label="Mentés" :classes="{
+              input: {
+                btn: true,
+                'btn-success': true,
+                'w-auto': true,
+              },
+            }" />
           </div>
         </FormKit>
       </Dialog>
-      <Dialog
-        v-if="modifyCourseDialogVisible"
-        v-model:visible="modifyCourseDialogVisible"
-        modal
-        :header="
-          messages.pages.courseManagementPage.editCourseDialog.title +
-          ' ' +
-          currentlyModifyingCourse.name
-        "
-        :style="{ width: '25rem' }"
-        :pt="{
+      <Dialog v-if="modifyCourseDialogVisible" v-model:visible="modifyCourseDialogVisible" modal :header="messages.pages.courseManagementPage.editCourseDialog.title +
+        ' ' +
+        currentlyModifyingCourse.name
+        " :style="{ width: '25rem' }" :pt="{
           root: {
             class: 'modal-dialog p-3 rounded shadow border',
           },
@@ -169,64 +117,34 @@
           transition: {
             name: 'slide-fade',
           },
-        }"
-      >
-        <FormKit
-          type="form"
-          :actions="false"
-          @submit="updateCourse"
-          :value="currentlyModifyingCourse"
-          :incomplete-message="
-            messages.pages.courseManagementPage.editCourseDialog
+        }">
+        <FormKit type="form" :actions="false" @submit="updateCourse" :value="currentlyModifyingCourse"
+          :incomplete-message="messages.pages.courseManagementPage.editCourseDialog
               .validationMessages.matchAllValidationMessage
-          "
-        >
-          <FormKit
-            type="text"
-            name="name"
-            label="Kurzus neve"
-            validation="length:0,255"
-            :validation-messages="{
-              length:
-                messages.pages.courseManagementPage.editCourseDialog
-                  .validationMessages.nameLength,
-            }"
-            :classes="{
-              input: {
-                'mb-1': true,
-                'form-control': true,
-              },
-            }"
-          />
-          <FormKit
-            type="file"
-            name="image"
-            @change="handleFileChange"
-            :label="
+            ">
+          <FormKit type="text" name="name" label="Kurzus neve" validation="length:0,255" :validation-messages="{
+            length:
               messages.pages.courseManagementPage.editCourseDialog
-                .validationMessages.fileUpload
-            "
-            accept=".JPEG,.PNG,.JPG,.BMP"
-            :classes="{
+                .validationMessages.nameLength,
+          }" :classes="{
               input: {
                 'mb-1': true,
                 'form-control': true,
               },
-            }"
-          />
+            }" />
+          <FormKit type="file" name="image" @change="handleFileChange" :label="messages.pages.courseManagementPage.editCourseDialog
+              .validationMessages.fileUpload
+            " accept=".JPEG,.PNG,.JPG,.BMP" :classes="{
+              input: {
+                'mb-1': true,
+                'form-control': true,
+              },
+            }" />
 
-          <MultiSelect
-            v-model="currentlyModifyingCourse.groups"
-            :options="groups"
-            filter
-            :maxSelectedLabels="3"
-            optionLabel="name"
-            :placeholder="
-              messages.pages.courseManagementPage.editCourseDialog.multiSelect
+          <MultiSelect v-model="currentlyModifyingCourse.groups" :options="groups" filter :maxSelectedLabels="3"
+            optionLabel="name" :placeholder="messages.pages.courseManagementPage.editCourseDialog.multiSelect
                 .title
-            "
-            display="chip"
-            :pt="{
+              " display="chip" :pt="{
               list: {
                 class: 'rounded-3 w-75 list-style-none p-2',
               },
@@ -261,199 +179,120 @@
               removeTokenIcon: {
                 class: 'ms-1',
               },
-            }"
-          />
+            }" />
 
           <div class="d-flex justify-content-end mt-2 mb-3">
-            <Button
-              type="button"
-              label="Mégse"
-              class="btn btn-outline-danger mx-1"
-              @click="modifyCourseDialogVisible = false"
-            ></Button>
-            <FormKit
-              type="submit"
-              label="Mentés"
-              :classes="{
-                input: {
-                  btn: true,
-                  'btn-success': true,
-                  'w-auto': true,
-                },
-              }"
-            />
+            <Button type="button" label="Mégse" class="btn btn-outline-danger mx-1"
+              @click="modifyCourseDialogVisible = false"></Button>
+            <FormKit type="submit" label="Mentés" :classes="{
+              input: {
+                btn: true,
+                'btn-success': true,
+                'w-auto': true,
+              },
+            }" />
           </div>
         </FormKit>
       </Dialog>
       <div>
         <div class="card darkTheme">
-          <Toolbar
-            :pt="{
-              start: {
-                class:
-                  'col-sm-12 col-md-5 d-flex justify-content-md-start align-items-center justify-content-center',
-              },
-              center: {
-                class: 'col-sm-12 col-md-2',
-              },
-              end: {
-                class:
-                  'col-sm-12 col-md-5 d-flex justify-content-md-end align-items-center justify-content-center',
-              },
-              root: {
-                class: 'row mb-2',
-              },
-            }"
-          >
+          <Toolbar :pt="{
+            start: {
+              class:
+                'col-sm-12 col-md-5 d-flex justify-content-md-start align-items-center justify-content-center',
+            },
+            center: {
+              class: 'col-sm-12 col-md-2',
+            },
+            end: {
+              class:
+                'col-sm-12 col-md-5 d-flex justify-content-md-end align-items-center justify-content-center',
+            },
+            root: {
+              class: 'row mb-2',
+            },
+          }">
             <template #start>
-              <Button
-                :label="messages.pages.courseManagementPage.newUser"
-                icon="pi pi-plus"
-                class="mr-2 btn btn-success text-white me-1 mt-2 ms-2"
-                @click="addCourseDialogVisible = true"
-              />
-              <Button
-                :label="messages.pages.courseManagementPage.deleteUser"
-                icon="pi pi-trash"
-                class="btn btn-danger text-white mt-2"
-                @click="deleteMultipleCourses"
-              />
+              <Button :label="messages.pages.courseManagementPage.newUser" icon="pi pi-plus"
+                class="mr-2 btn btn-success text-white me-1 mt-2 ms-2" @click="addCourseDialogVisible = true" />
+              <Button :label="messages.pages.courseManagementPage.deleteUser" icon="pi pi-trash"
+                class="btn btn-danger text-white mt-2" @click="deleteMultipleCourses" />
             </template>
             <template #end>
-              <Button
-                :label="messages.pages.courseManagementPage.exportButton"
-                icon="pi pi-upload"
-                class="btn btn-warning text-white mt-2 me-2"
-                @click="exportCSV($event)"
-              />
+              <Button :label="messages.pages.courseManagementPage.exportButton" icon="pi pi-upload"
+                class="btn btn-warning text-white mt-2 me-2" @click="exportCSV($event)" />
             </template>
           </Toolbar>
-          <DataTable
-            exportFilename="courses"
-            ref="dt"
-            :value="courses"
-            tableStyle="min-width: 50rem"
-            sortField="id"
-            :sortOrder="1"
-            v-model:filters="filters"
-            filterDisplay="row"
-            v-model:selection="selectedCourses"
-            selectionMode="multiple"
-            dataKey="id"
-            :metaKeySelection="false"
-            :pt="{
+          <DataTable exportFilename="courses" ref="dt" :value="courses" tableStyle="min-width: 50rem" sortField="id"
+            :sortOrder="1" v-model:filters="filters" filterDisplay="row" v-model:selection="selectedCourses"
+            selectionMode="multiple" dataKey="id" :metaKeySelection="false" :pt="{
               table: {
                 class: 'table table-responsive align-middle',
               },
-            }"
-          >
+            }">
             <Column>
               <template #header>
                 <div class="d-flex justify-content-center">
-                  <button
-                    type="button"
-                    class="btn"
-                    style="
+                  <button type="button" class="btn" style="
                       --bs-btn-padding-y: 0.25rem;
                       --bs-btn-padding-x: 0.5rem;
                       --bs-btn-font-size: 0.75rem;
                       width: 28px;
-                    "
-                    @click="selectAllCourses"
-                  >
-                    <i
-                      class="fa-solid fa-x text-danger"
-                      v-if="selectedCourses.length == 0"
-                    ></i>
+                    " @click="selectAllCourses">
+                    <i class="fa-solid fa-x text-danger" v-if="selectedCourses.length == 0"></i>
                     <i class="fa-solid fa-check text-success" v-else></i>
                   </button>
                 </div>
               </template>
               <template #body="slotProp">
                 <div class="d-flex justify-content-center">
-                  <i
-                    class="fa-solid fa-check text-success"
-                    v-if="
-                      selectedCourses.findIndex((x) => x == slotProp.data) != -1
-                    "
-                  ></i>
+                  <i class="fa-solid fa-check text-success" v-if="
+                    selectedCourses.findIndex((x) => x == slotProp.data) != -1
+                  "></i>
                   <i class="fa-solid fa-x text-danger" v-else></i>
                 </div>
               </template>
             </Column>
-            <Column
-              field="id"
-              :header="messages.pages.courseManagementPage.idText"
-              sortable
-            ></Column>
-            <Column
-              field="name"
-              :header="messages.pages.courseManagementPage.nameText"
-              sortable
-              :pt="{
-                columnfilter: {
-                  class: 'd-flex',
-                },
-                filtermenubutton: {
-                  class: 'btn ms-1',
-                },
-                headerfilterclearbutton: {
-                  class: 'btn ms-1',
-                },
-              }"
-            >
+            <Column field="id" :header="messages.pages.courseManagementPage.idText" sortable></Column>
+            <Column field="name" :header="messages.pages.courseManagementPage.nameText" sortable :pt="{
+              columnfilter: {
+                class: 'd-flex',
+              },
+              filtermenubutton: {
+                class: 'btn ms-1',
+              },
+              headerfilterclearbutton: {
+                class: 'btn ms-1',
+              },
+            }">
               <template #filter="{ filterModel, filterCallback }">
-                <InputText
-                  v-model="filterModel.value"
-                  type="text"
-                  @input="filterCallback()"
-                  class="form-control"
-                  :placeholder="
-                    messages.pages.courseManagementPage.namePlaceholder
-                  "
-                />
+                <InputText v-model="filterModel.value" type="text" @input="filterCallback()" class="form-control"
+                  :placeholder="messages.pages.courseManagementPage.namePlaceholder
+                    " />
               </template>
             </Column>
-            <Column
-              field="image"
-              :header="messages.pages.courseManagementPage.imageText"
-              style="width: 50%"
-            >
+            <Column field="image" :header="messages.pages.courseManagementPage.imageText" style="width: 50%">
               <template #body="slotProp">
-                <img
-                  v-if="slotProp.data.image"
-                  :src="'data:image/jpeg;base64,' + slotProp.data.image"
-                  alt="Course Image"
-                  class="img-fluid w-75"
-                />
+                <img v-if="slotProp.data.image" :src="'data:image/jpeg;base64,' + slotProp.data.image"
+                  alt="Course Image" class="img-fluid w-75" />
               </template>
             </Column>
             <Column :header="messages.pages.courseManagementPage.modifyText">
               <template #body="slotProp">
-                <button
-                  type="button"
-                  class="btn btn-warning"
-                  v-if="slotProp.data.email != currentUserData.email"
-                >
-                  <i
-                    class="fa-solid fa-pen-to-square"
-                    @click="
-                      (modifyCourseDialogVisible = true),
-                        (currentlyModifyingCourse = {
-                          ...slotProp.data,
-                        })
-                    "
-                  ></i>
+                <button type="button" class="btn btn-warning" v-if="slotProp.data.email != currentUserData.email">
+                  <i class="fa-solid fa-pen-to-square" @click="
+                    (modifyCourseDialogVisible = true),
+                    (currentlyModifyingCourse = {
+                      ...slotProp.data,
+                    })
+                    "></i>
                 </button>
               </template>
             </Column>
             <Column :header="messages.pages.courseManagementPage.deleteText">
               <template #body="slotProp">
                 <button type="button" class="btn btn-danger">
-                  <i
-                    class="fa-solid fa-trash"
-                    @click="deleteCourse(slotProp.data.id)"
-                  ></i>
+                  <i class="fa-solid fa-trash" @click="deleteCourse(slotProp.data.id)"></i>
                 </button>
               </template>
             </Column>
@@ -475,6 +314,7 @@ import RadioButton from "primevue/radiobutton";
 import InputText from "primevue/inputtext";
 import Dialog from "primevue/dialog";
 import Toast from "primevue/toast";
+import BaseSpinner from "@components/BaseSpinner.vue";
 import { http } from "@utils/http";
 import { mapActions, mapState } from "pinia";
 import { userStore } from "@stores/UserStore";
@@ -499,6 +339,7 @@ export default {
     Toast,
     RadioButton,
     MultiSelect,
+    BaseSpinner
   },
   data() {
     return {

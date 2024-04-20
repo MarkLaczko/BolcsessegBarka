@@ -6,6 +6,7 @@ import { plugin, defaultConfig } from "@formkit/vue";
 import config from "../formkit.config.js";
 import PrimeVue from "primevue/config";
 import ToastService from "primevue/toastservice";
+import ConfirmationService from 'primevue/confirmationservice';
 import App from "@/App.vue";
 
 import "bootstrap";
@@ -24,5 +25,6 @@ app.use(PrimeVue, {
   unstyled: true,
 });
 app.use(ToastService);
+app.use(ConfirmationService);
 
 app.mount("#app");

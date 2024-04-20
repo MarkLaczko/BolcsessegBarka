@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeleteCoursesRequest;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\StoreGroupIdRequest;
+use App\Http\Requests\StoreTopicIdRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use App\Http\Resources\CourseResource;
+use App\Http\Resources\GroupsWithUsersResource;
 use App\Models\Course;
 use App\Models\Topic;
-use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
@@ -38,7 +40,7 @@ class CourseController extends Controller
     {
         $course = Course::with("topics")->findOrFail($id);
 
-        return new CourseResource($course);
+     return new CourseResource($course);
     }
 
     /**
@@ -59,14 +61,21 @@ class CourseController extends Controller
     public function destroy(string $id)
     {
         $course = Course::findOrFail($id);
+        $course->groups()->detach();
         $course->delete();
 
         return response()->noContent();
     }
 
-    public function bulkDelete(Request $request)
+    public function bulkDelete(DeleteCoursesRequest $request)
     {
-        $courseIds = $request->input('courseIds');
+        $courseIds = $request->validated()["courseIds"];
+
+         $courses = Course::whereIn('id', $courseIds)->get();
+
+         foreach ($courses as $course) {
+             $course->groups()->detach();
+         }
 
         if (!empty($courseIds)) {
             Course::destroy($courseIds);
@@ -88,14 +97,14 @@ class CourseController extends Controller
         ]);
     }
 
-    public function assignTopics(Request $request, $courseId)
+    public function assignTopics(StoreTopicIdRequest $request, $courseId)
     {
         $course = Course::find($courseId);
         if (!$course) {
             return response()->json(['message' => 'Course not found'], 404);
         }
     
-        $topicIds = $request->input('topic_ids');
+        $topicIds = $request->validated()['topic_ids'];
         foreach ($topicIds as $topicId) {
             $topic = Topic::find($topicId);
             if ($topic) {
@@ -106,5 +115,12 @@ class CourseController extends Controller
     
         $course->load('topics');
         return new CourseResource($course);
+    }
+
+    public function showCourseWithUsers($id)
+    {
+        $course = Course::with(['groups', 'groups.users'])->findOrFail($id);
+        
+        return new GroupsWithUsersResource($course);
     }
 }

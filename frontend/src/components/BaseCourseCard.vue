@@ -8,10 +8,14 @@
       />
     </div>
     <div class="card-body text-center">
-      <h5 class="card-title">{{ title }}</h5>
+      <h5 class="card-title">{{ title }} ({{ groupName }})</h5>
       <RouterLink
         class="btn text-white mt-3 buttons"
-        :to="{ name: 'course', params: { id: courseId } }"
+        :to="{
+          name: 'course',
+          params: { id: courseId },
+          query: { groupName: groupName },
+        }"
         >{{ messages.components.BaseCourseCard.viewButton }}</RouterLink
       >
     </div>
@@ -29,6 +33,7 @@ export default {
     title: String,
     image: String,
     courseId: Number,
+    groupName: String,
   },
 };
 </script>
