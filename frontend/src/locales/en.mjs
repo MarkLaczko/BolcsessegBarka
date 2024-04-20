@@ -243,6 +243,10 @@ export default {
         commentLength: "Comments must be less than 255 characters.",
         deadlineRequired: "You must set a deadline.",
       },
+      toastMessages: {
+        successfullyCreatedAssignment: "Successfully added assignment!",
+        failedToCreateAssignment: "Failed to add assignment!",
+      },
     },
     notePage: {
       title: "Create Note",
