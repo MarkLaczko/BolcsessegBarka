@@ -8,6 +8,11 @@
    - [Kurzus routeok](#kurzusokhoz-kapcsolodó-routeok)
    - [Téma routeok](#témához-kapcsolodó-routeok)
 1. [Komponensek](#komponensek)
+   - [BaseDialog](#basedialog)
+   - [BaseSpinner](#basespinner)
+   - [BaseLearningMaterialCard](#baselearningmaterialcard)
+   - [BaseCourseCard](#basecoursecard)
+   - [BaseAssignmentCard](#baseassignmentcard)
 
 ## API Dokumentáció
 
@@ -1512,3 +1517,282 @@ PrimeVue Dialog felugró ablak.
 ```
 
 [PrimeVue Dialog dokumentáció](https://primevue.org/dialog/)
+
+### `BaseSpinner`
+
+### Áttekintés:
+
+> A `BaseSpinner.vue` egy forgó és pulzáló logót jelenít meg a töltési folyamat során. A komponens központosított elrendezésű, és Bootstrap stílusosztályokat használ a megjelenés vezérlésére.
+
+### Használat:
+
+> A komponens használata egyszerű. Csupán be kell illeszteni a szülőkomponens template részébe, és a `loading` prop-on keresztül szabályozható, hogy mikor jelenjen meg.
+
+#### Példa:
+
+```html
+<template>
+  <div>
+    <BaseSpinner :loading="isLoading" />
+  </div>
+</template>
+
+<script>
+  import BaseSpinner from "@components/BaseSpinner.vue";
+
+  export default {
+    components: {
+      BaseSpinner,
+    },
+    data() {
+      return {
+        isLoading: true,
+      };
+    },
+  };
+</script>
+```
+
+### Template részletei:
+
+> A template-ben definiált `div` elem a `.d-flex` és `.justify-content-center` class-ok segítségével középre helyezi a spinner-t. A forgó logó egy `<img>` elem, amely a `rotating-pulsating` class segítségével animált.
+
+### Komponens tulajdonságok:
+
+- loading:
+  - Típus: `Boolean`
+  - Kötelező: Nem
+  - Leírás: A prop értéke határozza meg, hogy a spinner látható-e. Ha `true`, akkor a spinner aktív.
+
+### `BasePaginator`
+
+### Áttekintés:
+
+> A BasePaginator oldalszámok dinamikus megjelenítéséért felelős. Ez a komponens lehetővé teszi a felhasználó számára, hogy navigáljon az oldalak között, beleértve az elsőre, az előzőre, a következőre és az utolsóra ugrást.
+
+### Használat:
+
+> A komponens a `totalPages` és `currentPage` prop-okat várja, amelyek meghatározzák az összes oldal számát és az aktuális oldal számát. A komponens automatikusan frissíti a navigációs linkeket az aktuális oldal állapotának megfelelően.
+
+#### Példa a komponens integrálására egy szülőkomponensben:
+
+```html
+<template>
+  <div>
+    <BasePaginator
+      :totalPages="100"
+      :currentPage="5"
+      @page-changed="handlePageChange"
+    />
+  </div>
+</template>
+
+<script>
+  import BasePaginator from "@components/BasePaginator.vue";
+
+  export default {
+    components: {
+      BasePaginator,
+    },
+    methods: {
+      handlePageChange(newPage) {
+        console.log("Page changed to:", newPage);
+      },
+    },
+  };
+</script>
+```
+
+### Template részletei:
+
+> A template egy `ul` elemet tartalmaz `pagination` és `justify-content-center` class-okkal, amelyek az oldalszámokat középre helyezik. A navigációs gombok az első, előző, következő és utolsó oldalra ugrásra szolgálnak, és mind letilthatók, ha a jelenlegi oldal az intervallum határain belül van.
+
+### Komponens tulajdonságok:
+
+- `totalPages`: A lapozható oldalak teljes száma.
+- `currentPage`: Az aktuálisan megjelenített oldal száma.
+
+### Számítitott tulajdonságok:
+
+- `visiblePages`: Számított tulajdonság, amely az aktuálisan látható oldalszámok listáját generálja, figyelembe véve az aktuális oldalt és az összes oldal számát.
+
+### Metódusok:
+
+- `goToPage(page)`: Egy metódus, amely megváltoztatja az aktuális oldalt. Ha a megadott oldalszám érvényes, eseményt bocsát ki a szülőkomponens számára, jelezve az oldalváltást.
+
+### Stílusok:
+
+> A komponens saját `style` szekciót tartalmaz, amely biztosítja, hogy a linkek félkövér betűtípussal jelenjenek meg, és interaktív háttérszínnel rendelkezzenek ha az egeret fölé visszük.
+
+### `BaseLearningMaterialCard`
+
+### Áttekintés:
+
+> A `BaseLearningMaterialCard` egy kártya jellegű komponens, amely különböző tananyagokat, kurzusokat és azok megjelenési dátumait egy könnyen értelmezhető formában jeleníti meg.
+
+### Komponens leírás:
+
+> A `BaseLearningMaterialCard` komponens egy reszponzív kártyát hoz létre, amely tartalmaz egy képet, a tananyag címét, a kurzus nevét és a megjelenési dátumot. A komponens a Pinia állapotkezelőt használja a nyelvi üzenetek dinamikus kezelésére.
+
+### Használat:
+
+A komponens az `image`, `course`, `learningMaterial`, és `releaseData` prop-okat várja, amelyek az anyag vizuális és szöveges adatait adják meg.
+
+### Példa a komponens használatára egy szülőkomponensben:
+
+```html
+<template>
+  <div>
+    <BaseLearningMaterialCard
+      image="course-image.jpg"
+      course="Web Development"
+      learningMaterial="Introduction to Vue.js"
+      releaseData="2023-04-01"
+    />
+  </div>
+</template>
+
+<script>
+  import BaseLearningMaterialCard from "@components/BaseLearningMaterialCard.vue";
+
+  export default {
+    components: {
+      BaseLearningMaterialCard,
+    },
+  };
+</script>
+```
+
+### Template részletei:
+
+A `template`-ben egy Bootstrap `card` szerkezetet használunk, amely három oszlopra van osztva:
+
+- **Képoszlop**: Itt jelenik meg a tananyag képe, amely reszponzív és kitölti a rendelkezésre álló területet.
+- **Szöveges oszlop**: Itt található a tananyag és a kurzus címe, valamint a megjelenési dátum.
+- **Gomboszlop**: Egy gomb, amely lehetőséget ad a tananyag részletes megtekintésére.
+
+### Komponens tulajdonságok:
+
+- `image`: A tananyag képének elérési útja.
+- `course`: A kurzus neve.
+- `learningMaterial`: A tananyag címe.
+- `releaseData`: A tananyag megjelenési dátuma.
+
+### Számított tulajdonságok:
+
+- **messages**: A nyelvi üzeneteket kezeli a Pinia állapotkezelőn keresztül, így biztosítva, hogy a komponens nyelvi adaptációja dinamikusan történjen.
+
+### Stílusok:
+
+> A komponens stílusai biztosítják, hogy a kártya jól nézzen ki minden eszközön. A `img-fluid`, `rounded-start`, és `object-fit-cover` osztályok gondoskodnak arról, hogy a képek reszponzívak és esztétikusak legyenek.
+
+### `BaseCourseCard`
+
+### Beveztés:
+
+> A `BaseCourseCard` ideális arra, hogy rövid összefoglalót nyújtson egy kurzusról, beleértve annak képét, címét és csoporttagságát. A komponens továbbá egy közvetlen útválasztási linket is biztosít a kurzus részletes megtekintéséhez.
+
+### Használat:
+
+> A komponens a `title`, `image`, `courseId`, és `groupName` propokat fogadja, melyek a kurzus alapvető adatait határozzák meg. Ezek a propok lehetővé teszik a komponens széleskörű alkalmazhatóságát és könnyű integrálását különböző felületeken.
+
+### Példa:
+
+```html
+<template>
+  <div>
+    <BaseCourseCard
+      title="Webfejlesztés"
+      image="encodedImageString"
+      courseId="102"
+      groupName="Haladó Tanfolyamok"
+    />
+  </div>
+</template>
+
+<script>
+  import BaseCourseCard from "@components/BaseCourseCard.vue";
+
+  export default {
+    components: {
+      BaseCourseCard,
+    },
+  };
+</script>
+```
+
+### Template struktúra:
+
+- **Kártya**: A Bootstrap `card` osztályát használja a vizuális keret biztosításához.
+- **Kép:** A kurzushoz tartozó képet Base64 kódolásban jeleníti meg, ami az adatátvitelt egyszerűsíti.
+- **Szöveges Tartalom:** A kurzus címe és a csoport neve a kártya testében (`card-body`) jelenik meg, középre igazítva.
+- **Navigációs Link:** Egy `RouterLink` komponens, amely lehetővé teszi a felhasználó számára, hogy közvetlenül a kurzus részletes oldalára navigáljon.
+
+### Komponens tulajdonságok:
+
+- **title:** A kurzus címe.
+- **image:** A kurzus képének Base64 kódolt stringje.
+- **courseId:** A kurzus azonosítója.
+- **groupName:** A kurzushoz tartozó csoport neve.
+
+### Számított tulajdonságok:
+
+- **messages**: A nyelvi üzenetek kezelése a Pinia állapotkezelő segítségével történik, amely lehetővé teszi a komponens dinamikus nyelvi adaptációját.
+
+### Stílusok:
+
+> A `scoped` stílusok használata biztosítja, hogy a komponens megjelenése konzisztens maradjon anélkül, hogy befolyásolná a többi komponens stílusát. A képek és szövegek úgy vannak formázva, hogy minden eszközön jól nézzenek ki.
+
+### `BaseAssignmentCard`
+
+### Áttekintés:
+
+> A `BaseAssignmentCard` komponens egy kártya formátumban jeleníti meg a feladatok alapvető információit, mint például a címét, a feladat képét, és a beadási határidőt. Ezen kívül tartalmaz egy gombot, amely a felhasználót az adott feladat oldalára irányítja.
+
+### Használat:
+
+> A komponens a `title`, `image`, és `deadline` prop-okat fogadja. Ezekkel a paraméterekkel a feladatokat könnyedén és hatékonyan jeleníthetjük meg a felhasználók számára. A komponens a Pinia állapotkezelőt használja a nyelvi üzenetek dinamikus kezelésére.
+
+### Példa:
+
+```html
+<template>
+  <div>
+    <BaseAssignmentCard
+      title="Programozási Alapok"
+      image="programozas_kep.png"
+      deadline="2023-12-15"
+    />
+  </div>
+</template>
+
+<script>
+  import BaseAssignmentCard from "@components/BaseAssignmentCard.vue";
+
+  export default {
+    components: {
+      BaseAssignmentCard,
+    },
+  };
+</script>
+```
+
+### Template Struktúra:
+
+- **Kártya Fejléc:** Tartalmazza a feladat címét, amely középre van igazítva.
+- **Kártya Törzs:** Itt jelenik meg a feladat képe, amely szintén központi helyet kap. Alatta található egy gomb, amely a feladat részleteire mutató oldalra vezet.
+- **Kártya Lábléc:** Megjeleníti a feladat beadási határidejét, amely kivan emelve, hogy felhívja a figyelmet a határidő fontosságára.
+
+### Komponens tulajdonságok:
+
+- `title`: A feladat címe.
+- `image`: A feladat képének URL-címe.
+- `deadline`: A feladat beadási határideje.
+
+### Számított tulajdonságok:
+
+- **messages:** A nyelvi üzenetek kezelése a Pinia állapotkezelő segítségével, amely lehetővé teszi a komponens nyelvi adaptációját.
+
+### Stílusok:
+
+> A kártya stílusai a Bootstrap keretrendszer elemekre épülnek, így biztosítva a reszponzív és esztétikailag vonzó megjelenést minden készüléken. A `card`, `img-fluid`, és `rounded` osztályokat használjuk a vizuális elemek formázására.
