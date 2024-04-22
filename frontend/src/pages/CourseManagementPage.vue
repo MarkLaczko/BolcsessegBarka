@@ -216,7 +216,7 @@
               <Button :label="messages.pages.courseManagementPage.newUser" icon="pi pi-plus"
                 class="mr-2 btn btn-success text-white me-1 mt-2 ms-2" @click="addCourseDialogVisible = true" />
               <Button :label="messages.pages.courseManagementPage.deleteUser" icon="pi pi-trash"
-                class="btn btn-danger text-white mt-2" @click="deleteMultipleCourses" />
+                class="btn btn-danger text-white mt-2" :disabled="selectedCourses.length === 0" @click="deleteMultipleCourses" />
             </template>
             <template #end>
               <Button :label="messages.pages.courseManagementPage.exportButton" icon="pi pi-upload"
@@ -394,31 +394,37 @@ export default {
         let toast = {
           severity: "success",
           detail:
-            this.messages.pages.courseManagementPage.toastMessages
+          this.messages.pages.courseManagementPage.toastMessages
               .successfullyCreatedCourse,
           life: 3000,
         };
         if (!this.isDarkMode) {
           toast.styleClass = "bg-success text-white";
         }
+        else {
+          toast.styleClass = "toast-success text-white";
+        }
 
         this.$toast.add(toast);
-
         await this.getCourses();
       } catch (error) {
+
         let toast = {
           severity: "error",
           detail:
-            this.messages.pages.courseManagementPage.toastMessages
+          this.messages.pages.courseManagementPage.toastMessages
               .failedToCreateCourse,
           life: 3000,
         };
         if (!this.isDarkMode) {
           toast.styleClass = "bg-danger text-white";
         }
+        else {
+          toast.styleClass = "toast-danger text-white";
+        }
+
         this.$toast.add(toast);
       }
-
       this.addCourseDialogVisible = false;
     },
     selectAllCourses() {
@@ -432,45 +438,39 @@ export default {
       try {
         await this.destroyCourse(userId);
 
-        if (this.isDarkMode) {
-          this.$toast.add({
-            severity: "success",
-            detail:
-              this.messages.pages.courseManagementPage.toastMessages
+        let toast = {
+          severity: "success",
+          detail:
+          this.messages.pages.courseManagementPage.toastMessages
                 .successfullyDeletedCourse,
-            life: 3000,
-          });
-        } else {
-          this.$toast.add({
-            severity: "success",
-            detail:
-              this.messages.pages.courseManagementPage.toastMessages
-                .successfullyDeletedCourse,
-            styleClass: "bg-success text-white",
-            life: 3000,
-          });
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-success text-white";
+        }
+        else {
+          toast.styleClass = "toast-success text-white";
         }
 
+        this.$toast.add(toast);
         await this.getCourses();
       } catch (error) {
-        if (this.isDarkMode) {
-          this.$toast.add({
-            severity: "error",
-            detail:
-              this.messages.pages.courseManagementPage.toastMessages
+
+        let toast = {
+          severity: "error",
+          detail:
+          this.messages.pages.courseManagementPage.toastMessages
                 .failedToDeleteCourse,
-            life: 3000,
-          });
-        } else {
-          this.$toast.add({
-            severity: "error",
-            detail:
-              this.messages.pages.courseManagementPage.toastMessages
-                .failedToDeleteCourse,
-            styleClass: "bg-danger text-white",
-            life: 3000,
-          });
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-danger text-white";
         }
+        else {
+          toast.styleClass = "toast-danger text-white";
+        }
+
+        this.$toast.add(toast);
       }
     },
     async deleteMultipleCourses() {
@@ -486,64 +486,60 @@ export default {
           }
         );
 
-        if (this.isDarkMode) {
-          this.$toast.add({
-            severity: "success",
-            detail:
-              this.messages.pages.courseManagementPage.toastMessages
+        let toast = {
+          severity: "success",
+          detail:
+          this.messages.pages.courseManagementPage.toastMessages
                 .successfullyDeletedMultipleCourses,
-            life: 3000,
-          });
-        } else {
-          this.$toast.add({
-            severity: "success",
-            detail:
-              this.messages.pages.courseManagementPage.toastMessages
-                .successfullyDeletedMultipleCourses,
-            styleClass: "bg-success text-white",
-            life: 3000,
-          });
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-success text-white";
+        }
+        else {
+          toast.styleClass = "toast-success text-white";
         }
 
+        this.$toast.add(toast); 
         await this.getCourses();
       } catch (error) {
-        if (this.isDarkMode) {
-          this.$toast.add({
-            severity: "error",
-            detail:
-              this.messages.pages.courseManagementPage.toastMessages
+
+        let toast = {
+          severity: "error",
+          detail:
+          this.messages.pages.courseManagementPage.toastMessages
                 .failedToDeleteMultipleCourses,
-            life: 3000,
-          });
-        } else {
-          this.$toast.add({
-            severity: "error",
-            detail:
-              this.messages.pages.courseManagementPage.toastMessages
-                .failedToDeleteMultipleCourses,
-            styleClass: "bg-danger text-white",
-            life: 3000,
-          });
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-danger text-white";
         }
+        else {
+          toast.styleClass = "toast-danger text-white";
+        }
+
+        this.$toast.add(toast);
       }
     },
     async updateCourse(data) {
       try {
-        const base64Image = this.currentlyModifyingCourse.image.split(",")[1];
+        const base64Image = this.currentlyModifyingCourse?.image?.split(",")[1];
 
-        const group_ids = this.currentlyModifyingCourse.groups.map(
+        const group_ids = this.currentlyModifyingCourse?.groups?.map(
           (group) => group.id
         );
+
         const formData = {
           name: data.name,
           image: base64Image,
         };
 
         await this.putCourse(data.id, formData);
-        await http.post(
+
+          await http.post(
           `/courses/${this.currentlyModifyingCourse.id}/groups`,
           {
-            group_ids: group_ids,
+            group_ids: group_ids === undefined ? [] : group_ids,
           },
           {
             headers: {
@@ -553,45 +549,38 @@ export default {
         );
         this.modifyCourseDialogVisible = false;
 
-        if (this.isDarkMode) {
-          this.$toast.add({
-            severity: "success",
-            detail:
-              this.messages.pages.courseManagementPage.toastMessages
+        let toast = {
+          severity: "success",
+          detail:
+          this.messages.pages.courseManagementPage.toastMessages
                 .successfullyUpdatedCourse,
-            life: 3000,
-          });
-        } else {
-          this.$toast.add({
-            severity: "success",
-            detail:
-              this.messages.pages.courseManagementPage.toastMessages
-                .successfullyUpdatedCourse,
-            styleClass: "bg-success text-white",
-            life: 3000,
-          });
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-success text-white";
+        }
+        else {
+          toast.styleClass = "toast-success text-white";
         }
 
+        this.$toast.add(toast); 
         await this.getCourses();
       } catch (error) {
-        if (this.isDarkMode) {
-          this.$toast.add({
-            severity: "error",
-            detail:
-              this.messages.pages.courseManagementPage.toastMessages
+        let toast = {
+          severity: "error",
+          detail:
+          this.messages.pages.courseManagementPage.toastMessages
                 .failedToUpdateCourse,
-            life: 3000,
-          });
-        } else {
-          this.$toast.add({
-            severity: "error",
-            detail:
-              this.messages.pages.courseManagementPage.toastMessages
-                .failedToUpdateCourse,
-            styleClass: "bg-danger text-white",
-            life: 3000,
-          });
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-danger text-white";
         }
+        else {
+          toast.styleClass = "toast-danger text-white";
+        }
+
+        this.$toast.add(toast);
       }
     },
     exportCSV() {
