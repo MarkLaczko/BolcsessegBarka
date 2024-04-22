@@ -34,6 +34,15 @@ export const router = createRouter({
       },
     },
     {
+      path: "/profile",
+      name: "profile",
+      component: () => import("@pages/EditProfile.vue"),
+      meta: {
+        requiresAuth: true,
+        title: "Profil szerkesztése",
+      },
+    },
+    {
       path: "/user-administration",
       name: "userAdministration",
       component: () => import("@pages/UserManagementPage.vue"),
