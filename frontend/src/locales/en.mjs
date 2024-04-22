@@ -313,6 +313,7 @@ export default {
       userAdministration: "User Management",
       groupAdministration: "Group Management",
       courseAdministration: "Course Management",
+      profile: 'Profile',
       logout: "Logout",
     },
     footer: {},
