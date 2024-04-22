@@ -42,6 +42,8 @@ Route::post('/users/register', [UserController::class, 'store'])
     ->name('users.store');
 Route::post('/users/login', [AuthController::class, 'authenticate'])
     ->name('users.login');
+Route::middleware('auth:sanctum')->put('/user/profile', [UserController::class, 'updateProfile'])
+    ->name('profie.update');
 
 Route::middleware('auth:sanctum')->get('/courses', [CourseController::class, 'index'])
     ->name('courses.index');
