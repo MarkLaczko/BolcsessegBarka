@@ -132,6 +132,31 @@ export default {
         failedToUpdateUser: "User modification failed!",
       },
     },
+    profilePage: {
+      title: 'Edit profile',
+      nameLabel: "Name",
+      emailLabel: "Email",
+      currentPasswordLabel: "Current password",
+      passwordLabel: "New password",
+      confirmPasswordLabel: "New password confirmation",
+      submitButton: "Save",
+      changePassword: "Change password",
+      toastMessages: {
+        success: "Profile updated successfully!",
+        fail: "Failed to update profile!"
+      },
+      validationMessages: {
+        matchAllValidationMessage:
+          "Sorry, not all fields have been filled out correctly.",
+        passwordRequired: "Password is required.",
+        passwordLength:
+          "Password must be at least 8 and maximum 255 characters long.",
+        confirmPasswordRequired: "Confirm password is required.",
+        confirmPasswordLength:
+          "Confirm password must be at least 8 and maximum 255 characters long.",
+        confirmPasswordConfirm: "Passwords do not match.",
+      }
+    },
     groupManagementPage: {
       title: "Group Management",
       newGroup: " New Group",
