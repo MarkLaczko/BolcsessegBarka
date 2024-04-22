@@ -22,7 +22,7 @@ class StoreGroupIdRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'group_ids' => ["required"],["array"],
+            'group_ids' => ["array","nullable"],
             'group_ids.*' => ["exists:groups,id"]
         ];
     }

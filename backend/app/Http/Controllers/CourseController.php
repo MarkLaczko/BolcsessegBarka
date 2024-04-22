@@ -89,7 +89,12 @@ class CourseController extends Controller
     {
         $data = $request->validated();
 
-        $course->groups()->sync($data['group_ids']);
+        if (!empty($data['group_ids'])) {
+            $course->groups()->sync($data['group_ids']);
+        }
+        else {
+            $course->groups()->detach();
+        }
 
         return response()->json([
             'message' => 'Groups successfully assigned to the course.',
