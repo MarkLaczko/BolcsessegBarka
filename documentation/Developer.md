@@ -39,6 +39,7 @@
 | ------ | ------------------- | ----------------- | --------------- | ------------ |
 | POST   | /api/users/register | users.register    | UserController  | store        |
 | POST   | /api/users/login    | users.login       | AuthController  | authenticate |
+| PUT    | /api/users/profile  | profile.edit      | UserController  | editProfile  |
 | GET    | /api/groups         | groups.index      | GroupController | index        |
 | GET    | /api/groups/{id}    | groups.show       | GroupController | show         |
 | POST   | /api/groups         | groups.store      | GroupController | store        |
@@ -149,6 +150,59 @@ Válasz:
 Az alábbi hibakódokat adhatja vissza a végpont:
 
 - `401 Unauthorized`: Sikertelen a belépés.
+- `422 Unprocessable Content`: Hiba a törzs adataiban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `PUT /api/users/profile`
+
+Felhasználó profil (jelszó) szerkesztése.
+
+#### Törzs
+
+- `old_password`: A felhasználó jelenlegi jelszava.
+- `password`: A felhasználó új jelszava. Minimum 8, maximum 255 karakter hosszú.
+- `password_confirmation`: A felhasználó jelszavának megerősítése. Meg kell egyeznie a `password` paraméter értékével.
+
+#### Válasz
+
+Egy JSON objektumot ad vissza `data` néven a következőkkel:
+
+- `message`: Üzenet a sikerességről.
+- `errors`: Ha hiba keletkezett, egy objektumban visszaadja a hibákat.
+
+#### Példa
+
+URI:
+
+```
+/api/users/profile
+```
+
+Törzs:
+
+```json
+{
+  "old_password": "password123",
+  "password": "newpassword132",
+  "password_confirmation": "newpassword123"
+}
+```
+
+Válasz:
+
+```json
+{
+  "data": {
+    "message": "Profile updated"
+  }
+}
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
 - `422 Unprocessable Content`: Hiba a törzs adataiban.
 - `500 Internal Server Error`: Váratlan hiba történt a szerveren.
 
