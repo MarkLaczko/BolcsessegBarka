@@ -321,6 +321,7 @@ export default {
       userAdministration: "Felhasználói kezelése",
       groupAdministration: "Csoportok kezelése",
       courseAdministration: "Kurzusok kezelése",
+      profile: 'Profilom',
       logout: "Kijelentkezés",
     },
     footer: {},
