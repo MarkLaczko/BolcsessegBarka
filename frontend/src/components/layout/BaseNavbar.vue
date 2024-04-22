@@ -138,6 +138,13 @@
                     >
                   </li>
                   <li>
+                    <RouterLink
+                      class="dropdown-item"
+                      :to="{ name: 'profile' }"
+                      >{{ messages.layout.header.profile }}</RouterLink
+                    >
+                  </li>
+                  <li>
                     <a class="dropdown-item" @click="logoutUser">{{
                       messages.layout.header.logout
                     }}</a>
