@@ -2,7 +2,9 @@
 
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Quiz extends Model
@@ -11,22 +13,22 @@ class Quiz extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        "attempts",
-        "name",
-        "opens",
-        "closes",
-        "time",
-        "grade"
+        'name',
+        'max_attempts',
+        'opens',
+        'closes',
+        'time',
+        'topic_id',
     ];
 
-    public function courseable() : MorphTo
+    public function topic() : BelongsTo
     {
-        return $this->morphTo();
+        return $this->belongsTo(Topic::class);
     }
 
-    public function tasks() : BelongsToMany
+    public function tasks() : HasMany
     {
-        return $this->belongsToMany(Task::class,"solve","quiz_id","task_id");
+        return $this->HasMany(Task::class);
     }
 }
 
