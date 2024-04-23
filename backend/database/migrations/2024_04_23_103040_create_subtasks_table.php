@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('subtasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('task_id')->constrained();
+            $table->foreignId('task_id')->constrained()->onDelete('cascade');
             $table->integer('order');
             $table->text('question');
             $table->text('options')->nullable();
