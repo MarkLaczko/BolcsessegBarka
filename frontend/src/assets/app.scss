@@ -106,6 +106,7 @@
   --closeButton-color: #{$black};
   --accordion-bg: #{$white};
   --accordion-active-bg: #{$cyan};
+  --confirmDialog-bg-color: #{$white};
 }
 
 [data-theme="dark"] {
@@ -154,6 +155,7 @@
   --closeButton-color: #{$white};
   --accordion-bg: #{$lightGray};
   --accordion-active-bg: #{$gray};
+  --confirmDialog-bg-color: #{$gray};
 }
 
 body {
@@ -357,5 +359,10 @@ div[data-pc-section="panel"] .form-check-input:checked {
 }
 
 .accordion h2 {
+  color: var(--text-color);
+}
+
+div[data-pc-name="dialog"] {
+  background-color: var(--confirmDialog-bg-color);
   color: var(--text-color);
 }

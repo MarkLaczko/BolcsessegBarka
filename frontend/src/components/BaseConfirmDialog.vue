@@ -2,7 +2,7 @@
     <ConfirmDialog
       :pt="{
         root: {
-          class: 'modal-dialog p-3 rounded bg-white shadow border',
+          class: 'modal-dialog p-3 rounded shadow border',
         },
         header: {
           class: 'd-flex justify-content-end align-items-center pb-2',
@@ -11,13 +11,19 @@
           class: 'modal-title fw-bold',
         },
         closeButton: {
-          class: 'btn btn-outline-dark btn-sm',
+          class: 'btn m-0',
         },
         closeButtonIcon: {
           class: 'fa-solid fa-x',
         },
+        content: {
+          class: 'd-flex justify-content-center align-items-center mb-2'
+        },
         footer: {
           class: 'd-flex justify-content-end align-items-center gap-1 mt-2'
+        },
+        icon: {
+          class: 'me-2 fs-3 text-danger'
         },
         transition: {
           name: 'slide-fade',
