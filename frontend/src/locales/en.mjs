@@ -131,6 +131,11 @@ export default {
         successfullyUpdatedUser: "User modification was successful!",
         failedToUpdateUser: "User modification failed!",
       },
+      confirmDialogs: {
+        message: "Are you sure you want to delete this user(s)?",
+        rejectLabel: "Cancel",
+        acceptLabel: "Delete"
+      }
     },
     profilePage: {
       title: 'Edit profile',
@@ -272,6 +277,11 @@ export default {
         successfullyUpdatedCourse: "Successfully updated course!",
         failedToUpdateCourse: "Failed to update course!",
       },
+      confirmDialogs: {
+        message: "Are you sure you want to delete this course(s)?",
+        rejectLabel: "Cancel",
+        acceptLabel: "Delete"
+      }
     },
     assignmentPage: {
       dragFileText: "Drag files here to upload",

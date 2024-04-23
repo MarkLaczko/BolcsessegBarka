@@ -135,6 +135,11 @@ export default {
         successfullyUpdatedUser: "Felhasználó módosítása sikeres volt!",
         failedToUpdateUser: "Felhasználó módosítása sikertelen volt!",
       },
+      confirmDialogs: {
+        message: "Biztos ki akarja törölni ezt a felhasználó(ka)t?",
+        rejectLabel: "Mégsem",
+        acceptLabel: "Törlés"
+      }
     },
     profilePage: {
       title: 'Profil szerkesztése',
@@ -279,6 +284,11 @@ export default {
         successfullyUpdatedCourse: "Kurzus módosítása sikeres volt!",
         failedToUpdateCourse: "Kurzus módosítása sikertelen volt!",
       },
+      confirmDialogs: {
+        message: "Biztos ki akarja törölni ezt a kurzus(oka)t?",
+        rejectLabel: "Mégsem",
+        acceptLabel: "Törlés"
+      }
     },
     assignmentPage: {
       dragFileText: "Húzza ide a fájlokat a feltöltéshez",
