@@ -63,6 +63,24 @@
             }"
           />
           <FormKit
+            type="select"
+            name="topic_id"
+            :label="
+              messages.pages.newAssignmentPage.topic_name
+            "
+            validation="required"
+            :validation-messages="{
+              required:
+                messages.pages.newAssignmentPage.validationMessages.topicRequired,
+            }"
+            :classes="{
+              input: {
+                'mb-1': true,
+                'form-control': true,
+              },
+            }"
+          />
+          <FormKit
             type="text"
             name="comment"
             :label="messages.pages.newAssignmentPage.comment"
@@ -148,13 +166,13 @@
   <script>
   import BaseLayout from "@layouts/BaseLayout.vue";
   import Toast from "primevue/toast";
-  import { mapState } from "pinia";
+  import { mapState, mapActions } from "pinia";
   import { languageStore } from "@stores/LanguageStore.mjs";
   import Button from 'primevue/button';
   import { http } from "@utils/http";
   import { userStore } from "@stores/UserStore"; 
   import { themeStore } from "@stores/ThemeStore.mjs";
-  
+  import { topicStore } from "@stores/TopicStore";
 
   
   export default {
@@ -166,8 +184,12 @@
     computed: {
       ...mapState(languageStore, ["messages"]),
       ...mapState(themeStore, ["isDarkMode"]),
+      ...mapState(topicStore, ["topics"])
     },
     methods: {
+      ...mapActions(topicStore, [
+        "getTopics",
+      ]),
       async postNewAssignment(data) {
       try {
         const formData = new FormData();
@@ -178,6 +200,7 @@
           formData.append('courseable_id', 1);
           formData.append('courseable_type', 'App\\Models\\Course');
           formData.append('teacher_task_name', data.teacher_task[0].name);
+          formData.append('topic_id', data.topic_id);
         
 
         const user = userStore();
@@ -215,8 +238,8 @@
       }
     },
     },
-    mounted(){
-
+    async mounted(){
+      await this.getTopics();
     },
   };
   </script>

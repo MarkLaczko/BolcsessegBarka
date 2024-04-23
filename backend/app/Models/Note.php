@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Note extends Model
@@ -13,8 +14,8 @@ class Note extends Model
         "text"
     ];
 
-    public function courseable() : MorphTo
+    public function topic() : BelongsTo
     {
-        return $this->morphTo();
+        return $this->belongsTo(Topic::class);
     }
 }

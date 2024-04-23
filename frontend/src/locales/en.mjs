@@ -47,6 +47,7 @@ export default {
       newTopicButton: "New Topic",
       deleteButton: "Delete",
       editButton: "Edit",
+      groupTreatmentButton: "Manage Groups",
       newTopicDialog: {
         title: "Add New Topic",
         nameLabel: "Name",
@@ -61,6 +62,12 @@ export default {
             "Sorry, not all fields have been filled out correctly.",
         },
       },
+      groupTreatmentDialog: {
+        title: "Group Treatment",
+        multiSelectPlaceholder: "Select Groups",
+        cancelButton: "Cancel",
+        saveButton: "Save"
+      }      
     },
     userManagementPage: {
       title: "User Management",
@@ -300,6 +307,7 @@ export default {
       comment: "Comment",
       deadline: "Deadline",
       courseName: "Course name",
+      topic_name: "Select a topic",
       teacher_task: "Upload assignment / note for students.",
       validationMessages: {
         task_nameRequired: "Filling in the title of the task is required.",
@@ -307,6 +315,7 @@ export default {
           "The title of the task must be less than 255 characters.",
         commentLength: "Comments must be less than 255 characters.",
         deadlineRequired: "You must set a deadline.",
+        topicRequired: "It is mandatory to choose a topic",
       },
       toastMessages: {
         successfullyCreatedAssignment: "Successfully added assignment!",
