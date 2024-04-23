@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Assignment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,8 +21,8 @@ class AssignmentResource extends JsonResource
             'deadline' => $this->deadline,
             'grade' => $this->grade,
             'course' => $this->courseable,
-            'student_task_name' => $this->student_task_name,
             'teacher_task_name' => $this->teacher_task_name,
+            'student_task' => $this->studentAssignment,
         ];
     }
 }
