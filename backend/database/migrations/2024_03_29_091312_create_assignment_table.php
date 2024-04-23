@@ -20,11 +20,9 @@ return new class extends Migration
             $table->integer("grade")->nullable();
             $table->unsignedBigInteger("courseable_id");
             $table->string("courseable_type");
-            $table->string("student_task_name")->nullable();
             $table->string("teacher_task_name")->nullable();
         });
 
-        DB::statement("ALTER TABLE assignment ADD student_task LONGBLOB");
         DB::statement("ALTER TABLE assignment ADD teacher_task LONGBLOB");
     }
 
