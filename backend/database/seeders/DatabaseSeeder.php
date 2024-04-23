@@ -30,6 +30,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             GroupSeeder::class,
+            QuizSeeder::class,
+            TaskSeeder::class,
+            SubtaskSeeder::class,
         ]);
     }
 }
