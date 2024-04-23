@@ -251,6 +251,11 @@ export default {
     assignmentPage: {
       dragFileText: "Drag files here to upload",
       cancelButton: "Cancel",
+      comment: "Comment",
+      deadline: "Deadline:",
+      courseName: "Course:",
+      task_name: "Assignment:",
+      deadlineExpired: "Sorry you missed the deadline!"
     },
     newAssignmentPage: {
       title: "Create a new task",
