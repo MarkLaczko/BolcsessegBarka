@@ -258,6 +258,11 @@ export default {
     assignmentPage: {
       dragFileText: "Húzza ide a fájlokat a feltöltéshez",
       cancelButton: "Mégsem",
+      comment: "Hozzászólás:",
+      deadline: "Határidő:",
+      courseName: "Kurzus:",
+      task_name: "Feladat:",
+      deadlineExpired: "Sajnálom kicsúsztál a határidőből!"
     },
     newAssignmentPage: {
       title: "Új feladat létrehozása",
