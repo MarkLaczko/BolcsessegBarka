@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Topic extends Model
@@ -16,19 +17,19 @@ class Topic extends Model
         "order"
     ];
 
-    public function notes() : MorphMany
+    public function notes() : HasMany
     {
-        return $this->morphMany(Note::class, "courseable");
+        return $this->hasMany(Note::class);
     }
 
-    public function quizzes() : MorphMany
+    public function quizzes() : HasMany
     {
-        return $this->morphMany(Quiz::class, "courseable");
+        return $this->hasMany(Quiz::class);
     }
 
-    public function assignments() : MorphMany
+    public function assignments() : HasMany
     {
-        return $this->morphMany(Assignment::class, "courseable");
+        return $this->hasMany(Assignment::class);
     }
 
     public function course() : BelongsTo

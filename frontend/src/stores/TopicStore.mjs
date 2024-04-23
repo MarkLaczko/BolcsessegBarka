@@ -3,6 +3,11 @@ import { http } from "@utils/http";
 import { userStore } from "@stores/UserStore";
 
 export const topicStore = defineStore("topicStore", {
+  state() {
+    return {
+      topics: [],
+    };
+  },
   actions: {
     async getTopics() {
       const user = userStore();
@@ -11,6 +16,7 @@ export const topicStore = defineStore("topicStore", {
           Authorization: `Bearer ${user.token}`,
         },
       });
+      this.topics = response.data.data;
       return response.data.data;
     },
     async getTopic(id) {
@@ -30,7 +36,7 @@ export const topicStore = defineStore("topicStore", {
         },
       });
 
-      return response;
+      this.topics.push(response.data.data);
     },
     async putTopic(id, data) {
       const user = userStore();
@@ -40,7 +46,8 @@ export const topicStore = defineStore("topicStore", {
         },
       });
 
-      return response.data.data;
+      const idx = this.topics.findIndex((x) => x.id == data.id);
+      this.topics.splice(idx, 1, response.data.data);
     },
     async destroyTopic(id) {
       const user = userStore();
@@ -50,7 +57,8 @@ export const topicStore = defineStore("topicStore", {
         },
       });
 
-      return response.data.data;
+      const idx = this.topics.findIndex((x) => x.id == id);
+      this.topics.splice(idx, 1);
     },
   },
 });
