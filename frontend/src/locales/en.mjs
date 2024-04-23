@@ -47,6 +47,7 @@ export default {
       newTopicButton: "New Topic",
       deleteButton: "Delete",
       editButton: "Edit",
+      groupTreatmentButton: "Manage Groups",
       newTopicDialog: {
         title: "Add New Topic",
         nameLabel: "Name",
@@ -61,6 +62,12 @@ export default {
             "Sorry, not all fields have been filled out correctly.",
         },
       },
+      groupTreatmentDialog: {
+        title: "Group Treatment",
+        multiSelectPlaceholder: "Select Groups",
+        cancelButton: "Cancel",
+        saveButton: "Save"
+      }      
     },
     userManagementPage: {
       title: "User Management",
