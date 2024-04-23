@@ -107,6 +107,7 @@
   --accordion-bg: #{$white};
   --accordion-active-bg: #{$cyan};
   --confirmDialog-bg-color: #{$white};
+  --manageCourse-button-bg: #{$cyan};
 }
 
 [data-theme="dark"] {
@@ -156,6 +157,7 @@
   --accordion-bg: #{$lightGray};
   --accordion-active-bg: #{$gray};
   --confirmDialog-bg-color: #{$gray};
+  --manageCourse-button-bg: #{$darkerGrey};
 }
 
 body {
@@ -365,4 +367,8 @@ div[data-pc-section="panel"] .form-check-input:checked {
 div[data-pc-name="dialog"] {
   background-color: var(--confirmDialog-bg-color);
   color: var(--text-color);
+}
+
+#manageCourses {
+  background-color: var(--manageCourse-button-bg);
 }
