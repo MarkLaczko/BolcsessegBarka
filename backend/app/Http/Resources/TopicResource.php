@@ -18,6 +18,7 @@ class TopicResource extends JsonResource
             "id" => $this->id,
             "name" => $this->name,
             "order" => $this->order,
+            "assignment" => AssignmentResource::collection($this->assignments)
         ];
     }
 }
