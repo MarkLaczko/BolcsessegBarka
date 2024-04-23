@@ -6,8 +6,10 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\StudentAssignmentController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
+use App\Models\StudentAssignment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -108,3 +110,15 @@ Route::middleware('auth:sanctum')->put('/topics/{id}', [TopicController::class,'
     ->name('topics.update');
 Route::middleware('auth:sanctum')->delete('/topics/{id}', [TopicController::class,'destroy'])
     ->name('topics.destroy');
+
+Route::middleware('auth:sanctum')->get('/studentAssignments', [StudentAssignmentController::class,'index'])
+    ->name('studentAssignments.index'); 
+Route::middleware('auth:sanctum')->get('/studentAssignments/{id}', [StudentAssignmentController::class,'show'])
+    ->name('studentAssignments.show'); 
+Route::middleware('auth:sanctum')->post('/studentAssignments', [StudentAssignmentController::class,'store'])
+    ->name('studentAssignments.store');
+Route::middleware('auth:sanctum')->put('/studentAssignments/{id}', [StudentAssignmentController::class,'update'])
+    ->name('studentAssignments.update');
+Route::middleware('auth:sanctum')->delete('/studentAssignments/{id}', [StudentAssignmentController::class,'destroy'])
+    ->name('studentAssignments.destroy');
+
