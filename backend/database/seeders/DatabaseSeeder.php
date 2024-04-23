@@ -30,11 +30,11 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             GroupSeeder::class,
+            CourseSeeder::class,
             TopicSeeder::class,
             QuizSeeder::class,
             TaskSeeder::class,
-            SubtaskSeeder::class,
-            CourseSeeder::class
+            SubtaskSeeder::class
         ]);
     }
 }
