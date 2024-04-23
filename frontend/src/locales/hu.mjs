@@ -307,6 +307,7 @@ export default {
       comment: "Hozzászólás",
       deadline: "Határidő",
       courseName: "Kurzus neve",
+      topic_name: "Téma kiválasztása",
       teacher_task: "Feladat / jegyzet feltöltése diákok számára.",
       validationMessages: {
         task_nameRequired: "A feladat címének kitöltése kötelező.",
@@ -315,6 +316,7 @@ export default {
         commentLength:
           "A hozzászólásnak kevesebbnek kell lennie, mint 255 karakter.",
         deadlineRequired: "Kötelező határidőt beállítani.",
+        topicRequired: "Kötelező témát választani.",
       },
       toastMessages: {
         successfullyCreatedAssignment: "Feladat hozzáadása sikeres volt!",
