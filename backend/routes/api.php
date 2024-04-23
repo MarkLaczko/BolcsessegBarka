@@ -6,7 +6,9 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\StudentAssignmentController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
 use App\Models\StudentAssignment;
@@ -124,3 +126,27 @@ Route::middleware('auth:sanctum')->put('/studentAssignments/{id}', [StudentAssig
 Route::middleware('auth:sanctum')->delete('/studentAssignments/{id}', [StudentAssignmentController::class,'destroy'])
     ->name('studentAssignments.destroy');
 
+
+Route::middleware('auth:sanctum')->get('/quizzes', [QuizController::class,'index'])
+    ->name('quizzes.index');
+Route::middleware('auth:sanctum')->get('/quizzes/{id}', [QuizController::class,'show'])
+    ->whereNumber('id')
+    ->name('quizzes.show');
+Route::middleware('auth:sanctum')->post('/quizzes', [QuizController::class,'store'])
+    ->name('quizzes.store');
+Route::middleware('auth:sanctum')->put('/quizzes/{id}', [QuizController::class,'update'])
+    ->whereNumber('id')
+    ->name('quizzes.update');
+Route::middleware('auth:sanctum')->delete('/quizzes/{id}', [QuizController::class,'destroy'])
+    ->whereNumber('id')
+    ->name('quizzes.destroy');
+
+Route::middleware('auth:sanctum')->get('/quizzes/{id}/tasks', [TaskController::class,'index'])
+    ->whereNumber('id')
+    ->name('tasks.index');
+Route::middleware('auth:sanctum')->get('/quizzes/{id}/tasks/ids', [TaskController::class,'taskIds'])
+    ->whereNumber('id')
+    ->name('tasks.taskIds');
+Route::middleware('auth:sanctum')->get('/tasks/{id}', [TaskController::class,'show'])
+    ->whereNumber('id')
+    ->name('tasks.show');
