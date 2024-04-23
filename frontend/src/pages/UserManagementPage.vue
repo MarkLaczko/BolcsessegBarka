@@ -7,6 +7,8 @@
         {{ messages.pages.userManagementPage.title }}
       </h1>
 
+      <BaseConfirmDialog />
+
       <Toast :pt="{
       root: {
         class: 'w-25',
@@ -253,7 +255,8 @@
               <Button :label="messages.pages.userManagementPage.newUser" id="newUser" icon="pi pi-plus"
                 class="mr-2 btn btn-success text-white me-1 mt-2 ms-2" @click="addUserDialogVisible = true" />
               <Button :label="messages.pages.userManagementPage.deleteUser" icon="pi pi-trash"
-                class="btn btn-danger text-white mt-2" :disabled="selectedUsers.length === 0" @click="deleteMultipleUsers" />
+                class="btn btn-danger text-white mt-2" :disabled="selectedUsers.length === 0"
+                @click="deleteMultipleUsers" />
             </template>
             <template #end>
               <Button :label="messages.pages.userManagementPage.exportButton" icon="pi pi-upload"
@@ -374,6 +377,7 @@ import { userStore } from "@stores/UserStore";
 import { FilterMatchMode } from "primevue/api";
 import { themeStore } from "@stores/ThemeStore.mjs";
 import { languageStore } from "@stores/LanguageStore.mjs";
+import BaseConfirmDialog from "@components/BaseConfirmDialog.vue";
 
 export default {
   components: {
@@ -387,7 +391,8 @@ export default {
     Dialog,
     Toast,
     RadioButton,
-    BaseSpinner
+    BaseSpinner,
+    BaseConfirmDialog
   },
   data() {
     return {
@@ -472,94 +477,114 @@ export default {
       }
     },
     async deleteUser(userId) {
-      try {
-        await http.delete(`/users/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${this.token}`,
-          },
-        });
+      this.$confirm.require({
+        message: this.messages.pages.userManagementPage.confirmDialogs.message,
+        icon: 'pi pi-exclamation-triangle',
+        rejectClass: 'btn btn-danger',
+        acceptClass: 'btn btn-success ',
+        rejectLabel: this.messages.pages.userManagementPage.confirmDialogs.rejectLabel,
+        acceptLabel: this.messages.pages.userManagementPage.confirmDialogs.acceptLabel,
+        accept: async () => {
+          try {
+            await http.delete(`/users/${userId}`, {
+              headers: {
+                Authorization: `Bearer ${this.token}`,
+              },
+            });
 
-        let toast = {
-          severity: "success",
-          detail:
-            this.messages.pages.userManagementPage.toastMessages
-              .successfullyDeletedUser,
-          life: 3000,
-        };
-        if (!this.isDarkMode) {
-          toast.styleClass = "bg-success text-white";
-        }
-        else {
-          toast.styleClass = "toast-success text-white";
-        }
+            let toast = {
+              severity: "success",
+              detail:
+                this.messages.pages.userManagementPage.toastMessages
+                  .successfullyDeletedUser,
+              life: 3000,
+            };
+            if (!this.isDarkMode) {
+              toast.styleClass = "bg-success text-white";
+            }
+            else {
+              toast.styleClass = "toast-success text-white";
+            }
 
-        this.$toast.add(toast);
-        await this.getUsers();
-      } catch (error) {
-        let toast = {
-          severity: "error",
-          detail:
-            this.messages.pages.userManagementPage.toastMessages
-              .failedToDeleteUser,
-          life: 3000,
-        };
-        if (!this.isDarkMode) {
-          toast.styleClass = "bg-danger text-white";
-        }
-        else {
-          toast.styleClass = "toast-danger text-white";
-        }
+            this.$toast.add(toast);
+            await this.getUsers();
+          } catch (error) {
+            let toast = {
+              severity: "error",
+              detail:
+                this.messages.pages.userManagementPage.toastMessages
+                  .failedToDeleteUser,
+              life: 3000,
+            };
+            if (!this.isDarkMode) {
+              toast.styleClass = "bg-danger text-white";
+            }
+            else {
+              toast.styleClass = "toast-danger text-white";
+            }
 
-        this.$toast.add(toast);
-      }
+            this.$toast.add(toast);
+          }
+        }
+      });
     },
     async deleteMultipleUsers() {
-      try {
-        let userIds = this.selectedUsers.map((x) => x.id);
-        await http.post(
-          "/users/delete",
-          { userIds: userIds },
-          {
-            headers: {
-              Authorization: `Bearer ${this.token}`,
-            },
+      this.$confirm.require({
+        message: this.messages.pages.userManagementPage.confirmDialogs.message,
+        icon: 'pi pi-exclamation-triangle',
+        rejectClass: 'btn btn-danger',
+        acceptClass: 'btn btn-success ',
+        rejectLabel: this.messages.pages.userManagementPage.confirmDialogs.rejectLabel,
+        acceptLabel: this.messages.pages.userManagementPage.confirmDialogs.acceptLabel,
+        accept: async () => {
+          try {
+            let userIds = this.selectedUsers.map((x) => x.id);
+            await http.post(
+              "/users/delete",
+              { userIds: userIds },
+              {
+                headers: {
+                  Authorization: `Bearer ${this.token}`,
+                },
+              }
+            );
+
+            let toast = {
+              severity: "success",
+              detail:
+                this.messages.pages.userManagementPage.toastMessages
+                  .successfullyDeletedMultipleUsers,
+              life: 3000,
+            };
+            if (!this.isDarkMode) {
+              toast.styleClass = "bg-success text-white";
+            }
+            else {
+              toast.styleClass = "toast-success text-white";
+            }
+
+            this.$toast.add(toast);
+            await this.getUsers();
+          } catch (error) {
+
+            let toast = {
+              severity: "error",
+              detail:
+                this.messages.pages.userManagementPage.toastMessages
+                  .failedToDeleteMultipleUsers,
+              life: 3000,
+            };
+            if (!this.isDarkMode) {
+              toast.styleClass = "bg-danger text-white";
+            }
+            else {
+              toast.styleClass = "toast-danger text-white";
+            }
+
+            this.$toast.add(toast);
           }
-        );
-
-        let toast = {
-          severity: "success",
-          detail:
-            this.messages.pages.userManagementPage.toastMessages
-              .successfullyDeletedMultipleUsers,
-          life: 3000,
-        };
-        if (!this.isDarkMode) {
-          toast.styleClass = "bg-success text-white";
         }
-        else {
-          toast.styleClass = "toast-success text-white";
-        }
-
-        this.$toast.add(toast);
-        await this.getUsers();
-      } catch (error) {
-
-        let toast = {
-          severity: "error",
-          detail:
-            this.messages.pages.userManagementPage.toastMessages
-              .failedToDeleteMultipleUsers,
-          life: 3000,
-        };
-        if (!this.isDarkMode) {
-          toast.styleClass = "bg-danger text-white";
-        }
-        else {
-          toast.styleClass = "toast-danger text-white";
-        }
-
-        this.$toast.add(toast);
-      }
+      });
     },
     async updateUser(data) {
       try {
