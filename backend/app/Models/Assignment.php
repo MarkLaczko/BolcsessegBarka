@@ -24,9 +24,9 @@ class Assignment extends Model
         "teacher_task_name"
     ];
 
-    public function courseable() : MorphTo
+    public function topic() : BelongsTo
     {
-        return $this->morphTo();
+        return $this->belongsTo(Topic::class);
     }
 
     public function studentAssignment() : HasMany
