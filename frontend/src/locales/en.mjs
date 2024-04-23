@@ -300,6 +300,7 @@ export default {
       comment: "Comment",
       deadline: "Deadline",
       courseName: "Course name",
+      topic_name: "Select a topic",
       teacher_task: "Upload assignment / note for students.",
       validationMessages: {
         task_nameRequired: "Filling in the title of the task is required.",
@@ -307,6 +308,7 @@ export default {
           "The title of the task must be less than 255 characters.",
         commentLength: "Comments must be less than 255 characters.",
         deadlineRequired: "You must set a deadline.",
+        topicRequired: "It is mandatory to choose a topic",
       },
       toastMessages: {
         successfullyCreatedAssignment: "Successfully added assignment!",
