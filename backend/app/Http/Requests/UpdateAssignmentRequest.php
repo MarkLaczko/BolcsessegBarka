@@ -11,7 +11,7 @@ class UpdateAssignmentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,13 +22,11 @@ class UpdateAssignmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'task_name' => "nullable",
-            'student_task' => 'required',
+            'task_name' => 'nullable',
             'teacher_task' => 'nullable',
             'comment' => 'nullable',
             'deadline' => 'nullable',
             'grade' => 'nullable',
-            'student_task_name' => 'nullable',
             'teacher_task_name' => 'nullable',
         ];
     }
