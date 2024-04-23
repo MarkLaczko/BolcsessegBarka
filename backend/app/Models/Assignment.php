@@ -2,6 +2,8 @@
 
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Assignment extends Model
@@ -26,5 +28,11 @@ class Assignment extends Model
     {
         return $this->morphTo();
     }
+
+    public function studentAssignment() : HasMany
+    {
+        return $this->hasMany(StudentAssignment::class)->select(["assignment_id","student_task_name"]);
+    }
+
 }
 
