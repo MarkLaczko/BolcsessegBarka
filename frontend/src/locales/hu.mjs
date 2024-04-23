@@ -48,6 +48,7 @@ export default {
       newTopicButton: "Új téma",
       deleteButton: "Törlés",
       editButton: "Szerkesztés",
+      groupTreatmentButton: "Csoportok kezelése",
       newTopicDialog: {
         title: "Új téma felvétele",
         nameLabel: "Név",
@@ -63,6 +64,12 @@ export default {
             "Sajnáljuk, nem minden mezőt töltöttek ki helyesen.",
         },
       },
+      groupTreatmentDialog: {
+        title: "Csoportok kezelése",
+        multiSelectPlaceholder: "Csoportok kiválasztása",
+        cancelButton: "Mégsem",
+        saveButton: "Mentés"
+      }
     },
     userManagementPage: {
       title: "Felhasználók kezelése",
