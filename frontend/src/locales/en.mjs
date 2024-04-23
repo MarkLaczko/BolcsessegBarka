@@ -131,6 +131,36 @@ export default {
         successfullyUpdatedUser: "User modification was successful!",
         failedToUpdateUser: "User modification failed!",
       },
+      confirmDialogs: {
+        message: "Are you sure you want to delete this user(s)?",
+        rejectLabel: "Cancel",
+        acceptLabel: "Delete"
+      }
+    },
+    profilePage: {
+      title: 'Edit profile',
+      nameLabel: "Name",
+      emailLabel: "Email",
+      currentPasswordLabel: "Current password",
+      passwordLabel: "New password",
+      confirmPasswordLabel: "New password confirmation",
+      submitButton: "Save",
+      changePassword: "Change password",
+      toastMessages: {
+        success: "Profile updated successfully!",
+        fail: "Failed to update profile!"
+      },
+      validationMessages: {
+        matchAllValidationMessage:
+          "Sorry, not all fields have been filled out correctly.",
+        passwordRequired: "Password is required.",
+        passwordLength:
+          "Password must be at least 8 and maximum 255 characters long.",
+        confirmPasswordRequired: "Confirm password is required.",
+        confirmPasswordLength:
+          "Confirm password must be at least 8 and maximum 255 characters long.",
+        confirmPasswordConfirm: "Passwords do not match.",
+      }
     },
     groupManagementPage: {
       title: "Group Management",
@@ -247,6 +277,11 @@ export default {
         successfullyUpdatedCourse: "Successfully updated course!",
         failedToUpdateCourse: "Failed to update course!",
       },
+      confirmDialogs: {
+        message: "Are you sure you want to delete this course(s)?",
+        rejectLabel: "Cancel",
+        acceptLabel: "Delete"
+      }
     },
     assignmentPage: {
       dragFileText: "Drag files here to upload",
@@ -293,6 +328,7 @@ export default {
       userAdministration: "User Management",
       groupAdministration: "Group Management",
       courseAdministration: "Course Management",
+      profile: 'Profile',
       logout: "Logout",
     },
     footer: {},

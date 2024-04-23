@@ -17,6 +17,7 @@
         v-for="msg of message"
         :key="msg.id"
         :icon="`fa-solid fa-${msg.icon}`"
+        class="w-75 mx-auto"
         :pt="{
           wrapper: `alert alert-${msg.color} d-flex flex-row w-100 justify-content-between align-items-center p-2 mt-4 mb-0`,
           button: `btn btn-outline-${msg.color} rounded-circle`,

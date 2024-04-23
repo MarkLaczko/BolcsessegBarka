@@ -84,6 +84,7 @@
   --modal-text-color: #{$black};
   --modal-bg-color: #{$white};
   --toast-success-color: none;
+  --toast-danger-color: none;
   --toast-color: #{$black};
   --scrollbar-color: #{$blue};
   --scrollbar-bg-color: #{$lightCyan};
@@ -105,6 +106,7 @@
   --closeButton-color: #{$black};
   --accordion-bg: #{$white};
   --accordion-active-bg: #{$cyan};
+  --confirmDialog-bg-color: #{$white};
 }
 
 [data-theme="dark"] {
@@ -130,7 +132,8 @@
   --icon-color: #{$white};
   --modal-text-color: #{$white};
   --modal-bg-color: #{$gray};
-  --toast-success-color: #{$darkerGrey};
+  --toast-success-color: #{$darkGreen};
+  --toast-danger-color: #{$darkRed};
   --toast-color: #{$white};
   --scrollbar-color: #{$lightGray};
   --scrollbar-bg-color: #{$gray};
@@ -152,6 +155,7 @@
   --closeButton-color: #{$white};
   --accordion-bg: #{$lightGray};
   --accordion-active-bg: #{$gray};
+  --confirmDialog-bg-color: #{$gray};
 }
 
 body {
@@ -248,8 +252,14 @@ div[role="dialog"] input.form-control::placeholder {
   color: var(--input-color);
 }
 
-div[data-pc-name="toast"] div[role="alert"] {
+.toast-success {
   background-color: var(--toast-success-color);
+  color: var(--toast-color);
+  border: var(--border);
+}
+
+.toast-danger {
+  background-color: var(--toast-danger-color);
   color: var(--toast-color);
   border: var(--border);
 }
@@ -349,5 +359,10 @@ div[data-pc-section="panel"] .form-check-input:checked {
 }
 
 .accordion h2 {
+  color: var(--text-color);
+}
+
+div[data-pc-name="dialog"] {
+  background-color: var(--confirmDialog-bg-color);
   color: var(--text-color);
 }

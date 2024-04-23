@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BulkDeleteUserRequest;
+use App\Http\Requests\EditProfileRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
@@ -87,5 +88,22 @@ class UserController extends Controller
         }
 
         return response()->json(['message' => 'No users to delete'], 400);
+    }
+
+    public function updateProfile(EditProfileRequest $request)
+    {
+        $data = $request->validated();
+
+        $user = $request->user();
+
+        if(Hash::check($data['old_password'], $user->password)) {
+            $user->update([
+                'password' => Hash::make($data['password'])
+            ]);
+
+            return response()->json(['message' => 'Profile updated'], 200);
+        }
+
+        return response()->json(['message' => 'Incorrect password'], 422);
     }
 }

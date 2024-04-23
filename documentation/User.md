@@ -39,6 +39,7 @@
      - **Felhasználói avatár:** Egy karikában megjeleníti a felhasználó monogramját.
      - **Téma Váltása:** A felhasználók váltogathatnak a sötét és világos téma között, a nap ikonra nyomva világos, a hold ikonra kattintva pedig a sötét témát állíthatunk be. A megjelenése eszköz méretétől függő: kismérettől felfele ikonok, kisméret és azalatt pedig szöveg formájában lehet kezelni a témát.
      - **Nyelv Váltása:** Egy kapcsoló segítségével a felhasználók váltogathatnak a `Magyar` és az `Angol` nyelv között.
+     - **Profilom:** A felhasználó profiljának szerkesztése. A felhasználó itt jelszót tud változtatni.
      - **Kijelentkezés:** Biztonságosan kilépteti a felhasználót és a bejelentkezési oldalra irányítja.
 
 ## Felhasználó kezelés

@@ -135,6 +135,36 @@ export default {
         successfullyUpdatedUser: "Felhasználó módosítása sikeres volt!",
         failedToUpdateUser: "Felhasználó módosítása sikertelen volt!",
       },
+      confirmDialogs: {
+        message: "Biztos ki akarja törölni ezt a felhasználó(ka)t?",
+        rejectLabel: "Mégsem",
+        acceptLabel: "Törlés"
+      }
+    },
+    profilePage: {
+      title: 'Profil szerkesztése',
+      nameLabel: "Név",
+      emailLabel: "Email",
+      currentPasswordLabel: "Jelenlegi jelszó",
+      passwordLabel: "Új jelszó",
+      confirmPasswordLabel: "Új jelszó megerősítése",
+      submitButton: "Mentés",
+      changePassword: "Jelszó szerkesztése",
+      toastMessages: {
+        success: "Profil sikeresen frissítve!",
+        fail: "Profil frissítése sikertelen!"
+      },
+      validationMessages: {
+        matchAllValidationMessage:
+          "Sajnáljuk, nem minden mezőt töltöttek ki helyesen.",
+        passwordRequired: "A jelszó kitöltése kötelező.",
+        passwordLength:
+          "Legalább 8, maximum 255 karakter hosszú lehet a jelszó.",
+        confirmPasswordRequired: "A jelszó megerősítés kitöltése kötelező.",
+        confirmPasswordLength:
+          "Legalább 8, maximum 255 karakter hosszú lehet a jelszó megerősítés.",
+        confirmPasswordConfirm: "A jelszavak nem egyeznek.",
+      }
     },
     groupManagementPage: {
       title: "Csoportok kezelése",
@@ -254,6 +284,11 @@ export default {
         successfullyUpdatedCourse: "Kurzus módosítása sikeres volt!",
         failedToUpdateCourse: "Kurzus módosítása sikertelen volt!",
       },
+      confirmDialogs: {
+        message: "Biztos ki akarja törölni ezt a kurzus(oka)t?",
+        rejectLabel: "Mégsem",
+        acceptLabel: "Törlés"
+      }
     },
     assignmentPage: {
       dragFileText: "Húzza ide a fájlokat a feltöltéshez",
@@ -301,6 +336,7 @@ export default {
       userAdministration: "Felhasználói kezelése",
       groupAdministration: "Csoportok kezelése",
       courseAdministration: "Kurzusok kezelése",
+      profile: 'Profilom',
       logout: "Kijelentkezés",
     },
     footer: {},

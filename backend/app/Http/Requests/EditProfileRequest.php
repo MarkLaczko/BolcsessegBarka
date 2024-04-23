@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreGroupIdRequest extends FormRequest
+class EditProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,19 @@ class StoreGroupIdRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'group_ids' => ["array","nullable"],
-            'group_ids.*' => ["exists:groups,id"]
+            "old_password" => [
+                "required",
+                "string",
+                "min:8",
+                "max:255"
+            ],
+            "password" => [
+                "confirmed",
+                "required",
+                "string",
+                "min:8",
+                "max:255"
+            ]
         ];
     }
 }
