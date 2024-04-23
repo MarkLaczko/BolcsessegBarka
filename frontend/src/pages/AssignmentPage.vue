@@ -1,22 +1,55 @@
 <template>
   <BaseLayout>
-    <div class="rounded-3 my-5 py-2">
+
+    <BaseSpinner :loading="loading"/>
+
+    <div class="rounded-3 my-5 py-2" v-if="!loading">
       <div class="rounded-3 m-3 p-2 bg-white">
         <p v-for="assignment in assignments" :key="assignment.id">
-          {{ assignment.task_name }} <br />
-          {{ assignment.course.name }} <br />
-          {{ assignment.deadline }}
+          {{ messages.pages.assignmentPage.task_name }} {{ assignment.task_name }} <br />
+          {{ messages.pages.assignmentPage.courseName }} {{ assignment.course.name }} <br />
+          {{ messages.pages.assignmentPage.deadline }} {{ assignment.deadline }}
+          <p v-if="assignment.comment">{{ messages.pages.assignmentPage.comment }} {{ assignment.comment }}</p>
         </p>
-        <div class="card">
-          <Toast />
-          <FileUpload
+        <div v-if="isDeadlineReached" class=" py-4 text-center alert alert-danger">
+          {{ messages.pages.assignmentPage.deadlineExpired }}
+        </div>
+        <div class="card" v-if="!isDeadlineReached">
+          <Toast
+            :pt="{
+              root: {
+                class: 'w-25',
+              },
+              detail: {
+                class: 'text-center',
+              },
+              icon: {
+                class: 'mt-1 ms-1',
+              },
+              text: {
+                class: 'w-75 mx-auto',
+              },
+              container: {
+                class: ' rounded w-75',
+              },
+              buttonContainer: {
+                class: 'w-25 d-flex justify-content-center ms-auto',
+              },
+              button: {
+                class: 'btn mb-2',
+              },
+              transition: {
+                name: 'slide-fade',
+              },
+            }"
+          />
+          <!-- <FileUpload
             :pt="{
               input: {
                 class: 'd-none',
               },
             }"
-            name="demo[]"
-            url="/api/upload"
+            url="api/assignments"
             @upload="onTemplatedUpload($event)"
             :multiple="true"
             accept=".zip, .rar, .jpg, .jpeg, .png"
@@ -149,7 +182,60 @@
                 </p>
               </div>
             </template>
-          </FileUpload>
+          </FileUpload> -->
+          <FormKit
+          type="form"
+          :actions="false"
+          @submit="postNewStudentAssignment"
+          :incomplete-message="
+            messages.pages.userManagementPage.newUserDialog.validationMessages
+              .matchAllValidationMessage
+          "
+        >
+          <FormKit
+            type="file"
+            name="student_task"
+            :label="
+              messages.pages.newAssignmentPage.teacher_task
+            "
+            multiple="true"
+            validation=""
+            :classes="{
+              input: {
+                'mb-1': true,
+                'form-control': true,
+              },
+              noFiles: {
+                'd-none': true
+              },
+            }"
+          />
+          <div class="d-flex justify-content-end mt-2 mb-3">
+            <Button
+              type="button"
+              :label="
+                messages.pages.newAssignmentPage.cancelButton
+              "
+              class="btn btn-outline-danger mx-1 px-5"
+              
+            ></Button>
+            <FormKit
+              type="submit"
+              :label="
+                messages.pages.newAssignmentPage.saveButton
+              "
+              id="addAssignmentButton"
+              :classes="{
+                input: {
+                  btn: true,
+                  'btn-success': true,
+                  'w-auto': true,
+                  'px-5' : true
+                },
+              }"
+            />
+          </div>
+        </FormKit>
         </div>
         <div class="d-flex justify-content-end">
           <button class="btn btn-outline-danger mt-3 px-5">
@@ -172,6 +258,7 @@ import { mapState } from "pinia";
 import { languageStore } from "@stores/LanguageStore.mjs";
 import { http } from "@utils/http";
 import { userStore } from "@stores/UserStore";
+import BaseSpinner from "@components/BaseSpinner.vue"
 
 export default {
   components: {
@@ -181,6 +268,7 @@ export default {
     Button,
     Toast,
     ProgressBar,
+    BaseSpinner
   },
   data() {
     return {
@@ -188,6 +276,9 @@ export default {
       totalSize: 0,
       totalSizePercent: 0,
       assignments: [],
+      isDeadlineReached: false,
+      deadlineDate: null,
+      loading: true
     };
   },
   computed: {
@@ -202,52 +293,118 @@ export default {
         },
       });
       this.assignments.push(response.data.data);
+      this.deadlineDate = response.data.data.deadline;
     },
-    onRemoveTemplatingFile(file, removeFileCallback, index) {
-      removeFileCallback(index);
-      this.totalSize -= parseInt(this.formatSize(file.size));
-      this.totalSizePercent = this.totalSize;
-    },
-    onClearTemplatingUpload(clear) {
-      clear();
-      this.totalSize = 0;
-      this.totalSizePercent = 0;
-    },
-    onSelectedFiles(event) {
-      this.files = event.files;
-      this.files.forEach((file) => {
-        this.totalSize += parseInt(this.formatSize(file.size));
-      });
-    },
-    uploadEvent(callback) {
-      this.totalSizePercent = this.totalSize;
-      callback();
-    },
-    onTemplatedUpload() {
-      this.$toast.add({
-        severity: "info",
-        summary: "Success",
-        detail: "File Uploaded",
-        life: 3000,
-      });
-    },
-    formatSize(bytes) {
-      const k = 1024;
-      const sizes = this.$primevue.config.locale.fileSizeTypes;
+    async postNewStudentAssignment(data) {
+      try {
+        const formData = new FormData();
+          formData.append('assignment_id', this.$route.params.id)
+          formData.append('student_task_name', data.student_task[0].name);
+          formData.append('student_task', data.student_task[0].file);
+          
+        const user = userStore();
+        await http.post(`/studentAssignments`, formData, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            'Content-Type': 'application/x-www-form-urlencoded' 
+          },
+        });
 
-      if (bytes === 0) {
-        return `0 ${sizes[0]}`;
+
+        let toast = {
+          severity: "success",
+          detail:
+            this.messages.pages.newAssignmentPage.toastMessages.successfullyCreatedAssignment,
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-success text-white";
+        }
+
+        this.$toast.add(toast);
+
+      } catch (error) {
+        let toast = {
+          severity: "error",
+          detail:
+            this.messages.pages.newAssignmentPage.toastMessages.failedToCreateAssignment,
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-danger text-white";
+        }
+        this.$toast.add(toast);
       }
-      
-      const i = Math.floor(Math.log(bytes) / Math.log(k));
-      const formattedSize = parseFloat((bytes / Math.pow(k, i)).toFixed(0));
+    },
+    // onRemoveTemplatingFile(file, removeFileCallback, index) {
+    //   removeFileCallback(index);
+    //   this.totalSize -= parseFloat(this.formatSize(file.size));
+    //   this.totalSizePercent = this.totalSize;
+    // },
+    // onClearTemplatingUpload(clear) {
+    //   clear();
+    //   this.totalSize = 0;
+    //   this.totalSizePercent = 0;
+    // },
+    // onSelectedFiles(event) {
+    //   this.files = event.files;
+    //   this.files.forEach((file) => {
+    //     this.totalSize += parseFloat(this.formatSize(file.size));
+    //   });
+    // },
+    // uploadEvent(callback) {
+    //   this.totalSizePercent = this.totalSize;
+    //   callback();
+    // },
+    // onTemplatedUpload() {
+    //   this.$toast.add({
+    //     severity: "info",
+    //     summary: "Success",
+    //     detail: "File Uploaded",
+    //     life: 3000,
+    //   });
+    // },
+    // formatSize(bytes) {
+    //   const k = 1024;
+    //   const sizes = this.$primevue.config.locale.fileSizeTypes;
 
-      return `${formattedSize} ${sizes[i]}`;
+    //   if (bytes === 0) {
+    //     return `0 ${sizes[0]}`;
+    //   }
+    //   else if (bytes <= 1000000) {
+    //     return `${(bytes/1000000).toFixed(3)} ${sizes[2]}`;
+    //   }
+    //   else {
+    //     const i = Math.floor(Math.log(bytes) / Math.log(k));
+    //     const formattedSize = parseFloat((bytes / Math.pow(k, i)).toFixed(0));
+
+    //     return `${formattedSize} ${sizes[i]}`;
+    //   }
+    // },
+    checkDeadline() {
+      const currentDateTime = new Date();
+      const deadlineDateTime = new Date(Date.parse(this.deadlineDate));
+      
+      if (currentDateTime >= deadlineDateTime) {
+        this.isDeadlineReached = true;
+      } else {
+        this.isDeadlineReached = false;
+      }
     },
   },
-  mounted(){
-    this.getAssignments();
+  async mounted(){
+    await this.getAssignments();
+    this.checkDeadline();
+    this.loading = false;
   },
+  watch: {
+  assignments: {
+    handler: function(newAssignments) {
+      this.checkDeadline();
+    },
+    deep: true
+  }
+},
 };
 </script>
 
