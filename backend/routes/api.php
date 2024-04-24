@@ -150,3 +150,5 @@ Route::middleware('auth:sanctum')->get('/quizzes/{id}/tasks/ids', [TaskControlle
 Route::middleware('auth:sanctum')->get('/tasks/{id}', [TaskController::class,'show'])
     ->whereNumber('id')
     ->name('tasks.show');
+Route::middleware('auth:sanctum')->post('/tasks/', [TaskController::class,'store'])
+    ->name('tasks.store');
