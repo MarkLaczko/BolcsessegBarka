@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\TaskIdResource;
 use App\Http\Resources\TaskResource;
 use App\Models\Quiz;
@@ -73,8 +74,69 @@ class TaskController extends Controller
             ]);
         }
         
-        return Task::with(['subtasks'])
-            ->findOrFail($task->id);
+        return new TaskResource(Task::with(['subtasks'])
+            ->findOrFail($task->id));
+    }
+
+    public function update(UpdateTaskRequest $request, int $id){
+        $data = $request->validated();
+
+        Task::findOrFail($id)
+            ->update([
+                'quiz_id' => $data['quiz_id'],
+                'order' => $data['order'],
+                'header' => $data['header'],
+                'text' => $data['text'],
+            ]);
+        
+        foreach ($data['subtasks'] as $key => $value) {
+            if(isset($value['options'])) {
+                $options_implode = $this::convertArray($value['options']);
+                $data['subtasks'][$key]['options'] = $options_implode;
+            }
+
+            if(isset($value['solution'])) {
+                $solution_implode = $this::convertArray($value['solution']);
+                $data['subtasks'][$key]['solution'] = $solution_implode;
+            }
+        }
+
+        foreach ($data['subtasks'] as $key => $value) {
+            if(isset($value['id'])) {
+                $subtask = Subtask::findOrFail($value['id']);
+                $subtask->update([
+                        'task_id' => $id,
+                        'order' => $value['order'],
+                        'question' => $value['question'],
+                        'options' => isset($value['options']) ? $value['options'] : null,
+                        'solution' => isset($value['solution']) ? $value['solution'] : null,
+                        'type' => $value['type'],
+                        'marks' => $value['marks'],
+                    ]);
+            }
+            else {
+                Subtask::create([
+                        'task_id' => $id,
+                        'order' => $value['order'],
+                        'question' => $value['question'],
+                        'options' => isset($value['options']) ? $value['options'] : null,
+                        'solution' => isset($value['solution']) ? $value['solution'] : null,
+                        'type' => $value['type'],
+                        'marks' => $value['marks'],
+                    ]);
+            }
+        }
+
+        return new TaskResource(Task::with(['subtasks'])
+            ->findOrFail($id));
+    }
+
+    public function destroy(int $id){
+        $task = Task::findOrFail($id);
+
+        $task->delete();
+
+        return response()->noContent();
     }
 
     private static function convertArray($array) : string {
