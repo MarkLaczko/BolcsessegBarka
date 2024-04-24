@@ -19,7 +19,6 @@ class Assignment extends Model
         "deadline",
         "grade",
         "courseable_id",
-        "courseable_type",
         "teacher_task_name",
         "topic_id"
     ];

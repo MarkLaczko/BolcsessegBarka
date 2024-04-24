@@ -28,7 +28,6 @@ class StoreAssignmentRequest extends FormRequest
             'deadline' => 'required',
             'grade' => 'nullable',
             'courseable_id' => 'required',
-            'courseable_type' => 'required',
             'teacher_task_name' => 'nullable',
             'topic_id' => 'required'
         ];

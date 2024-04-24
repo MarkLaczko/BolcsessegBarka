@@ -449,7 +449,6 @@ export default {
           formData.append('deadline', new Date(data.deadline).toISOString().slice(0, 19).replace('T', ' '));
           formData.append('teacher_task', data.teacher_task[0].file);
           formData.append('courseable_id', this.$route.params.id);
-          formData.append('courseable_type', 'App\\Models\\Course');
           formData.append('teacher_task_name', data.teacher_task[0].name);
           formData.append('topic_id', this.activeTopicId);
         
