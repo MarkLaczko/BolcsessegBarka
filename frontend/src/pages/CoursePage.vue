@@ -49,14 +49,14 @@
     </BaseDialog>
 
     <BaseDialog v-if="editTopicDialogVisible" :visible="editTopicDialogVisible"
-      :header="messages.pages.coursePage.newTopicDialog.title" :width="'25rem'">
-      <FormKit type="form" :actions="false" @submit="editTopic" :incomplete-message="messages.pages.coursePage.newTopicDialog.validationMessages
+      :header="messages.pages.coursePage.editTopicDialog.title" :width="'25rem'">
+      <FormKit type="form" :actions="false" @submit="editTopic" :incomplete-message="messages.pages.coursePage.editTopicDialog.validationMessages
       .matchAllValidationMessage
       ">
-        <FormKit type="text" name="name" :label="messages.pages.coursePage.newTopicDialog.nameLabel"
+        <FormKit type="text" name="name" :label="messages.pages.coursePage.editTopicDialog.nameLabel"
           validation="length:0,60" :validation-messages="{
       length:
-        messages.pages.coursePage.newTopicDialog.validationMessages
+        messages.pages.coursePage.editTopicDialog.validationMessages
           .nameLength,
     }" :classes="{
       input: {
@@ -65,10 +65,10 @@
       },
     }" />
 
-        <FormKit type="text" name="order" :label="messages.pages.coursePage.newTopicDialog.orderLabel"
+        <FormKit type="text" name="order" :label="messages.pages.coursePage.editTopicDialog.orderLabel"
           validation="number" :validation-messages="{
       number:
-        messages.pages.coursePage.newTopicDialog.validationMessages
+        messages.pages.coursePage.editTopicDialog.validationMessages
           .orderNumber,
     }" :classes="{
       input: {
@@ -79,8 +79,8 @@
 
         <div class="d-flex justify-content-end mt-2 mb-3">
           <Button type="button" class="btn btn-outline-danger mx-1" @click="editTopicDialogVisible = false">{{
-      messages.pages.coursePage.newTopicDialog.cancelButton }}</Button>
-          <FormKit type="submit" :label="messages.pages.coursePage.newTopicDialog.saveButton" :classes="{
+      messages.pages.coursePage.editTopicDialog.cancelButton }}</Button>
+          <FormKit type="submit" :label="messages.pages.coursePage.editTopicDialog.saveButton" :classes="{
       input: {
         btn: true,
         'btn-success': true,
