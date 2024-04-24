@@ -35,8 +35,8 @@ export const topicStore = defineStore("topicStore", {
           Authorization: `Bearer ${user.token}`,
         },
       });
-
       this.topics.push(response.data.data);
+      return response.data.data;
     },
     async putTopic(id, data) {
       const user = userStore();
