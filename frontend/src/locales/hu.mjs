@@ -83,6 +83,12 @@ export default {
         multiSelectPlaceholder: "Csoportok kiválasztása",
         cancelButton: "Mégsem",
         saveButton: "Mentés"
+      },
+      newNoteDialog: {
+        title: "Jegyzet létrehozása",
+        notesNameText: "Jegyzet neve:",
+        cancelButton: "Mégsem",
+        saveButton: "Mentés",
       }
     },
     userManagementPage: {
@@ -343,12 +349,6 @@ export default {
         successfullyCreatedAssignment: "Feladat hozzáadása sikeres volt!",
         failedToCreateAssignment: "Feladat hozzáadása sikertelen volt!",
       },
-    },
-    notePage: {
-      title: "Jegyzet létrehozása",
-      notesNameText: "Jegyzet neve:",
-      cancelButton: "Mégsem",
-      saveButton: "Mentés",
     },
   },
   layout: {
