@@ -11,6 +11,7 @@ use App\Http\Resources\CourseResource;
 use App\Http\Resources\GroupsWithUsersResource;
 use App\Models\Course;
 use App\Models\Topic;
+use Illuminate\Support\Facades\Gate;
 
 class CourseController extends Controller
 {
@@ -27,7 +28,11 @@ class CourseController extends Controller
      */
     public function store(StoreCourseRequest $request)
     {
+        Gate::authorize('courses.store');
+
         $data = $request->validated();
+        $data['created_by'] = $request->user()->id;
+
         $course = Course::create($data);
 
         return new CourseResource($course);
@@ -40,7 +45,7 @@ class CourseController extends Controller
     {
         $course = Course::with("topics")->findOrFail($id);
 
-     return new CourseResource($course);
+        return new CourseResource($course);
     }
 
     /**
@@ -48,8 +53,10 @@ class CourseController extends Controller
      */
     public function update(UpdateCourseRequest $request, string $id)
     {
-        $data = $request->validated();
         $course = Course::findOrFail($id);
+        Gate::authorize('courses.update', $course);
+
+        $data = $request->validated();
         $course->update($data);
 
         return new CourseResource($course);
@@ -61,6 +68,8 @@ class CourseController extends Controller
     public function destroy(string $id)
     {
         $course = Course::findOrFail($id);
+        Gate::authorize('courses.destroy', $course);
+
         $course->groups()->detach();
         $course->delete();
 
@@ -71,11 +80,15 @@ class CourseController extends Controller
     {
         $courseIds = $request->validated()["courseIds"];
 
-         $courses = Course::whereIn('id', $courseIds)->get();
+        $courses = Course::whereIn('id', $courseIds)->get();
 
-         foreach ($courses as $course) {
-             $course->groups()->detach();
-         }
+        foreach ($courses as $course) {
+            Gate::authorize('courses.destroy', $course);
+        }
+
+        foreach ($courses as $course) {
+            $course->groups()->detach();
+        }
 
         if (!empty($courseIds)) {
             Course::destroy($courseIds);
@@ -91,8 +104,7 @@ class CourseController extends Controller
 
         if (!empty($data['group_ids'])) {
             $course->groups()->sync($data['group_ids']);
-        }
-        else {
+        } else {
             $course->groups()->detach();
         }
 
@@ -108,7 +120,7 @@ class CourseController extends Controller
         if (!$course) {
             return response()->json(['message' => 'Course not found'], 404);
         }
-    
+
         $topicIds = $request->validated()['topic_ids'];
         foreach ($topicIds as $topicId) {
             $topic = Topic::find($topicId);
@@ -117,7 +129,7 @@ class CourseController extends Controller
                 $topic->save();
             }
         }
-    
+
         $course->load('topics');
         return new CourseResource($course);
     }
@@ -125,7 +137,7 @@ class CourseController extends Controller
     public function showCourseWithUsers($id)
     {
         $course = Course::with(['groups', 'groups.users'])->findOrFail($id);
-        
+
         return new GroupsWithUsersResource($course);
     }
 }
