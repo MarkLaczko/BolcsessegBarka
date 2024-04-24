@@ -10,7 +10,8 @@ class Note extends Model
 
     protected $fillable = [
         "title",
-        "text"
+        "text",
+        "topic_id"
     ];
 
     public function topic() : BelongsTo
