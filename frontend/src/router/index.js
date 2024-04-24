@@ -100,15 +100,6 @@ export const router = createRouter({
       },
     },
     {
-      path: "/newassignment",
-      name: "newassignment",
-      component: () => import("@pages/NewAssignmentPage.vue"),
-      meta: {
-        requiresAuth: true,
-        title: "Új feladat létrehozása",
-      },
-    },
-    {
       path: "/course/:id",
       name: "course",
       component: () => import("@pages/CoursePage.vue"),
