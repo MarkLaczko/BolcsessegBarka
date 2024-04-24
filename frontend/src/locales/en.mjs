@@ -79,7 +79,13 @@ export default {
         multiSelectPlaceholder: "Select Groups",
         cancelButton: "Cancel",
         saveButton: "Save"
-      }      
+      },
+      newNoteDialog: {
+        title: "Create Note",
+        notesNameText: "Note name:",
+        cancelButton: "Cancel",
+        saveButton: "Save",
+      }   
     },
     userManagementPage: {
       title: "User Management",
@@ -333,12 +339,6 @@ export default {
         successfullyCreatedAssignment: "Successfully added assignment!",
         failedToCreateAssignment: "Failed to add assignment!",
       },
-    },
-    notePage: {
-      title: "Create Note",
-      notesNameText: "Note name:",
-      cancelButton: "Cancel",
-      saveButton: "Save",
     },
   },
   layout: {
