@@ -1,6 +1,7 @@
 <template>
   <BaseLayout>
     <BaseSpinner :loading="loading" />
+    <BaseToast/>
 
     <BaseDialog v-if="newTopicDialogVisible" :visible="newTopicDialogVisible"
       :header="messages.pages.coursePage.newTopicDialog.title" :width="'25rem'">
@@ -138,6 +139,117 @@
       </div>
     </BaseDialog>
 
+    <BaseDialog v-if="newAssignmentDialogVisible" :visible="newAssignmentDialogVisible"
+      :header="messages.pages.coursePage.newTopicDialog.title" :width="'25rem'">
+      <FormKit
+          type="form"
+          :actions="false"
+          @submit="postNewAssignment"
+          :incomplete-message="
+            messages.pages.userManagementPage.newUserDialog.validationMessages
+              .matchAllValidationMessage
+          "
+        >
+          <FormKit
+            type="text"
+            name="task_name"
+            :label="messages.pages.newAssignmentPage.task_nameLabel"
+            validation="required|length:0,255"
+            :validation-messages="{
+              required:
+                messages.pages.newAssignmentPage
+                  .validationMessages.task_nameRequired,
+              length:
+                messages.pages.newAssignmentPage
+                  .validationMessages.task_nameLength,
+            }"
+            :classes="{
+              input: {
+                'mb-1': true,
+                'form-control': true,
+              },
+            }"
+          />
+          <FormKit
+            type="text"
+            name="comment"
+            :label="messages.pages.newAssignmentPage.comment"
+            validation="length:0,255"
+            :validation-messages="{
+                length:
+                    messages.pages.newAssignmentPage.validationMessages.commentLength,
+            }"
+            :classes="{
+              input: {
+                'mb-1': true,
+                'form-control': true,
+              },
+            }"
+          />
+          <FormKit
+            type="datetime-local"
+            name="deadline"
+            :label="
+              messages.pages.newAssignmentPage.deadline
+            "
+            validation="required"
+            :validation-messages="{
+              required:
+                messages.pages.newAssignmentPage.validationMessages.deadlineRequired,
+            }"
+            :classes="{
+              input: {
+                'mb-1': true,
+                'form-control': true,
+              },
+            }"
+          />
+          <FormKit
+            type="file"
+            name="teacher_task"
+            :label="
+              messages.pages.newAssignmentPage.teacher_task
+            "
+            multiple="true"
+            validation=""
+            :classes="{
+              input: {
+                'mb-1': true,
+                'form-control': true,
+              },
+              noFiles: {
+                'd-none': true
+              },
+            }"
+          />
+          <div class="d-flex justify-content-end mt-2 mb-3">
+            <Button
+              type="button"
+              :label="
+                messages.pages.newAssignmentPage.cancelButton
+              "
+              class="btn btn-outline-danger mx-1 px-5"
+              @click="newAssignmentDialogVisible = false"
+            ></Button>
+            <FormKit
+              type="submit"
+              :label="
+                messages.pages.newAssignmentPage.saveButton
+              "
+              id="addUserButton"
+              :classes="{
+                input: {
+                  btn: true,
+                  'btn-success': true,
+                  'w-auto': true,
+                  'px-5' : true
+                },
+              }"
+            />
+          </div>
+        </FormKit>
+    </BaseDialog>
+
     <div v-if="!loading">
       <h1 class="text-center my-3">
         {{ course.name }} ({{ this.$route.query.groupName }})
@@ -158,22 +270,27 @@
       <div class="accordion mb-3" id="accordionExample" v-for="topic in topics" :key="topic.id">
         <div class="accordion-item">
           <h2 class="accordion-header" :id="'heading' + topic.id">
+
             <button class="accordion-button" type="button" :class="{ collapsed: activeTopicId !== topic.id }"
               :data-bs-toggle="activeTopicId !== topic.id ? 'collapse' : ''" :data-bs-target="'#collapse' + topic.id"
               :aria-expanded="activeTopicId === topic.id ? 'true' : 'false'" :aria-controls="'collapse' + topic.id">
               <h2>{{ topic.name }}</h2>
-              <button v-if="currentUserData.is_admin ||
-      member.permission == 'Tanár' ||
-      (currentUserData.is_admin && member.permission == 'Tanár')
-      " class="ms-2 btn btn-success text-light" @click="editTopicDialogVisible = true, activeTopicId = topic.id">
-                {{ messages.pages.coursePage.editButton }}
-              </button>
-              <button v-if="currentUserData.is_admin ||
-      member.permission == 'Tanár' ||
-      (currentUserData.is_admin && member.permission == 'Tanár')
-      " class="ms-2 btn btn-danger text-light" @click="deleteTopic(topic.id)">
-                {{ messages.pages.coursePage.deleteButton }}
-              </button>
+
+              <div v-if="currentUserData.is_admin ||
+                member.permission == 'Tanár' ||
+                (currentUserData.is_admin && member.permission == 'Tanár')
+                " class="dropdown ms-2">
+                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Műveletek
+                </button>
+                <ul class="dropdown-menu"> 
+                  <li><a class="dropdown-item" @click="newAssignmentDialogVisible = true, activeTopicId = topic.id">Új feladat</a></li>
+                  <li><a class="dropdown-item" @click="editTopicDialogVisible = true, activeTopicId = topic.id">{{messages.pages.coursePage.editButton}}</a></li>
+                  <li><a class="dropdown-item" @click="deleteTopic(topic.id)">{{ messages.pages.coursePage.deleteButton }}</a></li>
+                </ul>
+              </div>
+            
+            
             </button>
           </h2>
           <div :id="'collapse' + topic.id" class="accordion-collapse collapse"
@@ -207,6 +324,7 @@ import { userStore } from "@stores/UserStore.mjs";
 import { topicStore } from "@stores/TopicStore.mjs";
 import { languageStore } from "@stores/LanguageStore.mjs";
 import BaseDialog from "@components/BaseDialog.vue";
+import BaseToast from "@components/BaseToast.vue";
 import { http } from "@utils/http.mjs";
 import Button from "primevue/button";
 
@@ -220,6 +338,7 @@ export default {
       newTopicDialogVisible: false,
       editTopicDialogVisible: false,
       groupTreatmentDialog: false,
+      newAssignmentDialogVisible: false,
       activeTopicId: null,
       currentGroups: []
     };
@@ -229,7 +348,8 @@ export default {
     BaseDialog,
     Button,
     BaseSpinner,
-    MultiSelect
+    MultiSelect,
+    BaseToast
   },
   methods: {
     ...mapActions(courseStore, ["getCourse"]),
@@ -320,7 +440,55 @@ export default {
         }
       );
       this.groupTreatmentDialog = false;
-    }
+    },
+    async postNewAssignment(data) {
+      try {
+        const formData = new FormData();
+          formData.append('task_name', data.task_name);
+          formData.append('comment', data.comment);
+          formData.append('deadline', new Date(data.deadline).toISOString().slice(0, 19).replace('T', ' '));
+          formData.append('teacher_task', data.teacher_task[0].file);
+          formData.append('courseable_id', this.$route.params.id);
+          formData.append('courseable_type', 'App\\Models\\Course');
+          formData.append('teacher_task_name', data.teacher_task[0].name);
+          formData.append('topic_id', this.activeTopicId);
+        
+
+        const user = userStore();
+        await http.post(`/assignments`, formData, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            'Content-Type': 'application/x-www-form-urlencoded' 
+          },
+        });
+
+
+        let toast = {
+          severity: "success",
+          detail:
+            this.messages.pages.newAssignmentPage.toastMessages.successfullyCreatedAssignment,
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-success text-white";
+        }
+
+        this.$toast.add(toast);
+        this.newAssignmentDialogVisible = false;
+
+      } catch (error) {
+        let toast = {
+          severity: "error",
+          detail:
+            this.messages.pages.newAssignmentPage.toastMessages.failedToCreateAssignment,
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-danger text-white";
+        }
+        this.$toast.add(toast);
+      }
+    },
   },
   computed: {
     ...mapState(userStore, ["currentUserData", "token"]),
