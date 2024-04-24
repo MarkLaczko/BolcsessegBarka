@@ -64,6 +64,20 @@ export default {
             "Sajnáljuk, nem minden mezőt töltöttek ki helyesen.",
         },
       },
+      editTopicDialog: {
+        title: "Téma modósítása",
+        nameLabel: "Név",
+        orderLabel: "Sorrend",
+        saveButton: "Mentés",
+        cancelButton: "Mégsem",
+        validationMessages: {
+          nameLength:
+            "A téma nevének kevesebbnek kell lennie, mint 60 karakter.",
+          orderNumber: "A sorrend csak szám lehet.",
+          matchAllValidationMessage:
+            "Sajnáljuk, nem minden mezőt töltöttek ki helyesen.",
+        },
+      },
       groupTreatmentDialog: {
         title: "Csoportok kezelése",
         multiSelectPlaceholder: "Csoportok kiválasztása",
