@@ -4,7 +4,7 @@
 
     <BaseDialog v-if="newTopicDialogVisible" :visible="newTopicDialogVisible"
       :header="messages.pages.coursePage.newTopicDialog.title" :width="'25rem'">
-      <FormKit type="form" :actions="false" @submit.prevent="addTopic" :incomplete-message="messages.pages.coursePage.newTopicDialog.validationMessages
+      <FormKit type="form" :actions="false" @submit="addTopic" :incomplete-message="messages.pages.coursePage.newTopicDialog.validationMessages
       .matchAllValidationMessage
       ">
         <FormKit type="text" name="name" :label="messages.pages.coursePage.newTopicDialog.nameLabel"
@@ -244,11 +244,10 @@ export default {
 
     async addTopic(data) {
       const response = await this.postTopic(data);
-
       await http.post(
         `/courses/${this.$route.params.id}/topics`,
         {
-          topic_ids: [response.data.data.id],
+          topic_ids: [response.id],
         },
         {
           headers: {
