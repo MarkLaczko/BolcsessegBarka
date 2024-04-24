@@ -357,6 +357,7 @@ export default {
         const note = {
           title: this.title,
           text: this.text,
+          topic_id: this.activeTopicId
         };
 
         const response = await this.postNote(note);
