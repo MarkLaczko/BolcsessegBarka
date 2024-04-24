@@ -46,7 +46,7 @@ export const topicStore = defineStore("topicStore", {
         },
       });
 
-      const idx = this.topics.findIndex((x) => x.id == data.id);
+      const idx = this.topics.findIndex((x) => x.id == id);
       this.topics.splice(idx, 1, response.data.data);
     },
     async destroyTopic(id) {
