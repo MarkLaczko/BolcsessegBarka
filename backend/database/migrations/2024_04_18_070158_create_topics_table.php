@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("name",60);
             $table->integer("order")->nullable();
-            $table->foreignId("course_id")->nullable()->constrained();
+            $table->foreignId("course_id")->nullable()->constrained()->onDelete('cascade');
         });
     }
 
