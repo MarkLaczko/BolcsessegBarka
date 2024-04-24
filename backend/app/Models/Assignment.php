@@ -20,8 +20,8 @@ class Assignment extends Model
         "grade",
         "courseable_id",
         "courseable_type",
-        "student_task_name" ,
-        "teacher_task_name"
+        "teacher_task_name",
+        "topic_id"
     ];
 
     public function topic() : BelongsTo

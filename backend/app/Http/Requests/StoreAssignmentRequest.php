@@ -30,6 +30,7 @@ class StoreAssignmentRequest extends FormRequest
             'courseable_id' => 'required',
             'courseable_type' => 'required',
             'teacher_task_name' => 'nullable',
+            'topic_id' => 'required'
         ];
     }
 }
