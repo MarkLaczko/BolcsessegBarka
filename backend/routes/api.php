@@ -8,6 +8,7 @@ use App\Http\Controllers\NoteController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\StudentAssignmentController;
+use App\Http\Controllers\SubtaskController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
@@ -150,5 +151,14 @@ Route::middleware('auth:sanctum')->get('/quizzes/{id}/tasks/ids', [TaskControlle
 Route::middleware('auth:sanctum')->get('/tasks/{id}', [TaskController::class,'show'])
     ->whereNumber('id')
     ->name('tasks.show');
-Route::middleware('auth:sanctum')->post('/tasks/', [TaskController::class,'store'])
+Route::middleware('auth:sanctum')->post('/tasks', [TaskController::class,'store'])
     ->name('tasks.store');
+Route::middleware('auth:sanctum')->put('/tasks/{id}', [TaskController::class,'update'])
+    ->whereNumber('id')
+    ->name('tasks.update');
+Route::middleware('auth:sanctum')->delete('/tasks/{id}', [TaskController::class,'destroy'])
+    ->whereNumber('id')
+    ->name('tasks.destroy');
+Route::middleware('auth:sanctum')->delete('/subtasks/{id}', [SubtaskController::class,'destroy'])
+    ->whereNumber('id')
+    ->name('subtasks.destroy');
