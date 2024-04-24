@@ -62,6 +62,18 @@ export default {
             "Sorry, not all fields have been filled out correctly.",
         },
       },
+      editTopicDialog: {
+        title: "Edit Topic",
+        nameLabel: "Name",
+        orderLabel: "Order",
+        saveButton: "Save",
+        cancelButton: "Cancel",
+        validationMessages: {
+          nameLength: "The topic name must be less than 60 characters.",
+          orderNumber: "The order must be a number.",
+          matchAllValidationMessage: "Sorry, not all fields were filled out correctly.",
+        },
+      },
       groupTreatmentDialog: {
         title: "Group Treatment",
         multiSelectPlaceholder: "Select Groups",
