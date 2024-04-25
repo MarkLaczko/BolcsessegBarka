@@ -12,4 +12,7 @@ public class Course
     
     [JsonProperty("image")]
     public string Image { get; set; }
+    
+    [JsonProperty("created_by")]
+    public object CreatedBy { get; set; }
 }

@@ -1,7 +1,7 @@
 <template>
   <BaseLayout>
     <BaseSpinner :loading="loading" />
-    <BaseToast/>
+    <BaseToast />
 
     <BaseDialog v-if="newTopicDialogVisible" :visible="newTopicDialogVisible"
       :header="messages.pages.coursePage.newTopicDialog.title" :width="'25rem'">
@@ -92,8 +92,8 @@
       </FormKit>
     </BaseDialog>
 
-    <BaseDialog v-if="groupTreatmentDialog" :visible="groupTreatmentDialog" :header="messages.pages.coursePage.groupTreatmentDialog.title"
-      :width="'25rem'">
+    <BaseDialog v-if="groupTreatmentDialog" :visible="groupTreatmentDialog"
+      :header="messages.pages.coursePage.groupTreatmentDialog.title" :width="'25rem'">
 
       <MultiSelect v-model="currentGroups" :options="groups" filter :maxSelectedLabels="3" optionLabel="name"
         :placeholder="messages.pages.coursePage.groupTreatmentDialog.multiSelectPlaceholder" display="chip" :pt="{
@@ -134,120 +134,101 @@
     }" />
 
       <div class="d-flex justify-content-end mt-2 mb-3">
-        <Button type="button" class="btn btn-outline-danger mx-1" @click="groupTreatmentDialog = false">{{ messages.pages.coursePage.groupTreatmentDialog.cancelButton }}</Button>
-        <Button type="button" class="btn btn-outline-success mx-1" @click="saveGroups">{{ messages.pages.coursePage.groupTreatmentDialog.saveButton }}</Button>
+        <Button type="button" class="btn btn-outline-danger mx-1" @click="groupTreatmentDialog = false">{{
+      messages.pages.coursePage.groupTreatmentDialog.cancelButton }}</Button>
+        <Button type="button" class="btn btn-outline-success mx-1" @click="saveGroups">{{
+      messages.pages.coursePage.groupTreatmentDialog.saveButton }}</Button>
       </div>
     </BaseDialog>
 
     <BaseDialog v-if="newAssignmentDialogVisible" :visible="newAssignmentDialogVisible"
       :header="messages.pages.coursePage.newTopicDialog.title" :width="'25rem'">
-      <FormKit
-          type="form"
-          :actions="false"
-          @submit="postNewAssignment"
-          :incomplete-message="
-            messages.pages.userManagementPage.newUserDialog.validationMessages
-              .matchAllValidationMessage
-          "
-        >
-          <FormKit
-            type="text"
-            name="task_name"
-            :label="messages.pages.newAssignmentPage.task_nameLabel"
-            validation="required|length:0,255"
-            :validation-messages="{
-              required:
-                messages.pages.newAssignmentPage
-                  .validationMessages.task_nameRequired,
-              length:
-                messages.pages.newAssignmentPage
-                  .validationMessages.task_nameLength,
-            }"
-            :classes="{
-              input: {
-                'mb-1': true,
-                'form-control': true,
+      <FormKit type="form" :actions="false" @submit="postNewAssignment" :incomplete-message="messages.pages.userManagementPage.newUserDialog.validationMessages
+        .matchAllValidationMessage
+      ">
+        <FormKit type="text" name="task_name" :label="messages.pages.newAssignmentPage.task_nameLabel"
+          validation="required|length:0,255" :validation-messages="{
+      required:
+        messages.pages.newAssignmentPage
+          .validationMessages.task_nameRequired,
+      length:
+        messages.pages.newAssignmentPage
+          .validationMessages.task_nameLength,
+    }" :classes="{
+      input: {
+        'mb-1': true,
+        'form-control': true,
+      },
+    }" />
+        <FormKit type="text" name="comment" :label="messages.pages.newAssignmentPage.comment" validation="length:0,255"
+          :validation-messages="{
+      length:
+        messages.pages.newAssignmentPage.validationMessages.commentLength,
+    }" :classes="{
+      input: {
+        'mb-1': true,
+        'form-control': true,
+      },
+    }" />
+        <FormKit type="datetime-local" name="deadline" :label="messages.pages.newAssignmentPage.deadline
+      " validation="required" :validation-messages="{
+      required:
+        messages.pages.newAssignmentPage.validationMessages.deadlineRequired,
+    }" :classes="{
+      input: {
+        'mb-1': true,
+        'form-control': true,
+      },
+    }" />
+        <FormKit type="file" name="teacher_task" :label="messages.pages.newAssignmentPage.teacher_task
+      " multiple="true" validation="" :classes="{
+      input: {
+        'mb-1': true,
+        'form-control': true,
+      },
+      noFiles: {
+        'd-none': true
+      },
+    }" />
+        <div class="d-flex justify-content-end mt-2 mb-3">
+          <Button type="button" :label="messages.pages.newAssignmentPage.cancelButton
+      " class="btn btn-outline-danger mx-1 px-5" @click="newAssignmentDialogVisible = false"></Button>
+          <FormKit type="submit" :label="messages.pages.newAssignmentPage.saveButton
+      " id="addUserButton" :classes="{
+      input: {
+        btn: true,
+        'btn-success': true,
+        'w-auto': true,
+        'px-5': true
+      },
+    }" />
+        </div>
+      </FormKit>
+    </BaseDialog>
+
+    <BaseDialog v-if="newNoteDialogVisible" :visible="newNoteDialogVisible" :width="'50rem'">
+      <div class="container rounded-3 pt-1 pb-3">
+        <h1 class="text-center my-3">{{ messages.pages.coursePage.newNoteDialog.title }}</h1>
+        <div class="d-flex align-items-center justify-content-center pb-4">
+          <label for="username" class="form-label me-2 font-weight-bold"><b>{{ messages.pages.coursePage.newNoteDialog.notesNameText
+              }}</b></label>
+          <div class="w-25">
+            <InputText id="username" v-model="title" class="form-control" :pt="{
+              root: {
+                style: 'border-color: black 1px solid',
               },
-            }"
-          />
-          <FormKit
-            type="text"
-            name="comment"
-            :label="messages.pages.newAssignmentPage.comment"
-            validation="length:0,255"
-            :validation-messages="{
-                length:
-                    messages.pages.newAssignmentPage.validationMessages.commentLength,
-            }"
-            :classes="{
-              input: {
-                'mb-1': true,
-                'form-control': true,
-              },
-            }"
-          />
-          <FormKit
-            type="datetime-local"
-            name="deadline"
-            :label="
-              messages.pages.newAssignmentPage.deadline
-            "
-            validation="required"
-            :validation-messages="{
-              required:
-                messages.pages.newAssignmentPage.validationMessages.deadlineRequired,
-            }"
-            :classes="{
-              input: {
-                'mb-1': true,
-                'form-control': true,
-              },
-            }"
-          />
-          <FormKit
-            type="file"
-            name="teacher_task"
-            :label="
-              messages.pages.newAssignmentPage.teacher_task
-            "
-            multiple="true"
-            validation=""
-            :classes="{
-              input: {
-                'mb-1': true,
-                'form-control': true,
-              },
-              noFiles: {
-                'd-none': true
-              },
-            }"
-          />
-          <div class="d-flex justify-content-end mt-2 mb-3">
-            <Button
-              type="button"
-              :label="
-                messages.pages.newAssignmentPage.cancelButton
-              "
-              class="btn btn-outline-danger mx-1 px-5"
-              @click="newAssignmentDialogVisible = false"
-            ></Button>
-            <FormKit
-              type="submit"
-              :label="
-                messages.pages.newAssignmentPage.saveButton
-              "
-              id="addUserButton"
-              :classes="{
-                input: {
-                  btn: true,
-                  'btn-success': true,
-                  'w-auto': true,
-                  'px-5' : true
-                },
-              }"
-            />
+            }" />
           </div>
-        </FormKit>
+        </div>
+        <div class="card">
+          <Editor v-model="text" editorStyle="height: 320px" />
+        </div>
+        <div class="d-flex justify-content-center align-items-center mt-3">
+          <Button :label="messages.pages.coursePage.newNoteDialog.cancelButton" class="btn text-light btn-danger px-5 me-4"
+            @click="newNoteDialogVisible = false"></Button>
+          <Button :label="messages.pages.coursePage.newNoteDialog.saveButton" class="btn text-light btn-success px-5" @click="saveNote"></Button>
+        </div>
+      </div>
     </BaseDialog>
 
     <div v-if="!loading">
@@ -277,20 +258,26 @@
               <h2>{{ topic.name }}</h2>
 
               <div v-if="currentUserData.is_admin ||
-                member.permission == 'Tanár' ||
-                (currentUserData.is_admin && member.permission == 'Tanár')
-                " class="dropdown ms-2">
+      member.permission == 'Tanár' ||
+      (currentUserData.is_admin && member.permission == 'Tanár')
+      " class="dropdown ms-2">
                 <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Műveletek
                 </button>
-                <ul class="dropdown-menu"> 
-                  <li><a class="dropdown-item" @click="newAssignmentDialogVisible = true, activeTopicId = topic.id">Új feladat</a></li>
-                  <li><a class="dropdown-item" @click="editTopicDialogVisible = true, activeTopicId = topic.id">{{messages.pages.coursePage.editButton}}</a></li>
-                  <li><a class="dropdown-item" @click="deleteTopic(topic.id)">{{ messages.pages.coursePage.deleteButton }}</a></li>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" @click="newAssignmentDialogVisible = true, activeTopicId = topic.id">Új
+                      feladat</a></li>
+                  <li><a class="dropdown-item" @click="newNoteDialogVisible = true, activeTopicId = topic.id">Új
+                      Jegyzet</a></li>
+                  <li><a class="dropdown-item"
+                      @click="editTopicDialogVisible = true, activeTopicId = topic.id">{{ messages.pages.coursePage.editButton }}</a>
+                  </li>
+                  <li><a class="dropdown-item" @click="deleteTopic(topic.id)">{{ messages.pages.coursePage.deleteButton
+                      }}</a></li>
                 </ul>
               </div>
-            
-            
+
+
             </button>
           </h2>
           <div :id="'collapse' + topic.id" class="accordion-collapse collapse"
@@ -322,12 +309,15 @@ import { mapState, mapActions } from "pinia";
 import { courseStore } from "@stores/CourseStore.mjs";
 import { groupStore } from "@stores/GroupStore.mjs";
 import { userStore } from "@stores/UserStore.mjs";
+import { noteStore } from "@stores/NoteStore.mjs";
 import { topicStore } from "@stores/TopicStore.mjs";
 import { languageStore } from "@stores/LanguageStore.mjs";
 import BaseDialog from "@components/BaseDialog.vue";
 import BaseToast from "@components/BaseToast.vue";
 import { http } from "@utils/http.mjs";
 import Button from "primevue/button";
+import InputText from "primevue/inputtext";
+import Editor from "primevue/editor";
 
 export default {
   data() {
@@ -340,8 +330,11 @@ export default {
       editTopicDialogVisible: false,
       groupTreatmentDialog: false,
       newAssignmentDialogVisible: false,
+      newNoteDialogVisible: false,
       activeTopicId: null,
-      currentGroups: []
+      currentGroups: [],
+      title: "",
+      text: ""
     };
   },
   components: {
@@ -350,12 +343,50 @@ export default {
     Button,
     BaseSpinner,
     MultiSelect,
-    BaseToast
+    BaseToast,
+    InputText,
+    Editor
   },
   methods: {
     ...mapActions(courseStore, ["getCourse"]),
     ...mapActions(groupStore, ["getGroups", "getGroup"]),
     ...mapActions(topicStore, ["postTopic", "putTopic", "destroyTopic"]),
+    ...mapActions(noteStore, ["postNote"]),
+
+    async saveNote() {
+      try {
+        const note = {
+          title: this.title,
+          text: this.text,
+          topic_id: this.activeTopicId,
+          user_id: this.currentUserData.id
+        };
+
+        const response = await this.postNote(note);
+        this.newNoteDialogVisible = false;
+
+        let toast = {
+          severity: "success",
+          detail: "Jegyzet elmentése sikeres volt!",
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-success text-white";
+        }
+
+        this.$toast.add(toast);
+      } catch (error) {
+        let toast = {
+          severity: "error",
+          detail: "Jegyzet elmentése sikertelen volt!",
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-danger text-white";
+        }
+        this.$toast.add(toast);
+      }
+    },
 
     async deleteTopic(id) {
       await this.destroyTopic(id);
@@ -429,7 +460,7 @@ export default {
         (group) => group.id
       );
 
-      await http.post(  
+      await http.post(
         `/courses/${this.$route.params.id}/groups`,
         {
           group_ids: group_ids === undefined ? [] : group_ids,
@@ -445,21 +476,20 @@ export default {
     async postNewAssignment(data) {
       try {
         const formData = new FormData();
-          formData.append('task_name', data.task_name);
-          formData.append('comment', data.comment);
-          formData.append('deadline', new Date(data.deadline).toISOString().slice(0, 19).replace('T', ' '));
-          formData.append('teacher_task', data.teacher_task[0].file);
-          formData.append('courseable_id', this.$route.params.id);
-          formData.append('courseable_type', 'App\\Models\\Course');
-          formData.append('teacher_task_name', data.teacher_task[0].name);
-          formData.append('topic_id', this.activeTopicId);
-        
+        formData.append('task_name', data.task_name);
+        formData.append('comment', data.comment);
+        formData.append('deadline', new Date(data.deadline).toISOString().slice(0, 19).replace('T', ' '));
+        formData.append('teacher_task', data.teacher_task[0].file);
+        formData.append('courseable_id', this.$route.params.id);
+        formData.append('teacher_task_name', data.teacher_task[0].name);
+        formData.append('topic_id', this.activeTopicId);
+
 
         const user = userStore();
         await http.post(`/assignments`, formData, {
           headers: {
             Authorization: `Bearer ${user.token}`,
-            'Content-Type': 'application/x-www-form-urlencoded' 
+            'Content-Type': 'application/x-www-form-urlencoded'
           },
         });
 

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateTaskRequest extends FormRequest
 {
@@ -26,6 +27,15 @@ class UpdateTaskRequest extends FormRequest
             'order' => ['required', 'numeric', 'integer', 'min:0'],
             'header' => ['required', 'string', 'max:100'],
             'text' => ['required', 'string', 'max:255'],
+            'subtasks.*.id' => ['nullable', 'exists:subtasks,id', 'numeric', 'integer'],
+            'subtasks.*.order' => ['required', 'numeric', 'integer', 'min:0'],
+            'subtasks.*.question' => ['required', 'string', 'max:65000'],
+            'subtasks.*.options' => ['nullable', 'array'],
+            'subtasks.*.options.*' => ['nullable', 'string', 'max:5000'],
+            'subtasks.*.solution' => ['nullable', 'array'],
+            'subtasks.*.solution.*' => ['nullable', 'string', 'max:5000'],
+            'subtasks.*.type' => ['required', 'string', Rule::in(['short_answer', 'multiple_choice', 'essay'])],
+            'subtasks.*.marks' => ['required', 'numeric', 'min:0']
         ];
     }
 }

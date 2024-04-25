@@ -23,7 +23,9 @@ class StoreNoteRequest extends FormRequest
     {
         return [
             "title" => ["required", "string", "max:40"],
-            "text" => ["required"]
+            "text" => ["required"],
+            "topic_id" => ["required", "exists:topics,id"],
+            "user_id" => ["required", "exists:users,id"]
         ];
     }
 }

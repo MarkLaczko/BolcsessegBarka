@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notes', function (Blueprint $table) {
-            $table->id();
-            $table->string("title");
-            $table->longText("text");
-            $table->foreignId("user_id")->constrained()->onDelete('cascade');
+        Schema::table('notes', function (Blueprint $table) {
+            $table->foreignId('topic_id')->constrained()->onDelete('cascade');
         });
     }
 
@@ -24,6 +21,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('note');
+        Schema::table('notes', function (Blueprint $table) {
+            $table->dropForeign(['topic_id']);
+            $table->dropColumn('topic_id');
+        });
     }
 };

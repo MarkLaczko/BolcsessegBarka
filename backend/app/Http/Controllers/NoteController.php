@@ -58,6 +58,6 @@ class NoteController extends Controller
         $note = Note::findOrFail($id);
         $note->delete();
 
-        return new NoteResource($note);
+        return response()->noContent();
     }
 }

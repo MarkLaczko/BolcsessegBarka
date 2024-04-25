@@ -167,6 +167,148 @@ namespace BolcsessegBarkaAPITests
         }
         
         [TestMethod]
+        public async Task GetAllCourses_ReturnsUnauthorized() 
+        {
+            Unauthenticate();
+            var response = await _client!.GetAsync("courses");
+           
+            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetAllCourses_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync("courses");
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetAllCourses_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            
+            var response = await _client!.GetAsync("courses");
+            var courses = await Deserialize<CourseResponse>(response);
+            Console.WriteLine(courses);
+            Assert.IsNotNull(courses);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("Történelem", courses.Data![0].Name);
+        }
+        
+        [TestMethod]
+        public async Task GetCourse_ReturnsUnauthorized()
+        {
+            Unauthenticate();
+            var response = await _client!.GetAsync("courses/1");
+
+            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetCourse_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _client!.GetAsync("courses/1");
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetCourse_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _client!.GetAsync("courses/1");
+            var course = await Deserialize<Course>(response);
+
+            Assert.IsNotNull(course);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("Történelem", course.Name);
+        }
+        
+        [TestMethod]
+        public async Task CreateCourse_ReturnsCreated()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var course = new StringContent(
+                JsonConvert.SerializeObject(new { name = "TesztKurzus1", image="teszt.jpg", created_by="2" }),
+                Encoding.UTF8,
+                "application/json");
+            
+            var response = await _client!.PostAsync("courses", course);
+            
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task CreateCourse_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var course = new StringContent(
+                JsonConvert.SerializeObject(new { name = "TesztKurzus2", image="teszt.jpg", created_by="2" }),
+                Encoding.UTF8,
+                "application/json");
+            
+            var response = await _client!.PostAsync("courses", course);
+            var repsonseData = await Deserialize<Course>(response);
+            
+            Assert.IsNotNull(course);
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+            Assert.AreEqual("TesztKurzus2", repsonseData.Name);
+        }
+        
+        [TestMethod]
+        public async Task UpdateCourse_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+           
+            var course = new StringContent("{\"name\": \"TesztKurzus 2\", \"image\": \"asd.png\"}", null, "application/json");
+            var response = await _client!.PutAsync("courses/3", course);
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task UpdateCourse_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var course = new StringContent("{\"name\": \"TesztKurzus 3\", \"image\": \"asd.png\"}", null, "application/json");
+            
+            var response = await _client!.PutAsync("courses/3", course);
+            var repsonseData = await Deserialize<Course>(response);
+            
+            Assert.IsNotNull(course);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("TesztKurzus 3", repsonseData.Name);
+        }
+        
+        [TestMethod]
+        public async Task DeleteCourse_ReturnsNoContent()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.DeleteAsync("courses/2");
+            
+            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+        }
+        
+        [TestMethod]
         public async Task GetAllGroups_ReturnsOK()
         {
             var token = await AuthenticateAndGetToken();

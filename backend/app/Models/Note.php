@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Note extends Model
 {
@@ -11,11 +11,13 @@ class Note extends Model
 
     protected $fillable = [
         "title",
-        "text"
+        "text",
+        "topic_id",
+        "user_id"
     ];
 
-    public function topic() : BelongsTo
+    public function topic(): BelongsTo
     {
-        return $this->belongsTo(Topic::class);
+        return $this->belongsTo(Topic::class);  
     }
 }

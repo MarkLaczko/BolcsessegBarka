@@ -2,63 +2,62 @@ import { defineStore } from "pinia";
 import { http } from "@utils/http";
 import { userStore } from "@stores/UserStore";
 
-export const topicStore = defineStore("topicStore", {
+export const noteStore = defineStore("noteStore", {
   state() {
     return {
-      topics: [],
+      notes: [],
     };
   },
   actions: {
-    async getTopics() {
+    async getNotes() {
       const user = userStore();
-      const response = await http.get("/topics", {
+      const response = await http.get("/notes", {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       });
-      this.topics = response.data.data;
-      return response.data.data;
+      this.notes = response.data.data;
     },
-    async getTopic(id) {
+    async getNote(id) {
       const user = userStore();
-      const response = await http.get(`/topics/${id}`, {
+      const response = await http.get(`/notes/${id}`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       });
       return response.data.data;
     },
-    async postTopic(data) {
+    async postNote(data) {
       const user = userStore();
-      const response = await http.post(`/topics`, data, {
+      const response = await http.post(`/notes`, data, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       });
-      this.topics.push(response.data.data);
+      this.notes.push(response.data.data);
       return response.data.data;
     },
-    async putTopic(id, data) {
+    async putNote(id, data) {
       const user = userStore();
-      const response = await http.put(`/topics/${id}`, data, {
+      const response = await http.put(`/notes/${id}`, data, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       });
 
-      const idx = this.topics.findIndex((x) => x.id == id);
-      this.topics.splice(idx, 1, response.data.data);
+      const idx = this.notes.findIndex((x) => x.id == id);
+      this.notes.splice(idx, 1, response.data.data);
     },
-    async destroyTopic(id) {
+    async destroyNote(id) {
       const user = userStore();
-      const response = await http.delete(`/topics/${id}`, {
+      const response = await http.delete(`/notes/${id}`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       });
 
-      const idx = this.topics.findIndex((x) => x.id == id);
-      this.topics.splice(idx, 1);
+      const idx = this.notes.findIndex((x) => x.id == id);
+      this.notes.splice(idx, 1);
     },
   },
 });

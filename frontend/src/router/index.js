@@ -82,15 +82,6 @@ export const router = createRouter({
       },
     },
     {
-      path: "/note",
-      name: "note",
-      component: () => import("@pages/NotePage.vue"),
-      meta: {
-        requiresAuth: true,
-        title: "Jegyzet létrehozása",
-      },
-    },
-    {
       path: "/assignment/:id",
       name: "assignment",
       component: () => import("@pages/AssignmentPage.vue"),
