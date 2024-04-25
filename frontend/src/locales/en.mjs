@@ -48,7 +48,14 @@ export default {
       deleteButton: "Delete",
       editButton: "Edit",
       viewButton: "View",
+      cancelButton: "Cancel",
       groupTreatmentButton: "Manage Groups",
+      confirmDialogs: {
+        messageTopic: "Are you sure you want to delete this topic?",
+        messageAssignmnet: "Are you sure you want to delete this assignment?",
+        rejectLabel: "Cancel",
+        acceptLabel: "Delete"
+      },
       newTopicDialog: {
         title: "Add New Topic",
         nameLabel: "Name",
