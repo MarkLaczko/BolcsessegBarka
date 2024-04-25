@@ -1570,20 +1570,22 @@ Az alábbi hibakódokat adhatja vissza a végpont:
 
 ### Kvízekhez kapcsolodó routeok:
 
-| Method | URI                         | Name             | Controller        | Action  |
-|--------|-----------------------------|------------------|-------------------|---------|
-| GET    | /api/quizzes                | quizzes.index    | QuizController    | index   |
-| GET    | /api/quizzes/{id}           | quizzes.show     | QuizController    | show    |
-| POST   | /api/quizzes                | quizzes.store    | QuizController    | store   |
-| PUT    | /api/quizzes/{id}           | quizzes.update   | QuizController    | update  |
-| DELETE | /api/quizzes/{id}           | quizzes.destory  | QuizController    | destroy |
-| GET    | /api/quizzes/{id}/tasks     | tasks.index      | TaskController    | index   |
-| GET    | /api/quizzes/{id}/tasks/ids | tasks.taskIds    | TaskController    | taskIds |
-| GET    | /api/tasks/{id}             | tasks.show       | TaskController    | show    |
-| POST   | /api/tasks                  | tasks.store      | TaskController    | store   |
-| PUT    | /api/tasks/{id}             | tasks.update     | TaskController    | update  |
-| DELETE | /api/tasks/{id}             | tasks.destory    | TaskController    | destroy |
-| DELETE | /api/subtasks/{id}          | subtasks.destroy | SubtaskController | destroy |
+| Method | URI                         | Name              | Controller        | Action   |
+|--------|-----------------------------|-------------------|-------------------|----------|
+| GET    | /api/quizzes                | quizzes.index     | QuizController    | index    |
+| GET    | /api/quizzes/{id}           | quizzes.show      | QuizController    | show     |
+| POST   | /api/quizzes                | quizzes.store     | QuizController    | store    |
+| PUT    | /api/quizzes/{id}           | quizzes.update    | QuizController    | update   |
+| DELETE | /api/quizzes/{id}           | quizzes.destory   | QuizController    | destroy  |
+| GET    | /api/quizzes/{id}/tasks     | tasks.index       | TaskController    | index    |
+| GET    | /api/quizzes/{id}/tasks/ids | tasks.taskIds     | TaskController    | taskIds  |
+| GET    | /api/tasks/{id}             | tasks.show        | TaskController    | show     |
+| GET    | /api/tasks/{id}/solution    | tasks.solution    | TaskController    | solution |
+| POST   | /api/tasks                  | tasks.store       | TaskController    | store    |
+| PUT    | /api/tasks/{id}             | tasks.update      | TaskController    | update   |
+| DELETE | /api/tasks/{id}             | tasks.destory     | TaskController    | destroy  |
+| GET    | /api/subtasks/{id}/solution | subtasks.solution | SubtaskController | solution |
+| DELETE | /api/subtasks/{id}          | subtasks.destroy  | SubtaskController | destroy  |
 
 ### `GET /api/quizzes`
 
@@ -1874,7 +1876,7 @@ Egy JSON tömböt ad vissza `data` néven, melyben objektumok találhatóak a k�
   - `id`: Az alfeladat azonosítója.
   - `order`: Az alfeladat sorszáma.
   - `question`: Az alfeladat szövege.
-  - `options`: Az alfeladat válaszlehetőségei. Ha nincs megadva, akkor `null`.
+  - `options`: Tömb az alfeladat válaszlehetőségeivel. Ha nincs megadva, akkor `null`.
   - `type`: Az alfeladat típusa. (`short_answer`, `multiple_choice`, `essay`)
   - `marks`: Az alfeladatért járó pont.
 
@@ -2004,7 +2006,7 @@ Egy JSON objektumot ad vissza `data` néven a következőkkel:
   - `id`: Az alfeladat azonosítója.
   - `order`: Az alfeladat sorszáma.
   - `question`: Az alfeladat szövege.
-  - `options`: Az alfeladat válaszlehetőségei. Ha nincs megadva, akkor `null`.
+  - `options`: Tömb az alfeladat válaszlehetőségeivel. Ha nincs megadva, akkor `null`.
   - `type`: Az alfeladat típusa. (`short_answer`, `multiple_choice`, `essay`)
   - `marks`: Az alfeladatért járó pont.
 
@@ -2052,6 +2054,57 @@ Válasz:
 Az alábbi hibakódokat adhatja vissza a végpont:
 
 - `401 Unauthorized`: Hiányzik a Bearer token.
+- `403 Forbidden`: A felhasználónak nincs jogosultsága.
+- `404 Not Found`: Nincs ilyen rekord az adatbázisban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `GET /api/tasks/{id}/solution`
+
+Egy feladat alfeladatainak megoldásának lekérése azonosító alapján. Csak adminisztrátok és tanárok kérhetik le.
+
+#### Válasz
+
+Egy JSON tömböt ad vissza `data` néven a következőkkel:
+
+- `id`: Az alfeladat azonosítója.
+- `solution`: Tömb az alfeladat meogoldásaival. Ha nincs megadva, akkor `null`.
+
+#### Példa
+
+URI:
+
+```
+/api/tasks/1/solution
+```
+
+Válasz:
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "solution": [
+        "Amerika felfedezése",
+        "Kolumbusz Kristóf eljutott Amerikába"
+      ]
+    },
+    {
+      "id": 2,
+      "solution": [
+        "Portugália"
+      ]
+    },
+  ]
+}
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `403 Forbidden`: A felhasználónak nincs jogosultsága.
 - `404 Not Found`: Nincs ilyen rekord az adatbázisban.
 - `500 Internal Server Error`: Váratlan hiba történt a szerveren.
 
@@ -2085,7 +2138,7 @@ Egy JSON objektumot ad vissza `data` néven a következőkkel:
   - `id`: Az alfeladat azonosítója.
   - `order`: Az alfeladat sorszáma.
   - `question`: Az alfeladat szövege.
-  - `options`: Az alfeladat válaszlehetőségei. Ha nincs megadva, akkor `null`.
+  - `options`: Tömb az alfeladat válaszlehetőségeivel. Ha nincs megadva, akkor `null`.
   - `type`: Az alfeladat típusa. (`short_answer`, `multiple_choice`, `essay`)
   - `marks`: Az alfeladatért járó pont.
 
@@ -2200,7 +2253,7 @@ Egy JSON objektumot ad vissza `data` néven a következőkkel:
   - `id`: Az alfeladat azonosítója.
   - `order`: Az alfeladat sorszáma.
   - `question`: Az alfeladat szövege.
-  - `options`: Az alfeladat válaszlehetőségei. Ha nincs megadva, akkor `null`.
+  - `options`: Tömb az alfeladat válaszlehetőségeivel Ha nincs megadva, akkor `null`.
   - `type`: Az alfeladat típusa. (`short_answer`, `multiple_choice`, `essay`)
   - `marks`: Az alfeladatért járó pont.
 
@@ -2314,6 +2367,48 @@ Válasz:
 
 ```json
 
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `403 Forbidden`: A felhasználónak nincs jogosultsága.
+- `404 Not Found`: Nincs ilyen rekord az adatbázisban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `GET /api/subtasks/{id}/solution`
+
+Egy alfeladat alfeladatainak megoldásának lekérése azonosító alapján. Csak adminisztrátok és tanárok kérhetik le.
+
+#### Válasz
+
+Egy JSON objektumot ad vissza `data` néven a következőkkel:
+
+- `id`: Az alfeladat azonosítója.
+- `solution`: Tömb az alfeladat meogoldásaival. Ha nincs megadva, akkor `null`.
+
+#### Példa
+
+URI:
+
+```
+/api/subtasks/1/solution
+```
+
+Válasz:
+
+```json
+{
+  "data": {
+    "id": 1,
+    "solution": [
+      "Amerika felfedezése",
+      "Kolumbusz Kristóf eljutott Amerikába"
+    ]
+  }
+}
 ```
 
 #### Hibakódok
