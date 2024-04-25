@@ -48,6 +48,7 @@ export default {
       newTopicButton: "Új téma",
       deleteButton: "Törlés",
       editButton: "Szerkesztés",
+      viewButton: "Megtekintés",
       groupTreatmentButton: "Csoportok kezelése",
       newTopicDialog: {
         title: "Új téma felvétele",
@@ -313,7 +314,7 @@ export default {
     },
     assignmentPage: {
       dragFileText: "Húzza ide a fájlokat a feltöltéshez",
-      cancelButton: "Mégsem",
+      returnButton: "Vissza",
       comment: "Hozzászólás:",
       deadline: "Határidő:",
       courseName: "Kurzus:",
