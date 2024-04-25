@@ -294,17 +294,18 @@
             </button>
           </h2>
           <div :id="'collapse' + topic.id" class="accordion-collapse collapse"
-            :class="{ show: activeTopicId === topic.id }">
+              :class="{ show: activeTopicId === topic.id }">
             <div class="accordion-body">
-              <strong>This is the accordion body for {{ topic.name }}.</strong>
-              It is shown by default, until the collapse plugin adds the
-              appropriate classes that we use to style each element. These
-              classes control the overall appearance, as well as the showing and
-              hiding via CSS transitions. You can modify any of this with custom
-              CSS or overriding our default variables. It's also worth noting
-              that just about any HTML can go within the
-              <code>.accordion-body</code>, though the transition does limit
-              overflow.
+              <div class="card mt-2 " v-for="assignment in topic.assignment" :key="assignment.id">
+                <div class="d-flex justify-content-between align-items-center">
+                  <p class="flex ms-2 mt-2 mb-2">
+                    {{ messages.pages.assignmentPage.task_name }} {{ assignment.task_name }} <br />
+                    {{ messages.pages.assignmentPage.deadline }} {{ assignment.deadline }} <br>
+                    <span v-if="assignment.comment">{{ messages.pages.assignmentPage.comment }} {{ assignment.comment }}</span>
+                  </p>
+                  <RouterLink class="btn btn-primary flex me-2 px-5" :to="{ name: 'assignment', params: { id: assignment.id } ,}">{{ messages.pages.coursePage.viewButton }}</RouterLink>
+                </div>
+              </div>
             </div>
           </div>
         </div>
