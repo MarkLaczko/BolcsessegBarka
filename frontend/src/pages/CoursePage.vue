@@ -2,6 +2,7 @@
   <BaseLayout>
     <BaseSpinner :loading="loading" />
     <BaseToast />
+    <BaseConfirmDialog/>
 
     <BaseDialog v-if="newTopicDialogVisible" :visible="newTopicDialogVisible"
       :header="messages.pages.coursePage.newTopicDialog.title" :width="'25rem'">
@@ -231,6 +232,7 @@
       </div>
     </BaseDialog>
 
+
     <div v-if="!loading">
       <h1 class="text-center my-3">
         {{ course.name }} ({{ this.$route.query.groupName }})
@@ -290,7 +292,14 @@
                     {{ messages.pages.assignmentPage.deadline }} {{ assignment.deadline }} <br>
                     <span v-if="assignment.comment">{{ messages.pages.assignmentPage.comment }} {{ assignment.comment }}</span>
                   </p>
-                  <RouterLink class="btn btn-primary flex me-2 px-5" :to="{ name: 'assignment', params: { id: assignment.id } ,}">{{ messages.pages.coursePage.viewButton }}</RouterLink>
+                  <div class="flex">
+                    <button v-if="currentUserData.is_admin || member.permission == 'Tanár' ||(currentUserData.is_admin && member.permission == 'Tanár')"
+                    class="btn btn-outline-danger me-2 " @click="deleteAssignment(assignment.id)"
+                    >
+                    {{ messages.pages.coursePage.deleteButton }}
+                    </button>
+                    <RouterLink class="btn btn-primary me-2 px-5" :to="{ name: 'assignment', params: { id: assignment.id } ,}">{{ messages.pages.coursePage.viewButton }}</RouterLink>
+                  </div>
                 </div>
               </div>
             </div>
@@ -318,6 +327,7 @@ import { http } from "@utils/http.mjs";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Editor from "primevue/editor";
+import BaseConfirmDialog from "@components/BaseConfirmDialog.vue";
 
 export default {
   data() {
@@ -345,7 +355,8 @@ export default {
     MultiSelect,
     BaseToast,
     InputText,
-    Editor
+    Editor,
+    BaseConfirmDialog
   },
   methods: {
     ...mapActions(courseStore, ["getCourse"]),
@@ -388,10 +399,21 @@ export default {
       }
     },
 
+    
     async deleteTopic(id) {
+      this.$confirm.require({
+        message: this.messages.pages.coursePage.confirmDialogs.messageTopic,
+        icon: 'pi pi-exclamation-triangle',
+        rejectClass: 'btn btn-danger',
+        acceptClass: 'btn btn-success ',
+        rejectLabel: this.messages.pages.coursePage.confirmDialogs.rejectLabel,
+        acceptLabel: this.messages.pages.coursePage.confirmDialogs.acceptLabel,
+        accept: async () => {
       await this.destroyTopic(id);
       this.course = await this.getCourse(this.$route.params.id);
       this.topics = this.course.topics;
+        }
+      });
     },
 
     async addTopic(data) {
@@ -519,6 +541,25 @@ export default {
         }
         this.$toast.add(toast);
       }
+    },
+    async deleteAssignment(id) {
+      this.$confirm.require({
+        message: this.messages.pages.coursePage.confirmDialogs.messageAssignment,
+        icon: 'pi pi-exclamation-triangle',
+        rejectClass: 'btn btn-danger',
+        acceptClass: 'btn btn-success ',
+        rejectLabel: this.messages.pages.coursePage.confirmDialogs.rejectLabel,
+        acceptLabel: this.messages.pages.coursePage.confirmDialogs.acceptLabel,
+        accept: async () => {
+      const user = userStore();
+      await http.delete(`/assignments/${id}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const idx = this.topics.find(x => x.id == this.activeTopicId).assignment.findIndex((x) => x.id == id);
+      this.topics.find(x => x.id == this.activeTopicId).assignment.splice(idx, 1);
+      }});
     },
   },
   computed: {
