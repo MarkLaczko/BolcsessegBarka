@@ -2,7 +2,7 @@
   <BaseLayout>
     <BaseSpinner :loading="loading" />
     <BaseToast />
-    <BaseConfirmDialog/>
+    <BaseConfirmDialog />
 
     <BaseDialog v-if="newTopicDialogVisible" :visible="newTopicDialogVisible"
       :header="messages.pages.coursePage.newTopicDialog.title" :width="'25rem'">
@@ -145,7 +145,7 @@
     <BaseDialog v-if="newAssignmentDialogVisible" :visible="newAssignmentDialogVisible"
       :header="messages.pages.coursePage.newTopicDialog.title" :width="'25rem'">
       <FormKit type="form" :actions="false" @submit="postNewAssignment" :incomplete-message="messages.pages.userManagementPage.newUserDialog.validationMessages
-        .matchAllValidationMessage
+      .matchAllValidationMessage
       ">
         <FormKit type="text" name="task_name" :label="messages.pages.newAssignmentPage.task_nameLabel"
           validation="required|length:0,255" :validation-messages="{
@@ -211,10 +211,38 @@
       <div class="container rounded-3 pt-1 pb-3">
         <h1 class="text-center my-3">{{ messages.pages.coursePage.newNoteDialog.title }}</h1>
         <div class="d-flex align-items-center justify-content-center pb-4">
-          <label for="username" class="form-label me-2 font-weight-bold"><b>{{ messages.pages.coursePage.newNoteDialog.notesNameText
-              }}</b></label>
+          <label for="username" class="form-label me-2 font-weight-bold"><b>{{
+      messages.pages.coursePage.newNoteDialog.notesNameText
+    }}</b></label>
           <div class="w-25">
             <InputText id="username" v-model="title" class="form-control" :pt="{
+      root: {
+        style: 'border-color: black 1px solid',
+      },
+    }" />
+          </div>
+        </div>
+        <div class="card">
+          <Editor v-model="text" editorStyle="height: 320px" />
+        </div>
+        <div class="d-flex justify-content-center align-items-center mt-3">
+          <Button :label="messages.pages.coursePage.newNoteDialog.cancelButton"
+            class="btn text-light btn-danger px-5 me-4" @click="newNoteDialogVisible = false"></Button>
+          <Button :label="messages.pages.coursePage.newNoteDialog.saveButton" class="btn text-light btn-success px-5"
+            @click="saveNote"></Button>
+        </div>
+      </div>
+    </BaseDialog>
+
+    <BaseDialog v-if="currentNoteVisible" :visible="currentNoteVisible" :width="'50rem'">
+      <div class="container rounded-3 pt-1 pb-3">
+        <h1 class="text-center my-3">{{ messages.pages.coursePage.newNoteDialog.title }}</h1>
+        <div class="d-flex align-items-center justify-content-center pb-4">
+          <label for="username" class="form-label me-2 font-weight-bold"><b>{{
+            messages.pages.coursePage.newNoteDialog.notesNameText
+            }}</b></label>
+                  <div class="w-25">
+                    <InputText id="username" v-model="title" :value="currentNote.title" class="form-control" :pt="{
               root: {
                 style: 'border-color: black 1px solid',
               },
@@ -222,16 +250,16 @@
           </div>
         </div>
         <div class="card">
-          <Editor v-model="text" editorStyle="height: 320px" />
+          <Editor v-model="text" :model-value="currentNote.text" editorStyle="height: 320px" />
         </div>
         <div class="d-flex justify-content-center align-items-center mt-3">
-          <Button :label="messages.pages.coursePage.newNoteDialog.cancelButton" class="btn text-light btn-danger px-5 me-4"
-            @click="newNoteDialogVisible = false"></Button>
-          <Button :label="messages.pages.coursePage.newNoteDialog.saveButton" class="btn text-light btn-success px-5" @click="saveNote"></Button>
+          <Button :label="messages.pages.coursePage.newNoteDialog.cancelButton"
+            class="btn text-light btn-danger px-5 me-4" @click="currentNoteVisible = false"></Button>
+          <Button :label="messages.pages.coursePage.newNoteDialog.saveButton"
+            class="btn text-light btn-success px-5"></Button>
         </div>
       </div>
     </BaseDialog>
-
 
     <div v-if="!loading">
       <h1 class="text-center my-3">
@@ -271,8 +299,8 @@
                       feladat</a></li>
                   <li><a class="dropdown-item" @click="newNoteDialogVisible = true, activeTopicId = topic.id">Új
                       Jegyzet</a></li>
-                  <li><a class="dropdown-item"
-                      @click="editTopicDialogVisible = true, activeTopicId = topic.id">{{ messages.pages.coursePage.editButton }}</a>
+                  <li><a class="dropdown-item" @click="editTopicDialogVisible = true, activeTopicId = topic.id">{{
+      messages.pages.coursePage.editButton }}</a>
                   </li>
                   <li><a class="dropdown-item" @click="deleteTopic(topic.id)">{{ messages.pages.coursePage.deleteButton
                       }}</a></li>
@@ -283,22 +311,40 @@
             </button>
           </h2>
           <div :id="'collapse' + topic.id" class="accordion-collapse collapse"
-              :class="{ show: activeTopicId === topic.id }">
+            :class="{ show: activeTopicId === topic.id }">
             <div class="accordion-body">
               <div class="card mt-2 " v-for="assignment in topic.assignment" :key="assignment.id">
                 <div class="d-flex justify-content-between align-items-center">
                   <p class="flex ms-2 mt-2 mb-2">
                     {{ messages.pages.assignmentPage.task_name }} {{ assignment.task_name }} <br />
                     {{ messages.pages.assignmentPage.deadline }} {{ assignment.deadline }} <br>
-                    <span v-if="assignment.comment">{{ messages.pages.assignmentPage.comment }} {{ assignment.comment }}</span>
+                    <span v-if="assignment.comment">{{ messages.pages.assignmentPage.comment }} {{ assignment.comment
+                      }}</span>
                   </p>
                   <div class="flex">
-                    <button v-if="currentUserData.is_admin || member.permission == 'Tanár' ||(currentUserData.is_admin && member.permission == 'Tanár')"
-                    class="btn btn-outline-danger me-2 " @click="deleteAssignment(assignment.id)"
-                    >
-                    {{ messages.pages.coursePage.deleteButton }}
+                    <button
+                      v-if="currentUserData.is_admin || member.permission == 'Tanár' || (currentUserData.is_admin && member.permission == 'Tanár')"
+                      class="btn btn-outline-danger me-2 " @click="deleteAssignment(assignment.id)">
+                      {{ messages.pages.coursePage.deleteButton }}
                     </button>
-                    <RouterLink class="btn btn-primary me-2 px-5" :to="{ name: 'assignment', params: { id: assignment.id } ,}">{{ messages.pages.coursePage.viewButton }}</RouterLink>
+                    <RouterLink class="btn btn-primary me-2 px-5"
+                      :to="{ name: 'assignment', params: { id: assignment.id }, }">{{
+      messages.pages.coursePage.viewButton }}</RouterLink>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 col-md-4 col-lg-3" v-for="note in topic.notes" :key="note.id">
+                  <div class="card mt-2 text-center">
+                    <div class="card-header">
+                      <h4>Jegyzet</h4>
+                    </div>
+                    <div class="card-body">
+                      jegyzet címe: {{ note.title }}
+                    </div>
+                    <div class="card-footer">
+                      <button class="btn btn-primary" type="button" @click="openCurrentNote(note)">Megtekintés</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -341,8 +387,10 @@ export default {
       groupTreatmentDialog: false,
       newAssignmentDialogVisible: false,
       newNoteDialogVisible: false,
+      currentNoteVisible: false,
       activeTopicId: null,
       currentGroups: [],
+      currentNote: {},
       title: "",
       text: ""
     };
@@ -363,6 +411,11 @@ export default {
     ...mapActions(groupStore, ["getGroups", "getGroup"]),
     ...mapActions(topicStore, ["postTopic", "putTopic", "destroyTopic"]),
     ...mapActions(noteStore, ["postNote"]),
+
+    openCurrentNote(note) {
+      this.currentNote = note;
+      this.currentNoteVisible = true;
+    },
 
     async saveNote() {
       try {
@@ -399,7 +452,7 @@ export default {
       }
     },
 
-    
+
     async deleteTopic(id) {
       this.$confirm.require({
         message: this.messages.pages.coursePage.confirmDialogs.messageTopic,
@@ -409,9 +462,9 @@ export default {
         rejectLabel: this.messages.pages.coursePage.confirmDialogs.rejectLabel,
         acceptLabel: this.messages.pages.coursePage.confirmDialogs.acceptLabel,
         accept: async () => {
-      await this.destroyTopic(id);
-      this.course = await this.getCourse(this.$route.params.id);
-      this.topics = this.course.topics;
+          await this.destroyTopic(id);
+          this.course = await this.getCourse(this.$route.params.id);
+          this.topics = this.course.topics;
         }
       });
     },
@@ -551,15 +604,16 @@ export default {
         rejectLabel: this.messages.pages.coursePage.confirmDialogs.rejectLabel,
         acceptLabel: this.messages.pages.coursePage.confirmDialogs.acceptLabel,
         accept: async () => {
-      const user = userStore();
-      await http.delete(`/assignments/${id}`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+          const user = userStore();
+          await http.delete(`/assignments/${id}`, {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          });
+          const idx = this.topics.find(x => x.id == this.activeTopicId).assignment.findIndex((x) => x.id == id);
+          this.topics.find(x => x.id == this.activeTopicId).assignment.splice(idx, 1);
+        }
       });
-      const idx = this.topics.find(x => x.id == this.activeTopicId).assignment.findIndex((x) => x.id == id);
-      this.topics.find(x => x.id == this.activeTopicId).assignment.splice(idx, 1);
-      }});
     },
   },
   computed: {
