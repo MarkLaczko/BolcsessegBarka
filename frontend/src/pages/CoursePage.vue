@@ -357,7 +357,8 @@ export default {
         const note = {
           title: this.title,
           text: this.text,
-          topic_id: this.activeTopicId
+          topic_id: this.activeTopicId,
+          user_id: this.currentUserData.id
         };
 
         const response = await this.postNote(note);
