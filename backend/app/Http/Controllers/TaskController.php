@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Resources\SubtaskSolutionResource;
 use App\Http\Resources\TaskIdResource;
 use App\Http\Resources\TaskResource;
 use App\Models\Quiz;
@@ -38,6 +39,12 @@ class TaskController extends Controller
         $task = Task::with(['subtasks'])
             ->findOrFail($id);
         return new TaskResource($task);
+    }
+
+    public function solution(int $id) {
+        $subtasks = Subtask::where('task_id', $id)
+            ->get();
+        return SubtaskSolutionResource::collection($subtasks);
     }
  
     public function store(StoreTaskRequest $request) {
