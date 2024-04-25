@@ -2,28 +2,31 @@
     <Toast
         :pt="{
             root: {
-            class: 'w-25',
+              class: 'w-25',
             },
             detail: {
-            class: 'text-center',
+              class: 'text-center fw-bold',
             },
             icon: {
-            class: 'mt-1 ms-1',
+              class: 'mt-1 ms-1',
             },
             text: {
-            class: 'w-75 mx-auto',
+              class: 'w-75 mx-auto',
             },
             container: {
-            class: ' rounded w-75',
+              class: ' rounded w-75',
             },
             buttonContainer: {
-            class: 'w-25 d-flex justify-content-center ms-auto',
+              class: 'w-25 d-flex justify-content-center ms-auto',
             },
             button: {
-            class: 'btn mb-2',
+              class: 'btn mb-2',
+            },
+            content: {
+              class: 'd-flex justify-content-evenly align-items-center p-2'
             },
             transition: {
-            name: 'slide-fade',
+              name: 'slide-fade',
             },
         }"
     />
