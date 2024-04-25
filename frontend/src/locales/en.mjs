@@ -47,6 +47,7 @@ export default {
       newTopicButton: "New Topic",
       deleteButton: "Delete",
       editButton: "Edit",
+      viewButton: "View",
       groupTreatmentButton: "Manage Groups",
       newTopicDialog: {
         title: "Add New Topic",
@@ -304,7 +305,7 @@ export default {
     },
     assignmentPage: {
       dragFileText: "Drag files here to upload",
-      cancelButton: "Cancel",
+      returnButton: "Return",
       comment: "Comment",
       deadline: "Deadline:",
       courseName: "Course:",
