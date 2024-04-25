@@ -284,15 +284,15 @@
             </Column>
             <Column :header="messages.pages.groupManagementPage.modifyText">
               <template #body="slotProp">
-                <button type="button" class="btn btn-warning modifyGroup">
-                  <i class="fa-solid fa-pen-to-square" @click="openModifyWindow(slotProp.data)"></i>
+                <button type="button" class="btn btn-warning modifyGroup" @click="openModifyWindow(slotProp.data)">
+                  <i class="fa-solid fa-pen-to-square"></i>
                 </button>
               </template>
             </Column>
             <Column :header="messages.pages.groupManagementPage.deleteText">
               <template #body="slotProp">
-                <button type="button" class="btn btn-danger deleteGroup">
-                  <i class="fa-solid fa-trash" @click="confirmDelete(slotProp.data.id)"></i>
+                <button type="button" class="btn btn-danger deleteGroup" @click="confirmDelete(slotProp.data.id)">
+                  <i class="fa-solid fa-trash"></i>
                 </button>
               </template>
             </Column>
