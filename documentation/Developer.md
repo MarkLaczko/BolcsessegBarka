@@ -7,6 +7,7 @@
    - [Felhasználó routeok](#felhasználóhoz-kapcsolodó-routeok)
    - [Kurzus routeok](#kurzusokhoz-kapcsolodó-routeok)
    - [Téma routeok](#témához-kapcsolodó-routeok)
+   - [Kvíz routeok](#kívzekhez-kapcsolodó-routeok)
 2. [Komponensek](#komponensek)
    - [BaseDialog](#basedialog)
    - [BaseSpinner](#basespinner)
@@ -1480,7 +1481,7 @@ Az alábbi hibakódokat adhatja vissza a végpont:
 - `422 Unprocessable Content`: Hiba a törzs adataiban.
 - `500 Internal Server Error`: Váratlan hiba történt a szerveren.
 
-### `PUT /api/topics/{id}` // EZ A PUT LESZ!
+### `PUT /api/topics/{id}`
 
 Téma szerkesztése. Csak az adminisztrátorok és tanárok szerkeszthetnek témát.
 
@@ -1550,6 +1551,794 @@ URI:
 
 ```
 /api/topics/1
+```
+
+Válasz:
+
+```json
+
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `403 Forbidden`: A felhasználónak nincs jogosultsága.
+- `404 Not Found`: Nincs ilyen rekord az adatbázisban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### Kvízekhez kapcsolodó routeok:
+
+| Method | URI                         | Name             | Controller        | Action  |
+|--------|-----------------------------|------------------|-------------------|---------|
+| GET    | /api/quizzes                | quizzes.index    | QuizController    | index   |
+| GET    | /api/quizzes/{id}           | quizzes.show     | QuizController    | show    |
+| POST   | /api/quizzes                | quizzes.store    | QuizController    | store   |
+| PUT    | /api/quizzes/{id}           | quizzes.update   | QuizController    | update  |
+| DELETE | /api/quizzes/{id}           | quizzes.destory  | QuizController    | destroy |
+| GET    | /api/quizzes/{id}/tasks     | tasks.index      | TaskController    | index   |
+| GET    | /api/quizzes/{id}/tasks/ids | tasks.taskIds    | TaskController    | taskIds |
+| GET    | /api/tasks/{id}             | tasks.show       | TaskController    | show    |
+| POST   | /api/tasks                  | tasks.store      | TaskController    | store   |
+| PUT    | /api/tasks/{id}             | tasks.update     | TaskController    | update  |
+| DELETE | /api/tasks/{id}             | tasks.destory    | TaskController    | destroy |
+| DELETE | /api/subtasks/{id}          | subtasks.destroy | SubtaskController | destroy |
+
+### `GET /api/quizzes`
+
+Az összes kvíz lekérése.
+
+#### Válasz
+
+Egy JSON tömböt ad vissza `data` néven, melyben objektumok találhatóak a következőkkel:
+
+- `id`: A kvíz azonosítója.
+- `name`: A kvíz neve.
+- `max_attempts`: A kívz kitöltésének maximum száma. Ha nincs megadva, akkor `null`.
+- `opens`: A kvíz nyitása. Unix időbélyeg. Ha nincs megadva, akkor `null`.
+- `closes`: A kvíz zárása. Unix időbélyeg. Ha nincs megadva, akkor `null`.
+- `time`: A kvíz kitöltésének időkorlátja. Ha nincs megadva, akkor `null`.
+
+#### Példa
+
+URI:
+
+```
+/api/quizzes
+```
+
+Válasz:
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "A kora újkor",
+      "max_attempts": 1,
+      "opens": null,
+      "closes": null,
+      "time": null
+    },
+    {
+      "id": 2,
+      "name": "A hidegháború",
+      "max_attempts": 1,
+      "opens": 1704063600,
+      "closes": 1766357999,
+      "time": 60
+    }
+  ]
+}
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `403 Forbidden`: A felhasználónak nincs jogosultsága.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `GET /api/quizzes/{id}`
+
+Egy kvíz lekérése azonosító alapján.
+
+#### Válasz
+
+Egy JSON objektumot ad vissza `data` néven, melyben objektumok találhatóak a következőkkel:
+
+- `id`: A kvíz azonosítója.
+- `name`: A kvíz neve.
+- `max_attempts`: A kívz kitöltésének maximum száma. Ha nincs megadva, akkor `null`.
+- `opens`: A kvíz nyitása. Unix időbélyeg. Ha nincs megadva, akkor `null`.
+- `closes`: A kvíz zárása. Unix időbélyeg. Ha nincs megadva, akkor `null`.
+- `time`: A kvíz kitöltésének időkorlátja. Ha nincs megadva, akkor `null`.
+
+#### Példa
+
+URI:
+
+```
+/api/quizzes/1
+```
+
+Válasz:
+
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "A kora újkor",
+    "max_attempts": 1,
+    "opens": null,
+    "closes": null,
+    "time": null
+  }
+}
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `403 Forbidden`: A felhasználónak nincs jogosultsága.
+- `404 Not Found`: Nincs ilyen rekord az adatbázisban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `POST /api/quizzes`
+
+Új kvíz létrehozása. Csak az adminisztrátorok és tanárok hozhatnak létre új kvízt.
+
+#### Törzs
+
+- `name`: A kvíz neve.
+- `topic_id`: A téma azonosítója, amihez a kvíz tartozik.
+- `max_attempts`: A kívz kitöltésének maximum száma. (nem kötelező)
+- `opens`: A kvíz nyitása. Unix időbélyeg. (nem kötelező)
+- `closes`: A kvíz zárása. Unix időbélyeg. (nem kötelező)
+- `time`: A kvíz kitöltésének időkorlátja. (nem kötelező)
+
+#### Válasz
+
+Egy JSON objektumot ad vissza `data` néven, melyben objektumok találhatóak a következőkkel:
+
+- `id`: A kvíz azonosítója.
+- `name`: A kvíz neve.
+- `max_attempts`: A kívz kitöltésének maximum száma. Ha nincs megadva, akkor `null`.
+- `opens`: A kvíz nyitása. Unix időbélyeg. Ha nincs megadva, akkor `null`.
+- `closes`: A kvíz zárása. Unix időbélyeg. Ha nincs megadva, akkor `null`.
+- `time`: A kvíz kitöltésének időkorlátja. Ha nincs megadva, akkor `null`.
+
+#### Példa
+
+URI:
+
+```
+/api/quizzes
+```
+
+Törzs:
+
+```json
+{
+  "topic_id": 1,
+  "name": "Dolgozat",
+  "max_attempts": 1,
+  "opens": 1704099600,
+  "closes": 1704102300,
+  "time": 45
+}
+```
+
+Válasz:
+
+```json
+{
+  "data": {
+    "id": 2,
+    "name": "Dolgozat",
+    "max_attempts": 1,
+    "opens": 1704099600,
+    "closes": 1704102300,
+    "time": 45
+  }
+}
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `403 Forbidden`: A felhasználónak nincs jogosultsága.
+- `422 Unprocessable Content`: Hiba a törzs adataiban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `PUT /api/quizzes/{id}`
+
+Kvíz szerkesztése. Csak az adminisztrátorok és tanárok szerkeszthetnek témát.
+
+#### Törzs
+
+- `name`: A kvíz neve.
+- `topic_id`: A téma azonosítója, amihez a kvíz tartozik.
+- `max_attempts`: A kívz kitöltésének maximum száma. (nem kötelező)
+- `opens`: A kvíz nyitása. Unix időbélyeg. (nem kötelező)
+- `closes`: A kvíz zárása. Unix időbélyeg. (nem kötelező)
+- `time`: A kvíz kitöltésének időkorlátja. (nem kötelező)
+
+#### Válasz
+
+Egy JSON objektumot ad vissza `data` néven a következőkkel:
+
+- `id`: A kvíz azonosítója.
+- `name`: A kvíz neve.
+- `max_attempts`: A kívz kitöltésének maximum száma. Ha nincs megadva, akkor `null`.
+- `opens`: A kvíz nyitása. Unix időbélyeg. Ha nincs megadva, akkor `null`.
+- `closes`: A kvíz zárása. Unix időbélyeg. Ha nincs megadva, akkor `null`.
+- `time`: A kvíz kitöltésének időkorlátja. Ha nincs megadva, akkor `null`.
+
+#### Példa
+
+URI:
+
+```
+/api/quizzes/1
+```
+
+Törzs:
+
+```json
+{
+  "topic_id": 1,
+  "name": "Érettségi felkészülés",
+  "max_attempts": 1,
+  "opens": 1704099600,
+  "closes": 1704102300,
+  "time": 45
+}
+```
+
+Válasz:
+
+```json
+{
+  "data": {
+    "id": 2,
+    "name": "Érettségi felkészülés",
+    "max_attempts": 1,
+    "opens": 1735722000,
+    "closes": 1735724700,
+    "time": 45
+  }
+}
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `403 Forbidden`: A felhasználónak nincs jogosultsága.
+- `404 Not Found`: Nincs ilyen rekord az adatbázisban.
+- `422 Unprocessable Content`: Hiba a törzs adataiban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `DELETE /api/topics/{id}`
+
+Kvíz törlése. Csak az adminisztrátorok és tanárok törölhetnek témát.
+
+#### Válasz
+
+`204 No Content`, amennyiben sikeres a törlés.
+
+#### Példa
+
+URI:
+
+```
+/api/quizzes/1
+```
+
+Válasz:
+
+```json
+
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `403 Forbidden`: A felhasználónak nincs jogosultsága.
+- `404 Not Found`: Nincs ilyen rekord az adatbázisban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `GET /quizzes/{id}/tasks`
+
+Egy adott kvízhez tartozó összes feladat lekérése. Csak adminisztrátorok, tanárok és jelenleg a kvízt kitöltő diákok kérhetnek le adatot.
+
+#### Válasz
+
+Egy JSON tömböt ad vissza `data` néven, melyben objektumok találhatóak a következőkkel:
+
+- `id`: A feladat azonosítója.
+- `order`: A feladat sorrendje.
+- `header`: A feladat bevezető szövege.
+- `text`: A feladat szövege.
+- `subtasks`: A feladat alfeladatai (tömb).
+  - `id`: Az alfeladat azonosítója.
+  - `order`: Az alfeladat sorszáma.
+  - `question`: Az alfeladat szövege.
+  - `options`: Az alfeladat válaszlehetőségei. Ha nincs megadva, akkor `null`.
+  - `type`: Az alfeladat típusa. (`short_answer`, `multiple_choice`, `essay`)
+  - `marks`: Az alfeladatért járó pont.
+
+#### Példa
+
+URI:
+
+```
+/api/quizzes/1/tasks
+```
+
+Válasz:
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "order": 0,
+      "header": "A feladat a nagy földrajzi felfedezésekkel kapcsolatos",
+      "text": "A források és ismeretei alapján válaszoljon a kérdésekre!",
+      "subtasks": [
+        {
+          "id": 1,
+          "order": 0,
+          "question": "<p><b>a) A tordesillasi szerződés megkötését milyen nagy fontosságú történelmi esemény előzte meg 1492-ben?</b></p>",
+          "options": null,
+          "type": "short_answer",
+          "marks": 0.5
+        },
+        {
+          "id": 2,
+          "order": 1,
+          "question": "<p><b>Ki volt az a felfedező, aki elsőként jutott el Indiába Afrika megkerülésével? Melyik királyság szolgálatában állt?</b></p>",
+          "options": null,
+          "type": "short_answer",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "order": 1,
+      "header": "A feladat a kora újkori egyházakkal kapcsolatos.",
+      "text": "Oldja meg a feladatokat a források és ismeretei alapján!",
+      "subtasks": [
+        {
+          "id": 3,
+          "order": 0,
+          "question": "<p>A) [...]<br>B) [...]<br>C) [...]</p><br><b>a) Melyik az a két forrás, amely tartalmát tekintve a reformáció elindulásának okát fogalmazza meg? Adja meg a források betűjelét!</b>",
+          "options": null,
+          "type": "short_answer",
+          "marks": 1
+        },
+        {
+          "id": 4,
+          "order": 1,
+          "question": "<b>b) Milyen államformát tart követendőnek a C) betűjelű forrás? Karikázza be a megfelelőt!</b>",
+          "options": "[\"királyság\", \"köztársaság\", \"monarchia\"]",
+          "type": "multiple_choice",
+          "marks": 0.5
+        }
+      ]
+    }
+  ]
+}
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `403 Forbidden`: A felhasználónak nincs jogosultsága.
+- `404 Not Found`: Nincs ilyen rekord (kvíz) az adatbázisban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `GET /quizzes/{id}/tasks/ids`
+
+Egy adott kvízhez tartozó összes feladat azonosítójának lekérése. Csak adminisztrátorok, tanárok és jelenleg a kvízt kitöltő diákok kérhetnek le adatot.
+
+#### Válasz
+
+Egy JSON tömböt ad vissza `data` néven, melyben a feladatok azonosítói találhatóak.
+
+#### Példa
+
+URI:
+
+```
+/api/quizzes/1/tasks/ids
+```
+
+Válasz:
+
+```json
+{
+  "data": [
+    1,
+    2
+  ]
+}
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `403 Forbidden`: A felhasználónak nincs jogosultsága.
+- `404 Not Found`: Nincs ilyen rekord (kvíz) az adatbázisban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `GET /api/tasks/{id}`
+
+Egy feladat lekérése azonosító alapján.
+
+#### Válasz
+
+Egy JSON objektumot ad vissza `data` néven a következőkkel:
+
+- `id`: A feladat azonosítója.
+- `order`: A feladat sorrendje.
+- `header`: A feladat bevezető szövege.
+- `text`: A feladat szövege.
+- `subtasks`: A feladat alfeladatai (tömb).
+  - `id`: Az alfeladat azonosítója.
+  - `order`: Az alfeladat sorszáma.
+  - `question`: Az alfeladat szövege.
+  - `options`: Az alfeladat válaszlehetőségei. Ha nincs megadva, akkor `null`.
+  - `type`: Az alfeladat típusa. (`short_answer`, `multiple_choice`, `essay`)
+  - `marks`: Az alfeladatért járó pont.
+
+#### Példa
+
+URI:
+
+```
+/api/tasks/1
+```
+
+Válasz:
+
+```json
+{
+  "data": {
+    "id": 1,
+    "order": 0,
+    "header": "A feladat a nagy földrajzi felfedezésekkel kapcsolatos",
+    "text": "A források és ismeretei alapján válaszoljon a kérdésekre!",
+    "subtasks": [
+      {
+        "id": 1,
+        "order": 0,
+        "question": "<p><b>a) A tordesillasi szerződés megkötését milyen nagy fontosságú történelmi esemény előzte meg 1492-ben?</b></p>",
+        "options": null,
+        "type": "short_answer",
+        "marks": 0.5
+      },
+      {
+        "id": 2,
+        "order": 1,
+        "question": "<p><b>Ki volt az a felfedező, aki elsőként jutott el Indiába Afrika megkerülésével? Melyik királyság szolgálatában állt?</b></p>",
+        "options": null,
+        "type": "short_answer",
+        "marks": 1
+      },
+    ]
+  }
+}
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `404 Not Found`: Nincs ilyen rekord az adatbázisban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `POST /api/tasks`
+
+Új feladat létrehozása. Csak az adminisztrátorok és tanárok hozhatnak létre új feladatot. A feladatokhoz tartozó alfeladatokat is itt kell megadni.
+
+#### Törzs
+
+- `quiz_id`: A kbíz azonosítója, amihez a feladat tartozik.
+- `order`: A feladat sorrendje.
+- `header`: A feladat bevezető szövege.
+- `text`: A feladat szövege.
+- `subtasks`: A feladat alfeladatai (tömb).
+  - `order`: Az alfeladat sorszáma.
+  - `question`: Az alfeladat szövege.
+  - `options`: Tömb az alfeladat opcióival szövegként (csak `multiple_choice` kérdések).
+  - `solution`: Tömb az alfeladat megoldásaival szövegként (csak `short_asnwer` és `multiple_choice` kérdések).
+  - `type`: Az alfeladat típusa. (`short_answer`, `multiple_choice`, `essay`)
+  - `marks`: Az alfeladatért járó pont.
+
+#### Válasz
+
+Egy JSON objektumot ad vissza `data` néven a következőkkel:
+
+- `id`: A feladat azonosítója.
+- `order`: A feladat sorrendje.
+- `header`: A feladat bevezető szövege.
+- `text`: A feladat szövege.
+- `subtasks`: A feladat alfeladatai (tömb).
+  - `id`: Az alfeladat azonosítója.
+  - `order`: Az alfeladat sorszáma.
+  - `question`: Az alfeladat szövege.
+  - `options`: Az alfeladat válaszlehetőségei. Ha nincs megadva, akkor `null`.
+  - `type`: Az alfeladat típusa. (`short_answer`, `multiple_choice`, `essay`)
+  - `marks`: Az alfeladatért járó pont.
+
+#### Példa
+
+URI:
+
+```
+/api/tasks
+```
+
+Törzs:
+
+```json
+{
+  "quiz_id": 1,
+  "order": 2,
+  "header": "A feladat Az Emberi és Polgári Jogok Nyilatkozatához kapcsolódik",
+  "text": "Oldja meg a feladatokat saját ismeretei és a források segítségével!",
+  "subtasks": [
+    {
+      "order": 0,
+      "question": "<p><b>a) Milyen elvre utal az alábbi részlet az Emberi és Polgári Jogok Nyilatkozatából?</b><br>„III. Minden szuverenitás elve természeténél fogva a nemzetben lakozik; sem testület, sem egyén nem gyakorolhat hatalmat, ha (az) nem határozottan tőle ered.”</p>",
+      "solution": [
+        "népfelség",
+        "népszuverenitás"
+      ],
+      "type": "short_answer",
+      "marks": 0.5
+    },
+    {
+      "order": 1,
+      "question": "<p><b>Határozza meg, hogy melyik ország alapító dokumentumát tartják az Emberi és Polgári Jogok Nyilatkozatának alapjának?</b></p>",
+      "solution": [
+        "Franciaország"
+      ],
+      "type": "short_answer",
+      "marks": 1
+    }
+  ]
+}
+```
+
+Válasz:
+
+```json
+{
+  "data": {
+    "id": 3,
+    "order": 2,
+    "header": "A feladat Az Emberi és Polgári Jogok Nyilatkozatához kapcsolódik",
+    "text": "Oldja meg a feladatokat saját ismeretei és a források segítségével!",
+    "subtasks": [
+      {
+        "id": 23,
+        "order": 0,
+        "question": "<p><b>a) Milyen elvre utal az alábbi részlet az Emberi és Polgári Jogok Nyilatkozatából?</b><br>„III. Minden szuverenitás elve természeténél fogva a nemzetben lakozik; sem testület, sem egyén nem gyakorolhat hatalmat, ha (az) nem határozottan tőle ered.”</p>",
+        "options": null,
+        "type": "short_answer",
+        "marks": 0.5
+      },
+      {
+        "id": 24,
+        "order": 1,
+        "question": "<p><b>Határozza meg, hogy melyik ország alapító dokumentumát tartják az Emberi és Polgári Jogok Nyilatkozatának alapjának?</b></p>",
+        "options": null,
+        "type": "short_answer",
+        "marks": 1
+      }
+    ]
+  }
+}
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `403 Forbidden`: A felhasználónak nincs jogosultsága.
+- `422 Unprocessable Content`: Hiba a törzs adataiban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `PUT /api/tasks/{id}`
+
+Feladat szerkesztése. Csak az adminisztrátorok és tanárok szerkeszthetnek témát. A feladatokhoz tartozó alfeladatokat is itt kell megadni/szerkeszteni. Ha egy alfeladathoz tartozik `id`, akkor frissíti az adott alfeladatot, ha nincs, akkor új alfeladatot hoz létre.
+
+#### Törzs
+
+- `quiz_id`: A kbíz azonosítója, amihez a feladat tartozik.
+- `order`: A feladat sorrendje.
+- `header`: A feladat bevezető szövege.
+- `text`: A feladat szövege.
+- `subtasks`: A feladat alfeladatai (tömb).
+  - `id`: Az alfeladat azonosítója. Ha nincs megadva, új alfeladat jön létre.
+  - `order`: Az alfeladat sorszáma.
+  - `question`: Az alfeladat szövege.
+  - `options`: Tömb az alfeladat opcióival szövegként (csak `multiple_choice` kérdések).
+  - `solution`: Tömb az alfeladat megoldásaival szövegként (csak `short_asnwer` és `multiple_choice` kérdések).
+  - `type`: Az alfeladat típusa. (`short_answer`, `multiple_choice`, `essay`)
+  - `marks`: Az alfeladatért járó pont.
+
+#### Válasz
+
+Egy JSON objektumot ad vissza `data` néven a következőkkel:
+
+- `id`: A feladat azonosítója.
+- `order`: A feladat sorrendje.
+- `header`: A feladat bevezető szövege.
+- `text`: A feladat szövege.
+- `subtasks`: A feladat alfeladatai (tömb).
+  - `id`: Az alfeladat azonosítója.
+  - `order`: Az alfeladat sorszáma.
+  - `question`: Az alfeladat szövege.
+  - `options`: Az alfeladat válaszlehetőségei. Ha nincs megadva, akkor `null`.
+  - `type`: Az alfeladat típusa. (`short_answer`, `multiple_choice`, `essay`)
+  - `marks`: Az alfeladatért járó pont.
+
+#### Példa
+
+URI:
+
+```
+/api/tasks/1
+```
+
+Törzs:
+
+```json
+{
+  "quiz_id": 1,
+  "order": 2,
+  "header": "A feladat Az Emberi és Polgári Jogok Nyilatkozatához kapcsolódik.",
+  "text": "A források és ismeretei alapján oldja meg a feladatokat!",
+  "subtasks": [
+    {
+      "id": 23,
+      "order": 0,
+      "question": "<p><b>a) Milyen elvre utal az alábbi részlet az Emberi és Polgári Jogok Nyilatkozatából?</b> <br>„III. Minden szuverenitás elve természeténél fogva a nemzetben lakozik; sem testület, sem egyén nem gyakorolhat hatalmat, ha (az) nem határozottan tőle ered.”</p>",
+      "solution": [
+        "népfelség",
+        "népszuverenitás"
+      ],
+      "type": "short_answer",
+      "marks": 0.5
+    },
+    {
+      "order": 1,
+      "question": "<p><b>Határozza meg, hogy melyik ország alapító dokumentumát tartják az Emberi és Polgári Jogok Nyilatkozatának alapjának?</b></p>",
+      "solution": [
+        "Francia Királyság"
+      ],
+      "type": "short_answer",
+      "marks": 1
+    }
+  ]
+}
+```
+
+Válasz:
+
+```json
+{
+  "data": {
+    "id": 3,
+    "order": 2,
+    "header": "A feladat Az Emberi és Polgári Jogok Nyilatkozatához kapcsolódik",
+    "text": "Oldja meg a feladatokat saját ismeretei és a források segítségével!",
+    "subtasks": [
+      {
+        "id": 23,
+        "order": 0,
+        "question": "<p><b>a) Milyen elvre utal az alábbi részlet az Emberi és Polgári Jogok Nyilatkozatából?</b> <br>„III. Minden szuverenitás elve természeténél fogva a nemzetben lakozik; sem testület, sem egyén nem gyakorolhat hatalmat, ha (az) nem határozottan tőle ered.”</p>",
+        "options": null,
+        "type": "short_answer",
+        "marks": 0.5
+      },
+      {
+        "id": 24,
+        "order": 1,
+        "question": "<p><b>Határozza meg, hogy melyik ország alapító dokumentumát tartják az Emberi és Polgári Jogok Nyilatkozatának alapjának?</b></p>",
+        "options": null,
+        "type": "short_answer",
+        "marks": 1
+      },
+      {
+        "id": 25,
+        "order": 1,
+        "question": "<p><b>Határozza meg, hogy melyik ország alapító dokumentumát tartják az Emberi és Polgári Jogok Nyilatkozatának alapjának?</b></p>",
+        "options": null,
+        "type": "short_answer",
+        "marks": 1
+      }
+    ]
+  }
+}
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `403 Forbidden`: A felhasználónak nincs jogosultsága.
+- `404 Not Found`: Nincs ilyen rekord az adatbázisban.
+- `422 Unprocessable Content`: Hiba a törzs adataiban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `DELETE /api/tasks/{id}`
+
+Feladat törlése. Az összes kapcsolódó alfeladatot is törli. Csak az adminisztrátorok és tanárok törölhetnek témát.
+
+#### Válasz
+
+`204 No Content`, amennyiben sikeres a törlés.
+
+#### Példa
+
+URI:
+
+```
+/api/tasks/1
+```
+
+Válasz:
+
+```json
+
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `403 Forbidden`: A felhasználónak nincs jogosultsága.
+- `404 Not Found`: Nincs ilyen rekord az adatbázisban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `DELETE /api/subtasks/{id}`
+
+Alfeladat törlése. Csak az adminisztrátorok és tanárok törölhetnek témát.
+
+#### Válasz
+
+`204 No Content`, amennyiben sikeres a törlés.
+
+#### Példa
+
+URI:
+
+```
+/api/subtasks/1
 ```
 
 Válasz:
