@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import { setTitle } from "@/router/guards/SetTitleGuard.mjs";
 import { AuthGuard } from "@/router/guards/AuthGuard.mjs";
 import { AdminGuard } from "@/router/guards/AdminGuard.mjs";
+import { QuizCreationGuard } from "@/router/guards/QuizCreationGuard.mjs";
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -98,9 +99,50 @@ export const router = createRouter({
         requiresAuth: true,
       },
     },
+    {
+      path: "/course/:courseId/topic/:topicId/create-quiz",
+      name: "createQuiz",
+      component: () => import("@pages/CreateQuizPage.vue"),
+      meta: {
+        requiresAuth: true,
+        title: "Kvíz létrehozása",
+        quizCreationGuard: true,
+      },
+    },
+    {
+      path: "/quiz/:id",
+      name: "quiz",
+      component: () => import("@pages/CreateQuizPage.vue"),
+      meta: {
+        requiresAuth: true,
+        title: "Kvíz létrehozása",
+        quizAccessGuard: true,
+      },
+    },
+    {
+      path: "/quiz/:id/edit",
+      name: "editQuiz",
+      component: () => import("@pages/EditQuizPage.vue"),
+      meta: {
+        requiresAuth: true,
+        title: "Kvíz szerkesztése",
+        quizCreationGuard: true,
+      },
+    },
+    {
+      path: "/quiz/:id/edit/create-task",
+      name: "createTask",
+      component: () => import("@pages/CreateTaskPage.vue"),
+      meta: {
+        requiresAuth: true,
+        title: "Feladat hozzáadása",
+        quizCreationGuard: true,
+      },
+    },
   ],
 });
 
 router.beforeEach(setTitle);
 router.beforeEach(AuthGuard);
 router.beforeEach(AdminGuard);
+router.beforeEach(QuizCreationGuard);
