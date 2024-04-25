@@ -510,6 +510,7 @@ export default {
                 },
               }
             );
+            this.selectedCourses = [];
 
             let toast = {
               severity: "success",
