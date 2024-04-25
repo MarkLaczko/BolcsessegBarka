@@ -4,8 +4,8 @@
     <BaseSpinner :loading="loading"/>
 
     <div class="rounded-3 my-5 py-2" v-if="!loading">
-      <div class="rounded-3 m-3 p-2 bg-white">
-        <p v-for="assignment in assignments" :key="assignment.id">
+      <div class="rounded-3 m-3 p-2 bg-white" v-for="assignment in assignments" :key="assignment.id">
+        <p >
           {{ messages.pages.assignmentPage.task_name }} {{ assignment.task_name }} <br />
           {{ messages.pages.assignmentPage.courseName }} {{ assignment.course.name }} <br />
           {{ messages.pages.assignmentPage.deadline }} {{ assignment.deadline }}
@@ -210,36 +210,12 @@
               },
             }"
           />
-          <div class="d-flex justify-content-end mt-2 mb-3">
-            <Button
-              type="button"
-              :label="
-                messages.pages.newAssignmentPage.cancelButton
-              "
-              class="btn btn-outline-danger mx-1 px-5"
-              
-            ></Button>
-            <FormKit
-              type="submit"
-              :label="
-                messages.pages.newAssignmentPage.saveButton
-              "
-              id="addAssignmentButton"
-              :classes="{
-                input: {
-                  btn: true,
-                  'btn-success': true,
-                  'w-auto': true,
-                  'px-5' : true
-                },
-              }"
-            />
-          </div>
         </FormKit>
         </div>
         <div class="d-flex justify-content-end">
-          <button class="btn btn-outline-danger mt-3 px-5">
-            {{ messages.pages.assignmentPage.cancelButton }}
+          <RouterLink class="btn btn-outline-danger mt-3 px-5" :to="{ name: 'course', params: { id: assignment.course.id } ,}">{{messages.pages.assignmentPage.returnButton}}</RouterLink>
+          <button type="submit" class="btn btn-success mt-3 px-5 ms-1"  @click="postNewStudentAssignment">
+            {{ messages.pages.newAssignmentPage.saveButton }}
           </button>
         </div>
       </div>
@@ -301,7 +277,7 @@ export default {
           formData.append('assignment_id', this.$route.params.id)
           formData.append('student_task_name', data.student_task[0].name);
           formData.append('student_task', data.student_task[0].file);
-          
+
         const user = userStore();
         await http.post(`/studentAssignments`, formData, {
           headers: {
@@ -334,6 +310,7 @@ export default {
           toast.styleClass = "bg-danger text-white";
         }
         this.$toast.add(toast);
+        console.log(data);
       }
     },
     // onRemoveTemplatingFile(file, removeFileCallback, index) {
