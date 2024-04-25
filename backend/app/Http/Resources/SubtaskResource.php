@@ -18,7 +18,7 @@ class SubtaskResource extends JsonResource
             'id' => $this->id,
             'order' => $this->order,
             'question' => $this->question,
-            'options' => $this->options,
+            'options' => isset($this->options) ? json_decode($this->options, true) : null,
             'type' => $this->type,
             'marks' => $this->marks,
             'task' =>new TaskResource($this->whenLoaded('task')),
