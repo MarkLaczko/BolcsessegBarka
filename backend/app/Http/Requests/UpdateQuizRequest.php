@@ -27,7 +27,7 @@ class UpdateQuizRequest extends FormRequest
             'opens' => ['nullable', 'numeric', 'integer', 'min:0'],
             'closes' => ['nullable', 'numeric', 'integer', 'min:0'],
             'time' => ['nullable', 'numeric', 'integer', 'min:0'],
-            'topic_id' => ['required', 'numeric', 'integer', 'exists:topics,id'],
+            'topic_id' => ['nullable', 'numeric', 'integer', 'exists:topics,id'],
         ];
     }
 }
