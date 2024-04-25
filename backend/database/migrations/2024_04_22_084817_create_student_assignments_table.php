@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('student_assignments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("assignment_id")->constrained("assignment","id");
+            $table->foreignId("assignment_id")->constrained("assignment","id")->onDelete('cascade');
             $table->string("student_task_name");
         });
         DB::statement("ALTER TABLE student_assignments ADD student_task LONGBLOB");
