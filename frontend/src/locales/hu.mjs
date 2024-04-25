@@ -49,7 +49,14 @@ export default {
       deleteButton: "Törlés",
       editButton: "Szerkesztés",
       viewButton: "Megtekintés",
+      cancelButton: "Mégsem",
       groupTreatmentButton: "Csoportok kezelése",
+      confirmDialogs: {
+        messageTopic: "Biztos ki akarja törölni ezt a témát?",
+        messageAssignment: "Biztos ki akarja törölni ezt a feladatot?",
+        rejectLabel: "Mégsem",
+        acceptLabel: "Törlés"
+      },
       newTopicDialog: {
         title: "Új téma felvétele",
         nameLabel: "Név",
