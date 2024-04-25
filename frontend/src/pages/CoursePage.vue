@@ -486,14 +486,14 @@ export default {
 
 
         const user = userStore();
-        await http.post(`/assignments`, formData, {
+        const response = await http.post(`/assignments`, formData, {
           headers: {
             Authorization: `Bearer ${user.token}`,
             'Content-Type': 'application/x-www-form-urlencoded'
           },
         });
 
-
+        this.topics.find(x => x.id == this.activeTopicId).assignment.push(response.data.data);
         let toast = {
           severity: "success",
           detail:
