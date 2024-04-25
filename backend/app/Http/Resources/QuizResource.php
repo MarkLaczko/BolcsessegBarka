@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,8 +19,8 @@ class QuizResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'max_attempts' => $this->max_attempts,
-            'opens' => $this->opens,
-            'closes' => $this->closes,
+            'opens' => $this->opens == null ? null : Carbon::parse($this->opens)->timestamp,
+            'closes' => $this->closes == null ? null : Carbon::parse($this->closes)->timestamp,
             'time' => $this->time,
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
             'topic' => new TopicResource($this->whenLoaded('topic')),
