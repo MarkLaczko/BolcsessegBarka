@@ -382,6 +382,7 @@ export default {
     },
     newAssignmentPage: {
       title: "Új feladat létrehozása",
+      updateTitle: "Feladat módosítása",
       task_nameLabel: "Feladat címe",
       saveButton: "Mentés",
       cancelButton: "Mégsem",
