@@ -632,6 +632,13 @@
                     >
                   </li>
                   <li>
+                    <button
+                      class="dropdown-item"
+                      @click="navigateToNewQuizPage(course.id, topic.id)"
+                      >{{ messages.pages.coursePage.accordionText.newQuiz }}
+                  </button>
+                  </li>
+                  <li>
                     <a
                       class="dropdown-item"
                       @click="
@@ -712,7 +719,7 @@
               </div>
               <div class="row">
                 <div
-                  class="col-12 col-md-4 col-lg-3"
+                  class="col-12 col-md-4 col-lg-3 h-100"
                   v-for="note in topic.notes"
                   :key="note.id"
                 >
@@ -728,6 +735,55 @@
                         class="btn btn-primary"
                         type="button"
                         @click="openCurrentNote(note)"
+                      >
+                        {{ messages.pages.coursePage.note.viewButton }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div
+                  class="col-12 col-lg-6 my-3"
+                  v-for="quiz in topic.quizzes"
+                  :key="quiz.id"
+                >
+                  <div class="card h-100 mt-2 text-center">
+                    <div class="card-header">
+                      <h4>{{ messages.pages.coursePage.quiz.name }}</h4>
+                    </div>
+                    <div class="card-body">
+                      <span class="fw-bold fs-5">{{ quiz.name }}</span>
+                      <table class="mt-2 mb-0 table table-striped">
+                        <tbody>
+                          <tr>
+                            <td class="w-50">{{ messages.pages.coursePage.quiz.opens }}</td>
+                            <td class="w-50" v-if="quiz.opens != null">{{ toDate(quiz.opens) }}</td>
+                            <td class="w-50" v-else>-</td>
+                          </tr>
+                          <tr>
+                            <td class="w-50">{{ messages.pages.coursePage.quiz.closes }}</td>
+                            <td class="w-50" v-if="quiz.closes != null">{{ toDate(quiz.closes) }}</td>
+                            <td class="w-50" v-else>-</td>
+                          </tr>
+                          <tr>
+                            <td class="w-50">{{ messages.pages.coursePage.quiz.time }}</td>
+                            <td class="w-50" v-if="quiz.time != null">{{ quiz.time }} {{ messages.pages.coursePage.quiz.minutes }}</td>
+                            <td class="w-50" v-else>-</td>
+                          </tr>
+                          <tr>
+                            <td class="w-50">{{ messages.pages.coursePage.quiz.attempts }}</td>
+                            <td class="w-50" v-if="quiz.max_attempts != null">{{ quiz.max_attempts }}</td>
+                            <td class="w-50" v-else>-</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="card-footer">
+                      <button
+                        class="btn btn-primary"
+                        type="button"
+                        @click=""
                       >
                         {{ messages.pages.coursePage.note.viewButton }}
                       </button>
@@ -761,6 +817,9 @@ import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Editor from "primevue/editor";
 import BaseConfirmDialog from "@components/BaseConfirmDialog.vue";
+import { RouterLink } from "vue-router";
+import { useRouter } from 'vue-router';
+import { getCurrentInstance } from 'vue';
 
 export default {
   data() {
@@ -1253,5 +1312,18 @@ export default {
     document.title = this.course.name;
     this.loading = false;
   },
+  setup(){
+    const navigateToNewQuizPage = (courseId, topicId) => {
+      window.location = `/course/${courseId}/topic/${topicId}/create-quiz`
+    }
+
+    const toDate = (date) => {
+      return (new Date(date * 1000)).toLocaleString();
+    }
+
+    return {
+      navigateToNewQuizPage, toDate
+    }
+  }
 };
 </script>
