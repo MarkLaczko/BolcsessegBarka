@@ -109,7 +109,7 @@
                             <button class="btn btn-secondary text-white mx-1" style="width: 50px" @click="moveItem(index, index - 1)" v-if="index != 0"><i class="fa-solid fa-arrow-up"></i></button>
                             <button class="btn btn-secondary text-white mx-1" style="width: 50px" @click="moveItem(index, index + 1)" v-if="index < tasks.value.length - 1"><i class="fa-solid fa-arrow-down"></i></button>
                             <button class="btn btn-secondary text-white mx-1" style="width: 50px" @click="moveItem(index, 0)" v-else><i class="fa-solid fa-arrows-up-to-line"></i></button>
-                            <button class="btn btn-secondary text-white mx-1" style="width: 50px" @click=""><i class="fa-solid fa-pen"></i></button>
+                            <button class="btn btn-secondary text-white mx-1" style="width: 50px" @click="navigateToEditTaskPage(task.id)"><i class="fa-solid fa-pen"></i></button>
                             <button class="btn btn-danger text-white mx-1" style="width: 50px" @click="confirmDeleteTask(task.id, index)"><i class="fa-solid fa-x"></i></button>
                         </div>
                     </div>
@@ -285,6 +285,10 @@ const confirmDeleteTask = async (id, index) => {
             }
         }
     });
+}
+
+const navigateToEditTaskPage = (id) => {
+    window.location = `/quiz/${quiz.value.id}/edit/${id}`
 }
 
 onMounted(() => {
