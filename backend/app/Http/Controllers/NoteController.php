@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreNoteRequest;
 use App\Http\Resources\NoteResource;
 use App\Models\Note;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class NoteController extends Controller
 {
@@ -43,8 +43,10 @@ class NoteController extends Controller
      */
     public function update(StoreNoteRequest $request, string $id)
     {
-        $data = $request->validated();
         $note = Note::findOrFail($id);
+        Gate::authorize("notes.update", $note);
+
+        $data = $request->validated();
         $note->update($data);
 
         return new NoteResource($note);
@@ -56,6 +58,8 @@ class NoteController extends Controller
     public function destroy(string $id)
     {
         $note = Note::findOrFail($id);
+        Gate::authorize("notes.destroy", $note);
+
         $note->delete();
 
         return response()->noContent();
