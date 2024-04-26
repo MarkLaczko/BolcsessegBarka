@@ -742,13 +742,29 @@
                       </table>
                     </div>
                     <div class="card-footer">
-                      <button
-                        class="btn btn-primary"
-                        type="button"
-                        @click=""
-                      >
-                        {{ messages.pages.coursePage.note.viewButton }}
-                      </button>
+                      <div class="d-flex justify-content-center align-self-center gap-1">
+                        <button
+                          class="btn btn-primary"
+                          type="button"
+                          @click=""
+                        >
+                          {{ messages.pages.coursePage.note.viewButton }}
+                        </button>
+                        <button v-if="currentUserData.is_admin || member.permission == 'Tanár' || (currentUserData.is_admin && member.permission == 'Tanár')"
+                          class="btn btn-secondary text-white"
+                          type="button"
+                          @click="navigateToEditQuizPage(quiz.id)"
+                        >
+                          <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button v-if="currentUserData.is_admin || member.permission == 'Tanár' || (currentUserData.is_admin && member.permission == 'Tanár')"
+                          class="btn btn-danger text-white"
+                          type="button"
+                          @click="confirmDeleteSubtask(quiz.id, topic.id)"
+                        >
+                          <i class="fa-solid fa-trash"></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1257,6 +1273,55 @@ export default {
         this.$toast.add(toast);
       }
     },
+    async confirmDeleteSubtask(id, topicId) {
+      this.$confirm.require({
+          message: 'Biztos ki akarja törölni ezt a feladatot?',
+          icon: 'pi pi-exclamation-triangle',
+          rejectClass: 'btn btn-danger',
+          acceptClass: 'btn btn-success ',
+          rejectLabel: 'Mégse',
+          acceptLabel: 'Törlés',
+          accept: async () => {
+            try {               
+              await http.delete(`quizzes/${id}`, {
+                  headers: {
+                      Authorization: `Bearer ${this.token}`,
+                    },
+                  })
+                  
+              const topicIndex = this.topics.findIndex(x => x.id == topicId);
+              const idx = this.topics[topicIndex].quizzes.findIndex(x => x.id == id);
+              this.topics[topicIndex].quizzes.splice(idx, 1);
+
+              let toastToAdd = {
+                  severity: "success",
+                  detail: "Sikeres törlés!",
+                  life: 3000,
+              };
+              if (!this.isDarkMode) {
+                  toastToAdd.styleClass = "bg-success text-white";
+              }
+              else {
+                  toastToAdd.styleClass = "toast-success text-white";
+              }
+              this.$toast.add(toastToAdd);
+          } catch (error) {
+              let toastToAdd = {
+                  severity: "error",
+                  detail: "Váratlan hiba a törlésnél!",
+                  life: 3000,
+              };
+              if (!this.isDarkMode) {
+                  toastToAdd.styleClass = "bg-danger text-white";
+              }
+              else {
+                  toastToAdd.styleClass = "toast-danger text-white";
+              }
+              this.$toast.add(toastToAdd);
+          }
+          }
+      });
+    },
   },
   computed: {
     ...mapState(userStore, ["currentUserData", "token"]),
@@ -1279,12 +1344,16 @@ export default {
       window.location = `/course/${courseId}/topic/${topicId}/create-quiz`
     }
 
+    const navigateToEditQuizPage = (id) => {
+      window.location = `/quiz/${id}/edit`
+    }
+
     const toDate = (date) => {
       return (new Date(date * 1000)).toLocaleString();
     }
 
     return {
-      navigateToNewQuizPage, toDate
+      navigateToNewQuizPage, navigateToEditQuizPage, toDate
     }
   }
 };
