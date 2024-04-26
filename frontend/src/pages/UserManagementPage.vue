@@ -335,21 +335,21 @@
             </Column>
             <Column :header="messages.pages.userManagementPage.modifyText">
               <template #body="slotProp">
-                <button type="button" class="btn btn-warning" v-if="slotProp.data.email != currentUserData.email">
-                  <i class="fa-solid fa-pen-to-square" @click="
-      (modifyUserDialogVisible = true),
-      (currentlyModifyingUser = {
-        ...slotProp.data,
-        password: '',
-      })
-      "></i>
+                <button type="button" class="btn btn-warning" v-if="slotProp.data.email != currentUserData.email" @click="
+                  (modifyUserDialogVisible = true),
+                  (currentlyModifyingUser = {
+                    ...slotProp.data,
+                    password: '',
+                  })
+                  ">
+                  <i class="fa-solid fa-pen-to-square"></i>
                 </button>
               </template>
             </Column>
             <Column :header="messages.pages.userManagementPage.deleteText">
               <template #body="slotProp">
-                <button type="button" class="btn btn-danger" v-if="slotProp.data.email != currentUserData.email">
-                  <i class="fa-solid fa-trash" @click="deleteUser(slotProp.data.id)"></i>
+                <button type="button" class="btn btn-danger" v-if="slotProp.data.email != currentUserData.email" @click="deleteUser(slotProp.data.id)">
+                  <i class="fa-solid fa-trash"></i>
                 </button>
               </template>
             </Column>
