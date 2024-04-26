@@ -210,22 +210,10 @@
       />
 
       <div class="d-flex justify-content-end mt-2 mb-3">
-        <Button
-          type="button"
-          class="btn btn-outline-danger mx-1"
-          @click="groupTreatmentDialog = false"
-          >{{
-            messages.pages.coursePage.groupTreatmentDialog.cancelButton
-          }}</Button
-        >
-        <Button
-          type="button"
-          class="btn btn-outline-success mx-1"
-          @click="saveGroups"
-          >{{
-            messages.pages.coursePage.groupTreatmentDialog.saveButton
-          }}</Button
-        >
+        <Button type="button" class="btn btn-outline-danger mx-1" @click="groupTreatmentDialog = false">{{
+      messages.pages.coursePage.groupTreatmentDialog.cancelButton }}</Button>
+        <Button type="button" id="modifyGroups" class="btn btn-outline-success mx-1" @click="saveGroups">{{
+      messages.pages.coursePage.groupTreatmentDialog.saveButton }}</Button>
       </div>
     </BaseDialog>
 
@@ -459,38 +447,25 @@
           {{ messages.pages.coursePage.newNoteDialog.title }}
         </h1>
         <div class="d-flex align-items-center justify-content-center pb-4">
-          <label for="username" class="form-label me-2 font-weight-bold"
-            ><b>{{
-              messages.pages.coursePage.newNoteDialog.notesNameText
-            }}</b></label
-          >
+          <label for="notetitle" class="form-label me-2 font-weight-bold"><b>{{
+      messages.pages.coursePage.newNoteDialog.notesNameText
+    }}</b></label>
           <div class="w-25">
-            <InputText
-              id="username"
-              v-model="title"
-              class="form-control"
-              :pt="{
-                root: {
-                  style: 'border-color: black 1px solid',
-                },
-              }"
-            />
+            <InputText id="notetitle" v-model="title" class="form-control" :pt="{
+      root: {
+        style: 'border-color: black 1px solid',
+      },
+    }" />
           </div>
         </div>
         <div class="card">
           <Editor v-model="text" editorStyle="height: 320px" />
         </div>
         <div class="d-flex justify-content-center align-items-center mt-3">
-          <Button
-            :label="messages.pages.coursePage.newNoteDialog.cancelButton"
-            class="btn text-light btn-danger px-5 me-4"
-            @click="newNoteDialogVisible = false"
-          ></Button>
-          <Button
-            :label="messages.pages.coursePage.newNoteDialog.saveButton"
-            class="btn text-light btn-success px-5"
-            @click="saveNote"
-          ></Button>
+          <Button :label="messages.pages.coursePage.newNoteDialog.cancelButton"
+            class="btn text-light btn-danger px-5 me-4" @click="newNoteDialogVisible = false"></Button>
+          <Button id="saveNoteButton" :label="messages.pages.coursePage.newNoteDialog.saveButton" class="btn text-light btn-success px-5"
+            @click="saveNote"></Button>
         </div>
       </div>
     </BaseDialog>
@@ -505,23 +480,15 @@
           {{ messages.pages.coursePage.newNoteDialog.title }}
         </h1>
         <div class="d-flex align-items-center justify-content-center pb-4">
-          <label for="username" class="form-label me-2 font-weight-bold"
-            ><b>{{
-              messages.pages.coursePage.newNoteDialog.notesNameText
-            }}</b></label
-          >
+          <label for="title" class="form-label me-2 font-weight-bold"><b>{{
+      messages.pages.coursePage.newNoteDialog.notesNameText
+    }}</b></label>
           <div class="w-25">
-            <InputText
-              id="username"
-              v-model="title"
-              :value="currentNote.title"
-              class="form-control"
-              :pt="{
-                root: {
-                  style: 'border-color: black 1px solid',
-                },
-              }"
-            />
+            <InputText id="title" v-model="title" :value="currentNote.title" class="form-control" :pt="{
+      root: {
+        style: 'border-color: black 1px solid',
+      },
+    }" />
           </div>
         </div>
         <div class="card">
@@ -548,15 +515,10 @@
     <div v-if="!loading">
       <h1 class="text-center my-3">
         {{ course.name }} ({{ this.$route.query.groupName }})
-        <button
-          class="btn buttons text-light"
-          v-if="
-            currentUserData.is_admin ||
-            member.permission == 'Tanár' ||
-            (currentUserData.is_admin && member.permission == 'Tanár')
-          "
-          @click="newTopicDialogVisible = true"
-        >
+        <button class="btn buttons text-light" id="newTopic" v-if="currentUserData.is_admin ||
+      member.permission == 'Tanár' ||
+      (currentUserData.is_admin && member.permission == 'Tanár')
+      " @click="newTopicDialogVisible = true">
           {{ messages.pages.coursePage.newTopicButton }}
         </button>
         <button

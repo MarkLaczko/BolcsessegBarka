@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Course;
+use App\Models\Note;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Access\Response;
@@ -91,6 +92,20 @@ class AuthServiceProvider extends ServiceProvider
             return ($user->is_admin == 1 || $user->id == $course->created_by)
                 ? Response::allow()
                 : Response::deny("You must be an administrator or the creator of this course to delete it!");
+        });
+
+        //Note gates
+
+        Gate::define('notes.update', function (User $user, Note $note) {
+            return ($user->id == $note->user_id)
+                ? Response::allow()
+                : Response::deny("You must be the creator of this note to update it!");
+        });
+
+        Gate::define('notes.destroy', function (User $user, Note $note) {
+            return ($user->id == $note->user_id)
+                ? Response::allow()
+                : Response::deny("You must be the creator of this note to delete it!");
         });
     }
 }
