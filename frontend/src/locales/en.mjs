@@ -82,18 +82,64 @@ export default {
           matchAllValidationMessage: "Sorry, not all fields were filled out correctly.",
         },
       },
+      deleteTopic: {
+        toastMessages: {
+            successfullyDeletedTopic: "Topic deletion was successful!",
+            failedToDeleteTopic: "Failed to delete topic!"
+        }
+      },
+      addTopic: {
+        toastMessages: {
+          successfulyCreatedTopic: "Topic creation was successful!",
+          failedToCreateTopic: "Failed to create topic!",
+        }
+      },
+      editTopic: {
+        toastMessages: {
+          successfullyUpdatedTopic: "Topic update was successful!",
+          failedToUpdateTopic: "Failed to update topic!",
+        }
+      },
       groupTreatmentDialog: {
         title: "Group Treatment",
         multiSelectPlaceholder: "Select Groups",
         cancelButton: "Cancel",
         saveButton: "Save"
       },
+      saveGroups: {
+        toastMessages: {
+          successfullyUpdatedGroups: "Groups update was successful!",
+          failedToUpdateGroups: "Failed to update groups!",
+        }
+      },
       newNoteDialog: {
         title: "Create Note",
         notesNameText: "Note name:",
         cancelButton: "Cancel",
         saveButton: "Save",
-      }   
+      },
+      accordionText: {
+        actions: "Actions",
+        newAssignment: "New Assignment",
+        newNote: "New Note",
+        edit: "Edit",
+        delete: "Delete"
+      },
+      note: {
+        name: "Note",
+        text: "Note Title:",
+        viewButton: "View",
+        toastMessages: {
+          successfullyCreatedNote: "Note successfully saved!",
+          failedToCreateNote: "Failed to save note!",
+        }
+      },
+      deleteAssignment: {
+        toastMessages: {
+            successfullyDeletedAssignment: "Assignment deletion was successful!",
+            failedToDeleteAssignment: "Failed to delete assignment!",
+        }
+      }
     },
     userManagementPage: {
       title: "User Management",
