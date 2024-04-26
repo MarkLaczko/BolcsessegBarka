@@ -86,17 +86,63 @@ export default {
             "Sajnáljuk, nem minden mezőt töltöttek ki helyesen.",
         },
       },
+      deleteTopic: {
+        toastMessages: {
+          successfullyDeletedTopic: "A téme törlése sikeres volt!",
+          failedToDeleteTopic: "A téme törlése sikertelen volt!"
+        }
+      },
+      addTopic: {
+        toastMessages: {
+          successfulyCreatedTopic: "A téma létrehozása sikeres volt!",
+          failedToCreateTopic: "A téma létrehozása sikertelen volt!",
+        }
+      },
+      editTopic: {
+        toastMessages: {
+          successfullyUpdatedTopic: "A téma modósítása sikeres volt!",
+          failedToUpdateTopic: "A téma modósítása sikertelen volt!",
+        }
+      },
       groupTreatmentDialog: {
         title: "Csoportok kezelése",
         multiSelectPlaceholder: "Csoportok kiválasztása",
         cancelButton: "Mégsem",
         saveButton: "Mentés"
       },
+      saveGroups: {
+        toastMessages: {
+          successfullyUpdatedGroups: "A csoportok modósítása sikeres volt!",
+          failedToUpdateGroups: "A csoportok modósítása sikertelen volt!",
+        }
+      },
       newNoteDialog: {
         title: "Jegyzet létrehozása",
         notesNameText: "Jegyzet neve:",
         cancelButton: "Mégsem",
         saveButton: "Mentés",
+      },
+      accordionText: {
+          actions: "Műveletek",
+          newAssignment: "Új feladat",
+          newNote: "Új jegyzet",
+          edit: "Szerkesztés",
+          delete: "Törlés"
+      },
+      note: {
+        name: "Jegyzet",
+        text: "Jegyzet címe:",
+        viewButton: "Megtekintés",
+        toastMessages: {
+          successfullyCreatedNote: "Jegyzet elmentése sikeres volt!",
+          failedToCreateNote: "Jegyzet elmentése sikertelen volt!",
+        }
+      },
+      deleteAssignment: {
+        toastMessages: {
+          successfullyDeletedAssignment: "A feladat törlése sikeres volt!",
+          failedToDeleteAssignment: "A feladat törlése sikertelen volt!",
+        }
       }
     },
     userManagementPage: {
