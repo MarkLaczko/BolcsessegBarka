@@ -126,6 +126,7 @@ export default {
           actions: "Műveletek",
           newAssignment: "Új feladat",
           newNote: "Új jegyzet",
+          newQuiz: "Új kvíz",
           edit: "Szerkesztés",
           delete: "Törlés"
       },
@@ -137,6 +138,15 @@ export default {
           successfullyCreatedNote: "Jegyzet elmentése sikeres volt!",
           failedToCreateNote: "Jegyzet elmentése sikertelen volt!",
         }
+      },
+      quiz: {
+        name: "Kvíz",
+        viewButton: "Megtekintés",
+        opens: "Nyílik",
+        closes: "Zárul",
+        time: "Időkorlát",
+        attempts: "Maximum próbálkozások",
+        minutes: "perc"
       },
       deleteAssignment: {
         toastMessages: {
