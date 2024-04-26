@@ -258,7 +258,6 @@ const addEmptySubtask = () => {
 const postTask = () => {
     try {
         for (let subtask of form.subtasks) {
-            console.log(subtask.options)
             if(subtask.options != null && subtask.options.length < 1){
                 subtask.options = null;
             }
