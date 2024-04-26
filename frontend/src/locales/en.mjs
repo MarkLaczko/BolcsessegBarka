@@ -122,6 +122,7 @@ export default {
         actions: "Actions",
         newAssignment: "New Assignment",
         newNote: "New Note",
+        newQuiz: "New Quiz",
         edit: "Edit",
         delete: "Delete"
       },
@@ -133,6 +134,15 @@ export default {
           successfullyCreatedNote: "Note successfully saved!",
           failedToCreateNote: "Failed to save note!",
         }
+      },
+      quiz: {
+        name: "Quiz",
+        viewButton: "View",
+        opens: "Opens",
+        closes: "Closes",
+        time: "Time limit",
+        attempts: "Maximum attempts",
+        minutes: "minutes"
       },
       deleteAssignment: {
         toastMessages: {
