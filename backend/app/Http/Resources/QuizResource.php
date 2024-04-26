@@ -22,6 +22,7 @@ class QuizResource extends JsonResource
             'opens' => $this->opens == null ? null : Carbon::parse($this->opens)->timestamp,
             'closes' => $this->closes == null ? null : Carbon::parse($this->closes)->timestamp,
             'time' => $this->time,
+            'number_of_tasks' => $this->tasks_count(),
             'tasks' => TaskResource::collection($this->whenLoaded('tasks')),
             'topic' => new TopicResource($this->whenLoaded('topic')),
         ];
