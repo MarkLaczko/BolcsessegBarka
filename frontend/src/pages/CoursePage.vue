@@ -143,7 +143,7 @@
     </BaseDialog>
 
     <BaseDialog v-if="newAssignmentDialogVisible" :visible="newAssignmentDialogVisible"
-      :header="messages.pages.coursePage.newTopicDialog.title" :width="'25rem'">
+      :header="messages.pages.newAssignmentPage.title" :width="'25rem'">
       <FormKit type="form" :actions="false" @submit="postNewAssignment" :incomplete-message="messages.pages.userManagementPage.newUserDialog.validationMessages
       .matchAllValidationMessage
       ">
@@ -239,14 +239,14 @@
         <h1 class="text-center my-3">{{ messages.pages.coursePage.newNoteDialog.title }}</h1>
         <div class="d-flex align-items-center justify-content-center pb-4">
           <label for="username" class="form-label me-2 font-weight-bold"><b>{{
-            messages.pages.coursePage.newNoteDialog.notesNameText
-            }}</b></label>
-                  <div class="w-25">
-                    <InputText id="username" v-model="title" :value="currentNote.title" class="form-control" :pt="{
-              root: {
-                style: 'border-color: black 1px solid',
-              },
-            }" />
+      messages.pages.coursePage.newNoteDialog.notesNameText
+    }}</b></label>
+          <div class="w-25">
+            <InputText id="username" v-model="title" :value="currentNote.title" class="form-control" :pt="{
+      root: {
+        style: 'border-color: black 1px solid',
+      },
+    }" />
           </div>
         </div>
         <div class="card">
@@ -292,18 +292,19 @@
       (currentUserData.is_admin && member.permission == 'Tanár')
       " class="dropdown ms-2">
                 <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Műveletek
+                  {{ messages.pages.coursePage.accordionText.actions }}
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" @click="newAssignmentDialogVisible = true, activeTopicId = topic.id">Új
-                      feladat</a></li>
-                  <li><a class="dropdown-item" @click="newNoteDialogVisible = true, activeTopicId = topic.id">Új
-                      Jegyzet</a></li>
+                  <li><a class="dropdown-item" @click="newAssignmentDialogVisible = true, activeTopicId = topic.id">{{
+      messages.pages.coursePage.accordionText.newAssignment }}</a></li>
+                  <li><a class="dropdown-item" @click="newNoteDialogVisible = true, activeTopicId = topic.id">{{
+      messages.pages.coursePage.accordionText.newNote }}</a></li>
                   <li><a class="dropdown-item" @click="editTopicDialogVisible = true, activeTopicId = topic.id">{{
-      messages.pages.coursePage.editButton }}</a>
+      messages.pages.coursePage.accordionText.edit }}</a>
                   </li>
-                  <li><a class="dropdown-item" @click="deleteTopic(topic.id)">{{ messages.pages.coursePage.deleteButton
-                      }}</a></li>
+                  <li><a class="dropdown-item" @click="deleteTopic(topic.id)">{{
+      messages.pages.coursePage.accordionText.delete
+    }}</a></li>
                 </ul>
               </div>
 
@@ -327,7 +328,7 @@
                       class="btn btn-outline-danger me-2 " @click="deleteAssignment(assignment.id)">
                       {{ messages.pages.coursePage.deleteButton }}
                     </button>
-                    <RouterLink class="btn btn-primary me-2 px-5"
+                    <RouterLink class="btn btn-outline-primary me-2 px-5"
                       :to="{ name: 'assignment', params: { id: assignment.id }, }">{{
       messages.pages.coursePage.viewButton }}</RouterLink>
                   </div>
@@ -337,13 +338,14 @@
                 <div class="col-12 col-md-4 col-lg-3" v-for="note in topic.notes" :key="note.id">
                   <div class="card mt-2 text-center">
                     <div class="card-header">
-                      <h4>Jegyzet</h4>
+                      <h4>{{ messages.pages.coursePage.note.name }}</h4>
                     </div>
                     <div class="card-body">
-                      jegyzet címe: {{ note.title }}
+                      {{ messages.pages.coursePage.note.text }} {{ note.title }}
                     </div>
                     <div class="card-footer">
-                      <button class="btn btn-primary" type="button" @click="openCurrentNote(note)">Megtekintés</button>
+                      <button class="btn btn-primary" type="button" @click="openCurrentNote(note)">{{
+                        messages.pages.coursePage.note.viewButton }}</button>
                     </div>
                   </div>
                 </div>
@@ -427,11 +429,17 @@ export default {
         };
 
         const response = await this.postNote(note);
+
+        const updatedTopicIndex = this.topics.findIndex(topic => topic.id === this.activeTopicId);
+        if (updatedTopicIndex !== -1) {
+          this.topics[updatedTopicIndex].notes.push(response);
+        }
+
         this.newNoteDialogVisible = false;
 
         let toast = {
           severity: "success",
-          detail: "Jegyzet elmentése sikeres volt!",
+          detail: this.messages.pages.coursePage.note.toastMessages.successfullyCreatedNote,
           life: 3000,
         };
         if (!this.isDarkMode) {
@@ -442,7 +450,7 @@ export default {
       } catch (error) {
         let toast = {
           severity: "error",
-          detail: "Jegyzet elmentése sikertelen volt!",
+          detail: this.messages.pages.coursePage.note.toastMessages.failedToCreateNote,
           life: 3000,
         };
         if (!this.isDarkMode) {
@@ -454,48 +462,114 @@ export default {
 
 
     async deleteTopic(id) {
-      this.$confirm.require({
-        message: this.messages.pages.coursePage.confirmDialogs.messageTopic,
-        icon: 'pi pi-exclamation-triangle',
-        rejectClass: 'btn btn-danger',
-        acceptClass: 'btn btn-success ',
-        rejectLabel: this.messages.pages.coursePage.confirmDialogs.rejectLabel,
-        acceptLabel: this.messages.pages.coursePage.confirmDialogs.acceptLabel,
-        accept: async () => {
-          await this.destroyTopic(id);
-          this.course = await this.getCourse(this.$route.params.id);
-          this.topics = this.course.topics;
+      try {
+        this.$confirm.require({
+          message: this.messages.pages.coursePage.confirmDialogs.messageTopic,
+          icon: 'pi pi-exclamation-triangle',
+          rejectClass: 'btn btn-danger',
+          acceptClass: 'btn btn-success ',
+          rejectLabel: this.messages.pages.coursePage.confirmDialogs.rejectLabel,
+          acceptLabel: this.messages.pages.coursePage.confirmDialogs.acceptLabel,
+          accept: async () => {
+            await this.destroyTopic(id);
+            this.course = await this.getCourse(this.$route.params.id);
+            this.topics = this.course.topics;
+
+            let toast = {
+              severity: "success",
+              detail: this.messages.pages.coursePage.deleteTopic.toastMessages.successfullyDeletedTopic,
+              life: 3000,
+            };
+            if (!this.isDarkMode) {
+              toast.styleClass = "bg-success text-white";
+            }
+            this.$toast.add(toast);
+          }
+        });
+      } catch (error) {
+        let toast = {
+          severity: "error",
+          detail: this.messages.pages.coursePage.deleteTopic.toastMessages.successfullyDeletedTopic,
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-danger text-white";
         }
-      });
+        this.$toast.add(toast);
+      }
     },
 
     async addTopic(data) {
-      const response = await this.postTopic(data);
-      await http.post(
-        `/courses/${this.$route.params.id}/topics`,
-        {
-          topic_ids: [response.id],
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${this.token}`,
+      try {
+        const response = await this.postTopic(data);
+        await http.post(
+          `/courses/${this.$route.params.id}/topics`,
+          {
+            topic_ids: [response.id],
           },
-        }
-      );
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
 
-      this.course = await this.getCourse(this.$route.params.id);
-      this.topics = this.course.topics;
-      this.newTopicDialogVisible = false;
+        this.course = await this.getCourse(this.$route.params.id);
+        this.topics = this.course.topics;
+        this.newTopicDialogVisible = false;
+
+        let toast = {
+          severity: "success",
+          detail: this.messages.pages.coursePage.addTopic.toastMessages.successfulyCreatedTopic,
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-success text-white";
+        }
+        this.$toast.add(toast);
+      } catch (error) {
+        let toast = {
+          severity: "error",
+          detail: this.messages.pages.coursePage.addTopic.toastMessages.failedToCreateTopic,
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-danger text-white";
+        }
+        this.$toast.add(toast);
+      }
     },
 
     async editTopic(data) {
-      await this.putTopic(this.activeTopicId, data);
+      try {
+        await this.putTopic(this.activeTopicId, data);
 
-      const updatedTopicIndex = this.topics.findIndex(topic => topic.id === this.activeTopicId);
-      if (updatedTopicIndex !== -1) {
-        this.topics[updatedTopicIndex] = { ...this.topics[updatedTopicIndex], ...data };
+        const updatedTopicIndex = this.topics.findIndex(topic => topic.id === this.activeTopicId);
+        if (updatedTopicIndex !== -1) {
+          this.topics[updatedTopicIndex] = { ...this.topics[updatedTopicIndex], ...data };
+        }
+        this.editTopicDialogVisible = false;
+
+        let toast = {
+          severity: "success",
+          detail: this.messages.pages.coursePage.editTopic.toastMessages.successfullyUpdatedTopic,
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-success text-white";
+        }
+        this.$toast.add(toast);
+      } catch (error) {
+        let toast = {
+          severity: "error",
+          detail: this.messages.pages.coursePage.editTopic.toastMessages.failedToUpdateTopic,
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-danger text-white";
+        }
+        this.$toast.add(toast);
       }
-      this.editTopicDialogVisible = false;
     },
 
     async findUserDetails(courseId, userId, groupName) {
@@ -531,22 +605,45 @@ export default {
     },
 
     async saveGroups() {
-      const group_ids = this.currentGroups?.map(
-        (group) => group.id
-      );
+      try {
+        const group_ids = this.currentGroups?.map(
+          (group) => group.id
+        );
 
-      await http.post(
-        `/courses/${this.$route.params.id}/groups`,
-        {
-          group_ids: group_ids === undefined ? [] : group_ids,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${this.token}`,
+        await http.post(
+          `/courses/${this.$route.params.id}/groups`,
+          {
+            group_ids: group_ids === undefined ? [] : group_ids,
           },
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
+        this.groupTreatmentDialog = false;
+
+        let toast = {
+          severity: "success",
+          detail: this.messages.pages.coursePage.saveGroups.toastMessages.successfullyUpdatedGroups,
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-success text-white";
         }
-      );
-      this.groupTreatmentDialog = false;
+        this.$toast.add(toast);
+      } catch (error) {
+        let toast = {
+          severity: "error",
+          detail: this.messages.pages.coursePage.saveGroups.toastMessages.failedToUpdateGroups,
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-danger text-white";
+        }
+        this.$toast.add(toast);
+      }
+
     },
     async postNewAssignment(data) {
       try {
@@ -596,24 +693,49 @@ export default {
       }
     },
     async deleteAssignment(id) {
-      this.$confirm.require({
-        message: this.messages.pages.coursePage.confirmDialogs.messageAssignment,
-        icon: 'pi pi-exclamation-triangle',
-        rejectClass: 'btn btn-danger',
-        acceptClass: 'btn btn-success ',
-        rejectLabel: this.messages.pages.coursePage.confirmDialogs.rejectLabel,
-        acceptLabel: this.messages.pages.coursePage.confirmDialogs.acceptLabel,
-        accept: async () => {
-          const user = userStore();
-          await http.delete(`/assignments/${id}`, {
-            headers: {
-              Authorization: `Bearer ${user.token}`,
-            },
-          });
-          const idx = this.topics.find(x => x.id == this.activeTopicId).assignment.findIndex((x) => x.id == id);
-          this.topics.find(x => x.id == this.activeTopicId).assignment.splice(idx, 1);
+      try {
+        this.$confirm.require({
+          message: this.messages.pages.coursePage.confirmDialogs.messageAssignment,
+          icon: 'pi pi-exclamation-triangle',
+          rejectClass: 'btn btn-danger',
+          acceptClass: 'btn btn-success ',
+          rejectLabel: this.messages.pages.coursePage.confirmDialogs.rejectLabel,
+          acceptLabel: this.messages.pages.coursePage.confirmDialogs.acceptLabel,
+          accept: async () => {
+            const user = userStore();
+            await http.delete(`/assignments/${id}`, {
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+              },
+            });
+            const idx = this.topics.find(x => x.id == this.activeTopicId).assignment.findIndex((x) => x.id == id);
+            this.topics.find(x => x.id == this.activeTopicId).assignment.splice(idx, 1);
+
+            let toast = {
+              severity: "success",
+              detail:
+                this.messages.pages.coursePage.deleteAssignment.toastMessages.successfullyDeletedAssignment,
+              life: 3000,
+            };
+            if (!this.isDarkMode) {
+              toast.styleClass = "bg-success text-white";
+            }
+
+            this.$toast.add(toast);
+          }
+        });
+      } catch (error) {
+        let toast = {
+          severity: "error",
+          detail:
+          this.messages.pages.coursePage.deleteAssignment.toastMessages.failedToDeleteAssignment,
+          life: 3000,
+        };
+        if (!this.isDarkMode) {
+          toast.styleClass = "bg-danger text-white";
         }
-      });
+        this.$toast.add(toast);
+      }
     },
   },
   computed: {
