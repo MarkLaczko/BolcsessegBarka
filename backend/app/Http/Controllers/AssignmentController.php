@@ -25,8 +25,10 @@ class AssignmentController extends Controller
     {
         $data = $request->validated();
         $assignment = Assignment::create($data);
-        $assignment->teacher_task = $request->file("teacher_task")->get();
-        $assignment->save();
+        if ($request->file("teacher_task") != null) {
+            $assignment->teacher_task = $request->file("teacher_task")->get();
+            $assignment->save();
+        }
         return new AssignmentResource($assignment);
     }
 
@@ -48,7 +50,10 @@ class AssignmentController extends Controller
         $data = $request->validated();
         $assignment = Assignment::findOrFail($id);
         $assignment->update($data);
-
+        if ($request->file("teacher_task") != null) {
+            $assignment->teacher_task = $request->file("teacher_task")->get();
+            $assignment->save();
+        }
         return new AssignmentResource($assignment);
     }
 
