@@ -108,6 +108,7 @@
   --accordion-active-bg: #{$cyan};
   --confirmDialog-bg-color: #{$white};
   --manageCourse-button-bg: #{$cyan};
+  --actions-button-bg: #{$lightGray};
 }
 
 [data-theme="dark"] {
@@ -158,6 +159,7 @@
   --accordion-active-bg: #{$gray};
   --confirmDialog-bg-color: #{$gray};
   --manageCourse-button-bg: #{$darkerGrey};
+  --actions-button-bg: #{$darkerGrey};
 }
 
 body {
@@ -277,6 +279,10 @@ div.user-icon {
   --bs-dropdown-border-color: var(--dropdownMenu-border-color);
 }
 
+.accordion .dropdown-item {
+  color: var(--text-color);
+}
+
 .form-check-input:checked {
   background-color: var(--switched-switchButton-bg-color);
   border-color: var(--switched-switchButton-bg-color);
@@ -371,4 +377,10 @@ div[data-pc-name="dialog"] {
 
 #manageCourses {
   background-color: var(--manageCourse-button-bg);
+}
+
+h2.accordion-header div.dropdown button.dropdown-toggle {
+  background-color: var(--actions-button-bg);
+  color: var(--text-color);
+  border: var(--border);
 }
