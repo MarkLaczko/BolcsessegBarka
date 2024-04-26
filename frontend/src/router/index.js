@@ -139,6 +139,16 @@ export const router = createRouter({
         quizCreationGuard: true,
       },
     },
+    {
+      path: "/quiz/:quizId/edit/:taskId",
+      name: "editTask",
+      component: () => import("@pages/EditTaskPage.vue"),
+      meta: {
+        requiresAuth: true,
+        title: "Feladat szerkesztése",
+        quizCreationGuard: true,
+      },
+    },
   ],
 });
 
