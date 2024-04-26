@@ -373,6 +373,7 @@ export default {
     },
     newAssignmentPage: {
       title: "Create a new task",
+      updateTitle: "Modify task",
       task_nameLabel: "Task title",
       saveButton: "Save",
       cancelButton: "Cancel",
