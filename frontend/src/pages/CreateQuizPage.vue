@@ -175,7 +175,7 @@ const submitForm = async () => {
         form.closes = form.closes == null ? null : Math.floor(new Date(form.closes).getTime() / 1000);
         const response = await quizStore().postQuiz(form);
         if(!response.id){
-            throw ('Hiba')
+            throw ('Error')
         }
         router.push({name: 'editQuiz', params: {id: response.id}});
     } catch (error) {
