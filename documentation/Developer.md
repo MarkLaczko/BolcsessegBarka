@@ -3520,7 +3520,7 @@ Ez a példa bemutatja, hogyan lehet lekérni és kiíratni a konzolra az összes
 - **getGroup(id):** Lekéri egy specifikus csoport részletes adatait azonosító alapján.
 - **postGroup(data):** Új csoport létrehozására szolgál, ahol a data tartalmazza a csoport adatait.
 - **putGroup(id, data):** Meglévő csoport adatainak módosítását végzi az adott azonosító alapján.
-- **destroyGroup(id):** Törli a megadott azonosítójú csoprtot.
+- **destroyGroup(id):** Törli a megadott azonosítójú csoportot.
 
 ### Hitelesítés Kezelése
 
@@ -3548,6 +3548,46 @@ export default {
   async mounted() {
     await this.getGroups();
     console.log(this.groups);
+  },
+};
+```
+
+### `QuizStore`
+
+> A `QuizStore` egy Pinia állapotkezelő tároló, amely a kvízek kezelését végzi. Ez a tároló felelős a kvízek adtaiainak lekérdezéséért, frissítéséért és törléséért, valamint az új kvízek létrehozásáért.
+
+### Tároló Funkciói
+
+#### **Műveletek (Actions):**
+
+- **getQuiz(id):** Lekéri egy specifikus kvíz részletes adatait azonosító alapján.
+- **postQuiz(data):** Új kvíz létrehozására szolgál, ahol a data tartalmazza a kvíz adatait.
+- **putQuiz(id, data):** Meglévő kvíz adatainak módosítását végzi az adott azonosító alapján.
+- **destroyQuiz(id):** Törli a megadott azonosítójú kvízt.
+
+### Hitelesítés Kezelése
+
+Minden API kérés során az aktuális felhasználó hitelesítési tokenjét csatoljuk a kérés fejlécéhez, ami biztosítja az adatok védelmét és az engedélyezett hozzáférést.
+
+### Állapot Tartósítása
+
+A tároló állapotát nem tartósítjuk, mivel a témák dinamikus adatok, amelyek gyakran frissülnek. A frissesség biztosítása érdekében minden oldalbetöltéskor újra lekérjük őket.
+
+### Használati Példa
+
+A tároló használata egy Vue komponensben:
+
+```js
+import { mapActions } from "pinia";
+import { quizStore } from "@stores/QuizStore";
+
+export default {
+  methods: {
+    ...mapActions(quizStore, ["getQuiz"]),
+  },
+  async mounted() {
+    const quiz = await this.getQuiz(1);
+    console.log(quiz);
   },
 };
 ```
