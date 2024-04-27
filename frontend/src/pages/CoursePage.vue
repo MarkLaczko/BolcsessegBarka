@@ -439,7 +439,7 @@
                     </div>
                     <RouterLink class="btn btn-outline-primary me-2 px-5" :to="{
       name: 'assignment',
-      params: { id: assignment.id },
+      params: { id: assignment.id }, query: {groupName: this.$route.query.groupName}
     }">{{ messages.pages.coursePage.viewButton }}</RouterLink>
                   </div>
                 </div>

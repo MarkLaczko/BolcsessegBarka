@@ -59,7 +59,6 @@ export default {
         });
       });
       this.courses = coursesWithGroups;
-      console.log(this.courses);
     },
   },
   computed: {
