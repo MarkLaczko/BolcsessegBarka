@@ -53,6 +53,7 @@ export default {
       confirmDialogs: {
         messageTopic: "Are you sure you want to delete this topic?",
         messageAssignmnet: "Are you sure you want to delete this assignment?",
+        messageNote: "Are you sure you want to delete this note?",
         rejectLabel: "Cancel",
         acceptLabel: "Delete"
       },
@@ -84,8 +85,8 @@ export default {
       },
       deleteTopic: {
         toastMessages: {
-            successfullyDeletedTopic: "Topic deletion was successful!",
-            failedToDeleteTopic: "Failed to delete topic!"
+          successfullyDeletedTopic: "Topic deletion was successful!",
+          failedToDeleteTopic: "Failed to delete topic!"
         }
       },
       addTopic: {
@@ -118,6 +119,14 @@ export default {
         cancelButton: "Cancel",
         saveButton: "Save",
       },
+      currentNoteDialog: {
+        title: "Modify Note",
+        notesNameText: "Note name:",
+        cancelButton: "Cancel",
+        saveButton: "Save",
+        editButton: "Edit",
+        deleteButton: "Delete"
+    },
       accordionText: {
         actions: "Actions",
         newAssignment: "New Assignment",
@@ -132,12 +141,16 @@ export default {
         toastMessages: {
           successfullyCreatedNote: "Note successfully saved!",
           failedToCreateNote: "Failed to save note!",
+          successfullyUpdatedNote: "Note update was successful!",
+          failedToUpdateNote: "Failed to update note!",
+          successfullyDeletedNote: "Note deletion was successful!",
+          failedToDeleteNote: "Failed to delete note!"
         }
       },
       deleteAssignment: {
         toastMessages: {
-            successfullyDeletedAssignment: "Assignment deletion was successful!",
-            failedToDeleteAssignment: "Failed to delete assignment!",
+          successfullyDeletedAssignment: "Assignment deletion was successful!",
+          failedToDeleteAssignment: "Failed to delete assignment!",
         }
       }
     },
