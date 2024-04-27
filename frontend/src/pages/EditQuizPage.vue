@@ -21,6 +21,8 @@
                                 <FormKit
                                     type="text"
                                     label="Név"
+                                    name="name"
+                                    id="name"
                                     v-model="quiz.value.name"
                                     :classes="{
                                         input: 'form-control',
@@ -39,6 +41,8 @@
                                 <FormKit
                                     type="number"
                                     label="Max. próbálkozások száma"
+                                    name="max_attempts"
+                                    id="max_attempts"
                                     v-model="quiz.value.max_attempts"
                                     :classes="{
                                         input: 'form-control',
@@ -55,6 +59,8 @@
                                 <FormKit
                                     type="datetime-local"
                                     label="Kvíz nyitása"
+                                    name="opens"
+                                    id="opens"
                                     v-model="quiz.value.opens"
                                     :classes="{
                                         input: 'form-control',
@@ -66,6 +72,8 @@
                                 <FormKit
                                     type="datetime-local"
                                     label="Kvíz zárásas"
+                                    name="closes"
+                                    id="closes"
                                     v-model="quiz.value.closes"
                                     :classes="{
                                         input: 'form-control',
@@ -77,6 +85,8 @@
                                 <FormKit
                                     type="number"
                                     label="Időkorlát (perc)"
+                                    name="time"
+                                    id="time"
                                     v-model="quiz.value.time"
                                     :classes="{
                                         input: 'form-control',
@@ -92,6 +102,7 @@
                             <div class="col-12 my-1 d-flex justify-content-end">
                                 <FormKit
                                     type="submit"
+                                    id="submit"
                                     label="Mentés"
                                     :classes="{
                                         input: 'btn btn-success',
