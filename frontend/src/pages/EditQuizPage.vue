@@ -133,7 +133,9 @@ import { http } from '@utils/http';
 import { useToast } from 'primevue/usetoast';
 import { useConfirm } from "primevue/useconfirm";
 import { userStore } from "@stores/UserStore";
+import { quizStore } from "@stores/QuizStore";
 import { themeStore } from '@stores/ThemeStore';
+import { courseStore } from '@stores/CourseStore';
 
 const route = useRoute();
 const router = useRouter();
@@ -149,12 +151,7 @@ const loading = computed(() => {
 
 
 const getQuiz = async () => {
-    const response = await http.get(`quizzes/${route.params.id}`, {
-        headers: {
-            Authorization: `Bearer ${userStore().token}`,
-        },
-    });
-    quiz.value = response.data.data;
+    quiz.value = await quizStore().getQuiz(route.params.id);
 
     let opensDate = new Date(quiz.value.opens * 1000);
     quiz.value.opens = quiz.value.opens == null ? null : `${opensDate.getFullYear()}-${(opensDate.getMonth() + 1) < 10 ? '0' : ''}${opensDate.getMonth() + 1}-${opensDate.getDate() < 10 ? '0' : ''}${opensDate.getDate()}T${opensDate.getHours() < 10 ? '0' : ''}${opensDate.getHours()}:${opensDate.getMinutes() < 10 ? '0' : ''}${opensDate.getMinutes()}:00`;
