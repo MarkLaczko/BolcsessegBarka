@@ -23,6 +23,11 @@
    - [CoursePage](#coursepage)
    - [CourseManagementPage](#coursemanagementpage)
    - [UserManagementPage](#usermanagementpage)
+   - [GroupManagementPage](#groupmanagementpage)
+   - [CreateQuizPage](#createquizpage)
+   - [EditQuizPage](#qditquizpage)
+   - [CreateTaskPage](#createtaskpage)
+   - [EditTaskPage](#qdittaskpage)
 5. [Nyelvi beállítások](#nyelvi-beállítások)
 6. [Tárolók](#tárolók)
    - [LanguageStore](#languagestore)
@@ -3141,14 +3146,39 @@ A komponens integrálja a `groupStore`, `userStore`, `themeStore`, és `language
 - **topic:** Az a téma, ahova a felhasználó a kvízt hozzá kívánja adni. Ha az URL-ben lévő téma azonosítója nincs benne a kurzusban, akkor a felahsználó választhat.
 - **loading:** Boolean típusú változó, amely jelzi, hogy az oldal betöltése folyamatban van-e.
 - **form**: Az űrlap tartalma.
-- **token**: A felhasználót azonosító tokenje a `userStore`-ból.
-- **isDarkMode**: A felhasználó által kiválaszott világos/sötét téma a `themeStore`-ból.
-- **messages**: A felhasználó által kiválaszott nyelvhez tartozó  a `languageStore`-ból.
 
 #### **Metódusok:**
 
 - **getCourse**: A kurzus adatainak lekérése.
 - **submitForm**: Az űralp adatainak elküldése.
+
+### `EditQuizPage`
+
+> Az `EditQuizPage` lehetővé teszi tanárok számára, hogy meglévő kvízeket szerkeszenek.
+
+### Komponens Struktúra
+
+#### **Template Áttekintés:**
+
+- **BaseLayout:** Ez az oldal alapvető elrendezési keretét biztosítja.
+- **BaseSpinner:** Egy töltésjelző, amely a felhasználói adatok betöltése közben jelenik meg.
+- **Toast:** Üzenetek megjelenítése a felhasználói műveletek eredményéről.
+- **BaseConfirmDialog:** 
+
+### Script Részletek
+
+#### **Belső Állapotok:**
+
+- **quiz**: A kvíz adatai.
+- **tasks:** A kívzhez tartozó feladatok.
+- **loading:** Boolean típusú változó, amely jelzi, hogy az oldal betöltése folyamatban van-e.
+
+#### **Metódusok:**
+
+- **getQuiz**: A kvíz adatainak lekérése.
+- **putForm**: Az űralp adatainak elküldése.
+- **moveItem**: A feladatok sorrdenjének változtatása.
+- **confirmDeleteTask**: Feladat törlése.
 
 ### Stílusok és Animációk
 
