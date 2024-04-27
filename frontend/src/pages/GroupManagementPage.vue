@@ -356,7 +356,6 @@ export default {
       addGroupDialogVisible: false,
       modifyGroupDialogVisible: false,
       currentlyModifyingGroup: [],
-      checked: true,
       users: [],
       loading: true,
       toDelete: null,
