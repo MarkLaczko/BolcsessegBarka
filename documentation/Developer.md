@@ -870,6 +870,10 @@ Egy JSON tömböt ad vissza `data` néven, melyben objektumok találhatóak a k�
 - `id`: A kurzus azonosítója.
 - `name`: A kurzus neve.
 - `image`: A kurzus képe `base64` formátumban.
+- `topics`: Az adott kurzushoz tartozó témákat adja vissza.
+  - `assignments`: Az adott témához tartozó beadandók tömbje.
+  - `notes`: Az adott témához tartozó jegyzetek tömbje.
+  - `quizzes`: Az adott témához tartozó kvízek tömbje.
 
 #### Példa
 
@@ -887,7 +891,17 @@ Válasz:
     {
       "id": 1,
       "name": "Matematika",
-      "image": "iVBORw0KGgoAAAANSUhEUgAAABMC..."
+      "image": "iVBORw0KGgoAAAANSUhEUgAAABMC...",
+      "topics": [
+        {
+          "id": 1,
+          "name": "AlmaFa",
+          "order": 2,
+          "assignments": [],
+          "notes": [],
+          "quizzes": [],
+        }
+      ]
     }
   ]
 }
@@ -912,6 +926,9 @@ Egy JSON tömböt ad vissza `data` néven, melyben objektumok találhatóak a k�
 - `name`: A kurzus neve.
 - `image`: A kurzus képe `base64` formátumban.
 - `topics`: Az adott kurzushoz tartozó témákat adja vissza.
+  - `assignments`: Az adott témához tartozó beadandók tömbje.
+  - `notes`: Az adott témához tartozó jegyzetek tömbje.
+  - `quizzes`: Az adott témához tartozó kvízek tömbje.
 
 #### Példa
 
@@ -925,20 +942,21 @@ Válasz:
 
 ```json
 {
-  "data": [
-    {
-      "id": 1,
-      "name": "Matematika",
-      "image": "iVBORw0KGgoAAAANSUhEUgAAABMC...",
-      "topics": [
-        {
-          "id": 1,
-          "name": "AlmaFa",
-          "order": 2
-        }
-      ]
-    }
-  ]
+  "data": {
+    "id": 1,
+    "name": "Matematika",
+    "image": "iVBORw0KGgoAAAANSUhEUgAAABMC...",
+    "topics": [
+      {
+        "id": 1,
+        "name": "AlmaFa",
+        "order": 2,
+        "assignments": [],
+        "notes": [],
+        "quizzes": [],
+      }
+    ]
+  }
 }
 ```
 
