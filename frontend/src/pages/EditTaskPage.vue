@@ -208,7 +208,7 @@ const loading = computed(() => {
 });
 
 const getQuiz = async () => {
-    quiz.value = await quizStore().getQuiz(route.params.id);
+    quiz.value = await quizStore().getQuiz(route.params.quizId);
 
     const response4 = await http.get(`quizzes/${route.params.quizId}/tasks/ids`, {
         headers: {
