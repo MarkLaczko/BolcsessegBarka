@@ -18,9 +18,10 @@ class TopicResource extends JsonResource
             "id" => $this->id,
             "name" => $this->name,
             "order" => $this->order,
-            "assignment" => AssignmentResource::collection($this->assignments),
-            "notes" => NoteResource::collection($this->notes),
-            'quizzes' => QuizResource::collection($this->quizzes)
+            "course" => new CourseResource($this->whenLoaded('course')),
+            "assignment" => AssignmentResource::collection($this->whenLoaded('assignments')),
+            "notes" => NoteResource::collection($this->whenLoaded('notes')),
+            'quizzes' => QuizResource::collection($this->whenLoaded('quizzes')),
         ];
     }
 }
