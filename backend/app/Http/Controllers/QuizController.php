@@ -16,7 +16,8 @@ class QuizController extends Controller
     }
 
     public function show(int $id) {
-        return new QuizResource(Quiz::findOrFail($id));
+        $quiz = Quiz::with(['topic', 'topic.course'])->findOrFail($id);
+        return new QuizResource($quiz);
     }
 
     public function store(StoreQuizRequest $request) {
