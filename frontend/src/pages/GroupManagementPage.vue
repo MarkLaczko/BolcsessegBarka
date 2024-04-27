@@ -320,7 +320,6 @@ import { groupStore } from "@stores/GroupStore";
 import { FilterMatchMode } from "primevue/api";
 import { themeStore } from "@stores/ThemeStore.mjs";
 import { userStore } from "@stores/UserStore";
-import { permissionStore } from "@stores/PermissionStore.mjs";
 import { languageStore } from "@stores/LanguageStore.mjs";
 import BaseDialog from "@components/BaseDialog.vue";
 import BaseToast from "@components/BaseToast.vue";
