@@ -20,7 +20,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return CourseResource::collection(Course::all());
+        return CourseResource::collection(Course::with(["topics", 'topics.assignments', 'topics.notes', 'topics.quizzes'])->get());
     }
 
     /**
