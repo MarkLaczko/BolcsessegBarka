@@ -54,6 +54,7 @@ export default {
       confirmDialogs: {
         messageTopic: "Biztos ki akarja törölni ezt a témát?",
         messageAssignment: "Biztos ki akarja törölni ezt a feladatot?",
+        messageNote: "Biztos ki akarja törölni ezt a jegyzetet?",
         rejectLabel: "Mégsem",
         acceptLabel: "Törlés"
       },
@@ -120,7 +121,15 @@ export default {
         title: "Jegyzet létrehozása",
         notesNameText: "Jegyzet neve:",
         cancelButton: "Mégsem",
+        saveButton: "Mentés"
+      },
+      currentNoteDialog: {
+        title: "Jegyzet modósítása",
+        notesNameText: "Jegyzet neve:",
+        cancelButton: "Mégsem",
         saveButton: "Mentés",
+        editButton: "Szerkesztés",
+        deleteButton: "Törlés"
       },
       accordionText: {
           actions: "Műveletek",
@@ -136,6 +145,10 @@ export default {
         toastMessages: {
           successfullyCreatedNote: "Jegyzet elmentése sikeres volt!",
           failedToCreateNote: "Jegyzet elmentése sikertelen volt!",
+          successfullyUpdatedNote: "Jegyzet frissítése sikeres volt!",
+          failedToUpdateNote: "Jegyzet frissítése sikertelen volt!",
+          successfullyDeletedNote: "Jegyzet törlése sikeres volt!",
+          failedToDeleteNote: "Jegyzet törlése sikertelen volt!"
         }
       },
       deleteAssignment: {
