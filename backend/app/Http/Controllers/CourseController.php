@@ -43,7 +43,8 @@ class CourseController extends Controller
      */
     public function show(string $id)
     {
-        $course = Course::with("topics")->findOrFail($id);
+        $course = Course::with(["topics", 'topics.assignments', 'topics.notes', 'topics.quizzes'])
+            ->findOrFail($id);
 
         return new CourseResource($course);
     }
@@ -130,7 +131,9 @@ class CourseController extends Controller
             }
         }
 
-        $course->load('topics');
+        $course = Course::with(["topics" => function($query) {
+            return $query->with(['assignments', 'notes', 'quizzes']);
+        }])->find($courseId);
         return new CourseResource($course);
     }
 
