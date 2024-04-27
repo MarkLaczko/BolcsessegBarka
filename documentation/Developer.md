@@ -3188,6 +3188,43 @@ CSS szabályok és animációk vannak definiálva a komponenshez, hogy javítsá
 
 A komponens integrálja a `userStore`, `quizStore`, `themeStore`, és `languageStore` tárolókat a felhasználói adatok, témabeállítások és nyelvi beállítások kezeléséhez.
 
+### `CreateTaskPage`
+
+> A `CreateTaskPage` lehetővé teszi tanárok számára, hogy kvízekhez új feladatokat adjanak hozzá.
+
+### Komponens Struktúra
+
+#### **Template Áttekintés:**
+
+- **BaseLayout:** Ez az oldal alapvető elrendezési keretét biztosítja.
+- **BaseSpinner:** Egy töltésjelző, amely a felhasználói adatok betöltése közben jelenik meg.
+- **Toast:** Üzenetek megjelenítése a felhasználói műveletek eredményéről.
+- **BaseConfirmDialog:** Megerősítő felugró ablak.
+
+### Script Részletek
+
+#### **Belső Állapotok:**
+
+- **quiz**: A kvíz adatai.
+- **form:** Az űrlap tartalma feladatokkal.
+- **loading:** Boolean típusú változó, amely jelzi, hogy az oldal betöltése folyamatban van-e.
+
+#### **Metódusok:**
+
+- **getQuiz**: A kvíz adatainak lekérése.
+- **moveItem**: A feladatok sorrdenjének változtatása.
+- **addEmptySubtask**: Új üres alfeladat hozzáadása.
+- **postTask**: Feladat mentése.
+- **confirmDeleteSubtask**: Alfeladat törlése.
+
+### Stílusok és Animációk
+
+CSS szabályok és animációk vannak definiálva a komponenshez, hogy javítsák a felhasználói élményt, mint például áttűnések és eltolódások a dialógusablakok és toast üzenetek megjelenítésekor.
+
+### Integráció a Pinia Tárolókkal
+
+A komponens integrálja a `userStore`, `quizStore`, `themeStore`, és `languageStore` tárolókat a felhasználói adatok, témabeállítások és nyelvi beállítások kezeléséhez.
+
 ## Nyelvi beállítások:
 
 > A `messages` tömb a projektünkben a többnyelvűség égköve, amely a különböző nyelvű szövegeket tárolja, és lehetővé teszi a nyelvi adaptáció dinamikus kezelését. A szövegek két külön fájlban, `hu.mjs` és `en.mjs` nevű modulokban vannak eltárolva, amelyek a magyar és angol nyelvű tartalmakat tartalmazzák. Ezeket a modulokat a `LanguageStore` kezeli, ami biztosítja, hogy a megfelelő nyelvi tartalom az aktuális felhasználói beállításoknak megfelelően jelenjen meg.
