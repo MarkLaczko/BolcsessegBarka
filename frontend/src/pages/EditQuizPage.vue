@@ -170,13 +170,9 @@ const putForm = async () => {
     try {
         quiz.value.opens = quiz.value.opens == null ? null : Math.floor(new Date(quiz.value.opens).getTime() / 1000);
         quiz.value.closes = quiz.value.closes == null ? null : Math.floor(new Date(quiz.value.closes).getTime() / 1000);
-        const response = await http.put(`quizzes/${route.params.id}`, quiz.value, {
-            headers: {
-                Authorization: `Bearer ${userStore().token}`,
-            },
-        });
-        if(!response.data.data.id){
-            throw ('Hiba')
+        const response = await quizStore().putQuiz(route.params.id, quiz.value);
+        if(!response.id){
+            throw ('Error')
         }
 
         let opensDate = new Date(quiz.value.opens * 1000);
@@ -184,6 +180,18 @@ const putForm = async () => {
         let closesDate = new Date(quiz.value.closes * 1000);
         quiz.value.closes = quiz.value.closes == null ? null : `${closesDate.getFullYear()}-${(closesDate.getMonth() + 1) < 10 ? '0' : ''}${closesDate.getMonth() + 1}-${closesDate.getDate() < 10 ? '0' : ''}${closesDate.getDate()}T${closesDate.getHours() < 10 ? '0' : ''}${closesDate.getHours()}:${closesDate.getMinutes() < 10 ? '0' : ''}${closesDate.getMinutes()}:00`;
 
+        let toastToAdd = {
+          severity: "success",
+          detail: "Kvíz frissítve!",
+          life: 3000,
+        };
+        if (!themeStore().isDarkMode) {
+          toastToAdd.styleClass = "bg-success text-white";
+        }
+        else {
+          toastToAdd.styleClass = "toast-success text-white";
+        }
+        toast.add(toastToAdd);
     } catch (error) {
         let toastToAdd = {
           severity: "error",
