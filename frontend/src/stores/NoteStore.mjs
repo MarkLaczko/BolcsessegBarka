@@ -47,6 +47,7 @@ export const noteStore = defineStore("noteStore", {
 
       const idx = this.notes.findIndex((x) => x.id == id);
       this.notes.splice(idx, 1, response.data.data);
+      return response.data.data;
     },
     async destroyNote(id) {
       const user = userStore();
