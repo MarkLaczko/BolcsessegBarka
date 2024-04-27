@@ -193,6 +193,7 @@ import { useToast } from 'primevue/usetoast';
 import { useConfirm } from "primevue/useconfirm";
 import { userStore } from "@stores/UserStore";
 import { themeStore } from '@stores/ThemeStore';
+import { quizStore } from "@stores/QuizStore";
 
 const route = useRoute();
 const router = useRouter();
@@ -207,12 +208,7 @@ const loading = computed(() => {
 });
 
 const getQuiz = async () => {
-    const response = await http.get(`quizzes/${route.params.id}`, {
-        headers: {
-            Authorization: `Bearer ${userStore().token}`,
-        },
-    });
-    quiz.value = response.data.data;
+    quiz.value = await quizStore().getQuiz(route.params.id);
 
     form.quiz_id = quiz.value.id;
     form.order = quiz.value.number_of_tasks;
