@@ -23,5 +23,12 @@ class CourseSeeder extends Seeder
                 'image' => 'matematika.png'
             ]
         ]);
+        
+        DB::table('course_group')->insert([
+            [
+                'course_id' => '1',
+                'group_id' => '1'
+            ]
+        ]);
     }
 }
