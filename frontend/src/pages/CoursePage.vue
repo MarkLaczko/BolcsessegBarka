@@ -329,8 +329,8 @@
             <button type="button" class="btn" :class="{'btn-outline-danger': isDarkMode, 'btn-danger': !isDarkMode}" @click="currentNoteVisible = false, isNoteReadonly = true">{{
       messages.pages.coursePage.currentNoteDialog.cancelButton }}</button>
             <button type="button" class="btn" :class="{'btn-outline-primary': isDarkMode, 'btn-primary': !isDarkMode}" @click="isNoteReadonly = false">{{ messages.pages.coursePage.currentNoteDialog.editButton }}</button>
-            <button type="button" class="btn" :class="{'btn-outline-warning': isDarkMode, 'btn-warning': !isDarkMode}" @click="deleteNote()">{{ messages.pages.coursePage.currentNoteDialog.deleteButton }}</button>
-            <button type="button" class="btn" :class="{'btn-outline-success': isDarkMode, 'btn-success': !isDarkMode}" @click="isNoteReadonly = true, updateNote()">{{
+            <button type="button" id="deleteNoteButton" class="btn" :class="{'btn-outline-warning': isDarkMode, 'btn-warning': !isDarkMode}" @click="deleteNote()">{{ messages.pages.coursePage.currentNoteDialog.deleteButton }}</button>
+            <button type="button" id="modifyNoteButton" class="btn" :class="{'btn-outline-success': isDarkMode, 'btn-success': !isDarkMode}" @click="isNoteReadonly = true, updateNote()">{{
       messages.pages.coursePage.currentNoteDialog.saveButton }}</button>
           </div>
         </div>
