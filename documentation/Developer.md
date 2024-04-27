@@ -1621,7 +1621,8 @@ Válasz:
       "max_attempts": 1,
       "opens": null,
       "closes": null,
-      "time": null
+      "time": null,
+      "number_of_tasks": 2
     },
     {
       "id": 2,
@@ -1629,7 +1630,8 @@ Válasz:
       "max_attempts": 1,
       "opens": 1704063600,
       "closes": 1766357999,
-      "time": 60
+      "time": 60,
+      "number_of_tasks": 2
     }
   ]
 }
@@ -1676,7 +1678,8 @@ Válasz:
     "max_attempts": 1,
     "opens": null,
     "closes": null,
-    "time": null
+    "time": null,
+    "number_of_tasks": 2
   }
 }
 ```
@@ -1745,7 +1748,8 @@ Válasz:
     "max_attempts": 1,
     "opens": 1704099600,
     "closes": 1704102300,
-    "time": 45
+    "time": 45,
+    "number_of_tasks": 2
   }
 }
 ```
@@ -1814,7 +1818,8 @@ Válasz:
     "max_attempts": 1,
     "opens": 1735722000,
     "closes": 1735724700,
-    "time": 45
+    "time": 45,
+    "number_of_tasks": 2
   }
 }
 ```

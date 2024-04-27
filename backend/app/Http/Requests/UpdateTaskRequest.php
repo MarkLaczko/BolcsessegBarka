@@ -29,7 +29,7 @@ class UpdateTaskRequest extends FormRequest
             'text' => ['required', 'string', 'max:255'],
             'subtasks.*.id' => ['nullable', 'exists:subtasks,id', 'numeric', 'integer'],
             'subtasks.*.order' => ['required', 'numeric', 'integer', 'min:0'],
-            'subtasks.*.question' => ['required', 'string', 'max:65000'],
+            'subtasks.*.question' => ['required', 'string', 'max:16500000'],
             'subtasks.*.options' => ['nullable', 'array'],
             'subtasks.*.options.*' => ['nullable', 'string', 'max:5000'],
             'subtasks.*.solution' => ['nullable', 'array'],

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('task_id')->constrained()->onDelete('cascade');
             $table->integer('order');
-            $table->text('question');
+            $table->mediumText('question');
             $table->text('options')->nullable();
             $table->text('solution')->nullable();
             $table->string('type');

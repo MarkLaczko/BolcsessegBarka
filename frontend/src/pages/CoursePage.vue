@@ -385,10 +385,21 @@
       ">{{ messages.pages.coursePage.accordionText.newNote }}</a>
                   </li>
                   <li>
-                    <a class="dropdown-item" @click="
-      (editTopicDialogVisible = true),
-      (activeTopicId = topic.id)
-      ">{{ messages.pages.coursePage.accordionText.edit }}</a>
+                    <button
+                      class="dropdown-item"
+                      @click="navigateToNewQuizPage(course.id, topic.id)"
+                      >{{ messages.pages.coursePage.accordionText.newQuiz }}
+                  </button>
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      @click="
+                        (editTopicDialogVisible = true),
+                          (activeTopicId = topic.id)
+                      "
+                      >{{ messages.pages.coursePage.accordionText.edit }}</a
+                    >
                   </li>
                   <li>
                     <a class="dropdown-item" @click="deleteTopic(topic.id)">{{
@@ -434,7 +445,11 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-12 col-md-4 col-lg-3" v-for="note in topic.notes" :key="note.id">
+                <div
+                  class="col-12 col-md-4 col-lg-3 h-100"
+                  v-for="note in topic.notes"
+                  :key="note.id"
+                >
                   <div class="card mt-2 text-center">
                     <div class="card-header">
                       <h4>{{ messages.pages.coursePage.note.name }}</h4>
@@ -447,6 +462,71 @@
                         @click="openCurrentNote(note), currentlyModifyingNote = note.id, activeTopicId = topic.id">
                         {{ messages.pages.coursePage.note.viewButton }}
                       </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div
+                  class="col-12 col-lg-6 my-3"
+                  v-for="quiz in topic.quizzes"
+                  :key="quiz.id"
+                >
+                  <div class="card h-100 mt-2 text-center">
+                    <div class="card-header">
+                      <h4>{{ messages.pages.coursePage.quiz.name }}</h4>
+                    </div>
+                    <div class="card-body">
+                      <span class="fw-bold fs-5">{{ quiz.name }}</span>
+                      <table class="mt-2 mb-0 table table-striped">
+                        <tbody>
+                          <tr>
+                            <td class="w-50">{{ messages.pages.coursePage.quiz.opens }}</td>
+                            <td class="w-50" v-if="quiz.opens != null">{{ toDate(quiz.opens) }}</td>
+                            <td class="w-50" v-else>-</td>
+                          </tr>
+                          <tr>
+                            <td class="w-50">{{ messages.pages.coursePage.quiz.closes }}</td>
+                            <td class="w-50" v-if="quiz.closes != null">{{ toDate(quiz.closes) }}</td>
+                            <td class="w-50" v-else>-</td>
+                          </tr>
+                          <tr>
+                            <td class="w-50">{{ messages.pages.coursePage.quiz.time }}</td>
+                            <td class="w-50" v-if="quiz.time != null">{{ quiz.time }} {{ messages.pages.coursePage.quiz.minutes }}</td>
+                            <td class="w-50" v-else>-</td>
+                          </tr>
+                          <tr>
+                            <td class="w-50">{{ messages.pages.coursePage.quiz.attempts }}</td>
+                            <td class="w-50" v-if="quiz.max_attempts != null">{{ quiz.max_attempts }}</td>
+                            <td class="w-50" v-else>-</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="card-footer">
+                      <div class="d-flex justify-content-center align-self-center gap-1">
+                        <button
+                          class="btn btn-primary"
+                          type="button"
+                          @click=""
+                        >
+                          {{ messages.pages.coursePage.note.viewButton }}
+                        </button>
+                        <button v-if="currentUserData.is_admin || member.permission == 'Tanár' || (currentUserData.is_admin && member.permission == 'Tanár')"
+                          class="btn btn-secondary text-white"
+                          type="button"
+                          @click="navigateToEditQuizPage(quiz.id)"
+                        >
+                          <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button v-if="currentUserData.is_admin || member.permission == 'Tanár' || (currentUserData.is_admin && member.permission == 'Tanár')"
+                          class="btn btn-danger text-white"
+                          type="button"
+                          @click="confirmDeleteSubtask(quiz.id, topic.id)"
+                        >
+                          <i class="fa-solid fa-trash"></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -478,6 +558,9 @@ import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Editor from "primevue/editor";
 import BaseConfirmDialog from "@components/BaseConfirmDialog.vue";
+import { RouterLink } from "vue-router";
+import { useRouter } from 'vue-router';
+import { getCurrentInstance } from 'vue';
 
 export default {
   data() {
@@ -1116,6 +1199,55 @@ export default {
         this.$toast.add(toast);
       }
     },
+    async confirmDeleteSubtask(id, topicId) {
+      this.$confirm.require({
+          message: 'Biztos ki akarja törölni ezt a feladatot?',
+          icon: 'pi pi-exclamation-triangle',
+          rejectClass: 'btn btn-danger',
+          acceptClass: 'btn btn-success ',
+          rejectLabel: 'Mégse',
+          acceptLabel: 'Törlés',
+          accept: async () => {
+            try {               
+              await http.delete(`quizzes/${id}`, {
+                  headers: {
+                      Authorization: `Bearer ${this.token}`,
+                    },
+                  })
+                  
+              const topicIndex = this.topics.findIndex(x => x.id == topicId);
+              const idx = this.topics[topicIndex].quizzes.findIndex(x => x.id == id);
+              this.topics[topicIndex].quizzes.splice(idx, 1);
+
+              let toastToAdd = {
+                  severity: "success",
+                  detail: "Sikeres törlés!",
+                  life: 3000,
+              };
+              if (!this.isDarkMode) {
+                  toastToAdd.styleClass = "bg-success text-white";
+              }
+              else {
+                  toastToAdd.styleClass = "toast-success text-white";
+              }
+              this.$toast.add(toastToAdd);
+          } catch (error) {
+              let toastToAdd = {
+                  severity: "error",
+                  detail: "Váratlan hiba a törlésnél!",
+                  life: 3000,
+              };
+              if (!this.isDarkMode) {
+                  toastToAdd.styleClass = "bg-danger text-white";
+              }
+              else {
+                  toastToAdd.styleClass = "toast-danger text-white";
+              }
+              this.$toast.add(toastToAdd);
+          }
+          }
+      });
+    },
   },
   computed: {
     ...mapState(userStore, ["currentUserData", "token"]),
@@ -1134,5 +1266,22 @@ export default {
     document.title = this.course.name;
     this.loading = false;
   },
+  setup(){
+    const navigateToNewQuizPage = (courseId, topicId) => {
+      window.location = `/course/${courseId}/topic/${topicId}/create-quiz`
+    }
+
+    const navigateToEditQuizPage = (id) => {
+      window.location = `/quiz/${id}/edit`
+    }
+
+    const toDate = (date) => {
+      return (new Date(date * 1000)).toLocaleString();
+    }
+
+    return {
+      navigateToNewQuizPage, navigateToEditQuizPage, toDate
+    }
+  }
 };
 </script>

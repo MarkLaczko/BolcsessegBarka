@@ -28,7 +28,7 @@ class StoreTaskRequest extends FormRequest
             'header' => ['required', 'string', 'max:100'],
             'text' => ['required', 'string', 'max:255'],
             'subtasks.*.order' => ['required', 'numeric', 'integer', 'min:0'],
-            'subtasks.*.question' => ['required', 'string', 'max:65000'],
+            'subtasks.*.question' => ['required', 'string', 'max:16500000'],
             'subtasks.*.options' => ['nullable', 'array'],
             'subtasks.*.options.*' => ['nullable', 'string', 'max:5000'],
             'subtasks.*.solution' => ['nullable', 'array'],

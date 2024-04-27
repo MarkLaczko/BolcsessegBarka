@@ -16,27 +16,23 @@ class TaskController extends Controller
 {
     public function index(int $id) {
         // The id variable refers to the id property of the given quiz!
+        $quiz = Quiz::findOrFail($id);
         $tasksQB = Task::with(['subtasks' => function ($x){
                 $x->orderBy('order');
             }])
             ->where('quiz_id', $id)
             ->orderBy('order');
-        if($tasksQB->exists()){
-            return TaskResource::collection($tasksQB->get());
-        }
-        return abort(404, "No query results for model [App\\Models\\Quiz] {$id}");
+        return TaskResource::collection($tasksQB->get());
     }
 
     public function taskIds(int $id) {
         // The id variable refers to the id property of the given quiz!
+        $quiz = Quiz::findOrFail($id);
         $tasksQB = Task::where('quiz_id', $id)
             ->orderBy('order');
-        if($tasksQB->exists()){
-            return response([
-                'data' => $tasksQB->pluck('id')->all()
-            ], 200);
-        }
-        return abort(404, "No query results for model [App\\Models\\Quiz] {$id}");
+        return response([
+            'data' => $tasksQB->pluck('id')->all()
+        ], 200);
     }
 
     public function show(int $id) {

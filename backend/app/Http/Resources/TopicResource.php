@@ -19,7 +19,8 @@ class TopicResource extends JsonResource
             "name" => $this->name,
             "order" => $this->order,
             "assignment" => AssignmentResource::collection($this->assignments),
-            "notes" => NoteResource::collection($this->notes)
+            "notes" => NoteResource::collection($this->notes),
+            'quizzes' => QuizResource::collection($this->quizzes)
         ];
     }
 }
