@@ -358,14 +358,12 @@ export default {
       currentlyModifyingGroup: [],
       users: [],
       loading: true,
-      toDelete: null,
     };
   },
   computed: {
     ...mapState(userStore, ["token"]),
     ...mapState(groupStore, ["groups"]),
     ...mapState(themeStore, ["isDarkMode"]),
-    ...mapState(permissionStore, ["permissions"]),
     ...mapState(languageStore, ["messages"]),
   },
   methods: {
@@ -377,7 +375,6 @@ export default {
       "deleteGroup",
       "bulkDeleteGroups",
     ]),
-    ...mapActions(permissionStore, ["getPermissions"]),
     selectAllGroups() {
       if (this.groups.length === this.selectedGroups.length) {
         this.selectedGroups = [];
@@ -532,14 +529,11 @@ export default {
         selectedUsers: data.users == null ? {} : data.users,
       };
     },
-    addPermissionFieldToGroupUsers(group) {
-      for (let user of group.users) {
-        user.permission = "Tanuló";
-      }
-    },
     addPermissionFieldToAllGroups() {
       for (let group of this.groups) {
-        this.addPermissionFieldToGroupUsers(group);
+        for (let user of group.users) {
+          user.permission = "Tanuló";
+        }
       }
     },
     closeModifyWindow() {
