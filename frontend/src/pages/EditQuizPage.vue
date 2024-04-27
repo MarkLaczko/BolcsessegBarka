@@ -135,7 +135,6 @@ import { useConfirm } from "primevue/useconfirm";
 import { userStore } from "@stores/UserStore";
 import { quizStore } from "@stores/QuizStore";
 import { themeStore } from '@stores/ThemeStore';
-import { courseStore } from '@stores/CourseStore';
 
 const route = useRoute();
 const router = useRouter();

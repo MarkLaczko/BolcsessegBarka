@@ -33,6 +33,8 @@
    - [LanguageStore](#languagestore)
    - [ThemeStore](#themestore)
    - [TopicStore](#topicstore)
+   - [GroupStore](#groupstore)
+   - [QuizStore](#quizstore)
 7. [Erőforrások](#erőforrások)
    - [Képek](#images-képek)
    - [Stílusok](#styles-stíluslapok)
@@ -3188,6 +3190,81 @@ CSS szabályok és animációk vannak definiálva a komponenshez, hogy javítsá
 
 A komponens integrálja a `userStore`, `quizStore`, `themeStore`, és `languageStore` tárolókat a felhasználói adatok, témabeállítások és nyelvi beállítások kezeléséhez.
 
+### `CreateTaskPage`
+
+> A `CreateTaskPage` lehetővé teszi tanárok számára, hogy kvízekhez új feladatokat adjanak hozzá.
+
+### Komponens Struktúra
+
+#### **Template Áttekintés:**
+
+- **BaseLayout:** Ez az oldal alapvető elrendezési keretét biztosítja.
+- **BaseSpinner:** Egy töltésjelző, amely a felhasználói adatok betöltése közben jelenik meg.
+- **Toast:** Üzenetek megjelenítése a felhasználói műveletek eredményéről.
+- **BaseConfirmDialog:** Megerősítő felugró ablak.
+
+### Script Részletek
+
+#### **Belső Állapotok:**
+
+- **quiz**: A kvíz adatai.
+- **form:** Az űrlap tartalma feladatokkal.
+- **loading:** Boolean típusú változó, amely jelzi, hogy az oldal betöltése folyamatban van-e.
+
+#### **Metódusok:**
+
+- **getQuiz**: A kvíz adatainak lekérése.
+- **moveItem**: Az alfeladatok sorrdenjének változtatása.
+- **addEmptySubtask**: Új üres alfeladat hozzáadása.
+- **postTask**: Feladat mentése.
+- **confirmDeleteSubtask**: Alfeladat törlése.
+
+### Stílusok és Animációk
+
+CSS szabályok és animációk vannak definiálva a komponenshez, hogy javítsák a felhasználói élményt, mint például áttűnések és eltolódások a dialógusablakok és toast üzenetek megjelenítésekor.
+
+### Integráció a Pinia Tárolókkal
+
+A komponens integrálja a `userStore`, `quizStore`, `themeStore`, és `languageStore` tárolókat a felhasználói adatok, témabeállítások és nyelvi beállítások kezeléséhez.
+
+### `EditTaskPage`
+
+> Az `EditTaskPage` lehetővé teszi tanárok számára, hogy kvízekhez már meglébő feladatokat szerkesszenek.
+
+### Komponens Struktúra
+
+#### **Template Áttekintés:**
+
+- **BaseLayout:** Ez az oldal alapvető elrendezési keretét biztosítja.
+- **BaseSpinner:** Egy töltésjelző, amely a felhasználói adatok betöltése közben jelenik meg.
+- **Toast:** Üzenetek megjelenítése a felhasználói műveletek eredményéről.
+- **BaseConfirmDialog:** Megerősítő felugró ablak.
+
+### Script Részletek
+
+#### **Belső Állapotok:**
+
+- **quiz**: A kvíz adatai.
+- **form:** Az űrlap tartalma feladatokkal.
+- **loading:** Boolean típusú változó, amely jelzi, hogy az oldal betöltése folyamatban van-e.
+
+#### **Metódusok:**
+
+- **getQuiz**: A kvíz adatainak lekérése.
+- **moveItem**: Az alfeladatok sorrdenjének változtatása.
+- **addEmptySubtask**: Új üres alfeladat hozzáadása.
+- **putTask**: Feladat mentése.
+- **confirmDeleteSubtask**: Alfeladat törlése.
+- **navigateToEditQuizPage**: Visszanavigálás a kvíz szerkesztése oldalra.
+
+### Stílusok és Animációk
+
+CSS szabályok és animációk vannak definiálva a komponenshez, hogy javítsák a felhasználói élményt, mint például áttűnések és eltolódások a dialógusablakok és toast üzenetek megjelenítésekor.
+
+### Integráció a Pinia Tárolókkal
+
+A komponens integrálja a `userStore`, `quizStore`, `themeStore`, és `languageStore` tárolókat a felhasználói adatok, témabeállítások és nyelvi beállítások kezeléséhez.
+
 ## Nyelvi beállítások:
 
 > A `messages` tömb a projektünkben a többnyelvűség égköve, amely a különböző nyelvű szövegeket tárolja, és lehetővé teszi a nyelvi adaptáció dinamikus kezelését. A szövegek két külön fájlban, `hu.mjs` és `en.mjs` nevű modulokban vannak eltárolva, amelyek a magyar és angol nyelvű tartalmakat tartalmazzák. Ezeket a modulokat a `LanguageStore` kezeli, ami biztosítja, hogy a megfelelő nyelvi tartalom az aktuális felhasználói beállításoknak megfelelően jelenjen meg.
@@ -3426,6 +3503,94 @@ export default {
 ```
 
 Ez a példa bemutatja, hogyan lehet lekérni és kiíratni a konzolra az összes témát a `TopicStore` segítségével, amikor a komponens betöltődik.
+
+### `GroupStore`
+
+> A `GroupStore` egy Pinia állapotkezelő tároló, amely a csoportok (groups) kezelését végzi. Ez a tároló felelős a csoportok adtaiainak lekérdezéséért, frissítéséért és törléséért, valamint az új csoportok létrehozásáért.
+
+### Tároló Funkciói
+
+#### **Állapotok (States):**
+
+- **groups** Az összes csoport adatai.
+
+#### **Műveletek (Actions):**
+
+- **getGroups():** Lekéri az összes csoport listáját a szerverről.
+- **getGroup(id):** Lekéri egy specifikus csoport részletes adatait azonosító alapján.
+- **postGroup(data):** Új csoport létrehozására szolgál, ahol a data tartalmazza a csoport adatait.
+- **putGroup(id, data):** Meglévő csoport adatainak módosítását végzi az adott azonosító alapján.
+- **destroyGroup(id):** Törli a megadott azonosítójú csoportot.
+
+### Hitelesítés Kezelése
+
+Minden API kérés során az aktuális felhasználó hitelesítési tokenjét csatoljuk a kérés fejlécéhez, ami biztosítja az adatok védelmét és az engedélyezett hozzáférést.
+
+### Állapot Tartósítása
+
+A tároló állapotát nem tartósítjuk, mivel a témák dinamikus adatok, amelyek gyakran frissülnek. A frissesség biztosítása érdekében minden oldalbetöltéskor újra lekérjük őket.
+
+### Használati Példa
+
+A tároló használata egy Vue komponensben:
+
+```js
+import { mapState, mapActions } from "pinia";
+import { groupStore } from "@stores/GroupStore";
+
+export default {
+  computed: {
+    ...mapState(groupStore, ['groups'])
+  },
+  methods: {
+    ...mapActions(groupStore, ["getGroups"]),
+  },
+  async mounted() {
+    await this.getGroups();
+    console.log(this.groups);
+  },
+};
+```
+
+### `QuizStore`
+
+> A `QuizStore` egy Pinia állapotkezelő tároló, amely a kvízek kezelését végzi. Ez a tároló felelős a kvízek adtaiainak lekérdezéséért, frissítéséért és törléséért, valamint az új kvízek létrehozásáért.
+
+### Tároló Funkciói
+
+#### **Műveletek (Actions):**
+
+- **getQuiz(id):** Lekéri egy specifikus kvíz részletes adatait azonosító alapján.
+- **postQuiz(data):** Új kvíz létrehozására szolgál, ahol a data tartalmazza a kvíz adatait.
+- **putQuiz(id, data):** Meglévő kvíz adatainak módosítását végzi az adott azonosító alapján.
+- **destroyQuiz(id):** Törli a megadott azonosítójú kvízt.
+
+### Hitelesítés Kezelése
+
+Minden API kérés során az aktuális felhasználó hitelesítési tokenjét csatoljuk a kérés fejlécéhez, ami biztosítja az adatok védelmét és az engedélyezett hozzáférést.
+
+### Állapot Tartósítása
+
+A tároló állapotát nem tartósítjuk, mivel a témák dinamikus adatok, amelyek gyakran frissülnek. A frissesség biztosítása érdekében minden oldalbetöltéskor újra lekérjük őket.
+
+### Használati Példa
+
+A tároló használata egy Vue komponensben:
+
+```js
+import { mapActions } from "pinia";
+import { quizStore } from "@stores/QuizStore";
+
+export default {
+  methods: {
+    ...mapActions(quizStore, ["getQuiz"]),
+  },
+  async mounted() {
+    const quiz = await this.getQuiz(1);
+    console.log(quiz);
+  },
+};
+```
 
 ## Erőforrások
 
