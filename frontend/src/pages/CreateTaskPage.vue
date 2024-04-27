@@ -13,6 +13,7 @@
                     <div class="row">
                         <FormKit
                             type="form"
+                            id="form"
                             :actions="false"
                             @submit="postTask"
                         >
@@ -20,6 +21,8 @@
                                 <FormKit
                                     type="text"
                                     label="Fejléc"
+                                    name="header"
+                                    id="header"
                                     v-model="form.header"
                                     :classes="{
                                         input: 'form-control',
@@ -39,6 +42,8 @@
                                 <FormKit
                                     type="text"
                                     label="Rövid szöveg"
+                                    name="text"
+                                    id="text"
                                     v-model="form.text"
                                     :classes="{
                                         input: 'form-control',
@@ -61,8 +66,8 @@
                                             <span class="badge text-bg-info fs-5 text-white">{{ index + 1}}.</span>
                                         </div>
                                         <div class="my-2">
-                                            <label for="question" class="form-label">Alfeladat szövege</label>
-                                            <Editor v-model="subtask.question" id="question" editorStyle="height: 320px;"
+                                            <label :for="'question' + index" class="form-label">Alfeladat szövege</label>
+                                            <Editor v-model="subtask.question" :id="'question' + index" editorStyle="height: 320px;"
                                                 :pt="{
                                                     root: {
                                                         class: 'w-100 rounded'
@@ -70,17 +75,17 @@
                                                 }"/>
                                         </div>
                                         <div class="my-2">
-                                            <label for="type" class="form-label">Feladat típusa</label>
-                                            <select name="type" id="type" class="form-select" v-model="subtask.type">
+                                            <label :for="'type' + index" class="form-label">Feladat típusa</label>
+                                            <select name="type" :id="'type' + index" class="form-select" v-model="subtask.type">
                                                 <option value="short_answer">Rövid válasz</option>
                                                 <option value="multiple_choice">Több válasz</option>
                                                 <option value="essay">Esszé</option>
                                             </select>
                                         </div>
                                         <div class="my-2" v-if="subtask.type == 'multiple_choice'">
-                                            <label for="options" class="form-label mb-0">Válaszlehetőségek</label>
+                                            <label :for="'options' + index" class="form-label mb-0">Válaszlehetőségek</label>
                                             <p><i>Kezdje el gépelni a válaszlehetőségeket! Az Enter billentyűvel tudja hozzáadni a válaszokat.</i></p>
-                                            <Chips v-model="subtask.options" id="options"
+                                            <Chips v-model="subtask.options" :id="'options' + index"
                                                 :pt="{
                                                     container: {
                                                         class: 'p-0'
@@ -101,9 +106,9 @@
                                             />
                                         </div>
                                         <div class="my-2" v-if="subtask.type == 'short_answer' || subtask.type == 'multiple_choice'">
-                                            <label for="solution" class="form-label mb-0">Helyes válaszok</label>
+                                            <label :for="'solution' + index" class="form-label mb-0">Helyes válaszok</label>
                                             <p><i>Kezdje el gépelni a helyes válaszokat! Az Enter billentyűvel tudja hozzáadni a helyes válaszokat.</i></p>
-                                            <Chips v-model="subtask.solution" id="solution"
+                                            <Chips v-model="subtask.solution" :id="'solution' + index"
                                                 :pt="{
                                                     container: {
                                                         class: 'p-0'
@@ -127,6 +132,7 @@
                                             <FormKit
                                             type="number"
                                             label="Feladat pontszáma"
+                                            :id="'marks' + index"
                                             number
                                             step="0.5"
                                             v-model="subtask.marks"
@@ -156,7 +162,7 @@
                             </div>
                             <div class="col-12 my-1">
                                 <div class="card w-100 my-2 p-1">
-                                    <button type="button" class="btn btn-info" @click="addEmptySubtask"><i class="fa-solid fa-plus"></i></button>
+                                    <button type="button" class="btn btn-info" id="addSubtask" @click="addEmptySubtask"><i class="fa-solid fa-plus"></i></button>
                                 </div>
                             </div>
                             <div class="col-12 my-1">
@@ -165,6 +171,7 @@
                                     <FormKit
                                         type="submit"
                                         label="Mentés"
+                                        id="submit"
                                         :classes="{
                                             input: 'btn btn-success ms-1'
                                         }"
