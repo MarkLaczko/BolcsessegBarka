@@ -2865,7 +2865,7 @@ A `template`-ben egy Bootstrap `card` szerkezetet használunk, amely három oszl
 
 **Script Részletezése:**
 
-- **Adatok (Data)**: Tartalmazza a feladatok listáját, az aktuális oldalszámot, az animáció irányát, és a betöltés állapotát.
+- **Belső Állapotok**: Tartalmazza a feladatok listáját, az aktuális oldalszámot, az animáció irányát, és a betöltés állapotát.
 - **Módszerek (Methods) és Számított Tulajdonságok (Computed)**: Az `onPageChanged` metódus kezeli az oldalszám változását, a `paginatedAssignments` kiszámítja az aktuális oldalon megjelenő feladatokat, és a `totalPages` meghatározza az összes oldal számát.
 - **Életciklus metódus (Mounted)**: A `mounted` életciklus metódusban a `getUser` metódust hívjuk meg a felhasználói adatok lekérésére, és beállítjuk a `loading` állapotot `false`-ra a betöltés befejezése után.
 
@@ -2892,7 +2892,7 @@ A stílusok részletesen kezelik az animációkat és a médialekérdezéseket, 
 
 ### Script Részletek
 
-#### **Adattulajdonságok:**
+#### **Belső Állapotok:**
 
 - **courses:** Egy tömb, amely a felhasználó számára elérhető kurzusokat tárolja.
 - **loading:** Egy logikai változó, amely a betöltés állapotát jelzi.
@@ -2925,7 +2925,7 @@ A `CoursesPage` komponens integrálja a `languageStore`-t a lokalizált üzenete
 
 ### Script Részletek
 
-#### **Adattulajdonságok:**
+#### **Belső Állapotok:**
 
 - A kurzussal kapcsolatos információkat és a témaadatokat helyileg tárolják a komponens adatfunkciójában.
 - A párbeszédablakok láthatósági zászlói (`newTopicDialogVisible`, `editTopicDialogVisible`) szabályozzák a témakezelő modális párbeszédablakok megjelenítését.
@@ -2968,7 +2968,7 @@ A `CoursesPage` komponens integrálja a `languageStore`-t a lokalizált üzenete
 
 ### Script Részletek
 
-#### **Adattulajdonságok:**
+#### **Belső Állapotok:**
 
 - **courses:** Tömb, amely a rendelkezésre álló kurzusokat tartalmazza.
 - **loading:** Egy boolean típusú változó, amely jelzi, hogy az oldal betöltése folyamatban van-e.
@@ -3011,7 +3011,7 @@ A `CourseManagementPage` komponens egy komplex, de könnyen kezelhető felülete
 
 ### Script Részletek
 
-#### **Adattulajdonságok:**
+#### **Belső Állapotok:**
 
 - **users:** Tömb, amely a felhasználókat tartalmazza.
 - **loading:** Boolean típusú változó, amely jelzi, hogy az oldal betöltése folyamatban van-e.
@@ -3032,6 +3032,120 @@ A komponens integrálja a `userStore`, `themeStore`, és `languageStore` tárol�
 ### Összefoglalás
 
 > A `UserManagementPage` komponens egy esszenciális eszköz minden olyan rendszer számára, ahol a felhasználói adatok kezelése központi jelentőséggel bír. Az integrált adatkezelési funkciók, a felhasználóbarát interfész és a rugalmas konfiguráció lehetővé teszi, hogy a rendszergazdák hatékonyan kezeljék a felhasználói adatbázist. Ez a komponens kritikus szerepet játszik a felhasználói jogosultságok és hozzáférés-vezérlés kezelésében, biztosítva a rendszer biztonságát és hatékonyságát.
+
+### `GroupManagementPage`
+
+> A `GroupManagementPage` egy központi kezelőfelület, amely lehetővé teszi a csoportok kezelését egy oktatási környezetben. Az oldal segítségével az adminisztrátorok hozzáadhatnak, módosíthatnak és törölhetnek csoportokat, valamint beállíthatják az ahhoz a csoporthoz tartozó felhasználókat illetve jogosultságaikat.
+
+### Komponens Struktúra
+
+#### **Template Áttekintés:**
+
+- **BaseLayout:** Ez az oldal alapvető elrendezési keretét biztosítja.
+- **BaseSpinner:** Egy töltésjelző, amely a felhasználói adatok betöltése közben jelenik meg.
+- **Dialog:** Dialógusablakok új felhasználó hozzáadásához és meglévő felhasználók módosításához.
+- **Toast:** Üzenetek megjelenítése a felhasználói műveletek eredményéről.
+
+#### **Dinamikus Tartalom:**
+
+- **DataTable:** Egy táblázat, amely a felhasználókat listázza, lehetőséget nyújtva a kiválasztott felhasználók módosítására vagy törlésére.
+- **Toolbar:** Eszköztár, amely gombokat tartalmaz új felhasználó létrehozásához, több felhasználó törléséhez és exportáláshoz.
+
+### Script Részletek
+
+#### **Belső Állapotok:**
+
+- **selectedGroups**: A kiválasztott csoportok listája.
+- **users:** Tömb, amely a felhasználókat tartalmazza.
+- **loading:** Boolean típusú változó, amely jelzi, hogy az oldal betöltése folyamatban van-e.
+- **addGroupDialogVisible, modifyGroupDialogVisible:** Logikai változók, amelyek az új csoport hozzáadása és meglévő csoport módosítása dialógusablakok láthatóságát szabályozzák.
+- **currentlyModifyingGroup**: A jelenleg szerkesztett csoport adatait tárolja.
+- **token**: A felhasználót azonosító tokenje a `userStore`-ból.
+- **groups**: A csoportok listája a `groupStore`-ból.
+- **isDarkMode**: A felhasználó által kiválaszott világos/sötét téma a `themeStore`-ból.
+- **messages**: A felhasználó által kiválaszott nyelvhez tartozó  a `languageStore`-ból.
+
+#### **Metódusok:**
+
+- **getGroups, getGroup, postGroup, updateGroup, deleteGroup, bulkDeleteGroups**: Függvények, amelyek a csoportokkal kapcsolatos API hívásokat kezelik.
+- **selectAllGroups**: Az összes csoport kijelölése.
+- **getUsers**: Az összes felhasználó lekérése.
+- **deleteMultipleGroups**: Több csoport törlése.
+- **addGroup**: Új csoport hozzáadása.
+- **sendUpdateGroup**: Csoport frissítése.
+- **selectUser**: Felhasználó kijelölése a csoport módosítása oldalon.
+- **unSelectUser**: Felhasználó kijelölésének megszűntetése a csoport módosítása oldalon.
+- **openModifyWindow**: A csoport módosítása ablak megnyitása.
+- **addPermissionFieldToAllGroups**: Hozzáad az összes csoport felhasználójához egy `permission` tulajdonságot.
+
+### Stílusok és Animációk
+
+CSS szabályok és animációk vannak definiálva a komponenshez, hogy javítsák a felhasználói élményt, mint például áttűnések és eltolódások a dialógusablakok és toast üzenetek megjelenítésekor.
+
+### Integráció a Pinia Tárolókkal
+
+A komponens integrálja a `groupStore`, `userStore`, `themeStore`, és `languageStore` tárolókat a felhasználói adatok, témabeállítások és nyelvi beállítások kezeléséhez.
+
+### Összefoglalás
+
+> A `GroupManagementPage` komponens egy szükséges eszköz minden olyan rendszer számára, ahol a csoportok adatainak kezelése központi jelentőséggel bír. Az integrált adatkezelési funkciók, a felhasználóbarát interfész és a rugalmas konfiguráció lehetővé teszi, hogy a rendszergazdák hatékonyan kezeljék a csoportokat.
+
+### `GroupManagementPage`
+
+> A `GroupManagementPage` egy központi kezelőfelület, amely lehetővé teszi a csoportok kezelését egy oktatási környezetben. Az oldal segítségével az adminisztrátorok hozzáadhatnak, módosíthatnak és törölhetnek csoportokat, valamint beállíthatják az ahhoz a csoporthoz tartozó felhasználókat illetve jogosultságaikat.
+
+### Komponens Struktúra
+
+#### **Template Áttekintés:**
+
+- **BaseLayout:** Ez az oldal alapvető elrendezési keretét biztosítja.
+- **BaseSpinner:** Egy töltésjelző, amely a felhasználói adatok betöltése közben jelenik meg.
+- **Dialog:** Dialógusablakok új felhasználó hozzáadásához és meglévő felhasználók módosításához.
+- **Toast:** Üzenetek megjelenítése a felhasználói műveletek eredményéről.
+
+#### **Dinamikus Tartalom:**
+
+- **DataTable:** Egy táblázat, amely a felhasználókat listázza, lehetőséget nyújtva a kiválasztott felhasználók módosítására vagy törlésére.
+- **Toolbar:** Eszköztár, amely gombokat tartalmaz új felhasználó létrehozásához, több felhasználó törléséhez és exportáláshoz.
+
+### Script Részletek
+
+#### **Belső Állapotok:**
+
+- **selectedGroups**: A kiválasztott csoportok listája.
+- **users:** Tömb, amely a felhasználókat tartalmazza.
+- **loading:** Boolean típusú változó, amely jelzi, hogy az oldal betöltése folyamatban van-e.
+- **addGroupDialogVisible, modifyGroupDialogVisible:** Logikai változók, amelyek az új csoport hozzáadása és meglévő csoport módosítása dialógusablakok láthatóságát szabályozzák.
+- **currentlyModifyingGroup**: A jelenleg szerkesztett csoport adatait tárolja.
+- **token**: A felhasználót azonosító tokenje a `userStore`-ból.
+- **groups**: A csoportok listája a `groupStore`-ból.
+- **isDarkMode**: A felhasználó által kiválaszott világos/sötét téma a `themeStore`-ból.
+- **messages**: A felhasználó által kiválaszott nyelvhez tartozó  a `languageStore`-ból.
+
+#### **Metódusok:**
+
+- **getGroups, getGroup, postGroup, updateGroup, deleteGroup, bulkDeleteGroups**: Függvények, amelyek a csoportokkal kapcsolatos API hívásokat kezelik.
+- **selectAllGroups**: Az összes csoport kijelölése.
+- **getUsers**: Az összes felhasználó lekérése.
+- **deleteMultipleGroups**: Több csoport törlése.
+- **addGroup**: Új csoport hozzáadása.
+- **sendUpdateGroup**: Csoport frissítése.
+- **selectUser**: Felhasználó kijelölése a csoport módosítása oldalon.
+- **unSelectUser**: Felhasználó kijelölésének megszűntetése a csoport módosítása oldalon.
+- **openModifyWindow**: A csoport módosítása ablak megnyitása.
+- **addPermissionFieldToAllGroups**: Hozzáad az összes csoport felhasználójához egy `permission` tulajdonságot.
+
+### Stílusok és Animációk
+
+CSS szabályok és animációk vannak definiálva a komponenshez, hogy javítsák a felhasználói élményt, mint például áttűnések és eltolódások a dialógusablakok és toast üzenetek megjelenítésekor.
+
+### Integráció a Pinia Tárolókkal
+
+A komponens integrálja a `groupStore`, `userStore`, `themeStore`, és `languageStore` tárolókat a felhasználói adatok, témabeállítások és nyelvi beállítások kezeléséhez.
+
+### Összefoglalás
+
+> A `GroupManagementPage` komponens egy szükséges eszköz minden olyan rendszer számára, ahol a csoportok adatainak kezelése központi jelentőséggel bír. Az integrált adatkezelési funkciók, a felhasználóbarát interfész és a rugalmas konfiguráció lehetővé teszi, hogy a rendszergazdák hatékonyan kezeljék a csoportokat.
 
 ## Nyelvi beállítások:
 
