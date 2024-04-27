@@ -7,7 +7,7 @@
    - [Felhasználó routeok](#felhasználóhoz-kapcsolodó-routeok)
    - [Kurzus routeok](#kurzusokhoz-kapcsolodó-routeok)
    - [Téma routeok](#témához-kapcsolodó-routeok)
-   - [Kvíz routeok](#kívzekhez-kapcsolodó-routeok)
+   - [Kvíz routeok](#kvízekhez-kapcsolodó-routeok)
 2. [Komponensek](#komponensek)
    - [BaseDialog](#basedialog)
    - [BaseSpinner](#basespinner)
@@ -1593,7 +1593,7 @@ Az alábbi hibakódokat adhatja vissza a végpont:
 - `404 Not Found`: Nincs ilyen rekord az adatbázisban.
 - `500 Internal Server Error`: Váratlan hiba történt a szerveren.
 
-### Kvízekhez kapcsolodó routeok:
+### Kvízekhez kapcsolodó routeok: 
 
 | Method | URI                         | Name              | Controller        | Action   |
 |--------|-----------------------------|-------------------|-------------------|----------|
