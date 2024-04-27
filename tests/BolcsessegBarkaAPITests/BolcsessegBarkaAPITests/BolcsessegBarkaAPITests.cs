@@ -7,6 +7,8 @@ using System.Net.Mime;
 using System.Text;
 using System.Text.RegularExpressions;
 using Group = ApiLibrary.Group;
+using Task = System.Threading.Tasks.Task;
+using TaskApi = ApiLibrary.Task;
 
 namespace BolcsessegBarkaAPITests
 {
@@ -879,6 +881,395 @@ namespace BolcsessegBarkaAPITests
             _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
             
             var response = await _client!.DeleteAsync("topics/3");
+            
+            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetAllQuizzes_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync("quizzes");
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetAllQuizzes_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _client!.GetAsync("quizzes");
+            var quizzes = await Deserialize<QuizResponse>(response);
+            
+            Assert.IsNotNull(quizzes);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("A kora újkor", quizzes.Data[0].Name);
+            Assert.IsNull(quizzes.Data[0].MaxAttempts);
+            Assert.IsNull(quizzes.Data[0].Opens);
+            Assert.IsNull(quizzes.Data[0].Closes);
+            Assert.IsNull(quizzes.Data[0].Time);
+        }
+        
+        [TestMethod]
+        public async Task GetQuiz_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync("quizzes/1");
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetQuiz_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _client!.GetAsync("quizzes/1");
+            var quiz = await Deserialize<QuizTopicCourse>(response);
+
+            Assert.IsNotNull(quiz);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("A kora újkor", quiz.Name);
+            Assert.IsNull(quiz.MaxAttempts);
+            Assert.IsNull(quiz.Opens);
+            Assert.IsNull(quiz.Closes);
+            Assert.IsNull(quiz.Time);
+            Assert.AreEqual(1, quiz.NumberOfTasks);
+            Assert.AreEqual(1, quiz.Topic.Id);
+            Assert.AreEqual(1, quiz.Topic.Course.Id);
+        }
+        
+        [TestMethod]
+        public async Task CreateQuiz_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var quiz = new StringContent(
+                JsonConvert.SerializeObject(new { name = "Teszt Kvíz", max_attempts = 1, opens = 1704063600, closes = 1735686000, time = 60, topic_id = 1}),
+                Encoding.UTF8,
+                "application/json");
+            
+            var response = await _client!.PostAsync("quizzes", quiz);
+            
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task CreateQuiz_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var quiz = new StringContent(
+                JsonConvert.SerializeObject(new { name = "Teszt Kvíz", max_attempts = 1, opens = 1704063600, closes = 1735686000, time = 60, topic_id = 1}),
+                Encoding.UTF8,
+                "application/json");
+            
+            var response = await _client!.PostAsync("quizzes", quiz);
+            var responseData = await Deserialize<Quiz>(response);
+            
+            Assert.IsNotNull(responseData);
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+            Assert.AreEqual("Teszt Kvíz", responseData.Name);
+            Assert.AreEqual(1 ,responseData.MaxAttempts);
+            Assert.AreEqual(1704063600, responseData.Opens);
+            Assert.AreEqual(1735686000, responseData.Closes);
+            Assert.AreEqual(60, responseData.Time);
+        }
+        
+        [TestMethod]
+        public async Task UpdateQuiz_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var quiz = new StringContent(
+                JsonConvert.SerializeObject(new { name = "Teszt Kvíz Frissítés", max_attempts = 1, opens = 1704063600, closes = 1735686000, time = 60, topic_id = 1}),
+                Encoding.UTF8,
+                "application/json");
+            
+            var response = await _client!.PutAsync("quizzes/1", quiz);
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task UpdateQuiz_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var quiz = new StringContent(
+                JsonConvert.SerializeObject(new { name = "Teszt Kvíz Frissítés", max_attempts = 1, opens = 1704063600, closes = 1735686000, time = 60, topic_id = 1}),
+                Encoding.UTF8,
+                "application/json");
+            
+            var response = await _client!.PutAsync("quizzes/1", quiz);
+            var responseData = await Deserialize<Quiz>(response);
+            
+            Assert.IsNotNull(responseData);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("Teszt Kvíz Frissítés", responseData.Name);
+            Assert.AreEqual(1 ,responseData.MaxAttempts);
+            Assert.AreEqual(1704063600, responseData.Opens);
+            Assert.AreEqual(1735686000, responseData.Closes);
+            Assert.AreEqual(60, responseData.Time);
+        }
+        
+        [TestMethod]
+        public async Task DeleteQuiz_ReturnsNoContent()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var quiz = new StringContent(
+                JsonConvert.SerializeObject(new { name = "Teszt Kvíz", max_attempts = 1, opens = 1704063600, closes = 1735686000, time = 60, topic_id = 1}),
+                Encoding.UTF8,
+                "application/json");
+            
+            var postResponse = await _client!.PostAsync("quizzes", quiz);
+            var postResponseData = await Deserialize<Quiz>(postResponse);
+            
+            var response = await _client!.DeleteAsync($"quizzes/{postResponseData.Id}");
+            
+            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetQuizTasks_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync($"quizzes/1/tasks");
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetQuizTasks_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync($"quizzes/1/tasks");
+            var tasks = await Deserialize<TaskResponse>(response);
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual(1, tasks.Data[0].Id);
+            Assert.AreEqual("A feladat a nagy földrajzi felfedezésekkel kapcsolatos", tasks.Data[0].Header);
+            Assert.AreEqual(1, tasks.Data[0].Subtasks[0].Id);
+        }
+        
+        [TestMethod]
+        public async Task GetQuizTasksIds_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync($"quizzes/1/tasks/ids");
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetQuizTasksIds_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync($"quizzes/1/tasks/ids");
+            var tasks = await Deserialize<List<int>>(response);
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual(1, tasks[0]);
+        }
+        
+        [TestMethod]
+        public async Task GetTask_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync($"tasks/1");
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetTask_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync($"tasks/1");
+            var task = await Deserialize<TaskApi>(response);
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual(1, task.Id);
+            Assert.AreEqual("A feladat a nagy földrajzi felfedezésekkel kapcsolatos", task.Header);
+            Assert.AreEqual(1, task.Subtasks[0].Id);
+        }
+        
+        [TestMethod]
+        public async Task GetTaskSolution_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync($"tasks/1/solution");
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetTaskSolution_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync($"tasks/1/solution");
+            var solutions = await Deserialize<TaskSolutionResponse>(response);
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual(1, solutions.Data[0].Id);
+            Assert.AreEqual("Amerika felfedezése", solutions.Data[0].Solution[0]);
+            Assert.AreEqual("Kolumbusz Kristóf eljutott Amerikába", solutions.Data[0].Solution[1]);
+        }
+        
+        [TestMethod]
+        public async Task CreateTask_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var task = new StringContent("{\"quiz_id\": 1,\"order\": 7,\"header\": \"Teszt Kérdés\",\"text\": \"Ez egy teszt kvíz\",\"subtasks\": [{\"order\": 0,\"question\": \"Ez egy példa kérdés\",\"options\": [\"Igen\",\"Nem\",\"Talán\"],\"solution\": [\"Igen\"],\"type\": \"multiple_choice\",\"marks\": \"1\"}]}", null, "application/json");
+            
+            var response = await _client!.PostAsync("tasks", task);
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task CreateTask_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var task = new StringContent("{\"quiz_id\": 1,\"order\": 7,\"header\": \"Teszt Kérdés\",\"text\": \"Ez egy teszt kvíz\",\"subtasks\": [{\"order\": 0,\"question\": \"Ez egy példa kérdés\",\"options\": [\"Igen\",\"Nem\",\"Talán\"],\"solution\": [\"Igen\"],\"type\": \"multiple_choice\",\"marks\": \"1\"}]}", null, "application/json");
+            
+            var response = await _client!.PostAsync("tasks", task);
+            var responseData = await Deserialize<TaskApi>(response);
+            
+            Assert.IsNotNull(responseData);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("Teszt Kérdés", responseData.Header);
+            Assert.AreEqual("Ez egy teszt kvíz" ,responseData.Text);
+            Assert.AreEqual("Ez egy példa kérdés", responseData.Subtasks[0].Question);
+        }
+        
+        [TestMethod]
+        public async Task UpdateTask_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var task = new StringContent("{\"quiz_id\": 1,\"order\": 7,\"header\": \"Teszt Kérdés\",\"text\": \"Ez egy teszt kvíz\",\"subtasks\": [{\"id\": 1, \"order\": 0,\"question\": \"Ez egy példa kérdés\",\"options\": [\"Igen\",\"Nem\",\"Talán\"],\"solution\": [\"Igen\"],\"type\": \"multiple_choice\",\"marks\": \"1\"}]}", null, "application/json");
+            
+            var response = await _client!.PutAsync("tasks/1", task);
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task UpdateTask_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var task = new StringContent("{\"quiz_id\": 1,\"order\": 7,\"header\": \"Teszt Kérdés\",\"text\": \"Ez egy teszt kvíz\",\"subtasks\": [{\"id\": 1, \"order\": 0,\"question\": \"Ez egy példa kérdés\",\"options\": [\"Igen\",\"Nem\",\"Talán\"],\"solution\": [\"Igen\"],\"type\": \"multiple_choice\",\"marks\": \"1\"}]}", null, "application/json");
+            
+            var response = await _client!.PutAsync("tasks/1", task);
+            var responseData = await Deserialize<TaskApi>(response);
+            
+            Assert.IsNotNull(responseData);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("Teszt Kérdés", responseData.Header);
+            Assert.AreEqual("Ez egy teszt kvíz" ,responseData.Text);
+            Assert.AreEqual("Ez egy példa kérdés", responseData.Subtasks[0].Question);
+        }
+        
+        [TestMethod]
+        public async Task DeleteTask_ReturnsNoContent()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var task = new StringContent("{\"quiz_id\": 1,\"order\": 7,\"header\": \"Teszt Kérdés\",\"text\": \"Ez egy teszt kvíz\",\"subtasks\": [{\"order\": 0,\"question\": \"Ez egy példa kérdés\",\"options\": [\"Igen\",\"Nem\",\"Talán\"],\"solution\": [\"Igen\"],\"type\": \"multiple_choice\",\"marks\": \"1\"}]}", null, "application/json");
+            
+            var postResponse = await _client!.PostAsync("tasks", task);
+            var postResponseData = await Deserialize<TaskApi>(postResponse);
+            
+            var response = await _client!.DeleteAsync($"tasks/{postResponseData.Id}");
+            
+            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetSubtask_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var task = new StringContent("{\"quiz_id\": 1,\"order\": 7,\"header\": \"Teszt Kérdés\",\"text\": \"Ez egy teszt kvíz\",\"subtasks\": [{\"order\": 0,\"question\": \"Ez egy példa kérdés\",\"options\": [\"Igen\",\"Nem\",\"Talán\"],\"solution\": [\"Igen\"],\"type\": \"multiple_choice\",\"marks\": \"1\"}]}", null, "application/json");
+            
+            var postResponse = await _client!.PostAsync("tasks", task);
+            var postResponseData = await Deserialize<TaskApi>(postResponse);
+            
+            var response = await _client!.GetAsync($"subtasks/{postResponseData.Subtasks[0].Id}/solution");
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetSubtask_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var task = new StringContent("{\"quiz_id\": 1,\"order\": 7,\"header\": \"Teszt Kérdés\",\"text\": \"Ez egy teszt kvíz\",\"subtasks\": [{\"order\": 0,\"question\": \"Ez egy példa kérdés\",\"options\": [\"Igen\",\"Nem\",\"Talán\"],\"solution\": [\"Igen\"],\"type\": \"multiple_choice\",\"marks\": \"1\"}]}", null, "application/json");
+            
+            var postResponse = await _client!.PostAsync("tasks", task);
+            var postResponseData = await Deserialize<TaskApi>(postResponse);
+            
+            var response = await _client!.GetAsync($"subtasks/{postResponseData.Subtasks[0].Id}/solution");
+            var responseData = await Deserialize<TaskSolution>(response);
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual(postResponseData.Subtasks[0].Id, responseData.Id);
+            Assert.AreEqual("Igen", responseData.Solution[0]);
+        }
+        
+        [TestMethod]
+        public async Task DeleteSubtask_ReturnsNoContent()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var task = new StringContent("{\"quiz_id\": 1,\"order\": 7,\"header\": \"Teszt Kérdés\",\"text\": \"Ez egy teszt kvíz\",\"subtasks\": [{\"order\": 0,\"question\": \"Ez egy példa kérdés\",\"options\": [\"Igen\",\"Nem\",\"Talán\"],\"solution\": [\"Igen\"],\"type\": \"multiple_choice\",\"marks\": \"1\"}]}", null, "application/json");
+            
+            var postResponse = await _client!.PostAsync("tasks", task);
+            var postResponseData = await Deserialize<TaskApi>(postResponse);
+            
+            var response = await _client!.DeleteAsync($"subtasks/{postResponseData.Subtasks[0].Id}");
             
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
         }
