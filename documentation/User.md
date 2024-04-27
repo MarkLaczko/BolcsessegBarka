@@ -77,7 +77,8 @@
 
 4. **Felhasználó Törlése**
 
-   - Egyes felhasználók kiválasztása után lehetőség van őket egyszerre törölni.
+   - Egyes felhasználók kiválasztása után lehetőség nyílik arra, hogy őket egyszerre törölje, azonban szükség esetén lehetőség van minden egyes felhasználót külön-külön is eltávolítani.
+   - A tömeges törlés funkciót biztosító gomb az `Új felhasználó` gomb mellett helyezkedik el, és csak akkor válik elérhetővé, ha már van kiválasztott felhasználó. Ez az állapot akkor ismerhető fel, ha a táblázat valamelyik sorában az `X` ikon helyett `✓` látható, jelezve, hogy az adott sor kiválasztásra került.
 
 5. **Adatok Exportálása**
 
@@ -134,23 +135,23 @@
 
 1. **Kurzus hozzáadása**
 
-   - A kurzus hozzáadásához kattintson az "Új kurzus" gombra. Ekkor megjelenik egy dialógusablak, ahol megadhatja a kurzus nevét és hozzáadhat egy képet.
+   - A kurzus hozzáadásához kattintson az `Új kurzus` gombra. Ekkor megjelenik egy dialógusablak, ahol megadhatja a kurzus nevét és hozzáadhat egy képet.
    - A kurzus neve kötelező mező, és 5-100 karakter közötti hosszúságúnak kell lennie. Ha a kurzus neve nem felel meg ezeknek a kritériumoknak, a rendszer értesíti a felhasználót a szükséges változtatásokról.
    - A képfeltöltés opcionális, és támogatott formátumok: JPEG, PNG, JPG, BMP.
 
 2. **Kurzus szerkesztése**
 
    - Egy kurzus szerkesztéséhez keresse meg a kurzust a listában, és kattintson a szerkesztés ikonra. Egy új dialógusablak jelenik meg, amely tartalmazza a jelenlegi kurzusadatokat.
-   - Itt módosíthatja a kurzus nevét vagy cserélheti a képet, illetve rendelhet hozzá csoportokat. Az új adatokat a "Mentés" gombra kattintva erősítheti meg.
+   - Itt módosíthatja a kurzus nevét vagy cserélheti a képet, illetve rendelhet hozzá csoportokat. Az új adatokat a `Mentés` gombra kattintva erősítheti meg.
 
 3. **Kurzusok törlése**
 
-   - Egyes kurzusokat közvetlenül törölhet a kurzus melletti "Törlés" ikonra kattintva.
-   - Több kurzus egyidejű törléséhez jelölje ki a kívánt kurzusokat a jelölőnégyzetek segítségével, majd kattintson a "Több kurzus törlése" gombra.
+   - Egyes kurzusokat közvetlenül törölhet a kurzus melletti `Törlés` ikonra kattintva.
+   - Több kurzus egyidejű törléséhez jelölje ki a kívánt kurzusokat a jelölőnégyzetek segítségével, majd kattintson a `Több kurzus törlése` gombra. A `Törlés` gomb akkor válik elérhetővé amint egy darab kurzus kijelölésre került.
 
 4. **Adatok exportálása**
 
-   - A kurzusok listáját CSV formátumban exportálhatja az "Exportálás" gomb segítségével. Az exportált fájl tartalmazni fogja a kurzusok azonosítóját, nevét és a képüket base64 formátumban.
+   - A kurzusok listáját CSV formátumban exportálhatja az `Exportálás` gomb segítségével. Az exportált fájl tartalmazni fogja a kurzusok azonosítóját, nevét és a képüket base64 formátumban.
 
 5. **Keresés és szűrés**
 
@@ -189,38 +190,67 @@
 
 ### Bevezetés:
 
-> A kurzus témák kezelése oldal lehetővé teszi a diákok számára, hogy megtekintsék a kurzusokhoz tartozó témákat. Az oldal egy harmonika szerkezetben jeleníti meg a témákat, ahol minden téma egy külön panelen található, tartalmazva a téma részleteit.
+> Egy adott kurzus oldala lehetővé teszi a diákok számára, hogy megtekintsék a kurzusokhoz tartozó témákat és a témához tartozó feladatokat, jegyezeteket. Az oldal egy harmonika szerkezetben jeleníti meg a témákat, ahol minden téma egy külön panelen található, tartalmazva a téma részleteit.
 
 ### Témák:
 
-- **Téma Információk:** Minden téma panelje tartalmazza a téma nevét és az alatta hozzáadot jegyzetét, feladatokat és a tanár által feltöltött esetleges teszteket.
-- **Navigáció a Témák Között:** A téma paneljei kibonthatóak, így a diákok könnyen áttekinthetik a teljes kurzustéma-szerkezetet.
+- **Téma Információk:** Minden téma panelje tartalmazza a téma nevét és az alatta hozzáadot jegyzetét, feladatokat.
+- **Navigáció a Témák Között:** A téma paneljei kibonthatóak, így a diákok könnyen áttekinthetik a teljes kurzustéma-szerkezetét.
+
+### Jegyzetek:
+
+- **Jegyzetek létrehozása:** Jegyzeteket az adott kurzuson belül található témákhoz tud hozzáadni a tanuló a `Jegyzet hozzáadása` gomb megnyomásával. Itt meg kell adni a jegyzet nevét, annak tartalmát, majd ezek után a `mentés` gombra nyomva hozzáadja az adott témához a jegyzetet.
+
+- **Jegyzet megtekintése:** A már létrehozott jegyzeteket a `Megtekintés` gombra kattintva tudja a felhasználó megtekinteni.
+
+- **Jegyzet szerkesztése:** A `Megtekintés` gombra kattintva nyílik lehetőség a dokumentum elérésére. Alapbeállításban a jegyzet csak olvasható formában jelenik meg. Amennyiben szerkeszteni kívánja a szöveget, először kattintson a `Szerkesztés` gombra, ekkor a dokumentum szerkeszthető állapotba kerül. A szerkesztés befejeztével a `Mentés` gombra kattintva rögzítheti a változtatásokat, és ezzel sikeresen frissíti a jegyzet tartalmát.
+
+- **Jegyzet törlése:** A jegyzet törlése a `Megtekintés` gombra kattintva érhető el. Ha úgy dönt, hogy már nincs szüksége a jegyzetre, egyszerűen kattintson a `Törlés` gombra. Ezt követően megjelenik egy megerősítő párbeszédpanel, amely arra kéri Önt, hogy igazolja vissza a törlés szándékát. Ez a lépés biztosítja, hogy csak akkor törölje a jegyzetet, ha valóban ezt szeretné.
+
+### Visszajelzések kezelése:
+
+- Sikeres műveletek esetén `zöld` háttérrel jelenik meg egy rövid üzenet, amely tájékoztatja a felhasználót a művelet sikeréről.
+- Ha egy művelet nem sikerül, `piros` háttérrel jelenik meg egy hibaüzenet, amely részletezi a probléma okát.
 
 ## Egy adott kurzus oldala (Tanárok számára)
 
 ### Bevezetés:
 
-> A kurzus témák kezelése oldal lehetővé teszi a tanárok számára, hogy kezeljék a kurzusokhoz kapcsolódó témákat, beleértve új téma hozzáadását, meglévő téma szerkesztését és törlését.
+> Egy adott kurzus oldala lehetővé teszi a tanárok számára, hogy átfogóan kezeljék a kurzusokhoz kapcsolódó témákat. Az oldal különféle funkcionalitásokat kínál, mint például új téma hozzáadása, meglévő téma szerkesztése és törlése. Ezen felül a tanárok hozzáadhatnak feladatokat és jegyzeteket az egyes témákhoz.
 
 ### Témák:
 
 - **Téma Információk:** Minden téma panelje tartalmazza a téma nevét és az alatta hozzáadot jegyzetét, feladatokat és a tanár által feltöltött esetleges teszteket. Ezene kivűl szerkesztési valamint törlési lehetőségeket is nyújt a tanároknak.
 - **Navigáció a Témák Között:** A téma paneljei kibonthatóak, így a diákok könnyen áttekinthetik a teljes kurzustéma-szerkezetet.
 
-### Új téma hozzáadása:
+### Új téma hozzáadása
 
-- **Új Téma Gomb:** Az "Új téma" gombra kattintva megnyílik egy dialógusablak, ahol megadható a téma neve és sorrendje.
+- **Új Téma Gomb:** Az `Új téma` gombra kattintva megnyílik egy dialógusablak, ahol megadható a téma neve és sorrendje.
 - **Adatbevitel:** A téma neve kötelező és legfeljebb 60 karakter hosszú lehet. A sorrend egy szám, ami meghatározza a téma elhelyezkedését a listában.
-- **Mentés:** A "Mentés" gombra kattintva a rendszer hozzáadja az új témát a kurzushoz.
+- **Mentés:** A `Mentés` gombra kattintva a rendszer hozzáadja az új témát a kurzushoz.
 
 ### Téma szerkesztése
 
 - **Szerkesztés Gomb:** A szerkesztés gombra kattintva egy hasonló dialógusablak jelenik meg, mint az új téma hozzáadásakor.
-- **Adatok Frissítése:** A téma adatainak frissítése után a "Mentés" gombra kattintva a rendszer frissíti a téma adatait.
+- **Adatok Frissítése:** A téma adatainak frissítése után a `Mentés` gombra kattintva a rendszer frissíti a téma adatait.
 
 ### Téma törlése
 
 - **Törlés Gomb:** A törlés gombra kattintva a rendszer eltávolítja a témát a kurzusból. Ez a művelet végleges, és nem állítható helyre.
+
+### Jegyzetek:
+
+- **Jegyzetek létrehozása:** Jegyzeteket az adott kurzuson belül található témákhoz tud hozzáadni a tanár a `Műveletek` lenyiló listájában található `Új jegyzet` gomb megnyomásával. Itt meg kell adni a jegyzet nevét, annak tartalmát, majd ezek után a `mentés` gombra nyomva hozzáadja az adott témához a jegyzetet.
+
+- **Jegyzet megtekintése:** A már létrehozott jegyzeteket a `Megtekintés` gombra kattintva tudja a tanár megtekinteni.
+
+- **Jegyzet szerkesztése:** A `Megtekintés` gombra kattintva nyílik lehetőség a dokumentum elérésére. Alapbeállításban a jegyzet csak olvasható formában jelenik meg. Amennyiben szerkeszteni kívánja a szöveget, először kattintson a `Szerkesztés` gombra, ekkor a dokumentum szerkeszthető állapotba kerül. A szerkesztés befejeztével a `Mentés` gombra kattintva rögzítheti a változtatásokat, és ezzel sikeresen frissíti a jegyzet tartalmát.
+
+- **Jegyzet törlése:** A jegyzet törlése a `Megtekintés` gombra kattintva érhető el. Ha úgy dönt, hogy már nincs szüksége a jegyzetre, egyszerűen kattintson a `Törlés` gombra. Ezt követően megjelenik egy megerősítő párbeszédpanel, amely arra kéri Önt, hogy igazolja vissza a törlés szándékát. Ez a lépés biztosítja, hogy csak akkor törölje a jegyzetet, ha valóban ezt szeretné.
+
+### Csoportok kezelése:
+
+> A tanár könnyedén módosíthatja a kurzushoz tartozó csoportokat a `Csoportok kezelése` gombra kattintva. Egy felugró ablak jelenik meg, ahol a lefele mutató nyílra kattintva kibontakozik egy panel. Ezen a panelen belül választhatja ki azokat a csoportokat, amelyeket szeretne a kurzushoz hozzárendelni. A kiválasztás után, ha minden beállítással elkészült, zárja be a panelt a jobb felső sarokban lévő `X` ikonra kattintva vagy egyszerűen kattintson a panelen kívülre, hogy bezárja azt. Végül ne felejtse el a `Mentés` gombra kattintani a változtatások rögzítéséhez.
 
 ### Visszajelzések kezelése:
 
