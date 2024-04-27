@@ -58,7 +58,7 @@ public class BolcsessegBarkaTests
         WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10));
         wait.Until(ExpectedConditions.TitleIs("Főoldal"));
     }
-
+    
     private void SelectElement(string data, string option, bool click = false)
     {
         if (option == "CssSelector" && click)
@@ -862,5 +862,191 @@ public class BolcsessegBarkaTests
         
         new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10)).Until(drv => drv.FindElements(By.CssSelector(".accordion .card")).Count == 1);
         Assert.AreEqual(1, _webDriver.FindElements(By.CssSelector(".accordion .card")).Count);  
+    }
+    
+    [TestMethod]
+    public void Test28_CreateQuizTest()
+    {
+        LoginAsAdmin();
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.LinkText("Kurzusaim")), TimeSpan.FromSeconds(10));
+        Navigate("Kurzusaim")!.Click();
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"app\"]/div/main/div/div/div/div/div[2]/a")), TimeSpan.FromSeconds(10));
+        SelectElement("//*[@id=\"app\"]/div/main/div/div/div/div/div[2]/a","XPath",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"heading1\"]/button/div/button")), TimeSpan.FromSeconds(10));
+        SelectElement("//*[@id=\"heading1\"]/button/div/button","XPath",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("#heading1 > button > div > ul > li:nth-child(3) > button")), TimeSpan.FromSeconds(10));
+        SelectElement("#heading1 > button > div > ul > li:nth-child(3) > button","CssSelector",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.Name("name")), TimeSpan.FromSeconds(10));
+        
+        var name = _webDriver.FindElement(By.Name("name"));
+        name.SendKeys("Teszt Kvíz");
+        
+        var attempts = _webDriver.FindElement(By.Name("max_attempts"));
+        attempts.SendKeys("1");
+        
+        var time = _webDriver.FindElement(By.Name("time"));
+        time.SendKeys("60");
+        
+        SelectElement("submit","Id",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.Id("name")), TimeSpan.FromSeconds(10));
+        
+        var nameEdit = _webDriver.FindElement(By.Name("name"));
+        Assert.AreEqual("Teszt Kvíz", nameEdit.GetAttribute("value"));
+        
+        var attemptsEdit = _webDriver.FindElement(By.Name("max_attempts"));
+        Assert.AreEqual("1", attemptsEdit.GetAttribute("value"));
+        
+        var timeEdit = _webDriver.FindElement(By.Name("time"));
+        Assert.AreEqual("60", timeEdit.GetAttribute("value"));
+    }
+    
+    [TestMethod]
+    public void Test29_EditQuizTest()
+    {
+        LoginAsAdmin();
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.LinkText("Kurzusaim")), TimeSpan.FromSeconds(10));
+        Navigate("Kurzusaim")!.Click();
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"app\"]/div/main/div/div/div/div/div[2]/a")), TimeSpan.FromSeconds(10));
+        SelectElement("//*[@id=\"app\"]/div/main/div/div/div/div/div[2]/a","XPath",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"heading1\"]/button")), TimeSpan.FromSeconds(10));
+        SelectElement("//*[@id=\"heading1\"]/button","XPath",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"collapse1\"]/div/div[2]/div[1]/div/div[3]/div/button[2]")), TimeSpan.FromSeconds(10));
+        SelectElement("//*[@id=\"collapse1\"]/div/div[2]/div[1]/div/div[3]/div/button[2]","XPath",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.Name("name")), TimeSpan.FromSeconds(10));
+        
+        var name = _webDriver.FindElement(By.Name("name"));
+        name.Clear();
+        name.SendKeys("Kvíz Teszt");
+        
+        var attempts = _webDriver.FindElement(By.Name("max_attempts"));
+        attempts.Clear();
+        attempts.SendKeys("2");
+        
+        var time = _webDriver.FindElement(By.Name("time"));
+        time.Clear();
+        time.SendKeys("30");
+        
+        SelectElement("submit","Id",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.Id("name")), TimeSpan.FromSeconds(10));
+        
+        var nameEdit = _webDriver.FindElement(By.Name("name"));
+        Assert.AreEqual("Kvíz Teszt", nameEdit.GetAttribute("value"));
+        
+        var attemptsEdit = _webDriver.FindElement(By.Name("max_attempts"));
+        Assert.AreEqual("2", attemptsEdit.GetAttribute("value"));
+        
+        var timeEdit = _webDriver.FindElement(By.Name("time"));
+        Assert.AreEqual("30", timeEdit.GetAttribute("value"));
+    }
+    [TestMethod]
+    public void Test30_AddTaskToQuizTest()
+    {
+        LoginAsAdmin();
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.LinkText("Kurzusaim")), TimeSpan.FromSeconds(10));
+        Navigate("Kurzusaim")!.Click();
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"app\"]/div/main/div/div/div/div/div[2]/a")), TimeSpan.FromSeconds(10));
+        SelectElement("//*[@id=\"app\"]/div/main/div/div/div/div/div[2]/a","XPath",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"heading1\"]/button")), TimeSpan.FromSeconds(10));
+        SelectElement("//*[@id=\"heading1\"]/button","XPath",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"collapse1\"]/div/div[2]/div[1]/div/div[3]/div/button[2]")), TimeSpan.FromSeconds(10));
+        SelectElement("//*[@id=\"collapse1\"]/div/div[2]/div[1]/div/div[3]/div/button[2]","XPath",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("#app > div > main > div > div > div:nth-child(2) > div:last-child > a")), TimeSpan.FromSeconds(10));
+        SelectElement("#app > div > main > div > div > div:nth-child(2) > div:last-child > a","CssSelector",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.Name("header")), TimeSpan.FromSeconds(10));
+        
+        var header = _webDriver.FindElement(By.CssSelector("#header"));
+        header.Clear();
+        header.SendKeys("A feladat a teszteléssel kapcsolatos.");
+        
+        var text = _webDriver.FindElement(By.CssSelector("#text"));
+        text.Clear();
+        text.SendKeys("A források és ismeretei alapján ne oldja meg a feladatokat!");
+        
+        SelectElement("addSubtask","Id",true);
+        
+        SelectElement("#question0 > div.ql-toolbar.ql-snow > span:nth-child(2) > button.ql-bold","CssSelector",true);
+        var task1Text = _webDriver.FindElement(By.CssSelector("#question0 > div.ql-container.ql-snow > div.ql-editor.ql-blank > p"));
+        string script = "arguments[0].innerText = arguments[1]";
+        ((IJavaScriptExecutor)_webDriver).ExecuteScript(script, task1Text, "a) Igen vagy nem?");
+        
+        var task1Solution = _webDriver.FindElement(By.CssSelector("#solution0 > ul > li > input"));
+        task1Solution.Clear();
+        task1Solution.SendKeys("Igen");
+        task1Solution.SendKeys(Keys.Enter);
+        
+        ((IJavaScriptExecutor)_webDriver).ExecuteScript($"window.scrollTo(0, document.body.scrollHeight)");
+        SelectElement("#form > div:nth-child(3) > div > div > div:nth-child(4) > p > i","CssSelector",true);
+        
+        var task1Marks = _webDriver.FindElement(By.CssSelector("#marks0"));
+        task1Marks.Clear();
+        task1Marks.SendKeys("1");
+        
+        ((IJavaScriptExecutor)_webDriver).ExecuteScript($"window.scrollTo(0, document.body.scrollHeight)");
+        SelectElement("#form > div:nth-child(3) > div > div > div:nth-child(6) > div","CssSelector",true);
+        
+        SelectElement("submit","Id",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("#app > div > main > div > div > div:nth-child(2) > div:nth-child(2) > span.badge.text-bg-info.text-white.fs-5")), TimeSpan.FromSeconds(10));
+        ReadOnlyCollection<IWebElement> elements = _webDriver.FindElements(By.CssSelector("#app > div > main > div > div > div:nth-child(2)"));
+        IWebElement headerDone = elements.ElementAt(elements.Count - 1);
+        Assert.IsTrue(headerDone.Text.Contains("A feladat a teszteléssel kapcsolatos."));
+    }
+    
+    [TestMethod]
+    public void Test31_EditTaskInQuizTest()
+    {
+        LoginAsAdmin();
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.LinkText("Kurzusaim")), TimeSpan.FromSeconds(10));
+        Navigate("Kurzusaim")!.Click();
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"app\"]/div/main/div/div/div/div/div[2]/a")), TimeSpan.FromSeconds(10));
+        SelectElement("//*[@id=\"app\"]/div/main/div/div/div/div/div[2]/a","XPath",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"heading1\"]/button")), TimeSpan.FromSeconds(10));
+        SelectElement("//*[@id=\"heading1\"]/button","XPath",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.XPath("//*[@id=\"collapse1\"]/div/div[2]/div[1]/div/div[3]/div/button[2]")), TimeSpan.FromSeconds(10));
+        SelectElement("//*[@id=\"collapse1\"]/div/div[2]/div[1]/div/div[3]/div/button[2]","XPath",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("#app > div > main > div > div > div:nth-child(2) > div:nth-child(2) > div > button:nth-child(2)")), TimeSpan.FromSeconds(10));
+        SelectElement("#app > div > main > div > div > div:nth-child(2) > div:nth-child(2) > div > button:nth-child(2)","CssSelector",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.Name("header")), TimeSpan.FromSeconds(10));
+        
+        var header = _webDriver.FindElement(By.CssSelector("#header"));
+        header.Clear();
+        header.SendKeys("Ez egy teszt!");
+        
+        var text = _webDriver.FindElement(By.CssSelector("#text"));
+        text.Clear();
+        text.SendKeys("A források és ismeretei alapján ne oldja meg a feladatokat!");
+        
+        ((IJavaScriptExecutor)_webDriver).ExecuteScript($"window.scrollTo(0, document.body.scrollHeight)");
+        Thread.Sleep(1000);
+        SelectElement("submit","Id",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("#app > div > main > div > div > div:nth-child(2) > div:nth-child(2) > span.badge.text-bg-info.text-white.fs-5")), TimeSpan.FromSeconds(10));
+        ReadOnlyCollection<IWebElement> elements = _webDriver.FindElements(By.CssSelector("#app > div > main > div > div > div:nth-child(2)"));
+        IWebElement headerDone = elements.ElementAt(0);
+        Assert.IsTrue(headerDone.Text.Contains("Ez egy teszt!"));
     }
 }
