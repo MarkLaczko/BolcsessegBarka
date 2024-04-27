@@ -3090,9 +3090,9 @@ A komponens integrálja a `groupStore`, `userStore`, `themeStore`, és `language
 
 > A `GroupManagementPage` komponens egy szükséges eszköz minden olyan rendszer számára, ahol a csoportok adatainak kezelése központi jelentőséggel bír. Az integrált adatkezelési funkciók, a felhasználóbarát interfész és a rugalmas konfiguráció lehetővé teszi, hogy a rendszergazdák hatékonyan kezeljék a csoportokat.
 
-### `GroupManagementPage`
+### `CreateQuizPage`
 
-> A `GroupManagementPage` egy központi kezelőfelület, amely lehetővé teszi a csoportok kezelését egy oktatási környezetben. Az oldal segítségével az adminisztrátorok hozzáadhatnak, módosíthatnak és törölhetnek csoportokat, valamint beállíthatják az ahhoz a csoporthoz tartozó felhasználókat illetve jogosultságaikat.
+> A `CreateQuizPage` lehetővé teszi tanárok számára, hogy új kvízeket hozzanak létre.
 
 ### Komponens Struktúra
 
@@ -3100,40 +3100,24 @@ A komponens integrálja a `groupStore`, `userStore`, `themeStore`, és `language
 
 - **BaseLayout:** Ez az oldal alapvető elrendezési keretét biztosítja.
 - **BaseSpinner:** Egy töltésjelző, amely a felhasználói adatok betöltése közben jelenik meg.
-- **Dialog:** Dialógusablakok új felhasználó hozzáadásához és meglévő felhasználók módosításához.
 - **Toast:** Üzenetek megjelenítése a felhasználói műveletek eredményéről.
-
-#### **Dinamikus Tartalom:**
-
-- **DataTable:** Egy táblázat, amely a felhasználókat listázza, lehetőséget nyújtva a kiválasztott felhasználók módosítására vagy törlésére.
-- **Toolbar:** Eszköztár, amely gombokat tartalmaz új felhasználó létrehozásához, több felhasználó törléséhez és exportáláshoz.
 
 ### Script Részletek
 
 #### **Belső Állapotok:**
 
-- **selectedGroups**: A kiválasztott csoportok listája.
-- **users:** Tömb, amely a felhasználókat tartalmazza.
+- **course**: Az a kurzus, ahova a felhasználó a kvízt hozzá kívánja adni.
+- **topic:** Az a téma, ahova a felhasználó a kvízt hozzá kívánja adni. Ha az URL-ben lévő téma azonosítója nincs benne a kurzusban, akkor a felahsználó választhat.
 - **loading:** Boolean típusú változó, amely jelzi, hogy az oldal betöltése folyamatban van-e.
-- **addGroupDialogVisible, modifyGroupDialogVisible:** Logikai változók, amelyek az új csoport hozzáadása és meglévő csoport módosítása dialógusablakok láthatóságát szabályozzák.
-- **currentlyModifyingGroup**: A jelenleg szerkesztett csoport adatait tárolja.
+- **form**: Az űrlap tartalma.
 - **token**: A felhasználót azonosító tokenje a `userStore`-ból.
-- **groups**: A csoportok listája a `groupStore`-ból.
 - **isDarkMode**: A felhasználó által kiválaszott világos/sötét téma a `themeStore`-ból.
 - **messages**: A felhasználó által kiválaszott nyelvhez tartozó  a `languageStore`-ból.
 
 #### **Metódusok:**
 
-- **getGroups, getGroup, postGroup, updateGroup, deleteGroup, bulkDeleteGroups**: Függvények, amelyek a csoportokkal kapcsolatos API hívásokat kezelik.
-- **selectAllGroups**: Az összes csoport kijelölése.
-- **getUsers**: Az összes felhasználó lekérése.
-- **deleteMultipleGroups**: Több csoport törlése.
-- **addGroup**: Új csoport hozzáadása.
-- **sendUpdateGroup**: Csoport frissítése.
-- **selectUser**: Felhasználó kijelölése a csoport módosítása oldalon.
-- **unSelectUser**: Felhasználó kijelölésének megszűntetése a csoport módosítása oldalon.
-- **openModifyWindow**: A csoport módosítása ablak megnyitása.
-- **addPermissionFieldToAllGroups**: Hozzáad az összes csoport felhasználójához egy `permission` tulajdonságot.
+- **getCourse**: A kurzus adatainak lekérése.
+- **submitForm**: Az űralp adatainak elküldése.
 
 ### Stílusok és Animációk
 
@@ -3141,11 +3125,7 @@ CSS szabályok és animációk vannak definiálva a komponenshez, hogy javítsá
 
 ### Integráció a Pinia Tárolókkal
 
-A komponens integrálja a `groupStore`, `userStore`, `themeStore`, és `languageStore` tárolókat a felhasználói adatok, témabeállítások és nyelvi beállítások kezeléséhez.
-
-### Összefoglalás
-
-> A `GroupManagementPage` komponens egy szükséges eszköz minden olyan rendszer számára, ahol a csoportok adatainak kezelése központi jelentőséggel bír. Az integrált adatkezelési funkciók, a felhasználóbarát interfész és a rugalmas konfiguráció lehetővé teszi, hogy a rendszergazdák hatékonyan kezeljék a csoportokat.
+A komponens integrálja a `userStore`, `quizStore`, `themeStore`, és `languageStore` tárolókat a felhasználói adatok, témabeállítások és nyelvi beállítások kezeléséhez.
 
 ## Nyelvi beállítások:
 
