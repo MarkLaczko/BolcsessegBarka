@@ -1,6 +1,7 @@
 <template>
     <BaseLayout>
         <BaseToast />
+        <BaseSpinner :loading="loading" />
         <h1>Kvíz létrehozása</h1>
         <div class="row" v-if="!loading">
             <div class="col-12" v-if="topic.value != undefined">
@@ -131,11 +132,13 @@
 <script setup>
 import BaseLayout from '@layouts/BaseLayout.vue';
 import BaseToast from '@components/BaseToast.vue';
+import BaseSpinner from '@components/BaseSpinner.vue';
 import { reactive, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
 import { http } from '@utils/http';
 import { useToast } from 'primevue/usetoast';
 import { userStore } from "@stores/UserStore";
+import { quizStore } from "@stores/QuizStore";
 import { themeStore } from '@stores/ThemeStore';
 
 const route = useRoute();
@@ -170,15 +173,11 @@ const submitForm = async () => {
     try {
         form.opens = form.opens == null ? null : Math.floor(new Date(form.opens).getTime() / 1000);
         form.closes = form.closes == null ? null : Math.floor(new Date(form.closes).getTime() / 1000);
-        const response = await http.post(`quizzes`, form, {
-            headers: {
-                Authorization: `Bearer ${userStore().token}`,
-            },
-        });
-        if(!response.data.data.id){
+        const response = await quizStore().postQuiz(form);
+        if(!response.id){
             throw ('Hiba')
         }
-        router.push({name: 'editQuiz', params: {id: response.data.data.id}});
+        router.push({name: 'editQuiz', params: {id: response.id}});
     } catch (error) {
         let toastToAdd = {
           severity: "error",
