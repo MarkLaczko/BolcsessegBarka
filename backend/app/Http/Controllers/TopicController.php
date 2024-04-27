@@ -15,7 +15,7 @@ class TopicController extends Controller
      */
     public function index()
     {
-        return TopicResource::collection(Topic::all());
+        return TopicResource::collection(Topic::with(['assignments', 'notes', 'quizzes'])->get());
     }
 
     /**
@@ -34,7 +34,7 @@ class TopicController extends Controller
      */
     public function show(string $id)
     {
-        $topic = Topic::findOrFail($id);
+        $topic = Topic::with(['assignments', 'notes', 'quizzes'])->findOrFail($id);
 
         return new TopicResource($topic);
     }
@@ -45,7 +45,7 @@ class TopicController extends Controller
     public function update(UpdateTopicRequest $request, string $id)
     {
         $data = $request->validated();
-        $topic = Topic::findOrFail($id);
+        $topic = Topic::with(['assignments', 'notes', 'quizzes'])->findOrFail($id);
         $topic->update($data);
 
         return new TopicResource($topic);
