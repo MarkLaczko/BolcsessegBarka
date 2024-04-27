@@ -1677,6 +1677,8 @@ Egy JSON objektumot ad vissza `data` néven, melyben objektumok találhatóak a 
 - `opens`: A kvíz nyitása. Unix időbélyeg. Ha nincs megadva, akkor `null`.
 - `closes`: A kvíz zárása. Unix időbélyeg. Ha nincs megadva, akkor `null`.
 - `time`: A kvíz kitöltésének időkorlátja. Ha nincs megadva, akkor `null`.
+- `topic`: A téma, amibe a kvíz tartozik.
+  - `course`: A kurzus, amibe a kvízhez tartozó téma kapcsolódik.
 
 #### Példa
 
@@ -1697,7 +1699,18 @@ Válasz:
     "opens": null,
     "closes": null,
     "time": null,
-    "number_of_tasks": 2
+    "number_of_tasks": 2,
+    "topic": {
+      "id": 1,
+      "name": "Történelmi korszakok",
+      "order": 1,
+      "course": {
+        "id": 1,
+        "name": "Történelem",
+        "image": "/9j/4[...]",
+        "created_by": null
+      }
+    }
   }
 }
 ```
