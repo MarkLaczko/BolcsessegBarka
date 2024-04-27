@@ -1,13 +1,31 @@
 import { userStore } from "@stores/UserStore.mjs";
+import { courseStore } from "@stores/CourseStore.mjs";
 import { http } from '@utils/http';
 
 async function getCourse() {
     const path = location.pathname.split('/');
-    const courseId = path[2];
-    let groups = [];
     if(path[5] != "create-quiz" && (path[1] != "quiz" && path[3] != "edit")){
         return false;
     }
+    let courseId;
+    if(path[5] == "create-quiz") {
+        courseId = path[2];
+    }
+    else {
+        await courseStore().getCourses();
+        for (const course of courseStore().courses) {
+            for (const topic of course.topics) {
+                const quiz = topic.quizzes.find(x => x.id == path[2]);
+                if(quiz != undefined) {
+                    courseId = course.id;
+                }
+            }
+        }
+        if(courseId == null) {
+            return false;
+        }
+    }
+    let groups = [];
     const response = await http.get('/groups', {
         headers: {
             Authorization: `Bearer ${userStore().token}`,
