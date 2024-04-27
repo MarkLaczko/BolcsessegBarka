@@ -33,6 +33,8 @@
    - [LanguageStore](#languagestore)
    - [ThemeStore](#themestore)
    - [TopicStore](#topicstore)
+   - [GroupStore](#groupstore)
+   - [QuizStore](#quizstore)
 7. [Erőforrások](#erőforrások)
    - [Képek](#images-képek)
    - [Stílusok](#styles-stíluslapok)
@@ -3501,6 +3503,54 @@ export default {
 ```
 
 Ez a példa bemutatja, hogyan lehet lekérni és kiíratni a konzolra az összes témát a `TopicStore` segítségével, amikor a komponens betöltődik.
+
+### `GroupStore`
+
+> A `GroupStore` egy Pinia állapotkezelő tároló, amely a csoportok (groups) kezelését végzi. Ez a tároló felelős a csoportok adtaiainak lekérdezéséért, frissítéséért és törléséért, valamint az új csoportok létrehozásáért.
+
+### Tároló Funkciói
+
+#### **Állapotok (States):**
+
+- **groups** Az összes csoport adatai.
+
+#### **Műveletek (Actions):**
+
+- **getGroups():** Lekéri az összes csoport listáját a szerverről.
+- **getGroup(id):** Lekéri egy specifikus csoport részletes adatait azonosító alapján.
+- **postGroup(data):** Új csoport létrehozására szolgál, ahol a data tartalmazza a csoport adatait.
+- **putGroup(id, data):** Meglévő csoport adatainak módosítását végzi az adott azonosító alapján.
+- **destroyGroup(id):** Törli a megadott azonosítójú csoprtot.
+
+### Hitelesítés Kezelése
+
+Minden API kérés során az aktuális felhasználó hitelesítési tokenjét csatoljuk a kérés fejlécéhez, ami biztosítja az adatok védelmét és az engedélyezett hozzáférést.
+
+### Állapot Tartósítása
+
+A tároló állapotát nem tartósítjuk, mivel a témák dinamikus adatok, amelyek gyakran frissülnek. A frissesség biztosítása érdekében minden oldalbetöltéskor újra lekérjük őket.
+
+### Használati Példa
+
+A tároló használata egy Vue komponensben:
+
+```js
+import { mapState, mapActions } from "pinia";
+import { groupStore } from "@stores/GroupStore";
+
+export default {
+  computed: {
+    ...mapState(groupStore, ['groups'])
+  },
+  methods: {
+    ...mapActions(groupStore, ["getGroups"]),
+  },
+  async mounted() {
+    await this.getGroups();
+    console.log(this.groups);
+  },
+};
+```
 
 ## Erőforrások
 
