@@ -196,9 +196,9 @@ Route::middleware('auth:sanctum')->get('/answers', [AnswerController::class,'ind
 Route::middleware('auth:sanctum')->get('/answers/{id}', [AnswerController::class,'show'])
     ->whereNumber('id')
     ->name('answers.show');
-Route::middleware('auth:sanctum')->post('/answers', [AnswerController::class,'bulkStore'])
+Route::middleware('auth:sanctum')->post('/answers', [AnswerController::class,'store'])
     ->name('answers.store');
-Route::middleware('auth:sanctum')->post('/answers/bulk', [AnswerController::class,'store'])
+Route::middleware('auth:sanctum')->post('/answers/bulk', [AnswerController::class,'bulkStore'])
     ->name('answers.bulkStore');
 Route::middleware('auth:sanctum')->put('/answers/{id}', [AnswerController::class,'update'])
     ->whereNumber('id')
