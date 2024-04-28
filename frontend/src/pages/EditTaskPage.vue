@@ -4,7 +4,7 @@
         <BaseConfirmDialog />
         <BaseSpinner :loading="loading" />
         <div v-if="!loading">
-            <h1>Feladat hozzáadása</h1>
+            <h1>{{ messages.pages.editTaskPage.title }}</h1>
             <div class="row">
                 <div class="col-12">
                     <RouterLink :to="{ name: 'editQuiz', params: { id: route.params.quizId } }" class="btn btn-outline-secondary"><i class="fa-solid fa-arrow-left-long"></i> {{ quiz.value.name }}</RouterLink>
@@ -15,12 +15,13 @@
                             type="form"
                             id="form"
                             :actions="false"
+                            :incomplete-message="messages.pages.editTaskPage.validationMessages.matchAllValidationMessage"
                             @submit="putTask"
                         >
                             <div class="col-12 my-1">
                                 <FormKit
                                     type="text"
-                                    label="Fejléc"
+                                    :label="messages.pages.editTaskPage.header"
                                     name="header"
                                     id="header"
                                     v-model="form.value.header"
@@ -31,17 +32,15 @@
                                     autocomplete="off"
                                     validation="required|length:0,100"
                                     :validation-messages="{
-                                        required:
-                                            'Ez a mező kötelező.',
-                                        length:
-                                            'A fejléc maximum 100 karakter hosszú lehet.',
+                                        required: messages.pages.editTaskPage.headerRequired,
+                                        length: messages.pages.editTaskPage.headerLength,
                                     }"
                                 />
                             </div>
                             <div class="col-12 my-1">
                                 <FormKit
                                     type="text"
-                                    label="Rövid szöveg"
+                                    :label="messages.pages.editTaskPage.text"
                                     name="text"
                                     id="text"
                                     v-model="form.value.text"
@@ -52,10 +51,8 @@
                                     autocomplete="off"
                                     validation="required|length:0,255"
                                     :validation-messages="{
-                                        required:
-                                            'Ez a mező kötelező.',
-                                        length:
-                                            'A fejléc maximum 255 karakter hosszú lehet.',
+                                        required: messages.pages.editTaskPage.textRequired,
+                                        length: messages.pages.editTaskPage.textLength,
                                     }"
                                 />
                             </div>
@@ -66,7 +63,7 @@
                                             <span class="badge text-bg-info fs-5 text-white">{{ index + 1}}.</span>
                                         </div>
                                         <div class="my-2">
-                                            <label :for="'question' + index" class="form-label">Alfeladat szövege</label>
+                                            <label :for="'question' + index" class="form-label">{{ messages.pages.editTaskPage.subtaskQuestion }}</label>
                                             <Editor v-model="subtask.question" :id="'question' + index" editorStyle="height: 320px;"
                                                 :pt="{
                                                     root: {
@@ -75,16 +72,16 @@
                                                 }"/>
                                         </div>
                                         <div class="my-2">
-                                            <label :for="'type' + index" class="form-label">Feladat típusa</label>
+                                            <label :for="'type' + index" class="form-label">{{ messages.pages.editTaskPage.subtaskType }}</label>
                                             <select name="type" :id="'type' + index" class="form-select" v-model="subtask.type">
-                                                <option value="short_answer">Rövid válasz</option>
-                                                <option value="multiple_choice">Több válasz</option>
-                                                <option value="essay">Esszé</option>
+                                                <option value="short_answer">{{ messages.pages.editTaskPage.typeOptions.shortAnswer }}</option>
+                                                <option value="multiple_choice">{{ messages.pages.editTaskPage.typeOptions.multipleChoice }}</option>
+                                                <option value="essay">{{ messages.pages.editTaskPage.typeOptions.essay }}</option>
                                             </select>
                                         </div>
                                         <div class="my-2" v-if="subtask.type == 'multiple_choice'">
-                                            <label :for="'options' + index" class="form-label mb-0">Válaszlehetőségek</label>
-                                            <p><i>Kezdje el gépelni a válaszlehetőségeket! Az Enter billentyűvel tudja hozzáadni a válaszokat.</i></p>
+                                            <label :for="'options' + index" class="form-label mb-0">{{ messages.pages.editTaskPage.subtaskOptions }}</label>
+                                            <p><i>{{ messages.pages.editTaskPage.subtaskOptionsInstructions }}</i></p>
                                             <Chips v-model="subtask.options" :id="'options' + index"
                                                 :pt="{
                                                     container: {
@@ -106,8 +103,8 @@
                                             />
                                         </div>
                                         <div class="my-2" v-if="subtask.type == 'short_answer' || subtask.type == 'multiple_choice'">
-                                            <label :for="'solution' + index" class="form-label mb-0">Helyes válaszok</label>
-                                            <p><i>Kezdje el gépelni a helyes válaszokat! Az Enter billentyűvel tudja hozzáadni a helyes válaszokat.</i></p>
+                                            <label :for="'solution' + index" class="form-label mb-0">{{ messages.pages.editTaskPage.subtaskSolution }}</label>
+                                            <p><i>{{ messages.pages.editTaskPage.subtaskSolutionInstructions }}</i></p>
                                             <Chips v-model="subtask.solution" :id="'solution' + index"
                                                 :pt="{
                                                     container: {
@@ -131,7 +128,7 @@
                                         <div class="my-2">
                                             <FormKit
                                             type="number"
-                                            label="Feladat pontszáma"
+                                            :label="messages.pages.editTaskPage.subtaskMarks"
                                             :id="'marks' + index"
                                             number
                                             step="0.5"
@@ -142,10 +139,8 @@
                                             }"
                                             validation="required|min:0"
                                             :validation-messages="{
-                                                required:
-                                                    'A pontszám megadása kötelező.',
-                                                min:
-                                                    'A pontszám nem lehet kevesebb, mitn 0.',
+                                                required: messages.pages.editTaskPage.marksRequired,
+                                                min: messages.pages.editTaskPage.marksMin,
                                             }"
                                             />
                                         </div>
@@ -167,11 +162,11 @@
                             </div>
                             <div class="col-12 my-1">
                                 <div class="d-flex w-100 flex-row justify-content-end my-2 p-1">
-                                    <RouterLink :to="{ name: 'editQuiz', params: { id: route.params.quizId } }" class="btn btn-secondary ms-1">Mégse</RouterLink>
+                                    <RouterLink :to="{ name: 'editQuiz', params: { id: route.params.quizId } }" class="btn btn-secondary ms-1">{{ messages.pages.editTaskPage.cancel }}</RouterLink>
                                     <FormKit
                                         type="submit"
                                         id="submit"
-                                        label="Mentés"
+                                        :label="messages.pages.editTaskPage.submit"
                                         :classes="{
                                             input: 'btn btn-success ms-1'
                                         }"
@@ -201,6 +196,7 @@ import { useConfirm } from "primevue/useconfirm";
 import { userStore } from "@stores/UserStore";
 import { quizStore } from "@stores/QuizStore";
 import { themeStore } from '@stores/ThemeStore';
+import { languageStore } from '@stores/LanguageStore';
 
 const route = useRoute();
 const router = useRouter();
@@ -213,6 +209,10 @@ const form = reactive({});
 const loading = computed(() => {
     return quiz.value == undefined || form.value == undefined;
 });
+
+const messages = languageStore().messages;
+
+const language = languageStore().language;
 
 const getQuiz = async () => {
     quiz.value = await quizStore().getQuiz(route.params.quizId);
@@ -256,7 +256,7 @@ const moveItem = async (from, to) => {
     } catch (error) {
         let toastToAdd = {
           severity: "error",
-          detail: "Váratlan hiba a feladatok sorrendjének módosításakor!",
+          detail: messages.pages.editTaskPage.toastMessages.changeOrderUnexpectedError,
           life: 3000,
         };
         if (!themeStore().isDarkMode) {
@@ -297,7 +297,7 @@ const putTask = () => {
             if(subtask.question == ""){
                 let toastToAdd = {
                     severity: "error",
-                    detail: "Minden kérdés szövege kötelező!",
+                    detail: messages.pages.editTaskPage.validationMessages.allQuestionRequired,
                     life: 3000,
                 };
                 if (!themeStore().isDarkMode) {
@@ -321,7 +321,7 @@ const putTask = () => {
     } catch (error) {
         let toastToAdd = {
             severity: "error",
-            detail: "Váratlan hiba a feladat létrehozásakor!",
+            detail: messages.pages.editTaskPage.toastMessages.updateUnexpectedError,
             life: 3000,
         };
         if (!themeStore().isDarkMode) {
@@ -337,12 +337,12 @@ const putTask = () => {
 
 const confirmDeleteSubtask = async (id, index) => {
     await confirm.require({
-        message: 'Biztos ki akarja törölni ezt az alfeladatot?',
+        message: messages.pages.editTaskPage.deleteTask,
         icon: 'pi pi-exclamation-triangle',
         rejectClass: 'btn btn-danger',
         acceptClass: 'btn btn-success ',
-        rejectLabel: 'Mégse',
-        acceptLabel: 'Törlés',
+        rejectLabel: messages.pages.editTaskPage.cancel,
+        acceptLabel: messages.pages.editTaskPage.confirm,
         accept: async () => {
             try {          
                 await http.delete(`/subtasks/${id}`, {
@@ -355,7 +355,7 @@ const confirmDeleteSubtask = async (id, index) => {
 
                 let toastToAdd = {
                     severity: "success",
-                    detail: "Sikeres törlés!",
+                    detail: messages.pages.editTaskPage.toastMessages.deleteSuccess,
                     life: 3000,
                 };
                 if (!themeStore().isDarkMode) {
@@ -368,7 +368,7 @@ const confirmDeleteSubtask = async (id, index) => {
             } catch (error) {
                 let toastToAdd = {
                     severity: "error",
-                    detail: "Váratlan hiba a törlésnél!",
+                    detail: messages.pages.editTaskPage.toastMessages.deleteUnexpectedError,
                     life: 3000,
                 };
                 if (!themeStore().isDarkMode) {
