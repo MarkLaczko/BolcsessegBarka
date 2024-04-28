@@ -58,4 +58,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Course::class, "created_by");
     }
+
+    public function attempts() : HasMany 
+    {
+        return $this->hasMany(Attempt::class);
+    }
 }
