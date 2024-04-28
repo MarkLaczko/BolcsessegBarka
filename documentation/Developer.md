@@ -8,9 +8,11 @@
    - [Kurzus routeok](#kurzusokhoz-kapcsolodó-routeok)
    - [Téma routeok](#témához-kapcsolodó-routeok)
    - [Kvíz routeok](#kvízekhez-kapcsolodó-routeok)
+   - [Jegyzet routeok](#jegyzethez-kapcsolodó-routeok)
 2. [Komponensek](#komponensek)
    - [BaseDialog](#basedialog)
    - [BaseSpinner](#basespinner)
+   - [BasePaginator](#basepaginator)
    - [BaseLearningMaterialCard](#baselearningmaterialcard)
    - [BaseCourseCard](#basecoursecard)
    - [BaseAssignmentCard](#baseassignmentcard)
@@ -35,6 +37,8 @@
    - [TopicStore](#topicstore)
    - [GroupStore](#groupstore)
    - [QuizStore](#quizstore)
+   - [CourseStore](#coursestore)
+   - [NoteStore](#notestore)
 7. [Erőforrások](#erőforrások)
    - [Képek](#images-képek)
    - [Stílusok](#styles-stíluslapok)
@@ -906,7 +910,7 @@ Válasz:
           "order": 2,
           "assignments": [],
           "notes": [],
-          "quizzes": [],
+          "quizzes": []
         }
       ]
     }
@@ -960,7 +964,7 @@ Válasz:
         "order": 2,
         "assignments": [],
         "notes": [],
-        "quizzes": [],
+        "quizzes": []
       }
     ]
   }
@@ -1376,6 +1380,9 @@ Egy JSON tömböt ad vissza `data` néven, melyben objektumok találhatóak a k�
 - `id`: A téma azonosítója.
 - `name`: A téma neve.
 - `order`: A téma sorrendjének száma.
+- `assignment`: A témához tartozó feladatok.
+- `notes`: A témához tartozó jegyzetek.
+- `quizzes`: A témához tartozó kvízek.
 
 #### Példa
 
@@ -1392,13 +1399,52 @@ Válasz:
   "data": [
     {
       "id": 1,
-      "name": "Függvények",
-      "order": 1
+      "name": "Történelmi korszakok",
+      "order": 1,
+      "assignment": [
+        {
+          "id": 1,
+          "task_name": "Feladat",
+          "comment": "Ez egy hozzászólás.",
+          "deadline": "2024-04-29 11:24:00",
+          "grade": null,
+          "course": {
+            "id": 1,
+            "name": "Történelem",
+            "image": "tortenelem.png",
+            "created_by": null
+          },
+          "teacher_task_name": "undefined",
+          "student_task": []
+        }
+      ],
+      "notes": [
+        {
+          "id": 1,
+          "title": "Jegyzetem",
+          "text": "Jegyzet",
+          "user_id": 1
+        }
+      ],
+      "quizzes": [
+        {
+          "id": 1,
+          "name": "A kora újkor",
+          "max_attempts": null,
+          "opens": null,
+          "closes": null,
+          "time": null,
+          "number_of_tasks": 1
+        }
+      ]
     },
     {
-      "id": 2,
-      "name": "Algebra",
-      "order": 2
+      "id": 4,
+      "name": "Téma2",
+      "order": null,
+      "assignment": [],
+      "notes": [],
+      "quizzes": []
     }
   ]
 }
@@ -1422,13 +1468,16 @@ Egy JSON objektumot ad vissza `data` néven a következőkkel:
 - `id`: A téma azonosítója.
 - `name`: A téma neve.
 - `order`: A téma sorrendjének száma.
+- `assignment`: A témához tartozó feladatok.
+- `notes`: A témához tartozó jegyzetek.
+- `quizzes`: A témához tartozó kvízek.
 
 #### Példa
 
 URI:
 
 ```
-/api/topics/1
+/api/topics/4
 ```
 
 Válasz:
@@ -1436,9 +1485,12 @@ Válasz:
 ```json
 {
   "data": {
-    "id": 1,
-    "name": "Függvények",
-    "order": 1
+    "id": 4,
+    "name": "Téma2",
+    "order": null,
+    "assignment": [],
+    "notes": [],
+    "quizzes": []
   }
 }
 ```
@@ -1508,7 +1560,7 @@ Az alábbi hibakódokat adhatja vissza a végpont:
 
 ### `PUT /api/topics/{id}`
 
-Téma szerkesztése. Csak az adminisztrátorok és tanárok szerkeszthetnek témát.
+Téma szerkesztése.
 
 #### Törzs
 
@@ -1522,21 +1574,24 @@ Egy JSON objektumot ad vissza `data` néven a következőkkel:
 - `id`: A téma azonosítója.
 - `name`: A téma neve.
 - `order`: A téma sorrendjének száma.
+- `assignment`: A témához tartozó feladatok.
+- `notes`: A témához tartozó jegyzetek.
+- `quizzes`: A témához tartozó kvízek.
 
 #### Példa
 
 URI:
 
 ```
-/api/topics/1
+/api/topics/5
 ```
 
 Törzs:
 
 ```json
 {
-  "name": "Összeadás",
-  "order": 10
+  "name": "Új Téma",
+  "order": 20
 }
 ```
 
@@ -1545,9 +1600,12 @@ Válasz:
 ```json
 {
   "data": {
-    "id": 1,
-    "name": "Összeadás",
-    "order": 10
+    "id": 5,
+    "name": "Új Téma",
+    "order": 20,
+    "assignment": [],
+    "notes": [],
+    "quizzes": []
   }
 }
 ```
@@ -1557,14 +1615,13 @@ Válasz:
 Az alábbi hibakódokat adhatja vissza a végpont:
 
 - `401 Unauthorized`: Hiányzik a Bearer token.
-- `403 Forbidden`: A felhasználónak nincs jogosultsága.
 - `404 Not Found`: Nincs ilyen rekord az adatbázisban.
 - `422 Unprocessable Content`: Hiba a törzs adataiban.
 - `500 Internal Server Error`: Váratlan hiba történt a szerveren.
 
 ### `DELETE /api/topics/{id}`
 
-Téma törlése. Csak az adminisztrátorok és tanárok törölhetnek témát.
+Téma törlése.
 
 #### Válasz
 
@@ -1589,14 +1646,13 @@ Válasz:
 Az alábbi hibakódokat adhatja vissza a végpont:
 
 - `401 Unauthorized`: Hiányzik a Bearer token.
-- `403 Forbidden`: A felhasználónak nincs jogosultsága.
 - `404 Not Found`: Nincs ilyen rekord az adatbázisban.
 - `500 Internal Server Error`: Váratlan hiba történt a szerveren.
 
-### Kvízekhez kapcsolodó routeok: 
+### Kvízekhez kapcsolodó routeok:
 
 | Method | URI                         | Name              | Controller        | Action   |
-|--------|-----------------------------|-------------------|-------------------|----------|
+| ------ | --------------------------- | ----------------- | ----------------- | -------- |
 | GET    | /api/quizzes                | quizzes.index     | QuizController    | index    |
 | GET    | /api/quizzes/{id}           | quizzes.show      | QuizController    | show     |
 | POST   | /api/quizzes                | quizzes.store     | QuizController    | store    |
@@ -2017,10 +2073,7 @@ Válasz:
 
 ```json
 {
-  "data": [
-    1,
-    2
-  ]
+  "data": [1, 2]
 }
 ```
 
@@ -2086,7 +2139,7 @@ Válasz:
         "options": null,
         "type": "short_answer",
         "marks": 1
-      },
+      }
     ]
   }
 }
@@ -2134,10 +2187,8 @@ Válasz:
     },
     {
       "id": 2,
-      "solution": [
-        "Portugália"
-      ]
-    },
+      "solution": ["Portugália"]
+    }
   ]
 }
 ```
@@ -2205,19 +2256,14 @@ Törzs:
     {
       "order": 0,
       "question": "<p><b>a) Milyen elvre utal az alábbi részlet az Emberi és Polgári Jogok Nyilatkozatából?</b><br>„III. Minden szuverenitás elve természeténél fogva a nemzetben lakozik; sem testület, sem egyén nem gyakorolhat hatalmat, ha (az) nem határozottan tőle ered.”</p>",
-      "solution": [
-        "népfelség",
-        "népszuverenitás"
-      ],
+      "solution": ["népfelség", "népszuverenitás"],
       "type": "short_answer",
       "marks": 0.5
     },
     {
       "order": 1,
       "question": "<p><b>Határozza meg, hogy melyik ország alapító dokumentumát tartják az Emberi és Polgári Jogok Nyilatkozatának alapjának?</b></p>",
-      "solution": [
-        "Franciaország"
-      ],
+      "solution": ["Franciaország"],
       "type": "short_answer",
       "marks": 1
     }
@@ -2321,19 +2367,14 @@ Törzs:
       "id": 23,
       "order": 0,
       "question": "<p><b>a) Milyen elvre utal az alábbi részlet az Emberi és Polgári Jogok Nyilatkozatából?</b> <br>„III. Minden szuverenitás elve természeténél fogva a nemzetben lakozik; sem testület, sem egyén nem gyakorolhat hatalmat, ha (az) nem határozottan tőle ered.”</p>",
-      "solution": [
-        "népfelség",
-        "népszuverenitás"
-      ],
+      "solution": ["népfelség", "népszuverenitás"],
       "type": "short_answer",
       "marks": 0.5
     },
     {
       "order": 1,
       "question": "<p><b>Határozza meg, hogy melyik ország alapító dokumentumát tartják az Emberi és Polgári Jogok Nyilatkozatának alapjának?</b></p>",
-      "solution": [
-        "Francia Királyság"
-      ],
+      "solution": ["Francia Királyság"],
       "type": "short_answer",
       "marks": 1
     }
@@ -2446,10 +2487,7 @@ Válasz:
 {
   "data": {
     "id": 1,
-    "solution": [
-      "Amerika felfedezése",
-      "Kolumbusz Kristóf eljutott Amerikába"
-    ]
+    "solution": ["Amerika felfedezése", "Kolumbusz Kristóf eljutott Amerikába"]
   }
 }
 ```
@@ -2477,6 +2515,256 @@ URI:
 
 ```
 /api/subtasks/1
+```
+
+Válasz:
+
+```json
+
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `403 Forbidden`: A felhasználónak nincs jogosultsága.
+- `404 Not Found`: Nincs ilyen rekord az adatbázisban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### Jegyzethez kapcsolodó routeok:
+
+| Method | URI             | Name          | Controller     | Action  |
+| ------ | --------------- | ------------- | -------------- | ------- |
+| GET    | /api/notes      | notes.index   | NoteController | index   |
+| GET    | /api/notes/{id} | notes.show    | NoteController | show    |
+| POST   | /api/notes      | notes.store   | NoteController | store   |
+| PUT    | /api/notes/{id} | notes.update  | NoteController | update  |
+| DELETE | /api/notes/{id} | notes.destroy | NoteController | destroy |
+
+### `GET /api/notes`
+
+Az összes jegyzet lekérése.
+
+#### Válasz
+
+Egy JSON tömböt ad vissza `data` néven, melyben objektumok találhatóak a következőkkel:
+
+- `id`: A jegyzet azonosítója.
+- `title`: A jegyzet címe.
+- `text`: A jegyzet szövege.
+- `user_id`: A jegyzetet létrehozó felhasználó azonosítója.
+
+#### Példa
+
+URI:
+
+```
+/api/notes
+```
+
+Válasz:
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Jegyzet1",
+      "text": "Ez egy teszt jegyzet.",
+      "user_id": 1
+    },
+    {
+      "id": 1,
+      "title": "Jegyzet2",
+      "text": "Ez is egy teszt jegyzet.",
+      "user_id": 2
+    }
+  ]
+}
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `GET /api/notes/{id}`
+
+Egy jegyzet lekérése azonosító alapján.
+
+#### Válasz
+
+Egy JSON objektumot ad vissza `data` néven a következőkkel:
+
+- `id`: A jegyzet azonosítója.
+- `title`: A jegyzet címe.
+- `text`: A jegyzet szövege.
+- `user_id`: A jegyzetet létrehozó felhasználó azonosítója.
+
+#### Példa
+
+URI:
+
+```
+/api/notes/1
+```
+
+Válasz:
+
+```json
+{
+  "data": {
+    "id": 1,
+    "title": "Jegyzet1",
+    "text": "Ez egy teszt jegyzet.",
+    "user_id": 1
+  }
+}
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `404 Not Found`: Nincs ilyen rekord az adatbázisban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `POST /api/notes`
+
+Új Jegyzet létrehozása.
+
+#### Törzs
+
+- `title`: A jegyzet címe.
+- `text`: A jegyzet szövege.
+- `topic_id`: Azon téma azonosítója, amelyhez a jegyzetet kapcsolni kívánjuk.
+- `user_id`: A jegyzetet létrehozó felhasználó azonosítója.
+
+#### Válasz
+
+Egy JSON objektumot ad vissza `data` néven a következőkkel:
+
+- `id`: A jegyzet azonosítója.
+- `title`: A jegyzet címe.
+- `text`: A jegyzet szövege.
+- `user_id`: A jegyzetet létrehozó felhasználó azonosítója.
+
+#### Példa
+
+URI:
+
+```
+/api/notes
+```
+
+Törzs:
+
+```json
+{
+  "title": "Jegyzetem",
+  "text": "Jegyzet",
+  "topic_id": 1,
+  "user_id": 1
+}
+```
+
+Válasz:
+
+```json
+{
+  "data": {
+    "id": 3,
+    "title": "Jegyzetem",
+    "text": "Jegyzet",
+    "user_id": 1
+  }
+}
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `422 Unprocessable Content`: Hiba a törzs adataiban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `PUT /api/notes/{id}`
+
+Jegyzet szerkesztése. Csak a jegyzet eredeti készítője jogosult annak módosítására.
+
+#### Törzs
+
+- `title`: A jegyzet címe.
+- `text`: A jegyzet szövege.
+
+#### Válasz
+
+Egy JSON objektumot ad vissza `data` néven a következőkkel:
+
+- `id`: A jegyzet azonosítója.
+- `title`: A jegyzet címe.
+- `text`: A jegyzet szövege.
+- `user_id`: A jegyzetet létrehozó felhasználó azonosítója.
+
+#### Példa
+
+URI:
+
+```
+/api/notes/3
+```
+
+Törzs:
+
+```json
+{
+  "title": "2.Jegyzetem",
+  "text": "Ez a második Jegyzetem."
+}
+```
+
+Válasz:
+
+```json
+{
+  "data": {
+    "id": 3,
+    "title": "2.Jegyzetem",
+    "text": "Ez a második Jegyzetem.",
+    "user_id": 1
+  }
+}
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `403 Forbidden`: A felhasználónak nincs jogosultsága.
+- `404 Not Found`: Nincs ilyen rekord az adatbázisban.
+- `422 Unprocessable Content`: Hiba a törzs adataiban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `DELETE /api/notes/{id}`
+
+Jegyzet törlése. Csak a jegyzet eredeti készítője jogosult annak törlésére.
+
+#### Válasz
+
+`204 No Content`, amennyiben sikeres a törlés.
+
+#### Példa
+
+URI:
+
+```
+/api/notes/3
 ```
 
 Válasz:
@@ -2949,7 +3237,7 @@ A `CoursesPage` komponens integrálja a `languageStore`-t a lokalizált üzenete
 
 ### `CoursePage`
 
-> A `CoursePage` komponens egy dinamikus felületet biztosít, ahol a diákok kurzus-specifikus témákat tekinthetnek meg, a tanárok és adminisztrátorok pedig témákat szerkeszthetnek és kezelhetnek. Ez a komponens több újrafelhasználható komponenst integrál, és kezeli az állapotokat és viselkedéseket, beleértve a témák létrehozását, frissítését és törlését.
+> A `CoursePage` komponens egy dinamikus felületet biztosít, ahol a diákok kurzus-specifikus témákat tekinthetnek meg, jegyzeteket hozhatnak létre és feladatokat adhatnak be. A tanárok és adminisztrátorok pedig témákat szerkeszthetnek és kezelhetnek, illetve feladatok és jegyzeteket adhatnak hozzá az adott témához. Ez a komponens több újrafelhasználható komponenst integrál, és kezeli az állapotokat és viselkedéseket.
 
 ### Komponens Struktúra
 
@@ -2957,34 +3245,85 @@ A `CoursesPage` komponens integrálja a `languageStore`-t a lokalizált üzenete
 
 - **BaseLayout:** Ez a fő elrendezési keret a lap számára, biztosítva az alkalmazáson belüli konzisztens stílust és szerkezetet.
 - **BaseSpinner:** Betöltési animációt jelenít meg, amíg az adatok be nem töltődnek.
-- **BaseDialogok:** Két példányban használják – egy új téma hozzáadásához és egy meglévő téma szerkesztéséhez. Mindkettő `FormKit`-et használ az űrlapkezeléshez és validáláshoz.
+- **BaseDialogok:** Több példányban van használva – témák, jegyzetek kezelésénél, mindezek mellett `FormKit`-et használ az űrlapkezeléshez és validáláshoz.
 
-**Dinamikus Tartalom Megjelenítése:** Feltételesen jeleníti meg a tartalmat a betöltés állapotától függően, és lehetőséget biztosít témák hozzáadására, szerkesztésére és törlésére, kizárólag a tanárok és az adminisztrátorok számára.
+**Dinamikus Tartalom Megjelenítése:** Feltételesen jeleníti meg a tartalmat a betöltés állapotától függően, és lehetőséget biztosít témák, jegyzetek hozzáadására, szerkesztésére és törlésére, témákat kizárólag a tanárok és az adminisztrátorok kezelhetik.
+
+#### **Dialog Komponensek**
+
+1. **Új Téma Hozzáadása** (`newTopicDialogVisible`):
+
+   - Megjeleníti a témahozzáadás űrlapot.
+   - Validációkat tartalmaz a téma nevére és sorrendjére.
+   - Gombok az űrlap beküldésére vagy az ablak bezárására.
+
+2. **Téma Szerkesztése** (`editTopicDialogVisible`):
+
+   - Ugyanazokat az űrlapelemeket használja, mint az új téma hozzáadása, de előre betölti az aktuális téma adatait.
+   - Az űrlap lehetőséget ad a témák módosítására és frissítésére.
+
+3. **Csoportok Kezelése** (`groupTreatmentDialog`):
+
+   - Egy `MultiSelect` komponens segítségével lehetőséget nyújt csoportok kiválasztására és kezelésére.
+   - Csoportok mentése vagy változtatások elvetése lehetséges.
+
+4. **Új Feladat** (`newAssignmentDialogVisible`):
+
+   - Lehetővé teszi új feladat létrehozását az űrlapon keresztül, ahol több mező (pl. határidő, feladat leírása) kitöltése szükséges.
+   - Feladat feltöltése többfájlos feltöltés támogatásával.
+
+5. **Feladat Szerkesztése** (`UpdateAssignmentDialogVisible`):
+
+   - Hasonló funkciók, mint az új feladatnál, de az aktuális feladat adataival előre betöltve.
+
+6. **Jegyzetek Kezelése** (`newNoteDialogVisible`, `currentNoteVisible`):
+   - Új jegyzet létrehozása és meglévő jegyzet megtekintése vagy szerkesztése.
+   - Tartalmazza a szövegszerkesztőt a jegyzet tartalmának szerkesztésére.
+   - Itt lehet kezelni a jegyzettel kapcsolatos funkciókat: törlés, frissítés.
 
 ### Script Részletek
 
 #### **Belső Állapotok:**
 
 - A kurzussal kapcsolatos információkat és a témaadatokat helyileg tárolják a komponens adatfunkciójában.
-- A párbeszédablakok láthatósági zászlói (`newTopicDialogVisible`, `editTopicDialogVisible`) szabályozzák a témakezelő modális párbeszédablakok megjelenítését.
+- A párbeszédablakok láthatósági zászlói szabályozzák a téma, feladat, jegyezet modális párbeszédablakok megjelenítését.
 
-#### **Metódusok:**
+#### **Metódusok és Eseménykezelők:**
+
+#### Téma
 
 - A témakezelő funkciók (`addTopic`, `editTopic`, `deleteTopic`) csak a tanárok és az adminisztrátorok számára érhetők el, biztosítva az adatok integritását és a jogosultságok szerinti hozzáférést.
 
-#### **Számított Tulajdonságok és Jogosultságok Kezelése:**
+#### Jegyzet
 
-- A `userStore` segítségével ellenőrizhető, hogy a jelenlegi felhasználó rendelkezik-e a szükséges adminisztrátori vagy tanári jogosultságokkal.
+- A jegyzetkezelő funkciók (`deleteNote`, `updateNote`, `saveNote`,`openCurrentNote`) minden felhasználó számára elérhetőek, lehetővé téve számukra, hogy egyszerűen és hatékonyan kezeljék saját jegyzeteiket.
+
+#### Felhasználói jogosultságok
+
+- A `findUserDetails` metódus feladata, hogy az adott felhasználóhoz tartozó jogosultságokat azonosítsa egy meghatározott kurzus és csoport kontextusában. Ez a metódus segít megállapítani, hogy a felhasználónak milyen hozzáférési szintje van a kurzushoz és annak tartalmához, beleértve a témákat, feladatokat és egyéb kapcsolódó anyagokat.
+
+#### Dinamikus Tartalom Kezelése:
+
+- Téma, jegyzet hozzáadása, szerkesztése, törlése funkciók.
+- Csoportok hozzárendelése.
+
+#### **Állapotok és Adatkezelés:**
+
+- #### Pinia Tárolók Integrációja:
+
+- `userStore`, `courseStore`, `groupStore`, `topicStore`, `noteStore` használata az adatok és állapotok kezelésére.
+- `themeStore`, `languageStore` használata a nyelvi adatok és stílusok kezeléséhez.
+- Aszinkron műveletek kezelése és az állapotok frissítése a szerver válaszai alapján.
+
+#### **Jogosultságok Kezelése:**
+
+- A `userStore` segítségével ellenőrizhető, hogy a jelenlegi felhasználó rendelkezik-e a szükséges adminisztrátori jogosultsággal.
 
 ### Stílusok és Animációk
 
 #### **CSS Animációk:**
 
 - Átmeneti effektusokat definiál a témalistában lévő bejegyzések számára, hogy javítsák a felhasználói élményt, amikor témákat adnak hozzá vagy távolítanak el a listáról.
-
-### Integráció a Pinia Tárolókkal
-
-> A komponens széles körben használja a Pinia tárolókat (`userStore`, `courseStore`, `groupStore`, `topicStore`, `languageStore`) a kurzus és a témák kezeléséhez, az adatok lekéréséhez és a szerveroldali erőforrások frissítéséhez. Ez az architektúra elősegíti az alkalmazás karbantarthatóságát és skálázhatóságát azáltal, hogy elválasztja az üzleti logikát a felhasználói felülettől.
 
 ### `CourseManagementPage`
 
@@ -3101,7 +3440,7 @@ A komponens integrálja a `userStore`, `themeStore`, és `languageStore` tárol�
 - **token**: A felhasználót azonosító tokenje a `userStore`-ból.
 - **groups**: A csoportok listája a `groupStore`-ból.
 - **isDarkMode**: A felhasználó által kiválaszott világos/sötét téma a `themeStore`-ból.
-- **messages**: A felhasználó által kiválaszott nyelvhez tartozó  a `languageStore`-ból.
+- **messages**: A felhasználó által kiválaszott nyelvhez tartozó a `languageStore`-ból.
 
 #### **Metódusok:**
 
@@ -3165,7 +3504,7 @@ A komponens integrálja a `groupStore`, `userStore`, `themeStore`, és `language
 - **BaseLayout:** Ez az oldal alapvető elrendezési keretét biztosítja.
 - **BaseSpinner:** Egy töltésjelző, amely a felhasználói adatok betöltése közben jelenik meg.
 - **Toast:** Üzenetek megjelenítése a felhasználói műveletek eredményéről.
-- **BaseConfirmDialog:** 
+- **BaseConfirmDialog:**
 
 ### Script Részletek
 
@@ -3540,7 +3879,7 @@ import { groupStore } from "@stores/GroupStore";
 
 export default {
   computed: {
-    ...mapState(groupStore, ['groups'])
+    ...mapState(groupStore, ["groups"]),
   },
   methods: {
     ...mapActions(groupStore, ["getGroups"]),
@@ -3588,6 +3927,88 @@ export default {
   async mounted() {
     const quiz = await this.getQuiz(1);
     console.log(quiz);
+  },
+};
+```
+
+## `CourseStore`
+
+> A `CourseStore` egy Pinia állapotkezelő tároló, amely a kurzusok kezelését végzi. Ez a tároló felelős a kurzusok adatainak lekérdezéséért, frissítéséért és törléséért, valamint az új kurzusok létrehozásáért.
+
+### Tároló Funkciói
+
+#### **Műveletek (Actions):**
+
+- **getCourses():** Lekéri az összes kurzus részletes adatait.
+- **getCourse(id):** Lekéri egy specifikus kurzus részletes adatait azonosító alapján.
+- **postCourse(data):** Új kurzus létrehozására szolgál, ahol a data tartalmazza a tanfolyam adatait.
+- **putCourse(id, data):** Meglévő kurzus adatainak módosítását végzi az adott azonosító alapján.
+- **destroyCourse(id):** Törli a megadott azonosítójú kurzust.
+
+### Hitelesítés Kezelése
+
+Minden API kérés során az aktuális felhasználó hitelesítési tokenjét csatoljuk a kérés fejlécéhez, ami biztosítja az adatok védelmét és az engedélyezett hozzáférést.
+
+### Állapot Tartósítása
+
+A tároló állapotát nem tartósítjuk, mivel a tanfolyamok dinamikus adatok, amelyek gyakran frissülnek. A frissesség biztosítása érdekében minden oldalbetöltéskor újra lekérjük őket.
+
+### Használati Példa
+
+A tároló használata egy Vue komponensben:
+
+```js
+import { mapActions } from "pinia";
+import { courseStore } from "@stores/CourseStore";
+
+export default {
+  methods: {
+    ...mapActions(courseStore, ["getCourse"]),
+  },
+  async mounted() {
+    const course = await this.getCourse(1);
+    console.log(course);
+  },
+};
+```
+
+## `NoteStore`
+
+> A `NoteStore` egy Pinia állapotkezelő tároló, amely a jegyzetek kezelését végzi. Ez a tároló felelős a jegyzet adatok lekérdezéséért, frissítéséért és törléséért, valamint az új jegyzetek létrehozásáért.
+
+### Tároló Funkciói
+
+#### **Műveletek (Actions):**
+
+- **getNotes():** Lekéri az összes jegyzet részletes adatait.
+- **getNote(id):** Lekéri egy specifikus jegyzet részletes adatait azonosító alapján.
+- **postNote(data):** Új jegyzet létrehozására szolgál, ahol a data tartalmazza a jegyzet adatait.
+- **putNote(id, data):** Meglévő jegyzet adatainak módosítását végzi az adott azonosító alapján.
+- **destroyNote(id):** Törli a megadott azonosítójú jegyzetet.
+
+### Hitelesítés Kezelése
+
+Minden API kérés során az aktuális felhasználó hitelesítési tokenjét csatoljuk a kérés fejlécéhez, ami biztosítja az adatok védelmét és az engedélyezett hozzáférést.
+
+### Állapot Tartósítása
+
+A tároló állapotát nem tartósítjuk, mivel a jegyzetek dinamikus adatok, amelyek gyakran frissülnek. A frissesség biztosítása érdekében minden oldalbetöltéskor újra lekérjük őket.
+
+### Használati Példa
+
+A tároló használata egy Vue komponensben:
+
+```js
+import { mapActions } from "pinia";
+import { noteStore } from "@stores/NoteStore";
+
+export default {
+  methods: {
+    ...mapActions(noteStore, ["getNote"]),
+  },
+  async mounted() {
+    const note = await this.getNote(1);
+    console.log(note);
   },
 };
 ```

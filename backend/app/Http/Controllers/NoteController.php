@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreNoteRequest;
+use App\Http\Requests\UpdateNoteRequest;
 use App\Http\Resources\NoteResource;
 use App\Models\Note;
 use Illuminate\Support\Facades\Gate;
@@ -41,7 +42,7 @@ class NoteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreNoteRequest $request, string $id)
+    public function update(UpdateNoteRequest $request, string $id)
     {
         $note = Note::findOrFail($id);
         Gate::authorize("notes.update", $note);
