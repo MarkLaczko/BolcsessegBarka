@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\AttemptController;
 use App\Http\Controllers\AuthController;
@@ -189,3 +190,6 @@ Route::middleware('auth:sanctum')->put('/attempts/{id}', [AttemptController::cla
 Route::middleware('auth:sanctum')->delete('/attempts/{id}', [AttemptController::class,'destroy'])
     ->whereNumber('id')
     ->name('attempts.destroy');
+
+Route::middleware('auth:sanctum')->get('/answers', [AnswerController::class,'index'])
+    ->name('answers.index');
