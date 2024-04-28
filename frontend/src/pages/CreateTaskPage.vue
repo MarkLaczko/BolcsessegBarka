@@ -16,6 +16,7 @@
                             id="form"
                             :actions="false"
                             @submit="postTask"
+                            :incomplete-message="messages.pages.createTaskPage.validationMessages.matchAllValidationMessage"
                         >
                             <div class="col-12 my-1">
                                 <FormKit
@@ -74,7 +75,7 @@
                                             <label :for="'type' + index" class="form-label">{{ messages.pages.createTaskPage.subtaskType }}</label>
                                             <select name="type" :id="'type' + index" class="form-select" v-model="subtask.type">
                                                 <option value="short_answer">{{ messages.pages.createTaskPage.typeOptions.shortAnswer }}</option>
-                                                <option value="multiple_choice">{{ messages.pages.createTaskPage.typeOptions.multipleChioce }}</option>
+                                                <option value="multiple_choice">{{ messages.pages.createTaskPage.typeOptions.multipleChoice }}</option>
                                                 <option value="essay">{{ messages.pages.createTaskPage.typeOptions.essay }}</option>
                                             </select>
                                         </div>
