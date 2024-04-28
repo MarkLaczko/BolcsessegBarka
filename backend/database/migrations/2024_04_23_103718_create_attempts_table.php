@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('attempts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('quiz_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('quiz_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->dateTime('start');
             $table->dateTime('end')->nullable();
             $table->float('marks')->nullable();
