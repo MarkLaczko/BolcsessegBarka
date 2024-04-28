@@ -6,22 +6,30 @@ use App\Http\Requests\StoreQuizRequest;
 use App\Http\Requests\UpdateQuizRequest;
 use App\Http\Resources\QuizResource;
 use App\Models\Quiz;
+use App\Models\Topic;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class QuizController extends Controller
 {
     public function index() {
+        Gate::authorize("quizzes.getAll");
         return QuizResource::collection(Quiz::all());
     }
 
     public function show(int $id) {
-        $quiz = Quiz::with(['topic', 'topic.course'])->findOrFail($id);
+        $quiz = Quiz::with(['topic', 'topic.course', 'topic.course.groups' => function($qb) {
+                return $qb->with(['users']);
+            }])->findOrFail($id);
+        Gate::authorize("quizzes.get", $quiz);
         return new QuizResource($quiz);
     }
 
     public function store(StoreQuizRequest $request) {
         $data = $request->validated();
+        $course = Topic::with(['course'])->findOrFail($data['topic_id'])->course;
+        Gate::authorize("quizzes.store", $course);
 
         if(!empty($data['opens'])) {
             $data['opens'] = Carbon::createFromTimestamp($data['opens'])->toDateTimeString();
@@ -37,6 +45,8 @@ class QuizController extends Controller
 
     public function update(UpdateQuizRequest $request, int $id) {
         $data = $request->validated();
+        $course = Topic::with(['course'])->findOrFail($data['topic_id'])->course;
+        Gate::authorize("quizzes.update", $course);
 
         if(!empty($data['opens'])) {
             $data['opens'] = Carbon::createFromTimestamp($data['opens'])->toDateTimeString();
@@ -52,7 +62,10 @@ class QuizController extends Controller
     }
 
     public function destroy(int $id) {
-        $quiz = Quiz::findOrFail($id);
+        $quiz = Quiz::with(['topic', 'topic.course', 'topic.course.groups' => function($qb) {
+                return $qb->with(['users']);
+            }])->findOrFail($id);
+        Gate::authorize("quizzes.destroy", $quiz);
         $quiz->delete();
 
         return response()->noContent();
