@@ -228,9 +228,49 @@ export default {
       cancel: "Cancel",
       submit: "Save",
       typeOptions: {
-        shortAnswer: "Rövid válasz",
-        multipleChioce: "Több válasz",
-        essay: "Esszé"
+        shortAnswer: "Short answer",
+        multipleChoice: "Multiple choice",
+        essay: "Essay"
+      },
+      validationMessages: {
+        matchAllValidationMessage: "Sorry, not all fields are filled out correctly.",
+        headerLength: "The header field must be less than 100 characters long.",
+        headerRequired: "The header field is required.",
+        textLength: "The short text field must be less than 255 characters long.",
+        textRequired: "The short text field is required.",
+        marksRequired: "The marks field is required.",
+        marksMin: "The marks field can not be less than 0.",
+        allQuestionRequired: "All questions are required!"
+      },
+      toastMessages: {
+        createUnexpectedError: "Unexpected error when creating the task!",
+        changeOrderUnexpectedError: "Unexpected error when changing the order of subtasks!",
+        deleteSuccess: "Subtask deleted!",
+        deleteUnexpectedError: "Unexcpected error when deleting subtask!"
+      },
+      confirmDialogs: {
+        deleteTask: "Are you sure you want to delte this subtask?",
+        cancel: "cancel",
+        confirm: "Delete"
+      }
+    },
+    editTaskPage: {
+      title: "Create task",
+      header: "Header",
+      text: "Short text",
+      subtaskQuestion: "Subtask title",
+      subtaskType: "Subtask type",
+      subtaskOptions: "Answer options",
+      subtaskOptionsInstructions: "Start typing the answer options! Hit Enter to add a new option.",
+      subtaskSolution: "Correct answers",
+      subtaskSolutionInstructions: "Start typing the correct answers! Hit Enter to add a new answer.",
+      subtaskMarks: "Subtask marks",
+      cancel: "Cancel",
+      submit: "Save",
+      typeOptions: {
+        shortAnswer: "Short answer",
+        multipleChoice: "Multiple choice",
+        essay: "Essay"
       },
       validationMessages: {
         matchAllValidationMessage: "Sorry, not all fields are filled out correctly.",
