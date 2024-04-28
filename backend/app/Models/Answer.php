@@ -15,6 +15,7 @@ class Answer extends Model
         'subtask_id',
         'answer',
         'correct',
+        'marks'
     ];
 
     public $timestamps = false;
