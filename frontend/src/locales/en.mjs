@@ -184,6 +184,35 @@ export default {
         unexpectedError: "Unexpected error when creating the quiz.",
       }
     },
+    editQuizPage: {
+      title: "Edit",
+      name: "Name",
+      attempts: "Maximum attempts",
+      opens: "Quiz opens",
+      closes: "Quiz closes",
+      time: "Time limit (minutes)",
+      submit: "Save",
+      tasks: "Tasks",
+      validationMessages: {
+        matchAllValidationMessage: "Sorry, not all fields are filled out correctly.",
+        nameLength: "The name field must be less than 100 characters long.",
+        nameRequired: "The name field is required.",
+        attemptsMin: "The maximum attempts can not less than 0.",
+        timeMin: "The time limit can not less than 0."
+      },
+      toastMessages: {
+        updateSuccess: "Quiz updated!",
+        updateUnexpectedError: "Unexpected error when updating the quiz!",
+        changeOrderUnexpectedError: "Unexpected error when changing the order of tasks!",
+        deleteSuccess: "Quiz deleted!",
+        deleteUnexpectedError: "Unexpected error when deleting qui!"
+      },
+      confirmDialogs: {
+        deleteTask: "Are you sure you want to delete this tasks and all of it's subtasks?",
+        cancel: "Cancel",
+        confirm: "Delete"
+      }
+    },
     userManagementPage: {
       title: "User Management",
       newUser: " New User",
