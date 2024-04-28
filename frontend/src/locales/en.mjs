@@ -164,6 +164,26 @@ export default {
         }
       }
     },
+    createQuizPage: {
+      title: "Create quiz",
+      topic: "Topic",
+      name: "Name",
+      attempts: "Maximum attempts",
+      opens: "Quiz opens",
+      closes: "Quiz closes",
+      time: "Time limit (minutes)",
+      submit: "Save",
+      validationMessages: {
+        matchAllValidationMessage: "Sorry, not all fields are filled out correctly.",
+        nameLength: "The name field must be less than 100 characters long.",
+        nameRequired: "The name field is required.",
+        attemptsMin: "The maximum attempts can not less than 0.",
+        timeMin: "The time limit can not less than 0.",
+      },
+      toastMessages: {
+        unexpectedError: "Unexpected error when creating the quiz.",
+      }
+    },
     userManagementPage: {
       title: "User Management",
       newUser: " New User",
