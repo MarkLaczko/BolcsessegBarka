@@ -193,3 +193,7 @@ Route::middleware('auth:sanctum')->delete('/attempts/{id}', [AttemptController::
 
 Route::middleware('auth:sanctum')->get('/answers', [AnswerController::class,'index'])
     ->name('answers.index');
+Route::middleware('auth:sanctum')->get('/answers/{id}', [AnswerController::class,'show'])
+    ->whereNumber('id')
+    ->name('answers.show');
+
