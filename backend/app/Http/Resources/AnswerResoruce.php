@@ -20,6 +20,7 @@ class AnswerResoruce extends JsonResource
             'subtask' => new SubtaskResource($this->whenLoaded('subtask')),
             'answer' => $this->answer,
             'correct' => $this->correct,
+            'marks' => $this->marks,
         ];
     }
 }
