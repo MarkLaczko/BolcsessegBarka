@@ -168,6 +168,26 @@ export default {
         }
       }
     },
+    createQuizPage: {
+      title: "Kvíz létrehozása",
+      topic: "Téma",
+      name: "Név",
+      attempts: "Max. próbálkozások száma",
+      opens: "Kvíz nyitása",
+      closes: "Kvíz zárása",
+      time: "Időkorlát (perc)",
+      submit: "Mentés",
+      validationMessages: {
+        matchAllValidationMessage: "Sajnáljuk, nem minden mezőt töltöttek ki helyesen.",
+        nameLength: "A név maximum 100 karakter hosszú lehet.",
+        nameRequired: "A név kitöltése kötelező.",
+        attemptsMin: "A próbálkozások száma nem lehet kevesebb, mitn 0.",
+        timeMin: "Az időkorlát nem lehet kevesebb, mitn 0.",
+      },
+      toastMessages: {
+        unexpectedError: "Váratlan hiba a kvíz létrehozásakor!",
+      }
+    },
     userManagementPage: {
       title: "Felhasználók kezelése",
       newUser: " Új felhasználó",
