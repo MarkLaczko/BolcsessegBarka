@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('attempt_id')->constrained()->onDelete('cascade');
             $table->foreignId('subtask_id')->constrained()->onDelete('cascade');
             $table->text('answer');
-            $table->boolean('correct');
-            $table->float('marks');
+            $table->boolean('correct')->nullable();
+            $table->float('marks')->nullable();
         });
     }
 
