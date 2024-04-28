@@ -11,16 +11,16 @@ public class QuizTopicCourse
     public string Name { get; set; }
     
     [JsonProperty("max_attempts")]
-    public int MaxAttempts { get; set; }
+    public int? MaxAttempts { get; set; }
     
     [JsonProperty("opens")]
-    public int Opens { get; set; }
+    public int? Opens { get; set; }
     
     [JsonProperty("closes")]
-    public int Closes { get; set; }
+    public int? Closes { get; set; }
     
     [JsonProperty("time")]
-    public int Time { get; set; }
+    public int? Time { get; set; }
     
     [JsonProperty("number_of_tasks")]
     public int NumberOfTasks { get; set; }
