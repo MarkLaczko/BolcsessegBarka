@@ -30,11 +30,16 @@ class Quiz extends Model
 
     public function tasks() : HasMany
     {
-        return $this->HasMany(Task::class);
+        return $this->hasMany(Task::class);
     }
 
     public function tasks_count() {
         return $this->tasks()->count();
+    }
+
+    public function attempts() : HasMany
+    {
+        return $this->hasMany(Attempt::class);
     }
 }
 
