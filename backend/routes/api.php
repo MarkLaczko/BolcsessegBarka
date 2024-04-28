@@ -196,4 +196,12 @@ Route::middleware('auth:sanctum')->get('/answers', [AnswerController::class,'ind
 Route::middleware('auth:sanctum')->get('/answers/{id}', [AnswerController::class,'show'])
     ->whereNumber('id')
     ->name('answers.show');
+Route::middleware('auth:sanctum')->post('/answers', [AnswerController::class,'store'])
+    ->name('answers.store');
+Route::middleware('auth:sanctum')->put('/answers/{id}', [AnswerController::class,'update'])
+    ->whereNumber('id')
+    ->name('answers.update');
+Route::middleware('auth:sanctum')->delete('/answers/{id}', [AnswerController::class,'destroy'])
+    ->whereNumber('id')
+    ->name('answers.destroy');
 
