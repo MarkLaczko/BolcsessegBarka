@@ -27,9 +27,11 @@ class AnswerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(int $id)
     {
-        //
+        $answer = Answer::with(['attempt', 'attempt.user', 'attempt.quiz', 'subtask', 'subtask.task',])->findOrFail($id);
+
+        return new AnswerResoruce($answer);
     }
 
     /**
