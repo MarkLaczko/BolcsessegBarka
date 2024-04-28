@@ -47,6 +47,10 @@ class AnswerController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $answer = Answer::findOrFail($id);
+
+        $answer->delete();
+
+        return response()->noContent();
     }
 }
