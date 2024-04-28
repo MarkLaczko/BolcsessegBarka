@@ -4,7 +4,8 @@
         <BaseConfirmDialog />
         <BaseSpinner :loading="loading" />
         <div v-if="!loading">
-            <h1>{{ quiz.value.name }} szerkesztése</h1>
+            <h1 v-if="language == 'HU'">{{ quiz.value.name }} {{ messages.pages.editQuizPage.title }}</h1>
+            <h1 v-if="language == 'EN'">{{ messages.pages.editQuizPage.title }} {{ quiz.value.name }}</h1>
             <div class="row">
                 <div class="col-12">
                     <FormKit
@@ -13,14 +14,14 @@
                         :classes="{
                             message: 'text-end'
                         }"
-                        :incomplete-message="'Nincs minden kötelező mező kitöltve'"
+                        :incomplete-message="messages.pages.editQuizPage.validationMessages.matchAllValidationMessage"
                         @submit="putForm"
                     >
                         <div class="row">
                             <div class="col-12 my-1">
                                 <FormKit
                                     type="text"
-                                    label="Név"
+                                    :label="messages.pages.editQuizPage.name"
                                     name="name"
                                     id="name"
                                     v-model="quiz.value.name"
@@ -30,17 +31,15 @@
                                     }"
                                     validation="required|length:0,100"
                                     :validation-messages="{
-                                        required:
-                                            'Ez a mező kötelező.',
-                                        length:
-                                            'A név maximum 100 karakter hosszú lehet.',
+                                        required: messages.pages.editQuizPage.validationMessages.nameRequired,
+                                        length: messages.pages.editQuizPage.validationMessages.nameLength,
                                     }"
                                 />
                             </div>
                             <div class="col-12 col-md-6 col-lg-3 my-1">
                                 <FormKit
                                     type="number"
-                                    label="Max. próbálkozások száma"
+                                    :label="messages.pages.editQuizPage.attempts"
                                     name="max_attempts"
                                     id="max_attempts"
                                     v-model="quiz.value.max_attempts"
@@ -50,15 +49,14 @@
                                     }"
                                     validation="min:0"
                                     :validation-messages="{
-                                        min:
-                                            'A próbálkozások száma nem lehet kevesebb, mitn 0.',
+                                        min: messages.pages.editQuizPage.validationMessages.attemptsMin,
                                     }"
                                 />
                             </div>
                             <div class="col-12 col-md-6 col-lg-3 my-1">
                                 <FormKit
                                     type="datetime-local"
-                                    label="Kvíz nyitása"
+                                    :label="messages.pages.editQuizPage.opens"
                                     name="opens"
                                     id="opens"
                                     v-model="quiz.value.opens"
@@ -71,7 +69,7 @@
                             <div class="col-12 col-md-6 col-lg-3 my-1">
                                 <FormKit
                                     type="datetime-local"
-                                    label="Kvíz zárásas"
+                                    :label="messages.pages.editQuizPage.closes"
                                     name="closes"
                                     id="closes"
                                     v-model="quiz.value.closes"
@@ -84,7 +82,7 @@
                             <div class="col-12 col-md-6 col-lg-3 my-1">
                                 <FormKit
                                     type="number"
-                                    label="Időkorlát (perc)"
+                                    :label="messages.pages.editQuizPage.time"
                                     name="time"
                                     id="time"
                                     v-model="quiz.value.time"
@@ -94,8 +92,7 @@
                                     }"
                                     validation="min:0"
                                     :validation-messages="{
-                                        min:
-                                            'Az időkorlát nem lehet kevesebb, mitn 0.',
+                                        min: messages.pages.editQuizPage.validationMessages.time,
                                     }"
                                 />
                             </div>
@@ -103,7 +100,7 @@
                                 <FormKit
                                     type="submit"
                                     id="submit"
-                                    label="Mentés"
+                                    :label="messages.pages.editQuizPage.submit"
                                     :classes="{
                                         input: 'btn btn-success',
                                     }"
@@ -113,7 +110,7 @@
                     </FormKit>
                 </div>
                 <div class="col-12">
-                    <h2>Feladatok</h2>
+                    <h2>{{ messages.pages.editQuizPage.tasks }}</h2>
                     <div class="card w-100 my-2 p-1 flex-row align-items-center gap-2 flex-wrap" v-for="(task, index) of tasks.value" :key="index">
                         <span class="badge text-bg-info text-white fs-5">{{index + 1}}.</span> <span class="flex-grow-1 fw-bold">{{ task.header }}</span>
                         <div>
@@ -146,6 +143,7 @@ import { useConfirm } from "primevue/useconfirm";
 import { userStore } from "@stores/UserStore";
 import { quizStore } from "@stores/QuizStore";
 import { themeStore } from '@stores/ThemeStore';
+import { languageStore } from '@stores/LanguageStore';
 
 const route = useRoute();
 const router = useRouter();
@@ -159,6 +157,9 @@ const loading = computed(() => {
     return quiz.value == undefined;
 });
 
+const messages = languageStore().messages;
+
+const language = languageStore().language;
 
 const getQuiz = async () => {
     quiz.value = await quizStore().getQuiz(route.params.id);
@@ -192,7 +193,7 @@ const putForm = async () => {
 
         let toastToAdd = {
           severity: "success",
-          detail: "Kvíz frissítve!",
+          detail: messages.pages.editQuizPage.toastmessages.pages.updateSuccess,
           life: 3000,
         };
         if (!themeStore().isDarkMode) {
@@ -205,7 +206,7 @@ const putForm = async () => {
     } catch (error) {
         let toastToAdd = {
           severity: "error",
-          detail: "Váratlan hiba a kvíz szerkesztésekor!",
+          detail: messages.pages.editQuizPage.toastmessages.pages.updateUnexpectedError,
           life: 3000,
         };
         if (!themeStore().isDarkMode) {
@@ -241,7 +242,7 @@ const moveItem = async (from, to) => {
     } catch (error) {
         let toastToAdd = {
           severity: "error",
-          detail: "Váratlan hiba a feladatok sorrendjének módosításakor!",
+          detail: messages.pages.editQuizPage.toastmessages.pages.changeOrderUnexpectedError,
           life: 3000,
         };
         if (!themeStore().isDarkMode) {
@@ -256,12 +257,12 @@ const moveItem = async (from, to) => {
 
 const confirmDeleteTask = async (id, index) => {
     await confirm.require({
-        message: 'Biztos ki akarja törölni ezt a feladatot és az összes hozzá tartozó alfeladatot?',
+        message: messages.pages.editQuizPage.confirmDialogs.deleteTask,
         icon: 'pi pi-exclamation-triangle',
         rejectClass: 'btn btn-danger',
         acceptClass: 'btn btn-success ',
-        rejectLabel: 'Mégse',
-        acceptLabel: 'Törlés',
+        rejectLabel: messages.pages.editQuizPage.confirmDialogs.cancel,
+        acceptLabel: messages.pages.editQuizPage.confirmDialogs.confirm,
         accept: async () => {
             try {
                 await http.delete(`/tasks/${id}`, {
@@ -274,7 +275,7 @@ const confirmDeleteTask = async (id, index) => {
 
                 let toastToAdd = {
                     severity: "success",
-                    detail: "Sikeres törlés!",
+                    detail: messages.pages.editQuizPage.toastmessages.pages.deleteSuccess,
                     life: 3000,
                 };
                 if (!themeStore().isDarkMode) {
@@ -287,7 +288,7 @@ const confirmDeleteTask = async (id, index) => {
             } catch (error) {
                 let toastToAdd = {
                     severity: "error",
-                    detail: "Váratlan hiba a törlésnél!",
+                    detail: messages.pages.editQuizPage.toastmessages.pages.deleteUnexpectedError,
                     life: 3000,
                 };
                 if (!themeStore().isDarkMode) {
