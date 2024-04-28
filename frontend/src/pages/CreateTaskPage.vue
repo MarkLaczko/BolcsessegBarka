@@ -4,7 +4,7 @@
         <BaseConfirmDialog />
         <BaseSpinner :loading="loading" />
         <div v-if="!loading">
-            <h1>Feladat hozzáadása</h1>
+            <h1>{{ messages.pages.createTaskPage.title }}</h1>
             <div class="row">
                 <div class="col-12">
                     <RouterLink :to="{ name: 'editQuiz', params: { id: route.params.id } }" class="btn btn-outline-secondary"><i class="fa-solid fa-arrow-left-long"></i> {{ quiz.value.name }}</RouterLink>
@@ -20,7 +20,7 @@
                             <div class="col-12 my-1">
                                 <FormKit
                                     type="text"
-                                    label="Fejléc"
+                                    :label="messages.pages.createTaskPage.header"
                                     name="header"
                                     id="header"
                                     v-model="form.header"
@@ -31,17 +31,15 @@
                                     autocomplete="off"
                                     validation="required|length:0,100"
                                     :validation-messages="{
-                                        required:
-                                            'Ez a mező kötelező.',
-                                        length:
-                                            'A fejléc maximum 100 karakter hosszú lehet.',
+                                        required: messages.pages.createTaskPage.validationMessages.headerLength,
+                                        length: messages.pages.createTaskPage.validationMessages.headerRequired,
                                     }"
                                 />
                             </div>
                             <div class="col-12 my-1">
                                 <FormKit
                                     type="text"
-                                    label="Rövid szöveg"
+                                    :label="messages.pages.createTaskPage.text"
                                     name="text"
                                     id="text"
                                     v-model="form.text"
@@ -52,10 +50,8 @@
                                     autocomplete="off"
                                     validation="required|length:0,255"
                                     :validation-messages="{
-                                        required:
-                                            'Ez a mező kötelező.',
-                                        length:
-                                            'A fejléc maximum 255 karakter hosszú lehet.',
+                                        required: messages.pages.createTaskPage.validationMessages.textLength,
+                                        length: messages.pages.createTaskPage.validationMessages.textRequired,
                                     }"
                                 />
                             </div>
@@ -66,7 +62,7 @@
                                             <span class="badge text-bg-info fs-5 text-white">{{ index + 1}}.</span>
                                         </div>
                                         <div class="my-2">
-                                            <label :for="'question' + index" class="form-label">Alfeladat szövege</label>
+                                            <label :for="'question' + index" class="form-label">{{ messages.pages.createTaskPage.subtaskQuestion }}</label>
                                             <Editor v-model="subtask.question" :id="'question' + index" editorStyle="height: 320px;"
                                                 :pt="{
                                                     root: {
@@ -75,16 +71,16 @@
                                                 }"/>
                                         </div>
                                         <div class="my-2">
-                                            <label :for="'type' + index" class="form-label">Feladat típusa</label>
+                                            <label :for="'type' + index" class="form-label">{{ messages.pages.createTaskPage.subtaskType }}</label>
                                             <select name="type" :id="'type' + index" class="form-select" v-model="subtask.type">
-                                                <option value="short_answer">Rövid válasz</option>
-                                                <option value="multiple_choice">Több válasz</option>
-                                                <option value="essay">Esszé</option>
+                                                <option value="short_answer">{{ messages.pages.createTaskPage.typeOptions.shortAnswer }}</option>
+                                                <option value="multiple_choice">{{ messages.pages.createTaskPage.typeOptions.multipleChioce }}</option>
+                                                <option value="essay">{{ messages.pages.createTaskPage.typeOptions.essay }}</option>
                                             </select>
                                         </div>
                                         <div class="my-2" v-if="subtask.type == 'multiple_choice'">
-                                            <label :for="'options' + index" class="form-label mb-0">Válaszlehetőségek</label>
-                                            <p><i>Kezdje el gépelni a válaszlehetőségeket! Az Enter billentyűvel tudja hozzáadni a válaszokat.</i></p>
+                                            <label :for="'options' + index" class="form-label mb-0">{{ messages.pages.createTaskPage.subtaskOptions }}</label>
+                                            <p><i>{{ messages.pages.createTaskPage.subtaskOptionsInstructions }}</i></p>
                                             <Chips v-model="subtask.options" :id="'options' + index"
                                                 :pt="{
                                                     container: {
@@ -106,8 +102,8 @@
                                             />
                                         </div>
                                         <div class="my-2" v-if="subtask.type == 'short_answer' || subtask.type == 'multiple_choice'">
-                                            <label :for="'solution' + index" class="form-label mb-0">Helyes válaszok</label>
-                                            <p><i>Kezdje el gépelni a helyes válaszokat! Az Enter billentyűvel tudja hozzáadni a helyes válaszokat.</i></p>
+                                            <label :for="'solution' + index" class="form-label mb-0">{{ messages.pages.createTaskPage.subtaskSolution }}</label>
+                                            <p><i>{{  messages.pages.createTaskPage.subtaskSolutionInstructions }}</i></p>
                                             <Chips v-model="subtask.solution" :id="'solution' + index"
                                                 :pt="{
                                                     container: {
@@ -131,7 +127,7 @@
                                         <div class="my-2">
                                             <FormKit
                                             type="number"
-                                            label="Feladat pontszáma"
+                                            :label="messages.pages.createTaskPage.subtaskMarks"
                                             :id="'marks' + index"
                                             number
                                             step="0.5"
@@ -142,10 +138,8 @@
                                             }"
                                             validation="required|min:0"
                                             :validation-messages="{
-                                                required:
-                                                    'A pontszám megadása kötelező.',
-                                                min:
-                                                    'A pontszám nem lehet kevesebb, mitn 0.',
+                                                required: messages.pages.createTaskPage.validationMessages.marksRequired,
+                                                length: messages.pages.createTaskPage.validationMessages.marksMin,
                                             }"
                                             />
                                         </div>
@@ -167,10 +161,10 @@
                             </div>
                             <div class="col-12 my-1">
                                 <div class="d-flex w-100 flex-row justify-content-end my-2 p-1">
-                                    <RouterLink :to="{ name: 'editQuiz', params: { id: route.params.id } }" class="btn btn-secondary ms-1">Mégse</RouterLink>
+                                    <RouterLink :to="{ name: 'editQuiz', params: { id: route.params.id } }" class="btn btn-secondary ms-1">{{ messages.pages.createTaskPage.cancel }}</RouterLink>
                                     <FormKit
                                         type="submit"
-                                        label="Mentés"
+                                        :label="messages.pages.createTaskPage.submit"
                                         id="submit"
                                         :classes="{
                                             input: 'btn btn-success ms-1'
@@ -201,6 +195,7 @@ import { useConfirm } from "primevue/useconfirm";
 import { userStore } from "@stores/UserStore";
 import { themeStore } from '@stores/ThemeStore';
 import { quizStore } from "@stores/QuizStore";
+import { languageStore } from '@stores/LanguageStore';
 
 const route = useRoute();
 const router = useRouter();
@@ -213,6 +208,8 @@ const form = reactive({});
 const loading = computed(() => {
     return quiz.value == undefined;
 });
+
+const messages = languageStore().messages;
 
 const getQuiz = async () => {
     quiz.value = await quizStore().getQuiz(route.params.id);
@@ -231,7 +228,7 @@ const moveItem = async (from, to) => {
     } catch (error) {
         let toastToAdd = {
           severity: "error",
-          detail: "Váratlan hiba a feladatok sorrendjének módosításakor!",
+          detail: messages.pages.createTaskPage.toastMessages.changeOrderUnexpectedError,
           life: 3000,
         };
         if (!themeStore().isDarkMode) {
@@ -272,7 +269,7 @@ const postTask = () => {
             if(subtask.question == ""){
                 let toastToAdd = {
                     severity: "error",
-                    detail: "Minden kérdés szövege kötelező!",
+                    detail: messages.pages.createTaskPage.validationMessages.allQuestionRequired,
                     life: 3000,
                 };
                 if (!themeStore().isDarkMode) {
@@ -296,7 +293,7 @@ const postTask = () => {
     } catch (error) {
         let toastToAdd = {
             severity: "error",
-            detail: "Váratlan hiba a feladat létrehozásakor!",
+            detail: messages.pages.createTaskPage.toastMessages.createUnexpectedError,
             life: 3000,
         };
         if (!themeStore().isDarkMode) {
@@ -312,19 +309,19 @@ const postTask = () => {
 
 const confirmDeleteSubtask = async (id, index) => {
     await confirm.require({
-        message: 'Biztos ki akarja törölni ezt az alfeladatot?',
+        message: messages.pages.createTaskPage.deleteTask,
         icon: 'pi pi-exclamation-triangle',
         rejectClass: 'btn btn-danger',
         acceptClass: 'btn btn-success ',
-        rejectLabel: 'Mégse',
-        acceptLabel: 'Törlés',
+        rejectLabel: messages.pages.createTaskPage.cancel,
+        acceptLabel: messages.pages.createTaskPage.confirm,
         accept: async () => {
             try {               
                 form.subtasks.splice(index, 1);
 
                 let toastToAdd = {
                     severity: "success",
-                    detail: "Sikeres törlés!",
+                    detail: messages.pages.createTaskPage.toastMessages.deleteSuccess,
                     life: 3000,
                 };
                 if (!themeStore().isDarkMode) {
@@ -337,7 +334,7 @@ const confirmDeleteSubtask = async (id, index) => {
             } catch (error) {
                 let toastToAdd = {
                     severity: "error",
-                    detail: "Váratlan hiba a törlésnél!",
+                    detail: messages.pages.createTaskPage.toastMessages.deleteUnexpectedError,
                     life: 3000,
                 };
                 if (!themeStore().isDarkMode) {

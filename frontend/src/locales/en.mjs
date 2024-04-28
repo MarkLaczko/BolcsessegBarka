@@ -133,7 +133,8 @@ export default {
         newNote: "New Note",
         newQuiz: "New Quiz",
         edit: "Edit",
-        delete: "Delete"
+        delete: "Delete",
+        createNoteButton: "Create note"
       },
       note: {
         name: "Note",
@@ -162,6 +163,95 @@ export default {
           successfullyDeletedAssignment: "Assignment deletion was successful!",
           failedToDeleteAssignment: "Failed to delete assignment!",
         }
+      }
+    },
+    createQuizPage: {
+      title: "Create quiz",
+      topic: "Topic",
+      name: "Name",
+      attempts: "Maximum attempts",
+      opens: "Quiz opens",
+      closes: "Quiz closes",
+      time: "Time limit (minutes)",
+      submit: "Save",
+      validationMessages: {
+        matchAllValidationMessage: "Sorry, not all fields are filled out correctly.",
+        nameLength: "The name field must be less than 100 characters long.",
+        nameRequired: "The name field is required.",
+        attemptsMin: "The maximum attempts can not less than 0.",
+        timeMin: "The time limit can not less than 0.",
+      },
+      toastMessages: {
+        unexpectedError: "Unexpected error when creating the quiz.",
+      }
+    },
+    editQuizPage: {
+      title: "Edit",
+      name: "Name",
+      attempts: "Maximum attempts",
+      opens: "Quiz opens",
+      closes: "Quiz closes",
+      time: "Time limit (minutes)",
+      submit: "Save",
+      tasks: "Tasks",
+      validationMessages: {
+        matchAllValidationMessage: "Sorry, not all fields are filled out correctly.",
+        nameLength: "The name field must be less than 100 characters long.",
+        nameRequired: "The name field is required.",
+        attemptsMin: "The maximum attempts can not less than 0.",
+        timeMin: "The time limit can not less than 0."
+      },
+      toastMessages: {
+        updateSuccess: "Quiz updated!",
+        updateUnexpectedError: "Unexpected error when updating the quiz!",
+        changeOrderUnexpectedError: "Unexpected error when changing the order of tasks!",
+        deleteSuccess: "Quiz deleted!",
+        deleteUnexpectedError: "Unexpected error when deleting qui!"
+      },
+      confirmDialogs: {
+        deleteTask: "Are you sure you want to delete this tasks and all of it's subtasks?",
+        cancel: "Cancel",
+        confirm: "Delete"
+      }
+    },
+    createTaskPage: {
+      title: "Create task",
+      header: "Header",
+      text: "Short text",
+      subtaskQuestion: "Subtask title",
+      subtaskType: "Subtask type",
+      subtaskOptions: "Answer options",
+      subtaskOptionsInstructions: "Start typing the answer options! Hit Enter to add a new option.",
+      subtaskSolution: "Correct answers",
+      subtaskSolutionInstructions: "Start typing the correct answers! Hit Enter to add a new answer.",
+      subtaskMarks: "Subtask marks",
+      cancel: "Cancel",
+      submit: "Save",
+      typeOptions: {
+        shortAnswer: "Rövid válasz",
+        multipleChioce: "Több válasz",
+        essay: "Esszé"
+      },
+      validationMessages: {
+        matchAllValidationMessage: "Sorry, not all fields are filled out correctly.",
+        headerLength: "The header field must be less than 100 characters long.",
+        headerRequired: "The header field is required.",
+        textLength: "The short text field must be less than 255 characters long.",
+        textRequired: "The short text field is required.",
+        marksRequired: "The marks field is required.",
+        marksMin: "The marks field can not be less than 0.",
+        allQuestionRequired: "All questions are required!"
+      },
+      toastMessages: {
+        createUnexpectedError: "Unexpected error when creating the task!",
+        changeOrderUnexpectedError: "Unexpected error when changing the order of subtasks!",
+        deleteSuccess: "Subtask deleted!",
+        deleteUnexpectedError: "Unexcpected error when deleting subtask!"
+      },
+      confirmDialogs: {
+        deleteTask: "Are you sure you want to delte this subtask?",
+        cancel: "cancel",
+        confirm: "Delete"
       }
     },
     userManagementPage: {
