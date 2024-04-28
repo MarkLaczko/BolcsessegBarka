@@ -11,12 +11,16 @@ use App\Models\Quiz;
 use App\Models\Subtask;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller
 {
     public function index(int $id) {
         // The id variable refers to the id property of the given quiz!
-        $quiz = Quiz::findOrFail($id);
+        $quiz = Quiz::with(['topic', 'topic.course', 'topic.course.groups' => function($qb) {
+                return $qb->with(['users']);
+            }])->findOrFail($id);
+        Gate::authorize("quiz.tasks.get", $quiz);
         $tasksQB = Task::with(['subtasks' => function ($x){
                 $x->orderBy('order');
             }])
@@ -27,7 +31,10 @@ class TaskController extends Controller
 
     public function taskIds(int $id) {
         // The id variable refers to the id property of the given quiz!
-        $quiz = Quiz::findOrFail($id);
+        $quiz = Quiz::with(['topic', 'topic.course', 'topic.course.groups' => function($qb) {
+                return $qb->with(['users']);
+            }])->findOrFail($id);
+        Gate::authorize("quiz.tasks.get", $quiz);
         $tasksQB = Task::where('quiz_id', $id)
             ->orderBy('order');
         return response([
@@ -40,17 +47,22 @@ class TaskController extends Controller
                 $x->orderBy('order');
             }])
             ->findOrFail($id);
+        Gate::authorize("tasks.get", $task);
         return new TaskResource($task);
     }
 
     public function solution(int $id) {
-        $subtasks = Subtask::where('task_id', $id)
-            ->get();
-        return SubtaskSolutionResource::collection($subtasks);
+        $task = Task::with(['subtasks'])
+            ->findOrFail($id);
+        Gate::authorize("tasks.get.solutions", $task);
+        return SubtaskSolutionResource::collection($task->subtasks);
     }
  
     public function store(StoreTaskRequest $request) {
         $data = $request->validated();
+
+        $quiz = Quiz::findOrFail($data['quiz_id']);
+        Gate::authorize("tasks.store", $quiz);
                
         $task = Task::create([
             'quiz_id' => $data['quiz_id'],
@@ -90,13 +102,15 @@ class TaskController extends Controller
     public function update(UpdateTaskRequest $request, int $id){
         $data = $request->validated();
 
-        Task::findOrFail($id)
-            ->update([
-                'quiz_id' => $data['quiz_id'],
-                'order' => $data['order'],
-                'header' => $data['header'],
-                'text' => $data['text'],
-            ]);
+        $task = Task::findOrFail($id);
+        Gate::authorize("tasks.update", $task);
+
+        $task->update([
+            'quiz_id' => $data['quiz_id'],
+            'order' => $data['order'],
+            'header' => $data['header'],
+            'text' => $data['text'],
+        ]);
         
         foreach ($data['subtasks'] as $key => $value) {
             if(isset($value['options'])) {
@@ -142,6 +156,7 @@ class TaskController extends Controller
 
     public function destroy(int $id){
         $task = Task::findOrFail($id);
+        Gate::authorize("tasks.delete", $task);
 
         $task->delete();
 
