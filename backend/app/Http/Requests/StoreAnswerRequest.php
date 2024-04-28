@@ -24,7 +24,7 @@ class StoreAnswerRequest extends FormRequest
         return [
             'attempt_id' => ['required', 'numeric', 'exists:attempts,id'],
             "subtask_id" => ['required', 'numeric', 'exists:subtasks,id'],
-            'answer' => ['required', 'string', 'max:10000']
+            'answer' => ['required', 'string', 'max:16000']
         ];
     }
 }
