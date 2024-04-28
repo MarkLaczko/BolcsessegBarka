@@ -137,7 +137,8 @@ export default {
           newNote: "Új jegyzet",
           newQuiz: "Új kvíz",
           edit: "Szerkesztés",
-          delete: "Törlés"
+          delete: "Törlés",
+          createNoteButton: "Jegyzet létrehozása"
       },
       note: {
         name: "Jegyzet",
@@ -213,6 +214,41 @@ export default {
       },
       confirmDialogs: {
         deleteTask: "Biztos ki akarja törölni ezt a feladatot és az összes hozzá tartozó alfeladatot?",
+        cancel: "Mégse",
+        confirm: "Törlés"
+      }
+    },
+    createTaskPage: {
+      title: "Feladat hozzáadása",
+      header: "Fejléc",
+      text: "Rövid szöveg",
+      subtaskQuestion: "Alfeladat szövege",
+      subtaskType: "Alfeladat típusa",
+      subtaskOptions: "Válaszlehetőségek",
+      subtaskOptionsInstructions: "Kezdje el gépelni a válaszlehetőségeket! Az Enter billentyűvel tudja hozzáadni a válaszokat.",
+      subtaskSolution: "Helyes válaszok",
+      subtaskSolutionInstructions: "Kezdje el gépelni a helyes válaszokat! Az Enter billentyűvel tudja hozzáadni a helyes válaszokat.",
+      subtaskMarks: "Alfeladat pontszáma",
+      cancel: "Mégse",
+      submit: "Mentés",
+      validationMessages: {
+        matchAllValidationMessage: "Sajnáljuk, nem minden mezőt töltöttek ki helyesen.",
+        headerLength: "A fejléc maximum 100 karakter hosszú lehet.",
+        headerRequired: "A fejléc kitöltése kötelező.",
+        textLength: "A rövid szöveg maximum 255 karakter hosszú lehet.",
+        textRequired: "A rövid szöveg kitöltése kötelező.",
+        marksRequired: "A pontszám kitöltése kötelező.",
+        marksMin: "A pontszám nem lehet kevesebb, mitn 0.",
+        allQuestionRequired: "Minden kérdés szövege kötelező!"
+      },
+      toastMessages: {
+        createUnexpectedError: "Váratlan hiba a feladat létrehozásakor!",
+        changeOrderUnexpectedError: "Váratlan hiba az alfeladatok sorrendjének módosításakor!",
+        deleteSuccess: "Sikeres törlés!",
+        deleteUnexpectedError: "Váratlan hiba a törléskor!"
+      },
+      confirmDialogs: {
+        deleteTask: "Biztos ki akarja törölni ezt az alfeladatot?",
         cancel: "Mégse",
         confirm: "Törlés"
       }
