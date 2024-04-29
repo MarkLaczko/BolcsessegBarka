@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreNoteRequest;
 use App\Http\Requests\UpdateNoteRequest;
 use App\Http\Resources\NoteResource;
-use App\Models\Course;
+use App\Http\Resources\TeacherNoteResource;
 use App\Models\Note;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -91,5 +91,21 @@ class NoteController extends Controller
         }
 
         return NoteResource::collection(collect($returnNotes));
+    }
+
+    public function getTeacherNotes(Request $request) {
+        $user = $request->user();
+    
+
+        $notes = Note::whereHas('topic.course.groups.users', function ($query) use ($user) {
+            $query->where('users.id', $user->id); 
+        })
+        ->where('role','Tanár')
+        ->orderBy('updated_at','desc')
+        ->with(['topic', 'user', 'topic.course'])
+        ->limit(3)
+        ->get();
+    
+        return TeacherNoteResource::collection($notes);
     }
 }
