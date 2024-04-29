@@ -8,13 +8,13 @@
       />
     </div>
     <div class="card-body text-center">
-      <h5 class="card-title">{{ title }} ({{ groupName }})</h5>
+      <h5 class="card-title">{{ title }}</h5>
+      <div><span class="badge ms-1" v-for="group of groups" :key="group.id">{{ group.name }}</span></div>
       <RouterLink
         class="btn text-white mt-3 buttons"
         :to="{
           name: 'course',
-          params: { id: courseId },
-          query: { groupName: groupName },
+          params: { id: courseId }
         }"
         >{{ messages.components.BaseCourseCard.viewButton }}</RouterLink
       >
@@ -33,7 +33,7 @@ export default {
     title: String,
     image: String,
     courseId: Number,
-    groupName: String,
+    groups: Array,
   },
 };
 </script>
