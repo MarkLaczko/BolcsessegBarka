@@ -3,7 +3,7 @@ import { attemptStore } from "@stores/AttemptStore.mjs";
 
 async function getPerms() {
     const path = location.pathname.split('/');
-    if(path[1] != "attempt" || (path[1] == "attempt" && path[3] == "evaluate")){
+    if(path[1] != "attempt" || (path[1] == "attempt" && path[3] == "mark")){
         return false;
     }
     let attemptId = path[2];
