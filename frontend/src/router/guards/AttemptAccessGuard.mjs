@@ -8,7 +8,7 @@ async function getPerms() {
     }
     let attemptId = path[2];
     attemptStore().getUsersAttempts();
-    const idx = attemptStore().attempts.findIndex(x => x.id == attemptId);
+    const idx = attemptStore().userAttempts.findIndex(x => x.id == attemptId);
     return idx != -1;
 }
 
