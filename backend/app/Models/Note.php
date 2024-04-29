@@ -13,11 +13,17 @@ class Note extends Model
         "title",
         "text",
         "topic_id",
-        "user_id"
+        "user_id",
+        "role"
     ];
 
     public function topic(): BelongsTo
     {
         return $this->belongsTo(Topic::class);  
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);  
     }
 }

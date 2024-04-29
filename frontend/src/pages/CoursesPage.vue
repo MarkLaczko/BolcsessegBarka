@@ -12,7 +12,7 @@
       <div class="row px-5 pb-5 g-4">
         <div class="col-12 col-lg-4 col-md-6" v-for="course in courses" :key="course.id">
           <BaseCourseCard :title="`${course.name}`" :image="`${course.image}`" :courseId="course.id"
-            :groupName="course.groupName" />
+            :groups="course.groups" />
         </div>
       </div>
     </div>
@@ -39,26 +39,20 @@ export default {
   methods: {
     ...mapActions(groupStore, ["getGroups"]),
     async getCourses() {
-      const response = await http.get("/groups", {
+      const response = await http.get("/courses", {
         headers: {
           Authorization: `Bearer ${userStore().token}`,
         },
       });
 
-      const coursesWithGroups = [];
-      response.data.data.forEach((group) => {
-        group.users.forEach((user) => {
-          if (user.id === userStore().currentUserData.id) {
-            group.courses.forEach((course) => {
-              coursesWithGroups.push({
-                ...course,
-                groupName: group.name,
-              });
-            });
+      for (const course of response.data.data) {
+        for (const group of course.groups) {
+          if (group.users.find(x => x.id == userStore().currentUserData.id)) {
+            this.courses.push(course);
+            break;
           }
-        });
-      });
-      this.courses = coursesWithGroups;
+        }
+      }
     },
   },
   computed: {

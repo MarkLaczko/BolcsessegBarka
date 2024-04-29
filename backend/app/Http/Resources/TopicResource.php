@@ -20,7 +20,6 @@ class TopicResource extends JsonResource
             "order" => $this->order,
             "course" => new CourseResource($this->whenLoaded('course')),
             "assignment" => AssignmentResource::collection($this->whenLoaded('assignments')),
-            "notes" => NoteResource::collection($this->whenLoaded('notes')),
             'quizzes' => QuizResource::collection($this->whenLoaded('quizzes')),
         ];
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreNoteRequest extends FormRequest
 {
@@ -25,7 +26,8 @@ class StoreNoteRequest extends FormRequest
             "title" => ["required", "string", "max:40"],
             "text" => ["required"],
             "topic_id" => ["required", "exists:topics,id"],
-            "user_id" => ["required", "exists:users,id"]
+            "user_id" => ["required", "exists:users,id"],
+            "role" => ["required","string",Rule::in(["Tanár","Tanuló"])]
         ];
     }
 }

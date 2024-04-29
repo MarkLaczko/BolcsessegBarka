@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateNoteRequest extends FormRequest
 {
@@ -25,7 +26,8 @@ class UpdateNoteRequest extends FormRequest
             "title" => ["required", "string", "max:40"],
             "text" => ["required"],
             "topic_id" => ["nullable", "exists:topics,id"],
-            "user_id" => ["nullable", "exists:users,id"]
+            "user_id" => ["nullable", "exists:users,id"],
+            "role" => ["nullable","string",Rule::in(["Tanár","Tanuló"])]
         ];
     }
 }

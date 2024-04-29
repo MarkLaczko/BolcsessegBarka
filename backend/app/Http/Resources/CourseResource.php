@@ -19,6 +19,7 @@ class CourseResource extends JsonResource
             "name" => $this->name,
             "image" => $this->image,
             'topics' => TopicResource::collection($this->whenLoaded('topics')),
+            "groups" => GroupResource::collection($this->whenLoaded('groups')),
             "created_by" => $this->created_by
         ];
     }
