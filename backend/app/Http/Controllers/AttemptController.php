@@ -42,13 +42,19 @@ class AttemptController extends Controller
         $data = $request->validated();
         $quiz = Quiz::findOrFail($data['quiz_id']);
         Gate::authorize('attempts.store', $quiz);
+
+        $userAttempts = Attempt::where('quiz_id', $data['quiz_id'])->count();
+        if(isset($quiz->max_attempts) && $userAttempts >= $quiz->max_attempts){
+            abort(403);
+        }
+
         $attempt = Attempt::create([
             'quiz_id' => $data['quiz_id'],
             'user_id' => $request->user()->id,
             'start' => Carbon::now(),
         ]);
 
-        return new AttemptResoruce(Attempt::with(['quiz'])->findOrFail($attempt->id));
+        return new AttemptResoruce(Attempt::with(['quiz', 'user'])->findOrFail($attempt->id));
     }
 
     /**
@@ -100,5 +106,13 @@ class AttemptController extends Controller
         ]);
 
         return new AttemptResoruce($attempt);
+    }
+
+    public function userAttempts(Request $request){
+        $user = $request->user();
+        $attempts = Attempt::with(['quiz', 'user'])
+            ->where('user_id', $user->id)
+            ->get();
+        return AttemptResoruce::collection($attempts);
     }
 }
