@@ -95,6 +95,10 @@ Route::middleware('auth:sanctum')->put('/notes/{id}', [NoteController::class,'up
     ->name('notes.update');
 Route::middleware('auth:sanctum')->delete('/notes/{id}', [NoteController::class,'destroy'])
     ->name('notes.destroy');
+Route::middleware('auth:sanctum')->get('/getCurrentNotes', [NoteController::class, "getCurrentNotes"])
+    ->name('notes.getCurrentNotes');
+Route::middleware('auth:sanctum')->get('/getTeacherNotes', [NoteController::class, "getTeacherNotes"])
+    ->name('notes.getTeacherNotes');
 
 Route::middleware('auth:sanctum')->get('/assignments', [AssignmentController::class,'index'])
     ->name('assignments.index'); 
@@ -171,7 +175,7 @@ Route::middleware('auth:sanctum')->delete('/subtasks/{id}', [SubtaskController::
     ->whereNumber('id')
     ->name('subtasks.destroy');
 
-Route::middleware('auth:sanctum')->get('/getCurrentNotes', [NoteController::class, "getCurrentNotes"]);
+
 Route::middleware('auth:sanctum')->get('/attempts', [AttemptController::class,'index'])
     ->name('attempts.index');
 Route::middleware('auth:sanctum')->get('/quizzes/{id}/attempts', [AttemptController::class,'quizAttempts'])
