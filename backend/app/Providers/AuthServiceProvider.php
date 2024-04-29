@@ -381,14 +381,17 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('attempts.store', function (User $user, Quiz $quiz) {
             if($user->is_admin == 1){
-                return Response::allow();
+                // return Response::allow();
             }
 
             foreach ($quiz->topic->course->groups as $value) {
-                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
-                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                $memberIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id;
                 });
-                if(count($teacerIn) > 0){
+                $attemptsByUser = array_filter($quiz->attempts->toArray(), function($x) use ($user) {
+                    return $x['user_id'] == $user->id;
+                });
+                if(count($memberIn) > 0 && count($attemptsByUser) < $quiz->max_attempts){
                     return Response::allow();
                 }
             }
