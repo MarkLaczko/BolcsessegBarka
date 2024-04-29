@@ -101,6 +101,7 @@ class CourseController extends Controller
 
     public function assignGroups(StoreGroupIdRequest $request, Course $course)
     {
+        Gate::authorize("courses.assignGroups");
         $data = $request->validated();
 
         if (!empty($data['group_ids'])) {
@@ -117,7 +118,9 @@ class CourseController extends Controller
 
     public function assignTopics(StoreTopicIdRequest $request, $courseId)
     {
+        Gate::authorize("courses.assignTopics");
         $course = Course::find($courseId);
+
         if (!$course) {
             return response()->json(['message' => 'Course not found'], 404);
         }
