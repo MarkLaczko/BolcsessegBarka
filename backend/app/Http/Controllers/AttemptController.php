@@ -110,7 +110,7 @@ class AttemptController extends Controller
 
     public function userAttempts(Request $request){
         $user = $request->user();
-        $attempts = Attempt::with(['quiz', 'user'])
+        $attempts = Attempt::with(['quiz', 'quiz.tasks', 'quiz.tasks.subtasks', 'user'])
             ->where('user_id', $user->id)
             ->get();
         return AttemptResoruce::collection($attempts);
