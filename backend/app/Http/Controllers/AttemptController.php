@@ -9,6 +9,7 @@ use App\Models\Attempt;
 use App\Models\Quiz;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class AttemptController extends Controller
 {
@@ -17,6 +18,7 @@ class AttemptController extends Controller
      */
     public function index()
     {
+        Gate::authorize('attempts.index');
         return AttemptResoruce::collection(Attempt::with(['quiz', 'user'])->get());
     }
 
@@ -24,7 +26,7 @@ class AttemptController extends Controller
     {
         // The id variable refers to the id property of the given quiz!
         $quiz = Quiz::findOrFail($id);
-
+        Gate::authorize('attempts.quizAttempts', $quiz);
         $attempts = Attempt::with(['user'])
             ->where('quiz_id', $id)
             ->get();
@@ -39,7 +41,7 @@ class AttemptController extends Controller
     {
         $data = $request->validated();
         $quiz = Quiz::findOrFail($data['quiz_id']);
-        
+        Gate::authorize('attempts.store', $quiz);
         $attempt = Attempt::create([
             'quiz_id' => $data['quiz_id'],
             'user_id' => $request->user()->id,
@@ -55,7 +57,7 @@ class AttemptController extends Controller
     public function show(int $id)
     {
         $attempt = Attempt::with(['quiz', 'user', 'answers', 'answers.subtask'])->findOrFail($id);
-
+        Gate::authorize('attempts.show', $attempt);
         return new AttemptResoruce($attempt);
     }
 
@@ -66,7 +68,7 @@ class AttemptController extends Controller
     {
         $data = $request->validated();
         $attempt = Attempt::with(['quiz', 'user'])->withSum('answers', 'marks')->findOrFail($id);
-
+        Gate::authorize('attempts.update', $attempt);
 
         $attempt->update([
             'marks' => isset($data['marks']) ? $data['marks'] : $attempt->marks,
@@ -82,6 +84,7 @@ class AttemptController extends Controller
     public function destroy(int $id)
     {
         $attempt = Attempt::with(['quiz', 'user'])->findOrFail($id);
+        Gate::authorize('attempts.destroy', $attempt);
 
         $attempt->delete();
 
@@ -91,7 +94,7 @@ class AttemptController extends Controller
     public function finish(int $id)
     {
         $attempt = Attempt::with(['quiz', 'user'])->findOrFail($id);
-
+        Gate::authorize('attempts.finish', $attempt);
         $attempt->update([
             'end' => Carbon::now()
         ]);
