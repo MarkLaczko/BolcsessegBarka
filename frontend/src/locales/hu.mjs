@@ -182,6 +182,19 @@ export default {
       marks: "Pontszám",
       grade: "Érdemjegy",
       evaluate: "Értékelés",
+      startAttempt: "Próbálkozás indítása",
+      beginAttemptDialog: {
+        begin: "Kvíz indítása",
+        time: "Felhasználható idő",
+        minutes: "perc",
+        confirm: "Biztos ki akarja tölteni ezt a kvízt?",
+        attemptOnce: "Ezt a kvízt csak egyszer lehet kitölteni.",
+        attemptMultipleStart: "Ezt a kvízt",
+        attemptMultipleMiddle: "akárhány",
+        attemptMultipleEnd: "alkalommal lehet kitölteni",
+        cancel: "Mégse",
+        start: "Kezdés",
+      }
     },
     createQuizPage: {
       title: "Kvíz létrehozása",
