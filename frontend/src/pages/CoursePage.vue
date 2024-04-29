@@ -939,7 +939,7 @@
                       <div
                         class="d-flex justify-content-center align-self-center gap-1"
                       >
-                        <button class="btn btn-primary" type="button" @click="">
+                        <button class="btn btn-primary" type="button" @click="navigateToQuizPage(quiz.id)">
                           {{ messages.pages.coursePage.note.viewButton }}
                         </button>
                         <button
@@ -1713,6 +1713,10 @@ export default {
       window.location = `/quiz/${id}/edit`;
     };
 
+    const navigateToQuizPage = (id) => {
+      window.location = `/quiz/${id}/`;
+    }
+
     const toDate = (date) => {
       return new Date(date * 1000).toLocaleString();
     };
@@ -1720,6 +1724,7 @@ export default {
     return {
       navigateToNewQuizPage,
       navigateToEditQuizPage,
+      navigateToQuizPage,
       toDate,
     };
   },
