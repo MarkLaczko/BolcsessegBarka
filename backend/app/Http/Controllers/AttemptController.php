@@ -54,7 +54,7 @@ class AttemptController extends Controller
      */
     public function show(int $id)
     {
-        $attempt = Attempt::with(['quiz', 'user'])->findOrFail($id);
+        $attempt = Attempt::with(['quiz', 'user', 'answers', 'answers.subtask'])->findOrFail($id);
 
         return new AttemptResoruce($attempt);
     }
