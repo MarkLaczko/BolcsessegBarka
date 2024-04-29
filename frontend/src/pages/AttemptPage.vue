@@ -9,7 +9,7 @@
                 <div class="my-4" v-for="(subtask, index2) of task.subtasks" :key="subtask.id">
                     <div v-html="subtask.question"></div>
                     <div>
-                        <input type="text" class="form-control" v-if="subtask.type == 'short_answer'" @input="event => attemptStore().addAnswer(attemptDetails.id, subtask.id, event.target.value)">
+                        <input type="text" class="form-control" v-if="subtask.type == 'short_answer'" @input="event => attemptStore().addAnswer(route.params.id, subtask.id, event.target.value)">
                         <div>
 
                         </div>
