@@ -6,7 +6,7 @@ use App\Http\Requests\StoreTopicRequest;
 use App\Http\Requests\UpdateTopicRequest;
 use App\Http\Resources\TopicResource;
 use App\Models\Topic;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class TopicController extends Controller
 {
@@ -23,6 +23,8 @@ class TopicController extends Controller
      */
     public function store(StoreTopicRequest $request)
     {
+        Gate::authorize("topics.store");
+
         $data = $request->validated();
         $topic = Topic::create($data);
 
@@ -44,6 +46,8 @@ class TopicController extends Controller
      */
     public function update(UpdateTopicRequest $request, string $id)
     {
+        Gate::authorize("topics.update");
+
         $data = $request->validated();
         $topic = Topic::with(['assignments', 'notes', 'quizzes'])->findOrFail($id);
         $topic->update($data);
@@ -56,6 +60,8 @@ class TopicController extends Controller
      */
     public function destroy(string $id)
     {
+        Gate::authorize("topics.destroy");
+
         $topic = Topic::findOrFail($id);
         $topic->delete();
 
