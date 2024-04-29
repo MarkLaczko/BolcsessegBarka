@@ -122,7 +122,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="attempt of userAttempts" :key="attempt.id">
+                            <tr v-for="attempt of attemptStore().attempts" :key="attempt.id">
                                 <td>{{ toDate(attempt.start) }}</td>
                                 <td v-if="attempt.end != null">{{ toDate(attempt.end) }}</td>
                                 <td v-else>-</td>
@@ -191,7 +191,12 @@ const getAttempts = async () => {
 }
 
 const startAttempt = async () => {
-    await attemptStore().postAttempt(route.params.id);
+    try {
+        const response = await attemptStore().postAttempt(route.params.id);
+        window.location = `/attempt/${response.data.data.id}`
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 onMounted(async () => {
