@@ -489,5 +489,39 @@ class AuthServiceProvider extends ServiceProvider
 
             return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
         });
+
+        Gate::define('answers.update', function (User $user, Answer $answer) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($answer->attempt->quiz->topic->course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+        });
+
+        Gate::define('answers.destroy', function (User $user, Answer $answer) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($answer->attempt->quiz->topic->course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+        });
     }
 }
