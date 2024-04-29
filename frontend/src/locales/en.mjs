@@ -165,6 +165,33 @@ export default {
         }
       }
     },
+    quizPage: {
+      opens: "Opens",
+      closes: "Closes",
+      time: "Time limit",
+      attempts: "Maximum attempts",
+      minutes: "minutes",
+      userAttempts: "Attempts",
+      user: "User",
+      begin: "Started",
+      finished: "Finished",
+      marks: "Marks",
+      grade: "Grade",
+      evaluate: "Evaluate",
+      startAttempt: "Start attempt",
+      beginAttemptDialog: {
+        begin: "Start quiz",
+        time: "Time limit for attempt",
+        minutes: "minutes",
+        confirm: "Are you sure you want to start this quiz?",
+        attemptOnce: "This quiz can only be attempted once.",
+        attemptMultipleStart: "This quiz can be attempted",
+        attemptMultipleMiddle: "howevery many",
+        attemptMultipleEnd: "times",
+        cancel: "Cancel",
+        start: "Start",
+      }
+    },
     createQuizPage: {
       title: "Create quiz",
       topic: "Topic",
