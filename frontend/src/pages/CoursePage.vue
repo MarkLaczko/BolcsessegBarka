@@ -632,73 +632,10 @@
               :data-bs-target="'#collapse' + topic.id"
               :aria-expanded="activeTopicId === topic.id ? 'true' : 'false'"
               :aria-controls="'collapse' + topic.id"
+              @click="toggleTopic(topic.id)"
             >
               <h2>{{ topic.name }}</h2>
 
-              <div
-                v-if="
-                  currentUserData.is_admin ||
-                  member.permission == 'Tanár' ||
-                  (currentUserData.is_admin && member.permission == 'Tanár')
-                "
-                class="dropdown ms-2"
-              >
-                <button
-                  class="btn dropdown-toggle"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  {{ messages.pages.coursePage.accordionText.actions }}
-                </button>
-                <ul class="dropdown-menu">
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      @click="
-                        (newAssignmentDialogVisible = true),
-                          (activeTopicId = topic.id)
-                      "
-                      >{{
-                        messages.pages.coursePage.accordionText.newAssignment
-                      }}</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      @click="
-                        (newNoteDialogVisible = true),
-                          (activeTopicId = topic.id)
-                      "
-                      >{{ messages.pages.coursePage.accordionText.newNote }}</a
-                    >
-                  </li>
-                  <li>
-                    <button
-                      class="dropdown-item"
-                      @click="navigateToNewQuizPage(course.id, topic.id)"
-                    >
-                      {{ messages.pages.coursePage.accordionText.newQuiz }}
-                    </button>
-                  </li>
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      @click="
-                        (editTopicDialogVisible = true),
-                          (activeTopicId = topic.id)
-                      "
-                      >{{ messages.pages.coursePage.accordionText.edit }}</a
-                    >
-                  </li>
-                  <li>
-                    <a class="dropdown-item" @click="deleteTopic(topic.id)">{{
-                      messages.pages.coursePage.accordionText.delete
-                    }}</a>
-                  </li>
-                </ul>
-              </div>
               <button
                 class="btn buttons ms-2"
                 @click="
@@ -717,6 +654,70 @@
             class="accordion-collapse collapse"
             :class="{ show: activeTopicId === topic.id }"
           >
+            <div
+              v-if="
+                currentUserData.is_admin ||
+                member.permission == 'Tanár' ||
+                (currentUserData.is_admin && member.permission == 'Tanár')
+              "
+              class="dropdown-center text-center"
+            >
+              <button
+                id="dropdownMenu"
+                class="btn dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {{ messages.pages.coursePage.accordionText.actions }}
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    class="dropdown-item text-center btn"
+                    @click="
+                      (newAssignmentDialogVisible = true),
+                        (activeTopicId = topic.id)
+                    "
+                    >{{
+                      messages.pages.coursePage.accordionText.newAssignment
+                    }}</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item text-center btn"
+                    @click="
+                      (newNoteDialogVisible = true), (activeTopicId = topic.id)
+                    "
+                    >{{ messages.pages.coursePage.accordionText.newNote }}</a
+                  >
+                </li>
+                <li>
+                  <button
+                    class="dropdown-item text-center"
+                    @click="navigateToNewQuizPage(course.id, topic.id)"
+                  >
+                    {{ messages.pages.coursePage.accordionText.newQuiz }}
+                  </button>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item text-center btn"
+                    @click="
+                      (editTopicDialogVisible = true),
+                        (activeTopicId = topic.id)
+                    "
+                    >{{ messages.pages.coursePage.accordionText.edit }}</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item text-center btn" @click="deleteTopic(topic.id)">{{
+                    messages.pages.coursePage.accordionText.delete
+                  }}</a>
+                </li>
+              </ul>
+            </div>
             <div class="accordion-body">
               <div
                 class="card mt-2"
@@ -974,7 +975,12 @@ export default {
     ...mapActions(topicStore, ["postTopic", "putTopic", "destroyTopic"]),
     ...mapActions(noteStore, ["postNote", "putNote", "destroyNote"]),
 
+    toggleTopic(id) {
+      this.activeTopicId = this.activeTopicId === id ? null : id;
+    },
+
     openUpdateAssignment(id) {
+      console.log(this.activeTopicId);
       let topic = this.topics.find((x) => x.id == this.activeTopicId);
       if (topic) {
         let assignment = topic.assignment.find((a) => a.id === id);
@@ -1395,7 +1401,7 @@ export default {
         formData.append("courseable_id", this.$route.params.id);
         formData.append("teacher_task_name", data?.teacher_task[0]?.name);
         formData.append("topic_id", this.activeTopicId);
-
+        
         const user = userStore();
         const response = await http.post(`/assignments`, formData, {
           headers: {
