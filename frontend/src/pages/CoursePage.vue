@@ -712,9 +712,11 @@
                   >
                 </li>
                 <li>
-                  <a class="dropdown-item text-center btn" @click="deleteTopic(topic.id)">{{
-                    messages.pages.coursePage.accordionText.delete
-                  }}</a>
+                  <a
+                    class="dropdown-item text-center btn"
+                    @click="deleteTopic(topic.id)"
+                    >{{ messages.pages.coursePage.accordionText.delete }}</a
+                  >
                 </li>
               </ul>
             </div>
@@ -724,20 +726,22 @@
                 v-for="assignment in topic.assignment"
                 :key="assignment.id"
               >
-                <div class="d-flex justify-content-between align-items-center">
-                  <p class="flex ms-2 mt-2 mb-2">
-                    {{ messages.pages.assignmentPage.task_name }}
-                    {{ assignment.task_name }} <br />
-                    {{ messages.pages.assignmentPage.deadline }}
-                    {{ assignment.deadline }} <br />
-                    <span v-if="assignment.comment"
-                      >{{ messages.pages.assignmentPage.comment }}
-                      {{ assignment.comment }}</span
-                    >
-                  </p>
-                  <div class="flex">
+                <div class="row">
+                  <div class="col-md-6 col-12">
+                    <p class="ms-2 mt-2 mb-2">
+                      {{ messages.pages.assignmentPage.task_name }}
+                      {{ assignment.task_name }} <br />
+                      {{ messages.pages.assignmentPage.deadline }}
+                      {{ assignment.deadline }} <br />
+                      <span v-if="assignment.comment"
+                        >{{ messages.pages.assignmentPage.comment }}
+                        {{ assignment.comment }}</span
+                      >
+                    </p>
+                  </div>
+                  <div class="col-md-6 col-12 d-flex justify-content-center">
                     <div
-                      class="btn-group me-2"
+                      class="btn-group me-2 flex  align-items-center"
                       role="group"
                       aria-label="Basic mixed styles example"
                       v-if="
@@ -761,16 +765,24 @@
                       >
                         <i class="fa-solid fa-pencil"></i>
                       </button>
+                      <button
+                        type="button"
+                        class="btn btn-outline-success"
+                        @click="deleteAssignment(assignment.id)"
+                      >
+                        <i class="fa-solid fa-download"></i>
+                      </button>
                     </div>
-                    <RouterLink
-                      class="btn btn-outline-primary me-2 px-5"
-                      :to="{
-                        name: 'assignment',
-                        params: { id: assignment.id },
-                        query: { groupName: this.$route.query.groupName },
-                      }"
-                      >{{ messages.pages.coursePage.viewButton }}</RouterLink
-                    >
+                    <div class="d-flex align-items-center">
+                      <RouterLink
+                        class="btn btn-outline-primary me-2 px-5"
+                        :to="{
+                          name: 'assignment',
+                          params: { id: assignment.id },
+                        }"
+                        >
+                        {{ messages.pages.coursePage.viewButton }}</RouterLink>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1401,7 +1413,7 @@ export default {
         formData.append("courseable_id", this.$route.params.id);
         formData.append("teacher_task_name", data?.teacher_task[0]?.name);
         formData.append("topic_id", this.activeTopicId);
-        
+
         const user = userStore();
         const response = await http.post(`/assignments`, formData, {
           headers: {
