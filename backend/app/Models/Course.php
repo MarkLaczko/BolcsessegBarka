@@ -32,9 +32,4 @@ class Course extends Model
     {
         return $this->hasMany(Topic::class);
     }
-
-    public function creator(): BelongsTo
-    {
-        return $this->belongsTo(User::class, "created_by");
-    }
 }
