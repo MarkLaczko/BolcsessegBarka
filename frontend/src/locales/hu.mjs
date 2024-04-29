@@ -169,6 +169,20 @@ export default {
         }
       }
     },
+    quizPage: {
+      opens: "Nyílik",
+      closes: "Zárul",
+      time: "Időkorlát",
+      attempts: "Maximum próbálkozások",
+      minutes: "perc",
+      userAttempts: "Próbálkozások",
+      user: "Felhasználó",
+      begin: "Kezdte",
+      finished: "Végzett",
+      marks: "Pontszám",
+      grade: "Érdemjegy",
+      evaluate: "Értékelés",
+    },
     createQuizPage: {
       title: "Kvíz létrehozása",
       topic: "Téma",
