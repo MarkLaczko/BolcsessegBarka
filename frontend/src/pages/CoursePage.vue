@@ -588,15 +588,16 @@
     </BaseDialog>
 
     <div v-if="!loading">
-      <h1 class="text-center my-3">
-        {{ course.name }} ({{ this.$route.query.groupName }})
+      <div class="d-flex justify-content-center align-items-center gap-3">
+        <h1 class="text-center">
+        {{ course.name }}
+      </h1>
         <button
           class="btn buttons text-light"
           id="newTopic"
           v-if="
             currentUserData.is_admin ||
-            member.permission == 'Tanár' ||
-            (currentUserData.is_admin && member.permission == 'Tanár')
+            member.permission == 'Tanár'
           "
           @click="newTopicDialogVisible = true"
         >
@@ -607,14 +608,17 @@
           id="manageCourses"
           v-if="
             currentUserData.is_admin ||
-            member.permission == 'Tanár' ||
-            (currentUserData.is_admin && member.permission == 'Tanár')
+            member.permission == 'Tanár'
           "
           @click="groupTreatmentDialog = true"
         >
           {{ messages.pages.coursePage.groupTreatmentButton }}
         </button>
-      </h1>
+      </div>
+
+      <div class="d-flex justify-content-center align-items-center gap-1 mb-2">
+        <span class="badge fs-6" v-for="group of course.groups">{{ group.name }}</span>
+      </div>
 
       <div
         class="accordion mb-3"
@@ -638,8 +642,7 @@
               <div
                 v-if="
                   currentUserData.is_admin ||
-                  member.permission == 'Tanár' ||
-                  (currentUserData.is_admin && member.permission == 'Tanár')
+                  member.permission == 'Tanár'
                 "
                 class="dropdown ms-2"
               >
@@ -741,9 +744,7 @@
                       aria-label="Basic mixed styles example"
                       v-if="
                         currentUserData.is_admin ||
-                        member.permission == 'Tanár' ||
-                        (currentUserData.is_admin &&
-                          member.permission == 'Tanár')
+                        member.permission == 'Tanár'
                       "
                     >
                       <button
@@ -765,8 +766,7 @@
                       class="btn btn-outline-primary me-2 px-5"
                       :to="{
                         name: 'assignment',
-                        params: { id: assignment.id },
-                        query: { groupName: this.$route.query.groupName },
+                        params: { id: assignment.id }
                       }"
                       >{{ messages.pages.coursePage.viewButton }}</RouterLink
                     >
@@ -775,15 +775,15 @@
               </div>
               <div class="row">
                 <div
-                  class="col-12 col-md-4 col-lg-3 h-100"
+                  class="col-12 col-md-4 col-lg-3 my-2"
                   v-for="note in topic.notes"
                   :key="note.id"
                 >
-                  <div class="card mt-2 text-center">
+                  <div class="card mt-2 text-center h-100">
                     <div class="card-header">
                       <h4>{{ messages.pages.coursePage.note.name }}</h4>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body d-flex justify-content-center align-items-center">
                       {{ messages.pages.coursePage.note.text }} {{ note.title }}
                     </div>
                     <div class="card-footer">
@@ -879,9 +879,7 @@
                         <button
                           v-if="
                             currentUserData.is_admin ||
-                            member.permission == 'Tanár' ||
-                            (currentUserData.is_admin &&
-                              member.permission == 'Tanár')
+                            member.permission == 'Tanár'
                           "
                           class="btn btn-danger text-white"
                           type="button"
@@ -972,7 +970,7 @@ export default {
     ...mapActions(courseStore, ["getCourse"]),
     ...mapActions(groupStore, ["getGroups", "getGroup"]),
     ...mapActions(topicStore, ["postTopic", "putTopic", "destroyTopic"]),
-    ...mapActions(noteStore, ["postNote", "putNote", "destroyNote"]),
+    ...mapActions(noteStore, ["postNote", "putNote", "destroyNote","getCurrentNotes"]),
 
     openUpdateAssignment(id) {
       let topic = this.topics.find((x) => x.id == this.activeTopicId);
@@ -1118,8 +1116,8 @@ export default {
           text: this.text,
           topic_id: this.activeTopicId,
           user_id: this.currentUserData.id,
+          role: this.member.permission
         };
-
         const response = await this.postNote(note);
 
         const updatedTopicIndex = this.topics.findIndex(
@@ -1146,6 +1144,7 @@ export default {
 
         this.$toast.add(toast);
       } catch (error) {
+        console.log(error);
         let toast = {
           severity: "error",
           detail:
@@ -1225,8 +1224,8 @@ export default {
           }
         );
 
-        this.course = await this.getCourse(this.$route.params.id);
-        this.topics = this.course.topics;
+        response.notes = [];
+        this.topics.push(response);
         this.newTopicDialogVisible = false;
 
         let toast = {
@@ -1243,6 +1242,7 @@ export default {
         }
         this.$toast.add(toast);
       } catch (error) {
+        console.log(error);
         let toast = {
           severity: "error",
           detail:
@@ -1304,36 +1304,20 @@ export default {
       }
     },
 
-    async findUserDetails(courseId, userId, groupName) {
-      let groups = await this.getGroups();
+    async findUserDetails(courseId, userId) {
+      
+      for (const group of this.course.groups) {
+        let user = group.users.find(x => x.id == userStore().currentUserData.id);
 
-      if (!groups || !Array.isArray(groups)) {
-        console.error("No valid groups array found.");
-        return null;
+        if (user != undefined && user.member.permission == "Tanár") {
+          this.member = user.member;
+          
+        }
       }
 
-      const group = groups.find((g) => g.name === groupName);
-      if (!group) {
-        console.error("Group not found with name:", groupName);
-        return null;
+      if (this.member.permission == undefined) {
+        this.member.permission = "Tanuló";
       }
-
-      const courseFound = group.courses.some(
-        (course) => course.id === courseId
-      );
-      if (!courseFound) {
-        console.error("Course not found within group with name:", groupName);
-        return null;
-      }
-
-      const user = group.users.find((user) => user.id === userId);
-      if (!user) {
-        console.error("User not found in group with ID:", userId);
-        return null;
-      }
-
-      this.member = user.member;
-      return user;
     },
 
     async saveGroups() {
@@ -1609,10 +1593,19 @@ export default {
   async mounted() {
     this.course = await this.getCourse(this.$route.params.id);
     this.topics = this.course.topics;
+    let notes = await this.getCurrentNotes();
+    for (const note of notes) {
+      let idx = this.topics.findIndex(x => x.id == note.topic_id);
+      if (idx != -1) {
+        if (this.course.topics[idx].notes == undefined) {
+          this.course.topics[idx].notes = [];
+        }
+        this.course.topics[idx].notes.push(note);
+      }
+    }
     await this.findUserDetails(
       this.course.id,
-      this.currentUserData.id,
-      this.$route.query.groupName
+      this.currentUserData.id
     );
     document.title = this.course.name;
     this.loading = false;
