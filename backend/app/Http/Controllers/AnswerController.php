@@ -7,7 +7,9 @@ use App\Http\Requests\StoreAnswerRequest;
 use App\Http\Requests\UpdateAnswerRequest;
 use App\Http\Resources\AnswerResoruce;
 use App\Models\Answer;
+use App\Models\Attempt;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class AnswerController extends Controller
 {
@@ -16,6 +18,7 @@ class AnswerController extends Controller
      */
     public function index()
     {
+        Gate::authorize('answers.index');
         return AnswerResoruce::collection(Answer::with(['attempt', 'attempt.user', 'attempt.quiz', 'subtask', 'subtask.task',])->get());
     }
 
@@ -25,15 +28,18 @@ class AnswerController extends Controller
     public function store(StoreAnswerRequest $request)
     {
         $data = $request->validated();
-
+        $attempt = Attempt::findOrFail($data['attempt_id']);
+        Gate::authorize('answers.store', $attempt);
         $answer = Answer::create($data);
-
         return new AnswerResoruce($answer);
     }
 
     public function bulkStore(BulkStoreAnswerRequest $request)
     {
         $data = $request->validated();
+
+        $attempt = Attempt::findOrFail($data['attempt_id']);
+        Gate::authorize('answers.store', $attempt);
 
         foreach ($data['bulk'] as $value) {
             Answer::create([
@@ -56,6 +62,7 @@ class AnswerController extends Controller
     public function show(int $id)
     {
         $answer = Answer::with(['attempt', 'attempt.user', 'attempt.quiz', 'subtask', 'subtask.task',])->findOrFail($id);
+        Gate::authorize('answers.store', $answer);
 
         return new AnswerResoruce($answer);
     }
@@ -67,7 +74,7 @@ class AnswerController extends Controller
     {
         $data = $request->validated();
         $answer = Answer::findOrFail($id);
-
+        Gate::authorize('answers.update', $answer);
         $answer->update($data);
 
         return new AnswerResoruce($answer);
@@ -79,7 +86,7 @@ class AnswerController extends Controller
     public function destroy(int $id)
     {
         $answer = Answer::findOrFail($id);
-
+        Gate::authorize('answers.destroy', $answer);
         $answer->delete();
 
         return response()->noContent();
