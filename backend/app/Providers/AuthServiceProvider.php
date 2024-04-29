@@ -449,7 +449,7 @@ class AuthServiceProvider extends ServiceProvider
                 $attemptsByUser = array_filter($quiz->attempts->toArray(), function($x) use ($user) {
                     return $x['user_id'] == $user->id;
                 });
-                if(count($memberIn) > 0 && count($attemptsByUser) < $quiz->max_attempts){
+                if(count($memberIn) > 0 && (isset($quiz->max_attempts) ? count($attemptsByUser) < $quiz->max_attempts : true)){
                     return Response::allow();
                 }
             }
