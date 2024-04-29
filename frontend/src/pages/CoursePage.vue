@@ -498,6 +498,67 @@
     </BaseDialog>
 
     <BaseDialog
+      v-if="viewNoteVisible"
+      :visible="viewNoteVisible"
+      :width="'50rem'"
+    >
+      <div class="container rounded-3 pt-1 pb-3">
+        <h1 class="text-center my-3">
+          Jegyzet megtekintése
+        </h1>
+        <div class="d-flex align-items-center justify-content-center pb-4">
+          <label for="title" class="form-label me-2 font-weight-bold"
+            ><b>{{
+              messages.pages.coursePage.currentNoteDialog.notesNameText
+            }}</b></label
+          >
+          <div class="w-25">
+            <InputText
+              id="title"
+              :disabled="true"
+              v-model="currentTitle"
+              class="form-control"
+              :pt="{
+                root: {
+                  style: 'border-color: black 1px solid',
+                },
+              }"
+            />
+          </div>
+        </div>
+        <div class="card">
+          <Editor
+            :readonly="true"
+            v-model="currentText"
+            
+            :model-value="currentNote.text"
+            editorStyle="height: 320px"
+          >
+            <template v-slot:toolbar>
+              <span class="ql-formats">
+                  
+              </span>
+          </template>
+          </Editor>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center mt-3">
+          <button
+              type="button"
+              class="btn"
+              :class="{
+                'btn-outline-danger': isDarkMode,
+                'btn-danger': !isDarkMode,
+              }"
+              @click="(viewNoteVisible = false)"
+            >
+              {{ messages.pages.coursePage.currentNoteDialog.cancelButton }}
+            </button>
+        </div>
+      </div>
+    </BaseDialog>
+
+    <BaseDialog
       v-if="currentNoteVisible"
       :visible="currentNoteVisible"
       :width="'50rem'"
@@ -805,7 +866,7 @@
                 >
                   <div class="card mt-2 text-center h-100">
                     <div class="card-header">
-                      <h4>{{ messages.pages.coursePage.note.name }}</h4>
+                      <h4> <span v-if="note.role == 'Tanár' && note.user_id != currentUserData.id">Teacher's</span> {{ messages.pages.coursePage.note.name }}</h4>
                     </div>
                     <div
                       class="card-body d-flex justify-content-center align-items-center"
@@ -963,6 +1024,7 @@ export default {
       UpdateAssignmentDialogVisible: false,
       newNoteDialogVisible: false,
       currentNoteVisible: false,
+      viewNoteVisible: false,
       isNoteReadonly: true,
       activeTopicId: null,
       currentGroups: [],
