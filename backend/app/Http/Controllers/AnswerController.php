@@ -74,7 +74,7 @@ class AnswerController extends Controller
     {
         $data = $request->validated();
         $answer = Answer::findOrFail($id);
-
+        Gate::authorize('answers.update', $answer);
         $answer->update($data);
 
         return new AnswerResoruce($answer);
@@ -86,7 +86,7 @@ class AnswerController extends Controller
     public function destroy(int $id)
     {
         $answer = Answer::findOrFail($id);
-
+        Gate::authorize('answers.destroy', $answer);
         $answer->delete();
 
         return response()->noContent();
