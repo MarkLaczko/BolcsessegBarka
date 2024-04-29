@@ -20,7 +20,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return CourseResource::collection(Course::with(["topics", 'topics.assignments', 'topics.notes', 'topics.quizzes'])->get());
+        return CourseResource::collection(Course::with(["groups"])->get());
     }
 
     /**
@@ -43,7 +43,7 @@ class CourseController extends Controller
      */
     public function show(string $id)
     {
-        $course = Course::with(["topics", 'topics.assignments', 'topics.notes', 'topics.quizzes'])
+        $course = Course::with(["topics", 'topics.assignments', 'topics.notes', 'topics.quizzes',"groups"])
             ->findOrFail($id);
 
         return new CourseResource($course);
