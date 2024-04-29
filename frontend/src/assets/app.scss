@@ -387,3 +387,16 @@ div[data-pc-name="dialog"] {
   border-radius: 0px 0px 10px 10px;
   border-top: none;
 }
+
+.accordion-collapse.collapsing {
+  overflow: hidden;
+  transition: max-height 3s ease, opacity 1s ease;
+  max-height: 0; 
+  opacity: 0;
+}
+
+.accordion-collapse.show {
+  transition: opacity 2s ease, max-height 1s ease;
+  max-height: 1000px; 
+  opacity: 1;
+}
