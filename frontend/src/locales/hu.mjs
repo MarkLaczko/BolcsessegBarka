@@ -183,6 +183,7 @@ export default {
       grade: "Érdemjegy",
       evaluate: "Értékelés",
       startAttempt: "Próbálkozás indítása",
+      ownAttempts: "Saját próbálkozásaim",
       beginAttemptDialog: {
         begin: "Kvíz indítása",
         time: "Felhasználható idő",
