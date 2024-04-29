@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\AttemptController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\GroupController;
@@ -170,3 +172,39 @@ Route::middleware('auth:sanctum')->delete('/subtasks/{id}', [SubtaskController::
     ->name('subtasks.destroy');
 
 Route::middleware('auth:sanctum')->get('/getCurrentNotes', [NoteController::class, "getCurrentNotes"]);
+Route::middleware('auth:sanctum')->get('/attempts', [AttemptController::class,'index'])
+    ->name('attempts.index');
+Route::middleware('auth:sanctum')->get('/quizzes/{id}/attempts', [AttemptController::class,'quizAttempts'])
+    ->whereNumber('id')
+    ->name('attempts.quizAttempts');
+Route::middleware('auth:sanctum')->get('/attempts/{id}', [AttemptController::class,'show'])
+    ->whereNumber('id')
+    ->name('attempts.show');
+Route::middleware('auth:sanctum')->post('/attempts', [AttemptController::class,'store'])
+    ->name('attempts.store');
+Route::middleware('auth:sanctum')->put('/attempts/{id}/finish', [AttemptController::class,'finish'])
+    ->whereNumber('id')
+    ->name('attempts.finish');
+Route::middleware('auth:sanctum')->put('/attempts/{id}', [AttemptController::class,'update'])
+    ->whereNumber('id')
+    ->name('attempts.update');
+Route::middleware('auth:sanctum')->delete('/attempts/{id}', [AttemptController::class,'destroy'])
+    ->whereNumber('id')
+    ->name('attempts.destroy');
+
+Route::middleware('auth:sanctum')->get('/answers', [AnswerController::class,'index'])
+    ->name('answers.index');
+Route::middleware('auth:sanctum')->get('/answers/{id}', [AnswerController::class,'show'])
+    ->whereNumber('id')
+    ->name('answers.show');
+Route::middleware('auth:sanctum')->post('/answers', [AnswerController::class,'store'])
+    ->name('answers.store');
+Route::middleware('auth:sanctum')->post('/answers/bulk', [AnswerController::class,'bulkStore'])
+    ->name('answers.bulkStore');
+Route::middleware('auth:sanctum')->put('/answers/{id}', [AnswerController::class,'update'])
+    ->whereNumber('id')
+    ->name('answers.update');
+Route::middleware('auth:sanctum')->delete('/answers/{id}', [AnswerController::class,'destroy'])
+    ->whereNumber('id')
+    ->name('answers.destroy');
+

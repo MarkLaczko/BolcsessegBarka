@@ -37,10 +37,9 @@ async function getCourse() {
     let permissions = [];
     for(const group of groupContainsCourse) {
         let userGroups = group.users.find(x => x.id == userStore().currentUserData.id);
-        if(userGroups == undefined){
-            return false;
+        if(userGroups != undefined){
+            permissions.push(userGroups.member.permission);
         }
-        permissions.push(userGroups.member.permission);
     }
 
     return permissions.includes("Tanár");

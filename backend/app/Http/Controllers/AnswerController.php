@@ -1,0 +1,87 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\BulkStoreAnswerRequest;
+use App\Http\Requests\StoreAnswerRequest;
+use App\Http\Requests\UpdateAnswerRequest;
+use App\Http\Resources\AnswerResoruce;
+use App\Models\Answer;
+use Illuminate\Http\Request;
+
+class AnswerController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        return AnswerResoruce::collection(Answer::with(['attempt', 'attempt.user', 'attempt.quiz', 'subtask', 'subtask.task',])->get());
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreAnswerRequest $request)
+    {
+        $data = $request->validated();
+
+        $answer = Answer::create($data);
+
+        return new AnswerResoruce($answer);
+    }
+
+    public function bulkStore(BulkStoreAnswerRequest $request)
+    {
+        $data = $request->validated();
+
+        foreach ($data['bulk'] as $value) {
+            Answer::create([
+                'attempt_id' => $data['attempt_id'],
+                'subtask_id' => $value['subtask_id'],
+                'answer' => $value['answer'],
+            ]);
+        }
+
+        return response()->json([
+            'data' => [
+                'message' => 'Answers successfully created.'
+            ]
+        ], 201);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(int $id)
+    {
+        $answer = Answer::with(['attempt', 'attempt.user', 'attempt.quiz', 'subtask', 'subtask.task',])->findOrFail($id);
+
+        return new AnswerResoruce($answer);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateAnswerRequest $request, int $id)
+    {
+        $data = $request->validated();
+        $answer = Answer::findOrFail($id);
+
+        $answer->update($data);
+
+        return new AnswerResoruce($answer);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(int $id)
+    {
+        $answer = Answer::findOrFail($id);
+
+        $answer->delete();
+
+        return response()->noContent();
+    }
+}

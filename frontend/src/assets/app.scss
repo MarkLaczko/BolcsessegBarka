@@ -380,8 +380,10 @@ div[data-pc-name="dialog"] {
   background-color: var(--manageCourse-button-bg);
 }
 
-h2.accordion-header div.dropdown button.dropdown-toggle {
-  background-color: var(--actions-button-bg);
+#dropdownMenu {
+  background-color: var(--container-color);
   color: var(--text-color);
   border: var(--border);
+  border-radius: 0px 0px 10px 10px;
+  border-top: none;
 }

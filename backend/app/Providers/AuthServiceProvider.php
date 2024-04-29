@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Attempt;
 use App\Models\Course;
 use App\Models\Note;
+use App\Models\Quiz;
+use App\Models\Subtask;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Access\Response;
@@ -106,6 +110,347 @@ class AuthServiceProvider extends ServiceProvider
             return ($user->id == $note->user_id)
                 ? Response::allow()
                 : Response::deny("You must be the creator of this note to delete it!");
+        });
+
+        //Quiz gates
+        Gate::define('quizzes.getAll', function (User $user) {
+            return ($user->is_admin == 1)
+                ? Response::allow()
+                : Response::deny("Only administrators can get all quizzes!");
+        });
+
+        Gate::define('quizzes.get', function (User $user, Quiz $quiz) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($quiz->topic->course->groups as $value) {
+                if(in_array($user->id, array_map(fn($x) => $x['id'], $value->users->toArray()))){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this quiz's course to view it!");
+        });
+
+        Gate::define('quizzes.store', function (User $user, Course $course) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this course to create quizzes in it!");
+        });
+
+        Gate::define('quizzes.update', function (User $user, Course $course) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this quiz's course to update it!");
+        });
+
+        Gate::define('quizzes.destroy', function (User $user, Quiz $quiz) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($quiz->topic->course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+            return Response::deny("You must have access to this quiz's course to delete it!");
+        });
+
+        Gate::define('quiz.tasks.get', function (User $user, Quiz $quiz) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($quiz->topic->course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+
+            foreach ($quiz->attempts as $value) {
+                if($value->user->toArray()['id'] == $user->id && $value->end == null){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+        });
+
+        Gate::define('tasks.get', function (User $user, Task $task) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($task->quiz->topic->course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+
+            foreach ($task->quiz->attempts as $value) {
+                if($value->user->toArray()['id'] == $user->id && $value->end == null){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this tasks's course or have an ongoing attempt to get it!");
+        });
+
+        Gate::define('tasks.get.solutions', function (User $user, Task $task) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($task->quiz->topic->course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this tasks's course to get it's solutions!");
+        });
+
+        Gate::define('tasks.store', function (User $user, Quiz $quiz) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($quiz->topic->course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this course to create tasks in it!");
+        });
+
+        Gate::define('tasks.update', function (User $user, Task $task) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($task->quiz->topic->course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this tasks's course to update it!");
+        });
+
+        Gate::define('tasks.delete', function (User $user, Task $task) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($task->quiz->topic->course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this tasks's course to delete it!");
+        });
+
+        Gate::define('subtasks.solutions', function (User $user, Subtask $subtask) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($subtask->task->quiz->topic->course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this solution's course to get it's solutions!");
+        });
+
+        Gate::define('subtasks.delete', function (User $user, Subtask $subtask) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($subtask->task->quiz->topic->course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this subtasks's course to delete it!");
+        });
+
+        Gate::define('attempts.index', function (User $user) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+        });
+
+        Gate::define('attempts.show', function (User $user, Attempt $attempt) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($attempt->quiz->topic->course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+
+            foreach ($attempt->quiz->attempts as $value) {
+                if($value->user->toArray()['id'] == $user->id && $value->end == null){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+        });
+
+        Gate::define('attempts.quizAttempts', function (User $user, Quiz $quiz) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($quiz->topic->course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+        });
+
+        Gate::define('attempts.store', function (User $user, Quiz $quiz) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($quiz->topic->course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+        });
+
+        Gate::define('attempts.update', function (User $user, Attempt $attempt) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($attempt->quiz->topic->course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+        });
+
+        Gate::define('attempts.destroy', function (User $user, Attempt $attempt) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($attempt->quiz->topic->course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+        });
+
+        Gate::define('attempts.finish', function (User $user, Attempt $attempt) {
+            if($user->is_admin == 1){
+                return Response::allow();
+            }
+
+            foreach ($attempt->quiz->topic->course->groups as $value) {
+                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
+                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
+                });
+                if(count($teacerIn) > 0){
+                    return Response::allow();
+                }
+            }
+
+            foreach ($attempt->quiz->attempts as $value) {
+                if($value->user->toArray()['id'] == $user->id && $value->end == null){
+                    return Response::allow();
+                }
+            }
+
+            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
         });
     }
 }

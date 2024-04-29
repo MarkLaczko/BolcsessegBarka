@@ -7,25 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Subtask extends Model
+class Attempt extends Model
 {
     use HasFactory;
 
-    public $timestamps = false;
-
     protected $fillable = [
-        'task_id',
-        'order',
-        'question',
-        'options',
-        'solution',
-        'type',
+        'quiz_id',
+        'user_id',
+        'start',
+        'end',
         'marks',
+        'grade',
     ];
 
-    public function task() : BelongsTo
+    public $timestamps = false;
+
+    public function quiz() : BelongsTo 
     {
-        return $this->belongsTo(Task::class);
+        return $this->belongsTo(Quiz::class);
+    }
+
+    public function user() : BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function answers() : HasMany
