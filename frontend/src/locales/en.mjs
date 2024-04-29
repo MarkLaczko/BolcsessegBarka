@@ -179,6 +179,7 @@ export default {
       grade: "Grade",
       evaluate: "Evaluate",
       startAttempt: "Start attempt",
+      ownAttempts: "Own attempts",
       beginAttemptDialog: {
         begin: "Start quiz",
         time: "Time limit for attempt",
