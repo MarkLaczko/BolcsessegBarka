@@ -590,15 +590,12 @@
     <div v-if="!loading">
       <div class="d-flex justify-content-center align-items-center gap-3">
         <h1 class="text-center">
-        {{ course.name }}
-      </h1>
+          {{ course.name }}
+        </h1>
         <button
           class="btn buttons text-light"
           id="newTopic"
-          v-if="
-            currentUserData.is_admin ||
-            member.permission == 'Tanár'
-          "
+          v-if="currentUserData.is_admin || member.permission == 'Tanár'"
           @click="newTopicDialogVisible = true"
         >
           {{ messages.pages.coursePage.newTopicButton }}
@@ -606,10 +603,7 @@
         <button
           class="btn ms-1 buttons text-light"
           id="manageCourses"
-          v-if="
-            currentUserData.is_admin ||
-            member.permission == 'Tanár'
-          "
+          v-if="currentUserData.is_admin || member.permission == 'Tanár'"
           @click="groupTreatmentDialog = true"
         >
           {{ messages.pages.coursePage.groupTreatmentButton }}
@@ -617,7 +611,9 @@
       </div>
 
       <div class="d-flex justify-content-center align-items-center gap-1 mb-2">
-        <span class="badge fs-6" v-for="group of course.groups">{{ group.name }}</span>
+        <span class="badge fs-6" v-for="group of course.groups">{{
+          group.name
+        }}</span>
       </div>
 
       <div
@@ -639,81 +635,6 @@
               @click="toggleTopic(topic.id)"
             >
               <h2>{{ topic.name }}</h2>
-
-              <div
-                v-if="
-                  currentUserData.is_admin ||
-                  member.permission == 'Tanár'
-                "
-                class="dropdown ms-2"
-              >
-                <button
-                  class="btn dropdown-toggle"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  {{ messages.pages.coursePage.accordionText.actions }}
-                </button>
-                <ul class="dropdown-menu">
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      @click="
-                        (newAssignmentDialogVisible = true),
-                          (activeTopicId = topic.id)
-                      "
-                      >{{
-                        messages.pages.coursePage.accordionText.newAssignment
-                      }}</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      @click="
-                        (newNoteDialogVisible = true),
-                          (activeTopicId = topic.id)
-                      "
-                      >{{ messages.pages.coursePage.accordionText.newNote }}</a
-                    >
-                  </li>
-                  <li>
-                    <button
-                      class="dropdown-item"
-                      @click="navigateToNewQuizPage(course.id, topic.id)"
-                    >
-                      {{ messages.pages.coursePage.accordionText.newQuiz }}
-                    </button>
-                  </li>
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      @click="
-                        (editTopicDialogVisible = true),
-                          (activeTopicId = topic.id)
-                      "
-                      >{{ messages.pages.coursePage.accordionText.edit }}</a
-                    >
-                  </li>
-                  <li>
-                    <a class="dropdown-item" @click="deleteTopic(topic.id)">{{
-                      messages.pages.coursePage.accordionText.delete
-                    }}</a>
-                  </li>
-                </ul>
-              </div>
-              <button
-                class="btn buttons ms-2"
-                @click="
-                  (newNoteDialogVisible = true), (activeTopicId = topic.id)
-                "
-                v-if="
-                  member.permission == 'Tanuló' && !currentUserData.is_admin
-                "
-              >
-                {{ messages.pages.coursePage.accordionText.createNoteButton }}
-              </button>
             </button>
           </h2>
           <div
@@ -779,13 +700,33 @@
                   >
                 </li>
                 <li>
-                  <a class="dropdown-item text-center btn" @click="deleteTopic(topic.id)">{{
-                    messages.pages.coursePage.accordionText.delete
-                  }}</a>
+                  <a
+                    class="dropdown-item text-center btn"
+                    @click="deleteTopic(topic.id)"
+                    >{{ messages.pages.coursePage.accordionText.delete }}</a
+                  >
                 </li>
               </ul>
             </div>
-            <div class="accordion-body">
+            <div
+              class="accordion-body"
+              :class="member.permission == 'Tanuló' ? 'pt-2' : ''"
+            >
+              <div
+                class="d-flex justify-content-center align-items-center pt-0"
+                v-if="
+                  member.permission == 'Tanuló' && !currentUserData.is_admin
+                "
+              >
+                <button
+                  class="btn buttons ms-2"
+                  @click="
+                    (newNoteDialogVisible = true), (activeTopicId = topic.id)
+                  "
+                >
+                  {{ messages.pages.coursePage.accordionText.createNoteButton }}
+                </button>
+              </div>
               <div
                 class="card mt-2"
                 v-for="assignment in topic.assignment"
@@ -808,8 +749,7 @@
                       role="group"
                       aria-label="Basic mixed styles example"
                       v-if="
-                        currentUserData.is_admin ||
-                        member.permission == 'Tanár'
+                        currentUserData.is_admin || member.permission == 'Tanár'
                       "
                     >
                       <button
@@ -831,7 +771,7 @@
                       class="btn btn-outline-primary me-2 px-5"
                       :to="{
                         name: 'assignment',
-                        params: { id: assignment.id }
+                        params: { id: assignment.id },
                       }"
                       >{{ messages.pages.coursePage.viewButton }}</RouterLink
                     >
@@ -848,7 +788,9 @@
                     <div class="card-header">
                       <h4>{{ messages.pages.coursePage.note.name }}</h4>
                     </div>
-                    <div class="card-body d-flex justify-content-center align-items-center">
+                    <div
+                      class="card-body d-flex justify-content-center align-items-center"
+                    >
                       {{ messages.pages.coursePage.note.text }} {{ note.title }}
                     </div>
                     <div class="card-footer">
@@ -1035,7 +977,12 @@ export default {
     ...mapActions(courseStore, ["getCourse"]),
     ...mapActions(groupStore, ["getGroups", "getGroup"]),
     ...mapActions(topicStore, ["postTopic", "putTopic", "destroyTopic"]),
-    ...mapActions(noteStore, ["postNote", "putNote", "destroyNote","getCurrentNotes"]),
+    ...mapActions(noteStore, [
+      "postNote",
+      "putNote",
+      "destroyNote",
+      "getCurrentNotes",
+    ]),
 
     toggleTopic(id) {
       this.activeTopicId = this.activeTopicId === id ? null : id;
@@ -1186,7 +1133,7 @@ export default {
           text: this.text,
           topic_id: this.activeTopicId,
           user_id: this.currentUserData.id,
-          role: this.member.permission
+          role: this.member.permission,
         };
         const response = await this.postNote(note);
 
@@ -1198,6 +1145,9 @@ export default {
         }
 
         this.newNoteDialogVisible = false;
+
+        this.title = "";
+        this.text = "";
 
         let toast = {
           severity: "success",
@@ -1293,7 +1243,6 @@ export default {
             },
           }
         );
-
         response.notes = [];
         this.topics.push(response);
         this.newTopicDialogVisible = false;
@@ -1312,7 +1261,6 @@ export default {
         }
         this.$toast.add(toast);
       } catch (error) {
-        console.log(error);
         let toast = {
           severity: "error",
           detail:
@@ -1375,13 +1323,13 @@ export default {
     },
 
     async findUserDetails(courseId, userId) {
-      
       for (const group of this.course.groups) {
-        let user = group.users.find(x => x.id == userStore().currentUserData.id);
+        let user = group.users.find(
+          (x) => x.id == userStore().currentUserData.id
+        );
 
         if (user != undefined && user.member.permission == "Tanár") {
           this.member = user.member;
-          
         }
       }
 
@@ -1449,7 +1397,7 @@ export default {
         formData.append("courseable_id", this.$route.params.id);
         formData.append("teacher_task_name", data?.teacher_task[0]?.name);
         formData.append("topic_id", this.activeTopicId);
-        
+
         const user = userStore();
         const response = await http.post(`/assignments`, formData, {
           headers: {
@@ -1653,6 +1601,22 @@ export default {
         },
       });
     },
+    async getAllNotesForUser() {
+      this.topics = this.course.topics;
+      for (const topic of this.course.topics) {
+        topic.notes = [];
+      }
+      let notes = await this.getCurrentNotes();
+      for (const note of notes) {
+        let idx = this.topics.findIndex((x) => x.id == note.topic_id);
+        if (idx != -1) {
+          if (this.course.topics[idx].notes == undefined) {
+            this.course.topics[idx].notes = [];
+          }
+          this.course.topics[idx].notes.push(note);
+        }
+      }
+    },
   },
   computed: {
     ...mapState(userStore, ["currentUserData", "token"]),
@@ -1662,21 +1626,8 @@ export default {
   },
   async mounted() {
     this.course = await this.getCourse(this.$route.params.id);
-    this.topics = this.course.topics;
-    let notes = await this.getCurrentNotes();
-    for (const note of notes) {
-      let idx = this.topics.findIndex(x => x.id == note.topic_id);
-      if (idx != -1) {
-        if (this.course.topics[idx].notes == undefined) {
-          this.course.topics[idx].notes = [];
-        }
-        this.course.topics[idx].notes.push(note);
-      }
-    }
-    await this.findUserDetails(
-      this.course.id,
-      this.currentUserData.id
-    );
+    await this.getAllNotesForUser();
+    await this.findUserDetails(this.course.id, this.currentUserData.id);
     document.title = this.course.name;
     this.loading = false;
   },
