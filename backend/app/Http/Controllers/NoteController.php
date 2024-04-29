@@ -79,8 +79,6 @@ class NoteController extends Controller
             return $qb3->with("groups");
         }]);
 
-        Gate::authorize("notes.getCurrentNotes", $notes);
-
         $returnNotes = [];
 
         foreach ($notes->get() as $value) {
