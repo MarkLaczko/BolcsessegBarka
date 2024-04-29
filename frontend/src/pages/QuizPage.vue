@@ -185,7 +185,7 @@ const toDate = (date) => {
 };
 
 const getAttempts = async () => {
-    if(isTeacher){
+    if(isTeacher.value){
         attempts.value = await attemptStore().getQuizAttempts(route.params.id)
     }
 }
