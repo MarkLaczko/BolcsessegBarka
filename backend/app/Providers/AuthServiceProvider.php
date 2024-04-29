@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Attempt;
 use App\Models\Course;
 use App\Models\Note;
 use App\Models\Quiz;
@@ -196,9 +197,13 @@ class AuthServiceProvider extends ServiceProvider
                 }
             }
 
-            // TODO: visible during attempt
+            foreach ($quiz->attempts as $value) {
+                if($value->user->toArray()['id'] == $user->id && $value->end == null){
+                    return Response::allow();
+                }
+            }
 
-            return Response::deny("You must have access to this quiz's course to get it!");
+            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
         });
 
         Gate::define('tasks.get', function (User $user, Task $task) {
@@ -215,9 +220,13 @@ class AuthServiceProvider extends ServiceProvider
                 }
             }
 
-            // TODO: visible during attempt
+            foreach ($task->quiz->attempts as $value) {
+                if($value->user->toArray()['id'] == $user->id && $value->end == null){
+                    return Response::allow();
+                }
+            }
 
-            return Response::deny("You must have access to this tasks's course to get it!");
+            return Response::deny("You must have access to this tasks's course or have an ongoing attempt to get it!");
         });
 
         Gate::define('tasks.get.solutions', function (User $user, Task $task) {
