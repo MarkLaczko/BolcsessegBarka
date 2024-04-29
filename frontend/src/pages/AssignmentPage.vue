@@ -16,7 +16,7 @@
           {{ messages.pages.assignmentPage.deadlineExpired }}
         </div>
         <div class="d-flex justify-content-end">
-          <RouterLink v-if="isDeadlineReached" class="btn btn-outline-danger px-5" :to="{ name: 'course', params: { id: assignment.course.id }, query: {groupName: this.$route.query.groupName}}">{{messages.pages.assignmentPage.returnButton}}</RouterLink>
+          <RouterLink v-if="isDeadlineReached" class="btn btn-outline-danger px-5" :to="{ name: 'course', params: { id: assignment.course.id }}">{{messages.pages.assignmentPage.returnButton}}</RouterLink>
         </div>
         <div v-if="!isDeadlineReached">
           <FormKit
@@ -47,7 +47,7 @@
             }"
           />
           <div class="d-flex justify-content-end mt-3 mb-3">
-            <RouterLink class="btn btn-outline-danger px-5" :to="{ name: 'course', params: { id: assignment.course.id }, query: {groupName: this.$route.query.groupName}}">{{messages.pages.assignmentPage.returnButton}}</RouterLink>
+            <RouterLink class="btn btn-outline-danger px-5" :to="{ name: 'course', params: { id: assignment.course.id }}">{{messages.pages.assignmentPage.returnButton}}</RouterLink>
             <FormKit
               type="submit"
               :label="
