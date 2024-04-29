@@ -60,5 +60,15 @@ export const noteStore = defineStore("noteStore", {
       const idx = this.notes.findIndex((x) => x.id == id);
       this.notes.splice(idx, 1);
     },
+    async getCurrentNotes() {
+      const user = userStore();
+      const response = await http.get("/getCurrentNotes", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+
+      return response.data.data;
+    }
   },
 });
