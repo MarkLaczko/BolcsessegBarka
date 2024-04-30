@@ -9,8 +9,9 @@
         <p >
           {{ messages.pages.assignmentPage.task_name }} {{ assignment.task_name }} <br />
           {{ messages.pages.assignmentPage.courseName }} {{ assignment.course.name }} <br />
-          {{ messages.pages.assignmentPage.deadline }} {{ assignment.deadline }}
-          <p v-if="assignment.comment">{{ messages.pages.assignmentPage.comment }} {{ assignment.comment }}</p>
+          {{ messages.pages.assignmentPage.deadline }} {{ assignment.deadline }} <br>
+          <span v-if="assignment.comment">{{ messages.pages.assignmentPage.comment }} {{ assignment.comment }}</span> <br>
+          <span v-if="assignment.teacher_task_name !== 'undefined'">{{ messages.pages.assignmentPage.teacherTask }} {{ assignment.teacher_task_name }}</span>
         </p>
         <div v-if="isDeadlineReached" class=" py-4 text-center alert alert-danger">
           {{ messages.pages.assignmentPage.deadlineExpired }}
@@ -46,25 +47,31 @@
               },
             }"
           />
-          <div class="d-flex justify-content-end mt-3 mb-3">
-            <RouterLink class="btn btn-outline-danger px-5" :to="{ name: 'course', params: { id: assignment.course.id }}">{{messages.pages.assignmentPage.returnButton}}</RouterLink>
-            <FormKit
-              type="submit"
-              :label="
-                messages.pages.newAssignmentPage.saveButton
-              "
-              id="addAssignmentButton"
-              :classes="{
-                input: {
-                  btn: true,
-                  'btn-success': true,
-                  'w-auto': true,
-                  'px-5' : true,
-                  'ms-1' : true
-                },
-              }"
-            />
+          <div class="d-flex justify-content-between mt-3 mb-3">
+          <div class="d-flex">
+              <button v-if="assignment.teacher_task_name !== 'undefined'" class="btn btn-success" @click="downloadAssignment(assignment.id, assignment.teacher_task_name)">Feladat letöltése</button>
+              <div v-else></div>
           </div>
+          <div class="d-flex">
+              <RouterLink class="btn btn-outline-danger px-5" :to="{ name: 'course', params: { id: assignment.course.id }}">{{messages.pages.assignmentPage.returnButton}}</RouterLink>
+              <FormKit
+                  type="submit"
+                  :label="messages.pages.newAssignmentPage.saveButton"
+                  id="addAssignmentButton"
+                  :classes="{
+                      input: {
+                          btn: true,
+                          'btn-success': true,
+                          'w-auto': true,
+                          'px-5' : true,
+                          'ms-1' : true
+                      },
+                  }"
+              />
+          </div>
+      </div>
+
+
         </FormKit>
         </div>
       </div>
@@ -113,6 +120,39 @@ export default {
     ...mapState(userStore, ["currentUserData"]),
   },
   methods: {
+    async downloadAssignment(assignmentId, filename) {
+    const user = userStore();
+    try {
+        const response = await http.get(`/assignments/${assignmentId}/download`, {
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+            },
+            responseType: 'blob' 
+        });
+        const contentDisposition = response.headers['content-disposition'];
+        let file = filename;
+        if (contentDisposition) {
+            const filenameMatch = contentDisposition.match(/filename="?(.+)"?/);
+            if (filenameMatch && filenameMatch.length === 2) {
+                file = filenameMatch[1];
+            }
+        }
+
+        const blob = new Blob([response.data], { type: 'application/octet-stream' });
+
+        const downloadUrl = window.URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.setAttribute('download', file); 
+        document.body.appendChild(link);
+        link.click();
+
+        link.parentNode.removeChild(link);
+    } catch (error) {
+        console.error('Download error:', error);
+    }
+},
     async getAssignments(){
       const user = userStore();
       const response = await http.get(`/assignments/${this.$route.params.id}`, {
