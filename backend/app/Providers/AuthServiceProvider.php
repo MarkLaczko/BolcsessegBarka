@@ -261,7 +261,7 @@ class AuthServiceProvider extends ServiceProvider
                 }
             }
 
-            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+            return Response::deny("You must have access to this quiz's course or have an ongoing attempt!");
         });
 
         Gate::define('tasks.get', function (User $user, Task $task) {
@@ -284,7 +284,7 @@ class AuthServiceProvider extends ServiceProvider
                 }
             }
 
-            return Response::deny("You must have access to this tasks's course or have an ongoing attempt to get it!");
+            return Response::deny("You must have access to this tasks's course or have an ongoing attempt!");
         });
 
         Gate::define('tasks.store', function (User $user, Quiz $quiz) {
@@ -360,7 +360,7 @@ class AuthServiceProvider extends ServiceProvider
                 return Response::allow();
             }
 
-            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+            return Response::deny("You must be an administrator!");
         });
 
         Gate::define('attempts.show', function (User $user, Attempt $attempt) {
@@ -383,7 +383,7 @@ class AuthServiceProvider extends ServiceProvider
                 }
             }
 
-            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+            return Response::deny("You must have access to this quiz's course or have attempted the quiz!");
         });
 
         Gate::define('attempts.quizAttempts', function (User $user, Quiz $quiz) {
@@ -400,7 +400,7 @@ class AuthServiceProvider extends ServiceProvider
                 }
             }
 
-            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+            return Response::deny("You must have access to this quiz's course!");
         });
 
         Gate::define('attempts.store', function (User $user, Quiz $quiz) {
@@ -420,7 +420,7 @@ class AuthServiceProvider extends ServiceProvider
                 }
             }
 
-            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+            return Response::deny("You must have access to this quiz's course or have an ongoing attempt!");
         });
 
         Gate::define('attempts.update', function (User $user, Attempt $attempt) {
@@ -437,7 +437,7 @@ class AuthServiceProvider extends ServiceProvider
                 }
             }
 
-            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+            return Response::deny("You must have access to this quiz's course or have an ongoing attempt!");
         });
 
         Gate::define('attempts.destroy', function (User $user, Attempt $attempt) {
@@ -454,7 +454,7 @@ class AuthServiceProvider extends ServiceProvider
                 }
             }
 
-            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+            return Response::deny("You must have access to this quiz's course!");
         });
 
         Gate::define('attempts.finish', function (User $user, Attempt $attempt) {
@@ -477,7 +477,7 @@ class AuthServiceProvider extends ServiceProvider
                 }
             }
 
-            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+            return Response::deny("You must have access to this quiz's course or have an ongoing attempt!");
         });
 
         Gate::define('answers.index', function (User $user) {
@@ -485,7 +485,7 @@ class AuthServiceProvider extends ServiceProvider
                 return Response::allow();
             }
 
-            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+            return Response::deny("You must have access to this quiz's course as a teacher!");
         });
 
         Gate::define('answers.store', function (User $user, Attempt $attempt) {
@@ -493,7 +493,7 @@ class AuthServiceProvider extends ServiceProvider
                 return Response::allow();
             }
 
-            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+            return Response::deny("You must have access to this quiz's course and have an ongoing attempt!");
         });
 
         Gate::define('answers.show', function (User $user, Answer $answer) {
@@ -510,7 +510,7 @@ class AuthServiceProvider extends ServiceProvider
                 }
             }
 
-            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+            return Response::deny("You must have access to this quiz's course as a teacher!");
         });
 
         Gate::define('answers.update', function (User $user, Answer $answer) {
@@ -527,7 +527,7 @@ class AuthServiceProvider extends ServiceProvider
                 }
             }
 
-            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+            return Response::deny("You must have access to this quiz's course as a teacher!");
         });
 
         Gate::define('answers.destroy', function (User $user, Answer $answer) {
@@ -544,7 +544,7 @@ class AuthServiceProvider extends ServiceProvider
                 }
             }
 
-            return Response::deny("You must have access to this quiz's course or have an ongoing attempt to get it!");
+            return Response::deny("You must have access to this quiz's course as a teacher!");
         });
     }
 }
