@@ -477,7 +477,7 @@
             },
           }"
         >
-          <Column field="user_id" :header="messages.pages.coursePage.downloadAssignmentDialog.student"></Column>
+          <Column field="user.name" :header="messages.pages.coursePage.downloadAssignmentDialog.student"></Column>
           <Column field="student_task_name" :header="messages.pages.coursePage.downloadAssignmentDialog.task"></Column>
           <Column field="id" :header="messages.pages.coursePage.downloadAssignmentDialog.download">
             <template #body="slotProp">
