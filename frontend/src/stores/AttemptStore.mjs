@@ -101,6 +101,18 @@ export const attemptStore = defineStore("attemptStore", {
         };
       }
     },
+    async grade(id, marks, grade){
+      let data = {
+        marks: marks,
+        grade: grade,
+      }
+      const response = await http.put(`attempts/${id}`, data, {
+          headers: {
+              Authorization: `Bearer ${userStore().token}`,
+          },
+      });
+      return response.data.data;
+    },
     checkAttemptsForExpiry(){
       setInterval(async () => {
         for (const attempt of this.userAttempts) {
