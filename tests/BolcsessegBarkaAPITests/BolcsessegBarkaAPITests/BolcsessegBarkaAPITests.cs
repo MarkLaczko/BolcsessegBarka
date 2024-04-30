@@ -907,7 +907,7 @@ namespace BolcsessegBarkaAPITests
             
             Assert.IsNotNull(quizzes);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual("A kora újkor", quizzes.Data[0].Name);
+            Assert.AreEqual("2023 május emelt", quizzes.Data[0].Name);
             Assert.IsNull(quizzes.Data[0].MaxAttempts);
             Assert.IsNull(quizzes.Data[0].Opens);
             Assert.IsNull(quizzes.Data[0].Closes);
@@ -936,7 +936,7 @@ namespace BolcsessegBarkaAPITests
 
             Assert.IsNotNull(quiz);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual("A kora újkor", quiz.Name);
+            Assert.AreEqual("2023 május emelt", quiz.Name);
             Assert.IsNull(quiz.MaxAttempts);
             Assert.IsNull(quiz.Opens);
             Assert.IsNull(quiz.Closes);
@@ -1065,7 +1065,7 @@ namespace BolcsessegBarkaAPITests
             
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(1, tasks.Data[0].Id);
-            Assert.AreEqual("A feladat a nagy földrajzi felfedezésekkel kapcsolatos", tasks.Data[0].Header);
+            Assert.AreEqual("A feladat a földrajzi felfedezések következményeihez kapcsolódik.", tasks.Data[0].Header);
             Assert.AreEqual(1, tasks.Data[0].Subtasks[0].Id);
         }
         
@@ -1115,7 +1115,7 @@ namespace BolcsessegBarkaAPITests
             
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(1, task.Id);
-            Assert.AreEqual("A feladat a nagy földrajzi felfedezésekkel kapcsolatos", task.Header);
+            Assert.AreEqual("A feladat a földrajzi felfedezések következményeihez kapcsolódik.", task.Header);
             Assert.AreEqual(1, task.Subtasks[0].Id);
         }
         
