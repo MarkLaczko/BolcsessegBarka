@@ -176,6 +176,26 @@ export default {
         }
       }
     },
+    markQuizPage: {
+      attemptOf: "'s attempt'",
+      started: "Started",
+      finsihed: "Finished",
+      late: "Submitted late",
+      maxMarks: "Maximum marks",
+      marks: "Achieved marks",
+      save: "Save",
+      noAnswer: "No answer",
+      correctAnswer: "Correct answer",
+      overallMarks: "Achieved overall marks",
+      grade: "Grade",
+      finish: "Finish",
+      toastMessages: {
+        updatedMark: "Marks updated!",
+        failedUpdateMark: "Unexpected error when updating the marks!",
+        graded: "Graded!",
+        failedToGrade: "Unexpected error when submiting the grade!"
+      }
+    },
     quizPage: {
       opens: "Opens",
       closes: "Closes",
