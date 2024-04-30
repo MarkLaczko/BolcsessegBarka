@@ -188,7 +188,10 @@ const putForm = async () => {
     try {
         quiz.value.opens = quiz.value.opens == null ? null : Math.floor(new Date(quiz.value.opens).getTime() / 1000);
         quiz.value.closes = quiz.value.closes == null ? null : Math.floor(new Date(quiz.value.closes).getTime() / 1000);
-        const response = await quizStore().putQuiz(route.params.id, quiz.value);
+        let data = quiz.value;
+        data.topic_id = quiz.value.topic.id;
+        data.topic = null;
+        const response = await quizStore().putQuiz(route.params.id, data);
         if(!response.id){
             throw ('Error')
         }
