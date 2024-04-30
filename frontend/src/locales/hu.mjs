@@ -64,6 +64,15 @@ export default {
         rejectLabel: "Mégsem",
         acceptLabel: "Törlés"
       },
+      downloadAssignmentDialog: {
+        title: "Leadott feladatok megtekintése",
+        noAssignment: "Nincs leadott feladat!",
+        student: "Diák",
+        task: "Feladat",
+        download: "Letöltés",
+        downloadAllTasks: "Összes feladat letöltése",
+        close: "Bezárás"
+      },
       newTopicDialog: {
         title: "Új téma felvétele",
         nameLabel: "Név",
@@ -570,7 +579,8 @@ export default {
       deadline: "Határidő:",
       courseName: "Kurzus:",
       task_name: "Feladat:",
-      deadlineExpired: "Sajnálom kicsúsztál a határidőből!"
+      deadlineExpired: "Sajnálom kicsúsztál a határidőből!",
+      teacherTask: "Feltöltött feladat:",
     },
     newAssignmentPage: {
       title: "Új feladat létrehozása",
