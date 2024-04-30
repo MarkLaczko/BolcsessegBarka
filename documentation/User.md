@@ -1,30 +1,18 @@
 # Felhasználói Dokumentáció
 
-**Budapesti Műszaki Szakképzési Centrum Neumann János Informatikai Technikum**
-
-**Szakképesítés neve: Szoftverfejlesztő és -tesztelő** 
-
-**Szakképesítés száma: 5-0613-12-03**
-
-**VIZSGAREMEK**
-
-**BölcsességBárka**
-
-**Kurityák Dániel István, Laczkó Márk, Molnár Gábor**
-
-**2/14.b**
-
-**Budapest, 2024**
-
 ## Tartalomjegyzék
 
-1. [Bevezetés](#bevezetés)
-2. [Navigációs sáv](#navigációs-sáv)
-3. [Felhasználó kezelés](#felhasználó-kezelés) (Adminok részére)
-4. [Kurzus kezelés](#kurzus-kezelés) (Adminok részére)
-5. [Kurzusaim oldal](#kurzusaim-oldal)
-6. [Egy adott kurzus oldala](#egy-adott-kurzus-oldala-diákok-számára) (Diákok számára)
-7. [Egy adott kurzus oldala](#egy-adott-kurzus-oldala-tanárok-számára) (Tanárok számára)
+1.  [Bevezetés](#bevezetés)
+2.  [Navigációs sáv](#navigációs-sáv)
+3.  [Felhasználó kezelés](#felhasználó-kezelés) (Adminok részére)
+4.  [Kurzus kezelés](#kurzus-kezelés) (Adminok részére)
+5.  [Kurzusaim oldal](#kurzusaim-oldal)
+6.  [Egy adott kurzus oldala](#egy-adott-kurzus-oldala-diákok-számára) (Diákok számára)
+7.  [Egy adott kurzus oldala](#egy-adott-kurzus-oldala-tanárok-számára) (Tanárok számára)
+8.  [Kvíz létrehozása](#kvíz-létrehozása) (Tanárok számára)
+9.  [Kvíz módosítása](#kvíz-módosítása) (Tanárok számára)
+10. [Kvíz kitöltése](#kvíz-kitöltése)
+11. [Kvíz értékelése](#kvíz-értékelése) (Tanárok számára)
 
 ## Bevezetés
 
@@ -282,3 +270,163 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
 - **Dinamikus Interakció:** A téma hozzáadása, szerkesztése és törlése dinamikusan történik, anélkül, hogy az oldalt újra kellene tölteni.
 - **Hozzáférés-szabályozás:** Csak azok a felhasználók férhetnek hozzá a szerkesztési és törlési funkciókhoz, akik rendelkeznek a megfelelő jogosultságokkal (pl. adminisztrátorok vagy tanárok).
+
+## Kvíz létrehozása
+
+### Bevezetés:
+
+> A kvíz létrehozása oldal a kurzus oldaláról, azon belül is egy témából érhető el a `Műveletek`, `Új kvíz` gombra kattintva. 
+
+### Funkciók és használat:
+
+1. **Kvíz neve**
+
+   - Minden kvíz kell név. A név maximum 100 karakter lehet.
+
+2. **Maximum próbálkozások száma**
+
+   - Opcionálisan meg lehet adni, hogy egy felhasználó maximum hányszor tudjon egy kvízt kitölteni.
+
+3. **Kvíz nyitása**
+
+   - Opcionálisan megadható, hogy a kvíz milyen időponttól legyen elérhető.
+
+4. **Kvíz zárása**
+
+   - Opcionálisan megadható, hogy a kvíz milyen időponttól *ne* legyen elérhető.
+
+4. **Időkorlát**
+
+   - Opcionálisan, percben megadható, hogy a kvíz kitöltésére mennyi legyen az időkeret. A kívzt az idő lejárta után az oldal automatikusan elküldi, feltéve, ha az oldal meg van nyitva.
+
+5. **Mentés**
+
+   - A megfelelő adatok bevitele után a `Mentés` gombbal menthetőek az adatok. Ezek után át leszünk irányítva a kvíz szerkesztése oldalra.
+
+## Kvíz szerkesztése
+
+### Bevezetés:
+
+> A kvíz szerkesztésénél megváltoztathazó a kvíz részletei, valamint új feladato lehet hozzáadni. 
+
+### Funkciók és használat:
+
+1. **Kvíz neve**
+
+   - Minden kvíz kell név. A név maximum 100 karakter lehet.
+
+2. **Maximum próbálkozások száma**
+
+   - Opcionálisan meg lehet adni, hogy egy felhasználó maximum hányszor tudjon egy kvízt kitölteni.
+
+3. **Kvíz nyitása**
+
+   - Opcionálisan megadható, hogy a kvíz milyen időponttól legyen elérhető.
+
+4. **Kvíz zárása**
+
+   - Opcionálisan megadható, hogy a kvíz milyen időponttól *ne* legyen elérhető.
+
+4. **Időkorlát**
+
+   - Opcionálisan, percben megadható, hogy a kvíz kitöltésére mennyi legyen az időkeret. A kívzt az idő lejárta után az oldal automatikusan elküldi, feltéve, ha az oldal meg van nyitva.
+
+5. **Mentés**
+
+   - A megfelelő adatok bevitele után a `Mentés` gombbal menthetőek az adatok. Ezek után át leszünk irányítva a kvíz szerkesztése oldalra.
+
+6. **Új feladat hozzáadása**
+
+   - Új feladatot a kék plusz (`+`) gombra kattiva hozzáadható, amikor a feladat hozzáadása oldalra leszünk átirányítva.
+
+7. **Feladatok sorrendje**
+
+   - A feladatok sorrendjét a fel, illetve le nyilakkal lehet változtatni. Az utolsó feladatnak a le nyíl helyett egy felülre nyíl található.
+
+8. **Feladat törlése**
+
+   - Feladatot törölni a mellette található piros kuka gombbal lehet.
+
+### Új feladat
+
+> Minden feladatnak vannak alfeladatai. Ezeket tudja a felhasználó megoldani.
+
+1. **Fejléc**
+
+   - Minden feladatnak kötelező megadni egy rövid fejlécet, ami maximum 100 karakter hosszú lehet.
+
+2. **Szöveg**
+
+   - Minden feladatnak kötelező megadni egy rövid szöveg, ami maximum 255 karakter hosszú lehet.
+
+4. **Alfeladatok**
+   
+   - Új alfeladatot a kék plusz (`+`) gombra kattiva hozzáadható, amikor az alfeladat a két szövegdoboz alatt fog megjelenni
+
+5. **Alfeladatok sorrendje**
+
+   - Az alfeladatok sorrendjét a fel, illetve le nyilakkal lehet változtatni. Az utolsó alfeladatnak a le nyíl helyett egy felülre nyíl található.
+
+6. **Alfeladat törlése**
+
+   - Alfeladatot törölni a mellette található piros kuka gombbal lehet.
+
+### Új alfeladat / Alfeladat szerkesztése
+
+> Három féle típusú alfeladat van: rövid választ igénylő feladat, több válaszos feladat, valamint esszé feladat.
+
+1. **Alfeladat szövege**
+
+   - Minden alfeldatnak kötelező szöveg. Ezt a szöveget meg lehet formázni, képeket, linkeket beleszúrni.
+
+2. **Alfeladat típusa**
+
+   - Minden feladatnak kötelező egy alfeladat típus. Ez fogja azt meghatározni, hogy milyen típusú választ adhat meg a kitöltő.
+
+3. **Válaszlehetőségek** (több válaszos feladatok)
+
+   - Amennyiben több válaszos feladatról van szó, úgy a válaszlehetőségeket is meg lehet adni. Ezeket Enter lenyomásával lehet elválasztani, majd az `x` gombbal törölni.
+
+4. **Alfeladat pontszáma**
+
+   - Minden alfeladatnak kötelező pontszámának lennie. Ezek lehetnek fél pontosak is, vagy akár lehet, hogy egy feladat nem ér semennyi pontot.
+
+## Kvíz kitöltése
+
+### Bevezetés:
+
+> Kvízt kitölteni a kvíz `Megtekintés` oldalán lehet. Itt a felhasználó láthatja a kvíz részleteit, előző próbálkozásait, a tanár az összes eddigi próbálkozást, valamint itt található a `Kvíz kitöltése` gomb.
+
+### Funkciók és használat:
+
+1. **Kvíz kitöltésének kezdete**
+
+   - A kvíz indítására átkerülünk a próbálkozás oldalára. Amennyiben elnavigálnánk az oldalról, az előző oldalon a `Próbálkozásaim` alatt található `Folytatás` gombbal visszatérhetünk ide. Amennyiben a kvíznek időkorláta van, úgy egy visszaszámláló is elindul az oldal tején, mutatva mennyi időnk van még hátra.
+
+2. **Feladatok kitöltése**
+
+   - A feladatok alfeladtait szöveges mezők, rádiógomobok és hosszú szöveges mezők alkotják, a feladat típusának megfelelően.
+
+3. **Kvíz elküldése**
+
+   - A kvízt elküldeni a zöld `Elküldés` gombbal lehet az oldal alján. Amennyiben időkorlát van beállítva a kvízre, úgy annak lejártával a kvíz automatiksan elküldésre kerül amint be van töltve bármilyen oldal.
+
+4. **Eredmények**
+
+   - A próbálkozás eredményét javítás után a kvíz oldalán lehet megtekinteni.
+
+## Kvíz értékelése
+
+### Bevezetés:
+
+> Kvízt értékelni a kvíz `Megtekintés` oldalán lehet. Itt a tanárok láthatják a kvízhez kapcsolódó összes próbálkozást, valamit az `Értékelés` gombot. Erre nyomva átirányítódunk a kvíz értékelése oldalra.
+
+### Funkciók és használat:
+
+1. **Alfeladat értékelése**
+
+   - Az alfeladatra adott válasz (vagy *Nem válaszolt*) az alfeladat alatt látható. Itt található a feladatra kapható maximum pontszám, illetve adható meg, hogy helyes-e a megoldás, valamint mennyi pontot kapott a kitöltő. A mentés a zöld `Mentés` gombbal lehetséges.
+
+2. **Értékelés**
+
+   - Az értékelés befejezéséhez az oldal alján található `Értékelés` rész a lap alján található. Itt látható az elért pontszám, valamint adható meg szöveges (maximum 10 akrakter hosszú) értékelés. Ennek elmentéséhez a `Mentés` gombra kell kattintani. A `Befejezés` gomb visszavisz a kvíz oldalára.
