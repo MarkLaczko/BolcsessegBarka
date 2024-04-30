@@ -5,6 +5,7 @@ import { AdminGuard } from "@/router/guards/AdminGuard.mjs";
 import { QuizCreationGuard } from "@/router/guards/QuizCreationGuard.mjs";
 import { QuizAccessGuard } from "@/router/guards/QuizAccessGuard.mjs";
 import { AttemptAccessGuard } from "@/router/guards/AttemptAccessGuard.mjs";
+import { AttemptMarkGuard } from "@/router/guards/AttemptMarkGuard.mjs";
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -161,6 +162,16 @@ export const router = createRouter({
         attemptAccessGuard: true,
       },
     },
+    {
+      path: "/attempt/:id/mark",
+      name: "attempt",
+      component: () => import("@pages/MarkAttemptPage.vue"),
+      meta: {
+        requiresAuth: true,
+        title: "Kvíz kitöltése",
+        attemptMarkGuard: true,
+      },
+    },
   ],
 });
 
@@ -170,3 +181,4 @@ router.beforeEach(AdminGuard);
 router.beforeEach(QuizCreationGuard);
 router.beforeEach(QuizAccessGuard);
 router.beforeEach(AttemptAccessGuard);
+router.beforeEach(AttemptMarkGuard);
