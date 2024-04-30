@@ -7,6 +7,8 @@ use App\Http\Requests\UpdateAssignmentRequest;
 use App\Http\Resources\AssignmentResource;
 use App\Models\Assignment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Lang;
 
 class AssignmentController extends Controller
 {
@@ -68,4 +70,23 @@ class AssignmentController extends Controller
         return response()->noContent();
     }
 
+
+    public function download($id) {
+        $item = Assignment::find($id);
+    
+        if (is_null($item)) {
+            return response()->json(['op' => false, 'error' => Lang::get('errors.record_no_found')]);
+        }
+    
+        $file_contents = $item->teacher_task;
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'download');
+        file_put_contents($tempFilePath, $file_contents);
+        
+        $mimeType = File::mimeType($tempFilePath);
+    
+        return response($file_contents)
+            ->header('Content-Type', $mimeType)
+            ->header('Content-Disposition', 'attachment; filename="' . $item->teacher_task_name . '"')
+            ->header('Content-Transfer-Encoding', 'binary');
+    }
 }
