@@ -22,12 +22,11 @@ class UpdateAssignmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'task_name' => 'nullable',
+            'task_name' => 'nullable|string',
             'teacher_task' => 'nullable',
-            'comment' => 'nullable',
-            'deadline' => 'nullable',
-            'grade' => 'nullable',
-            'teacher_task_name' => 'nullable',
+            'comment' => 'nullable|string|max:255',
+            'deadline' => 'nullable|date',
+            'teacher_task_name' => 'nullable|string',
         ];
     }
 }

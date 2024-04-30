@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreAssignmentRequest extends FormRequest
 {
@@ -22,14 +23,13 @@ class StoreAssignmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'task_name' => 'required',
+            'task_name' => 'required|string',
             'teacher_task' => 'nullable',
-            'comment' => 'nullable',
-            'deadline' => 'required',
-            'grade' => 'nullable',
-            'courseable_id' => 'required',
-            'teacher_task_name' => 'nullable',
-            'topic_id' => 'required'
+            'comment' => 'nullable|string|max:255',
+            'deadline' => 'required|date',
+            'courseable_id' => ['required', Rule::exists("courses","id")],
+            'teacher_task_name' => 'nullable|string',
+            'topic_id' => ['required', Rule::exists("topics","id")]
         ];
     }
 }

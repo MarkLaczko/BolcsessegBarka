@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreStudentAssignmentRequest extends FormRequest
 {
@@ -22,9 +23,11 @@ class StoreStudentAssignmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "assignment_id" => "required",
-            "student_task_name" => "required",
-            "student_task" => "required"
+            "assignment_id" => ["required",Rule::exists("assignment","id")],
+            "student_task_name" => "required|string",
+            "student_task" => "required",
+            "user_id" => ["required","numeric",Rule::exists("users","id")],
+            'grade' => 'nullable|numeric|between:1,5',
         ];
     }
 }
