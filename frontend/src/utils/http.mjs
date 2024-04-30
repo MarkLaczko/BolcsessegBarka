@@ -3,7 +3,7 @@ import { userStore } from "@stores/UserStore.mjs";
 import { router } from "@/router/index.js";
 
 const http = axios.create({
-  baseURL: "http://localhost:8881/api",
+  baseURL: "/api",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
