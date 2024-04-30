@@ -69,6 +69,16 @@ export const noteStore = defineStore("noteStore", {
       });
 
       return response.data.data;
+    },
+    async getTeacherNotes() {
+      const user = userStore();
+      const response = await http.get("/getTeacherNotes", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+
+      return response.data.data;
     }
   },
 });
