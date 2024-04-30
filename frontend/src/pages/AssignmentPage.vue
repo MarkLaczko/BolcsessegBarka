@@ -110,6 +110,7 @@ export default {
   },
   computed: {
     ...mapState(languageStore, ["messages"]),
+    ...mapState(userStore, ["currentUserData"]),
   },
   methods: {
     async getAssignments(){
@@ -128,6 +129,7 @@ export default {
           formData.append('assignment_id', this.$route.params.id)
           formData.append('student_task_name', data.student_task[0].name);
           formData.append('student_task', data.student_task[0].file);
+          formData.append('user_id', this.currentUserData.id);
           
         const user = userStore();
         await http.post(`/studentAssignments`, formData, {
