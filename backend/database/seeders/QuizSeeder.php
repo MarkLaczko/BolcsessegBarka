@@ -17,7 +17,11 @@ class QuizSeeder extends Seeder
             [
                 'id' => 1,
                 'name' => '2023 május emelt',
-                'topic_id' => 1
+                'topic_id' => 1,
+                'max_attempts' => 5,
+                'opens' => now()->subDay(),
+                'closes' => now()->addDay(),
+                'time' => 60
             ]
         ]);
     }
