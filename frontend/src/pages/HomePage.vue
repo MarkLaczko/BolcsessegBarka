@@ -50,14 +50,19 @@
         <h2 class="text-center mb-3">
           <b>{{ messages.pages.homePage.taskTitle }}</b>
         </h2>
-        <div class="row px-5 pb-5 g-4">
-          <TransitionGroup :name="`slide-${animationDirection}`">
-            <div class="col-12 col-lg-4 col-md-6" v-for="assignment in paginatedAssignments" :key="assignment.id">
-              <BaseAssignmentCard :title="assignment.title" :image="assignment.image" :deadline="assignment.deadline" />
-            </div>
-          </TransitionGroup>
+
+        <h3 v-if="assignments.length == 0" class="text-center pb-3">{{ messages.pages.homePage.noAssignmentsTitle }}</h3>
+        
+        <div v-if="assignments.length > 0">
+          <div class="row px-5 pb-5 g-4">
+            <TransitionGroup :name="`slide-${animationDirection}`">
+              <div class="col-12 col-lg-4 col-md-6" v-for="assignment in paginatedAssignments" :key="assignment.id">
+                <BaseAssignmentCard  :assignment="assignment"/>
+              </div>
+            </TransitionGroup>
+          </div>
+          <Paginator :total-pages="totalPages" :current-page="currentPage" @page-changed="onPageChanged" />
         </div>
-        <Paginator :total-pages="totalPages" :current-page="currentPage" @page-changed="onPageChanged" />
       </div>
       <div class="rounded-3 pt-3 pb-2 mb-2">
         <h2 class="text-center mb-3">
@@ -66,7 +71,7 @@
         <div v-if="learningMaterials.length > 0" v-for="learningMaterial in learningMaterials" :key="learningMaterial.id">
           <BaseLearningMaterialCard :learningMaterial="learningMaterial" @open-material-dialog="handleMaterialDialog"/>
         </div>
-        <h2 v-if="learningMaterials.length == 0" class="text-center my-3">Nincsenek tananyagok!</h2>
+        <h3 v-if="learningMaterials.length == 0" class="text-center my-3">{{ messages.pages.homePage.noMaterialsTitle }}</h3>
 
       </div>
     </div>
@@ -87,120 +92,12 @@ import Paginator from "@components/BasePaginator.vue";
 import { languageStore } from "@stores/LanguageStore.mjs";
 import { noteStore } from "@stores/NoteStore.mjs";
 import { themeStore } from "@stores/ThemeStore.mjs";
+import { http } from "@utils/http.mjs";
 
 export default {
   data() {
     return {
-      assignments: [
-        {
-          id: 1,
-          title: "Feladat 1",
-          image: "asd.jpeg",
-          deadline: "2024.09.09",
-        },
-        {
-          id: 2,
-          title: "Feladat 2",
-          image: "asd.jpeg",
-          deadline: "2024.09.13",
-        },
-        {
-          id: 3,
-          title: "Feladat 3",
-          image: "asd.jpeg",
-          deadline: "2024.09.15",
-        },
-        {
-          id: 4,
-          title: "Feladat 4",
-          image: "asd.jpeg",
-          deadline: "2024.09.09",
-        },
-        {
-          id: 5,
-          title: "Feladat 5",
-          image: "asd.jpeg",
-          deadline: "2024.09.13",
-        },
-        {
-          id: 6,
-          title: "Feladat 6",
-          image: "asd.jpeg",
-          deadline: "2024.09.15",
-        },
-        {
-          id: 7,
-          title: "Feladat 7",
-          image: "asd.jpeg",
-          deadline: "2024.09.09",
-        },
-        {
-          id: 8,
-          title: "Feladat 8",
-          image: "asd.jpeg",
-          deadline: "2024.09.13",
-        },
-        {
-          id: 9,
-          title: "Feladat 9",
-          image: "asd.jpeg",
-          deadline: "2024.09.15",
-        },
-        {
-          id: 10,
-          title: "Feladat 10",
-          image: "asd.jpeg",
-          deadline: "2024.09.09",
-        },
-        {
-          id: 11,
-          title: "Feladat 11",
-          image: "asd.jpeg",
-          deadline: "2024.09.13",
-        },
-        {
-          id: 12,
-          title: "Feladat 12",
-          image: "asd.jpeg",
-          deadline: "2024.09.15",
-        },
-        {
-          id: 13,
-          title: "Feladat 13",
-          image: "asd.jpeg",
-          deadline: "2024.09.09",
-        },
-        {
-          id: 14,
-          title: "Feladat 14",
-          image: "asd.jpeg",
-          deadline: "2024.09.13",
-        },
-        {
-          id: 15,
-          title: "Feladat 15",
-          image: "asd.jpeg",
-          deadline: "2024.09.15",
-        },
-        {
-          id: 16,
-          title: "Feladat 16",
-          image: "asd.jpeg",
-          deadline: "2024.09.09",
-        },
-        {
-          id: 17,
-          title: "Feladat 17",
-          image: "asd.jpeg",
-          deadline: "2024.09.13",
-        },
-        {
-          id: 18,
-          title: "Feladat 18",
-          image: "asd.jpeg",
-          deadline: "2024.09.13",
-        },
-      ],
+      assignments: [],
       learningMaterials: [],
       viewNoteVisible: false,
       selectedMaterial: null,
@@ -231,6 +128,16 @@ export default {
     handleMaterialDialog(material) {
       this.selectedMaterial = material;
       this.viewNoteVisible = true;
+    },
+
+    async getAssignments() {
+      const response = await http.get("/getCurrentAssignments", {
+        headers: {
+          Authorization: `Bearer ${userStore().token}`,
+        },
+      });
+
+      this.assignments = response.data.data;
     }
   },
   computed: {
@@ -255,6 +162,7 @@ export default {
   },
   async mounted() {
     await this.getUser();
+    await this.getAssignments();
     this.learningMaterials = await this.getTeacherNotes();
     this.loading = false;
   },
