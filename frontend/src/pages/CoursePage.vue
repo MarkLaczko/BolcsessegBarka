@@ -647,8 +647,8 @@
               type="button"
               class="btn"
               :class="{
-                'btn-outline-danger': isDarkMode,
-                'btn-danger': !isDarkMode,
+                'btn-outline-secondary': isDarkMode,
+                'btn-secondary': !isDarkMode,
               }"
               @click="(currentNoteVisible = false), (isNoteReadonly = true)"
             >
@@ -670,8 +670,8 @@
               id="deleteNoteButton"
               class="btn"
               :class="{
-                'btn-outline-warning': isDarkMode,
-                'btn-warning': !isDarkMode,
+                'btn-outline-danger': isDarkMode,
+                'btn-danger': !isDarkMode,
               }"
               @click="deleteNote()"
             >
