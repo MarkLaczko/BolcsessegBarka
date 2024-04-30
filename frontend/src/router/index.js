@@ -164,7 +164,7 @@ export const router = createRouter({
     },
     {
       path: "/attempt/:id/mark",
-      name: "attempt",
+      name: "attemptMark",
       component: () => import("@pages/MarkAttemptPage.vue"),
       meta: {
         requiresAuth: true,
