@@ -1,25 +1,44 @@
 # Fejlesztői Dokumentáció
 
+**Budapesti Műszaki Szakképzési Centrum Neumann János Informatikai Technikum**
+
+**Szakképesítés neve: Szoftverfejlesztő és -tesztelő** 
+
+**Szakképesítés száma: 5-0613-12-03**
+
+**VIZSGAREMEK**
+
+**BölcsességBárka**
+
+**Kurityák Dániel István, Laczkó Márk, Molnár Gábor**
+
+**2/14.b**
+
+**Budapest, 2024**
+
 ## Tartalomjegyzék
 
-1. [API dokumentáció](#api-dokumentáció)
+1. [Indítás](#indítás)
+   - [Beépített felhasználók](#beépített-felhasználók)
+   - [Adatbázis](#adatbázis)
+2. [API dokumentáció](#api-dokumentáció)
    - [Csoportok, felhasználó regisztrálás, bejelentkezés](#csoportokhoz-és-felhasználó-regisztrálásához-bejelentkezéséhez-szükséges-routeok)
    - [Felhasználó routeok](#felhasználóhoz-kapcsolodó-routeok)
    - [Kurzus routeok](#kurzusokhoz-kapcsolodó-routeok)
    - [Téma routeok](#témához-kapcsolodó-routeok)
    - [Kvíz routeok](#kvízekhez-kapcsolodó-routeok)
    - [Jegyzet routeok](#jegyzethez-kapcsolodó-routeok)
-2. [Komponensek](#komponensek)
+3. [Komponensek](#komponensek)
    - [BaseDialog](#basedialog)
    - [BaseSpinner](#basespinner)
    - [BasePaginator](#basepaginator)
    - [BaseLearningMaterialCard](#baselearningmaterialcard)
    - [BaseCourseCard](#basecoursecard)
    - [BaseAssignmentCard](#baseassignmentcard)
-3. [Layoutok](#layoutok)
+4. [Layoutok](#layoutok)
    - [BaseNavbar](#basenavbar)
    - [BaseLayout](#baselayout)
-4. [Oldalak](#oldalak)
+5. [Oldalak](#oldalak)
    - [HomePage](#homepage)
    - [CoursesPage](#coursespage)
    - [CoursePage](#coursepage)
@@ -30,8 +49,8 @@
    - [EditQuizPage](#qditquizpage)
    - [CreateTaskPage](#createtaskpage)
    - [EditTaskPage](#qdittaskpage)
-5. [Nyelvi beállítások](#nyelvi-beállítások)
-6. [Tárolók](#tárolók)
+6. [Nyelvi beállítások](#nyelvi-beállítások)
+7. [Tárolók](#tárolók)
    - [LanguageStore](#languagestore)
    - [ThemeStore](#themestore)
    - [TopicStore](#topicstore)
@@ -39,9 +58,34 @@
    - [QuizStore](#quizstore)
    - [CourseStore](#coursestore)
    - [NoteStore](#notestore)
-7. [Erőforrások](#erőforrások)
+8. [Erőforrások](#erőforrások)
    - [Képek](#images-képek)
    - [Stílusok](#styles-stíluslapok)
+9. [Források](#források)
+
+## Indítás
+
+A projekt elindításához futassa le a `start.sh` fájlt.
+
+### Beépített felhasználók
+
+#### Admin felhasználó
+
+- Felhasználónév: `admin`
+- E-mail cím: `admin@admin.com`
+- Jelszó: `admin123`
+
+#### Felhasználó
+
+- Felhasználónév: `sser`
+- E-mail cím: `user@user.com`
+- Jelszó: `user1234`
+
+### Adatbázis
+
+Az adatbázis EK diagramja [itt](https://dbdiagram.io/d/65f97220ae072629ce6400fe) érhető el.
+
+![EK diagram](/documentation/er_diagram.png)
 
 ## API Dokumentáció
 
@@ -4050,3 +4094,7 @@ Ezek a változók más stíluslapokban is felhasználhatók a konzisztencia és 
 - Sötét mód stílusok, amelyek a `:root` szabályon keresztül a teljes alkalmazásra kiterjedően érvényesülnek.
 
 A fájlban definiált CSS szabályok széles skálája lehetővé teszi a felhasználói felület finomhangolását és az alkalmazás vizuális megjelenésének teljes körű testreszabását.
+
+## Felhasznált források
+
+Oktatási Hivatal, A megjelenés éve: 2023, TÖRTÉNELEM EMELT SZINTŰ ÍRÁSBELI VIZSGA. [PDF] URL: https://dload-oktatas.educatio.hu/erettsegi/feladatok_2023tavasz_emelt/e_tort_23maj_fl.pdf Megtekintve/Letöltve: 2024. 04. 30.
