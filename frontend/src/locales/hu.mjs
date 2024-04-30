@@ -180,6 +180,26 @@ export default {
         }
       }
     },
+    markQuizPage: {
+      attemptOf: "próbálkozása",
+      started: "Kezdte",
+      finsihed: "Befejezte",
+      late: "Késve leadva",
+      maxMarks: "Maximum pontszám",
+      marks: "Elért pontszám",
+      save: "Mentés",
+      noAnswer: "Nincs válasz",
+      correctAnswer: "Helyes válasz",
+      overallMarks: "Elért pontszám összesen",
+      grade: "Értékelés",
+      finish: "Befejezés",
+      toastMessages: {
+        updatedMark: "Pontszám frissítve!",
+        failedUpdateMark: "A pontszám frissítése sikertelen!",
+        graded: "Értékelve!",
+        failedToGrade: "Az értékelés elküldése sikertelen!"
+      }
+    },
     quizPage: {
       opens: "Nyílik",
       closes: "Zárul",
