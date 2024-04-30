@@ -39,6 +39,8 @@ export default {
       title: "Üdvözöllek",
       taskTitle: "Elkészítendő feladatok",
       materialsTitle: "Legutóbbi tananyagok",
+      noMaterialsTitle: "Nincsenek tananyagok!", 
+      noAssignmentsTitle: "Nincsenek feladataid!",
       viewNoteDialog: {
         title: "Jegyzet megtekintése",
         noteName: "Jegyzet címe:",
