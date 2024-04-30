@@ -63,6 +63,15 @@ export default {
         rejectLabel: "Cancel",
         acceptLabel: "Delete"
       },
+      downloadAssignmentDialog: {
+        title: "View assignments",
+        noAssignment: "No assignment submitted!",
+        student: "Student",
+        task: "Assignment",
+        download: "Download",
+        downloadAllTasks: "Download all tasks",
+        close: "Close"
+      },
       newTopicDialog: {
         title: "Add New Topic",
         nameLabel: "Name",
@@ -561,7 +570,8 @@ export default {
       deadline: "Deadline:",
       courseName: "Course:",
       task_name: "Assignment:",
-      deadlineExpired: "Sorry you missed the deadline!"
+      deadlineExpired: "Sorry you missed the deadline!",
+      teacherTask: "Uploaded task:",
     },
     newAssignmentPage: {
       title: "Create a new task",
