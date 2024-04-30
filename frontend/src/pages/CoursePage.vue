@@ -409,11 +409,11 @@
             },
           }"
         />
-        <div v-if="currentAssignment.teacher_task_name !== 'undefined'">
-          Feltöltött fájl: <br />{{ currentAssignment.teacher_task_name }}
+        <div >
+          Feltöltött fájl: <span v-if="currentAssignment.teacher_task_name !== 'undefined'">{{ currentAssignment.teacher_task_name }}</span>
+          <span v-if="currentAssignment.teacher_task_name == 'undefined'">Nincs feltöltött feladat</span>
         </div>
         <FormKit
-          v-if="currentAssignment.teacher_task_name == 'undefined'"
           type="file"
           name="teacher_task"
           :label="messages.pages.newAssignmentPage.teacher_task"
@@ -1092,6 +1092,7 @@ export default {
       currentText: "",
       currentlyModifyingNote: null,
       currentAssignment: {
+        id: null,
         task_name: "",
         comment: "",
         deadline: "",
@@ -1216,11 +1217,11 @@ export default {
     },
 
     openUpdateAssignment(id) {
-      console.log(this.activeTopicId);
       let topic = this.topics.find((x) => x.id == this.activeTopicId);
       if (topic) {
         let assignment = topic.assignment.find((a) => a.id === id);
         if (assignment) {
+          this.currentAssignment.id = assignment.id;
           this.currentAssignment.task_name = assignment.task_name;
           this.currentAssignment.comment = assignment.comment;
           this.currentAssignment.deadline = assignment.deadline;
@@ -1644,7 +1645,7 @@ export default {
         formData.append("courseable_id", this.$route.params.id);
         formData.append("teacher_task_name", data?.teacher_task[0]?.name);
         formData.append("topic_id", this.activeTopicId);
-
+        
         const user = userStore();
         const response = await http.post(`/assignments`, formData, {
           headers: {
@@ -1699,16 +1700,14 @@ export default {
         formData.append("teacher_task_name", data?.teacher_task[0]?.name);
 
         const user = userStore();
-        const response = await http.put(`/assignments`, formData, {
+        await http.put(`/assignments/${this.currentAssignment.id}`, formData, {
           headers: {
             Authorization: `Bearer ${user.token}`,
-            "Content-Type": "application/x-www-form-urlencoded",
           },
         });
 
-        this.topics
-          .find((x) => x.id == this.activeTopicId)
-          .assignment.push(response.data.data);
+        this.currentAssignment.teacher_task_name = data?.teacher_task[0]?.name;
+
         let toast = {
           severity: "success",
           detail:
