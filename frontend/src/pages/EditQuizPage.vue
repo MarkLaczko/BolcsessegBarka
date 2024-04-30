@@ -8,6 +8,13 @@
             <h1 v-if="language == 'EN'">{{ messages.pages.editQuizPage.title }} {{ quiz.value.name }}</h1>
             <div class="row">
                 <div class="col-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><RouterLink :to="{name: 'course', params: {id: quiz.value.topic.course.id}}">{{ quiz.value.topic.course.name }}</RouterLink></li>
+                        <li class="breadcrumb-item"><RouterLink :to="{name: 'course', params: {id: quiz.value.topic.course.id}}">{{ quiz.value.topic.name }}</RouterLink></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ quiz.value.name }}</li>
+                    </ol>
+                </div>
+                <div class="col-12">
                     <FormKit
                         type="form"
                         :actions="false"
@@ -193,7 +200,7 @@ const putForm = async () => {
 
         let toastToAdd = {
           severity: "success",
-          detail: messages.pages.editQuizPage.toastmessages.pages.updateSuccess,
+          detail: messages.pages.editQuizPage.toastMessages.updateSuccess,
           life: 3000,
         };
         if (!themeStore().isDarkMode) {
@@ -206,7 +213,7 @@ const putForm = async () => {
     } catch (error) {
         let toastToAdd = {
           severity: "error",
-          detail: messages.pages.editQuizPage.toastmessages.pages.updateUnexpectedError,
+          detail: messages.pages.editQuizPage.toastMessages.updateUnexpectedError,
           life: 3000,
         };
         if (!themeStore().isDarkMode) {
@@ -242,7 +249,7 @@ const moveItem = async (from, to) => {
     } catch (error) {
         let toastToAdd = {
           severity: "error",
-          detail: messages.pages.editQuizPage.toastmessages.pages.changeOrderUnexpectedError,
+          detail: messages.pages.editQuizPage.toastMessages.changeOrderUnexpectedError,
           life: 3000,
         };
         if (!themeStore().isDarkMode) {
@@ -275,7 +282,7 @@ const confirmDeleteTask = async (id, index) => {
 
                 let toastToAdd = {
                     severity: "success",
-                    detail: messages.pages.editQuizPage.toastmessages.pages.deleteSuccess,
+                    detail: messages.pages.editQuizPage.toastMessages.deleteSuccess,
                     life: 3000,
                 };
                 if (!themeStore().isDarkMode) {
@@ -288,7 +295,7 @@ const confirmDeleteTask = async (id, index) => {
             } catch (error) {
                 let toastToAdd = {
                     severity: "error",
-                    detail: messages.pages.editQuizPage.toastmessages.pages.deleteUnexpectedError,
+                    detail: messages.pages.editQuizPage.toastMessages.deleteUnexpectedError,
                     life: 3000,
                 };
                 if (!themeStore().isDarkMode) {

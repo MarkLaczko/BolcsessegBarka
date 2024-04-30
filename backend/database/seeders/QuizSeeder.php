@@ -16,7 +16,7 @@ class QuizSeeder extends Seeder
         DB::table('quizzes')->insert([
             [
                 'id' => 1,
-                'name' => 'A kora újkor',
+                'name' => '2023 május emelt',
                 'topic_id' => 1
             ]
         ]);

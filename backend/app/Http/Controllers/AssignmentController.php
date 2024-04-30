@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAssignmentRequest;
 use App\Http\Requests\UpdateAssignmentRequest;
 use App\Http\Resources\AssignmentResource;
+use App\Http\Resources\CurrentStudentAssignmentResource;
 use App\Models\Assignment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -88,5 +89,24 @@ class AssignmentController extends Controller
             ->header('Content-Type', $mimeType)
             ->header('Content-Disposition', 'attachment; filename="' . $item->teacher_task_name . '"')
             ->header('Content-Transfer-Encoding', 'binary');
+    }
+    
+    public function getCurrentAssignments(Request $request) {
+        $user = $request->user();
+    
+        $assignments = Assignment::whereHas('topic.course.groups.users', function($query) use ($user) {
+            $query->where('users.id', $user->id);
+        })
+        ->whereDoesntHave('studentAssignment', function($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+        ->with(['studentAssignment' => function($query) use ($user) {
+            $query->where('user_id', $user->id);
+        }])
+        ->where('deadline','>', now())
+        ->orderBy('deadline','desc')
+        ->get();
+    
+        return CurrentStudentAssignmentResource::collection($assignments);
     }
 }

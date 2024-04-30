@@ -1,25 +1,44 @@
 # Fejlesztői Dokumentáció
 
+**Budapesti Műszaki Szakképzési Centrum Neumann János Informatikai Technikum**
+
+**Szakképesítés neve: Szoftverfejlesztő és -tesztelő** 
+
+**Szakképesítés száma: 5-0613-12-03**
+
+**VIZSGAREMEK**
+
+**BölcsességBárka**
+
+**Kurityák Dániel István, Laczkó Márk, Molnár Gábor**
+
+**2/14.b**
+
+**Budapest, 2024**
+
 ## Tartalomjegyzék
 
-1. [API dokumentáció](#api-dokumentáció)
+1. [Indítás](#indítás)
+   - [Beépített felhasználók](#beépített-felhasználók)
+   - [Adatbázis](#adatbázis)
+2. [API dokumentáció](#api-dokumentáció)
    - [Csoportok, felhasználó regisztrálás, bejelentkezés](#csoportokhoz-és-felhasználó-regisztrálásához-bejelentkezéséhez-szükséges-routeok)
    - [Felhasználó routeok](#felhasználóhoz-kapcsolodó-routeok)
    - [Kurzus routeok](#kurzusokhoz-kapcsolodó-routeok)
    - [Téma routeok](#témához-kapcsolodó-routeok)
    - [Kvíz routeok](#kvízekhez-kapcsolodó-routeok)
    - [Jegyzet routeok](#jegyzethez-kapcsolodó-routeok)
-2. [Komponensek](#komponensek)
+3. [Komponensek](#komponensek)
    - [BaseDialog](#basedialog)
    - [BaseSpinner](#basespinner)
    - [BasePaginator](#basepaginator)
    - [BaseLearningMaterialCard](#baselearningmaterialcard)
    - [BaseCourseCard](#basecoursecard)
    - [BaseAssignmentCard](#baseassignmentcard)
-3. [Layoutok](#layoutok)
+4. [Layoutok](#layoutok)
    - [BaseNavbar](#basenavbar)
    - [BaseLayout](#baselayout)
-4. [Oldalak](#oldalak)
+5. [Oldalak](#oldalak)
    - [HomePage](#homepage)
    - [CoursesPage](#coursespage)
    - [CoursePage](#coursepage)
@@ -30,8 +49,8 @@
    - [EditQuizPage](#qditquizpage)
    - [CreateTaskPage](#createtaskpage)
    - [EditTaskPage](#qdittaskpage)
-5. [Nyelvi beállítások](#nyelvi-beállítások)
-6. [Tárolók](#tárolók)
+6. [Nyelvi beállítások](#nyelvi-beállítások)
+7. [Tárolók](#tárolók)
    - [LanguageStore](#languagestore)
    - [ThemeStore](#themestore)
    - [TopicStore](#topicstore)
@@ -39,9 +58,34 @@
    - [QuizStore](#quizstore)
    - [CourseStore](#coursestore)
    - [NoteStore](#notestore)
-7. [Erőforrások](#erőforrások)
+8. [Erőforrások](#erőforrások)
    - [Képek](#images-képek)
    - [Stílusok](#styles-stíluslapok)
+9. [Források](#források)
+
+## Indítás
+
+A projekt elindításához futassa le a `start.sh` fájlt.
+
+### Beépített felhasználók
+
+#### Admin felhasználó
+
+- Felhasználónév: `admin`
+- E-mail cím: `admin@admin.com`
+- Jelszó: `admin123`
+
+#### Felhasználó
+
+- Felhasználónév: `sser`
+- E-mail cím: `user@user.com`
+- Jelszó: `user1234`
+
+### Adatbázis
+
+Az adatbázis EK diagramja [itt](https://dbdiagram.io/d/65f97220ae072629ce6400fe) érhető el.
+
+![EK diagram](/documentation/er_diagram.png)
 
 ## API Dokumentáció
 
@@ -1661,11 +1705,9 @@ Az alábbi hibakódokat adhatja vissza a végpont:
 | GET    | /api/quizzes/{id}/tasks     | tasks.index       | TaskController    | index    |
 | GET    | /api/quizzes/{id}/tasks/ids | tasks.taskIds     | TaskController    | taskIds  |
 | GET    | /api/tasks/{id}             | tasks.show        | TaskController    | show     |
-| GET    | /api/tasks/{id}/solution    | tasks.solution    | TaskController    | solution |
 | POST   | /api/tasks                  | tasks.store       | TaskController    | store    |
 | PUT    | /api/tasks/{id}             | tasks.update      | TaskController    | update   |
 | DELETE | /api/tasks/{id}             | tasks.destory     | TaskController    | destroy  |
-| GET    | /api/subtasks/{id}/solution | subtasks.solution | SubtaskController | solution |
 | DELETE | /api/subtasks/{id}          | subtasks.destroy  | SubtaskController | destroy  |
 
 ### `GET /api/quizzes`
@@ -1995,13 +2037,13 @@ Válasz:
     {
       "id": 1,
       "order": 0,
-      "header": "A feladat a nagy földrajzi felfedezésekkel kapcsolatos",
+      "header": "Ez egy példa feladat.",
       "text": "A források és ismeretei alapján válaszoljon a kérdésekre!",
       "subtasks": [
         {
           "id": 1,
           "order": 0,
-          "question": "<p><b>a) A tordesillasi szerződés megkötését milyen nagy fontosságú történelmi esemény előzte meg 1492-ben?</b></p>",
+          "question": "<p><b>Adja meg, mikor volt a rendszerváltás!</b></p>",
           "options": null,
           "type": "short_answer",
           "marks": 0.5
@@ -2009,7 +2051,7 @@ Válasz:
         {
           "id": 2,
           "order": 1,
-          "question": "<p><b>Ki volt az a felfedező, aki elsőként jutott el Indiába Afrika megkerülésével? Melyik királyság szolgálatában állt?</b></p>",
+          "question": "<p><b>Mikor volt a szkizma?</b></p>",
           "options": null,
           "type": "short_answer",
           "marks": 1
@@ -2019,13 +2061,13 @@ Válasz:
     {
       "id": 2,
       "order": 1,
-      "header": "A feladat a kora újkori egyházakkal kapcsolatos.",
+      "header": "A feladat egy másik példa.",
       "text": "Oldja meg a feladatokat a források és ismeretei alapján!",
       "subtasks": [
         {
           "id": 3,
           "order": 0,
-          "question": "<p>A) [...]<br>B) [...]<br>C) [...]</p><br><b>a) Melyik az a két forrás, amely tartalmát tekintve a reformáció elindulásának okát fogalmazza meg? Adja meg a források betűjelét!</b>",
+          "question": "<p><b>Fogalmazza meg saját szavaival a reformáció egyik fő kiváltó okát!</b></p>",
           "options": null,
           "type": "short_answer",
           "marks": 1
@@ -2033,7 +2075,7 @@ Válasz:
         {
           "id": 4,
           "order": 1,
-          "question": "<b>b) Milyen államformát tart követendőnek a C) betűjelű forrás? Karikázza be a megfelelőt!</b>",
+          "question": "<b>b) Milyen államformát tartott követendőnek az Emberi és Polgári Jogok Nyilatkozata? Jelölje ki!</b>",
           "options": "[\"királyság\", \"köztársaság\", \"monarchia\"]",
           "type": "multiple_choice",
           "marks": 0.5
@@ -2121,13 +2163,13 @@ Válasz:
   "data": {
     "id": 1,
     "order": 0,
-    "header": "A feladat a nagy földrajzi felfedezésekkel kapcsolatos",
+    "header": "Ez egy példa feladat.",
     "text": "A források és ismeretei alapján válaszoljon a kérdésekre!",
     "subtasks": [
       {
         "id": 1,
         "order": 0,
-        "question": "<p><b>a) A tordesillasi szerződés megkötését milyen nagy fontosságú történelmi esemény előzte meg 1492-ben?</b></p>",
+        "question": "<p><b>Adja meg, mikor volt a rendszerváltás!</b></p>",
         "options": null,
         "type": "short_answer",
         "marks": 0.5
@@ -2135,7 +2177,7 @@ Válasz:
       {
         "id": 2,
         "order": 1,
-        "question": "<p><b>Ki volt az a felfedező, aki elsőként jutott el Indiába Afrika megkerülésével? Melyik királyság szolgálatában állt?</b></p>",
+        "question": "<p><b>Mikor volt a szkizma?</b></p>",
         "options": null,
         "type": "short_answer",
         "marks": 1
@@ -2153,45 +2195,6 @@ Az alábbi hibakódokat adhatja vissza a végpont:
 - `403 Forbidden`: A felhasználónak nincs jogosultsága.
 - `404 Not Found`: Nincs ilyen rekord az adatbázisban.
 - `500 Internal Server Error`: Váratlan hiba történt a szerveren.
-
-### `GET /api/tasks/{id}/solution`
-
-Egy feladat alfeladatainak megoldásának lekérése azonosító alapján. Csak adminisztrátok és tanárok kérhetik le.
-
-#### Válasz
-
-Egy JSON tömböt ad vissza `data` néven a következőkkel:
-
-- `id`: Az alfeladat azonosítója.
-- `solution`: Tömb az alfeladat meogoldásaival. Ha nincs megadva, akkor `null`.
-
-#### Példa
-
-URI:
-
-```
-/api/tasks/1/solution
-```
-
-Válasz:
-
-```json
-{
-  "data": [
-    {
-      "id": 1,
-      "solution": [
-        "Amerika felfedezése",
-        "Kolumbusz Kristóf eljutott Amerikába"
-      ]
-    },
-    {
-      "id": 2,
-      "solution": ["Portugália"]
-    }
-  ]
-}
-```
 
 #### Hibakódok
 
@@ -2248,22 +2251,24 @@ Törzs:
 
 ```json
 {
-  "quiz_id": 1,
-  "order": 2,
-  "header": "A feladat Az Emberi és Polgári Jogok Nyilatkozatához kapcsolódik",
-  "text": "Oldja meg a feladatokat saját ismeretei és a források segítségével!",
+  "id": 1,
+  "order": 0,
+  "header": "Ez egy példa feladat.",
+  "text": "A források és ismeretei alapján válaszoljon a kérdésekre!",
   "subtasks": [
     {
+      "id": 1,
       "order": 0,
-      "question": "<p><b>a) Milyen elvre utal az alábbi részlet az Emberi és Polgári Jogok Nyilatkozatából?</b><br>„III. Minden szuverenitás elve természeténél fogva a nemzetben lakozik; sem testület, sem egyén nem gyakorolhat hatalmat, ha (az) nem határozottan tőle ered.”</p>",
-      "solution": ["népfelség", "népszuverenitás"],
+      "question": "<p><b>Adja meg, mikor volt a rendszerváltás!</b></p>",
+      "options": null,
       "type": "short_answer",
       "marks": 0.5
     },
     {
+      "id": 2,
       "order": 1,
-      "question": "<p><b>Határozza meg, hogy melyik ország alapító dokumentumát tartják az Emberi és Polgári Jogok Nyilatkozatának alapjának?</b></p>",
-      "solution": ["Franciaország"],
+      "question": "<p><b>Mikor volt a szkizma?</b></p>",
+      "options": null,
       "type": "short_answer",
       "marks": 1
     }
@@ -2276,23 +2281,23 @@ Válasz:
 ```json
 {
   "data": {
-    "id": 3,
-    "order": 2,
-    "header": "A feladat Az Emberi és Polgári Jogok Nyilatkozatához kapcsolódik",
-    "text": "Oldja meg a feladatokat saját ismeretei és a források segítségével!",
+    "id": 1,
+    "order": 0,
+    "header": "Ez egy példa feladat.",
+    "text": "A források és ismeretei alapján válaszoljon a kérdésekre!",
     "subtasks": [
       {
-        "id": 23,
+        "id": 1,
         "order": 0,
-        "question": "<p><b>a) Milyen elvre utal az alábbi részlet az Emberi és Polgári Jogok Nyilatkozatából?</b><br>„III. Minden szuverenitás elve természeténél fogva a nemzetben lakozik; sem testület, sem egyén nem gyakorolhat hatalmat, ha (az) nem határozottan tőle ered.”</p>",
+        "question": "<p><b>Adja meg, mikor volt a rendszerváltás!</b></p>",
         "options": null,
         "type": "short_answer",
         "marks": 0.5
       },
       {
-        "id": 24,
+        "id": 2,
         "order": 1,
-        "question": "<p><b>Határozza meg, hogy melyik ország alapító dokumentumát tartják az Emberi és Polgári Jogok Nyilatkozatának alapjának?</b></p>",
+        "question": "<p><b>Mikor volt a szkizma?</b></p>",
         "options": null,
         "type": "short_answer",
         "marks": 1
@@ -2358,23 +2363,24 @@ Törzs:
 
 ```json
 {
-  "quiz_id": 1,
-  "order": 2,
-  "header": "A feladat Az Emberi és Polgári Jogok Nyilatkozatához kapcsolódik.",
-  "text": "A források és ismeretei alapján oldja meg a feladatokat!",
+  "id": 1,
+  "order": 0,
+  "header": "Ez egy példa feladat.",
+  "text": "A források és ismeretei alapján válaszoljon a kérdésekre!",
   "subtasks": [
     {
-      "id": 23,
+      "id": 1,
       "order": 0,
-      "question": "<p><b>a) Milyen elvre utal az alábbi részlet az Emberi és Polgári Jogok Nyilatkozatából?</b> <br>„III. Minden szuverenitás elve természeténél fogva a nemzetben lakozik; sem testület, sem egyén nem gyakorolhat hatalmat, ha (az) nem határozottan tőle ered.”</p>",
-      "solution": ["népfelség", "népszuverenitás"],
+      "question": "<p><b>Adja meg, mikor volt a rendszerváltás!</b></p>",
+      "options": null,
       "type": "short_answer",
       "marks": 0.5
     },
     {
+      "id": 2,
       "order": 1,
-      "question": "<p><b>Határozza meg, hogy melyik ország alapító dokumentumát tartják az Emberi és Polgári Jogok Nyilatkozatának alapjának?</b></p>",
-      "solution": ["Francia Királyság"],
+      "question": "<p><b>Mikor volt a szkizma?</b></p>",
+      "options": null,
       "type": "short_answer",
       "marks": 1
     }
@@ -2387,31 +2393,23 @@ Válasz:
 ```json
 {
   "data": {
-    "id": 3,
-    "order": 2,
-    "header": "A feladat Az Emberi és Polgári Jogok Nyilatkozatához kapcsolódik",
-    "text": "Oldja meg a feladatokat saját ismeretei és a források segítségével!",
+    "id": 1,
+    "order": 0,
+    "header": "Ez egy példa feladat.",
+    "text": "A források és ismeretei alapján válaszoljon a kérdésekre!",
     "subtasks": [
       {
-        "id": 23,
+        "id": 1,
         "order": 0,
-        "question": "<p><b>a) Milyen elvre utal az alábbi részlet az Emberi és Polgári Jogok Nyilatkozatából?</b> <br>„III. Minden szuverenitás elve természeténél fogva a nemzetben lakozik; sem testület, sem egyén nem gyakorolhat hatalmat, ha (az) nem határozottan tőle ered.”</p>",
+        "question": "<p><b>Adja meg, mikor volt a rendszerváltás!</b></p>",
         "options": null,
         "type": "short_answer",
         "marks": 0.5
       },
       {
-        "id": 24,
+        "id": 2,
         "order": 1,
-        "question": "<p><b>Határozza meg, hogy melyik ország alapító dokumentumát tartják az Emberi és Polgári Jogok Nyilatkozatának alapjának?</b></p>",
-        "options": null,
-        "type": "short_answer",
-        "marks": 1
-      },
-      {
-        "id": 25,
-        "order": 1,
-        "question": "<p><b>Határozza meg, hogy melyik ország alapító dokumentumát tartják az Emberi és Polgári Jogok Nyilatkozatának alapjának?</b></p>",
+        "question": "<p><b>Mikor volt a szkizma?</b></p>",
         "options": null,
         "type": "short_answer",
         "marks": 1
@@ -2451,45 +2449,6 @@ Válasz:
 
 ```json
 
-```
-
-#### Hibakódok
-
-Az alábbi hibakódokat adhatja vissza a végpont:
-
-- `401 Unauthorized`: Hiányzik a Bearer token.
-- `403 Forbidden`: A felhasználónak nincs jogosultsága.
-- `404 Not Found`: Nincs ilyen rekord az adatbázisban.
-- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
-
-### `GET /api/subtasks/{id}/solution`
-
-Egy alfeladat alfeladatainak megoldásának lekérése azonosító alapján. Csak adminisztrátok és tanárok kérhetik le.
-
-#### Válasz
-
-Egy JSON objektumot ad vissza `data` néven a következőkkel:
-
-- `id`: Az alfeladat azonosítója.
-- `solution`: Tömb az alfeladat meogoldásaival. Ha nincs megadva, akkor `null`.
-
-#### Példa
-
-URI:
-
-```
-/api/subtasks/1/solution
-```
-
-Válasz:
-
-```json
-{
-  "data": {
-    "id": 1,
-    "solution": ["Amerika felfedezése", "Kolumbusz Kristóf eljutott Amerikába"]
-  }
-}
 ```
 
 #### Hibakódok
@@ -4050,3 +4009,7 @@ Ezek a változók más stíluslapokban is felhasználhatók a konzisztencia és 
 - Sötét mód stílusok, amelyek a `:root` szabályon keresztül a teljes alkalmazásra kiterjedően érvényesülnek.
 
 A fájlban definiált CSS szabályok széles skálája lehetővé teszi a felhasználói felület finomhangolását és az alkalmazás vizuális megjelenésének teljes körű testreszabását.
+
+## Felhasznált források
+
+Oktatási Hivatal, A megjelenés éve: 2023, TÖRTÉNELEM EMELT SZINTŰ ÍRÁSBELI VIZSGA. [PDF] URL: https://dload-oktatas.educatio.hu/erettsegi/feladatok_2023tavasz_emelt/e_tort_23maj_fl.pdf Megtekintve/Letöltve: 2024. 04. 30.

@@ -38,6 +38,8 @@ export default {
       title: "Welcome",
       taskTitle: "Tasks to be completed",
       materialsTitle: "Latest Learning Materials",
+      noMaterialsTitle: "No study materials available!", 
+      noAssignmentsTitle: "No assignments to complete!",
       viewNoteDialog: {
         title: "View Note",
         noteName: "Note Title:",
@@ -183,6 +185,29 @@ export default {
           successfullyDeletedAssignment: "Assignment deletion was successful!",
           failedToDeleteAssignment: "Failed to delete assignment!",
         }
+      }
+    },
+    attemptPage: {
+      removeOption: "Delete",
+    },
+    markQuizPage: {
+      attemptOf: "'s attempt",
+      started: "Started",
+      finsihed: "Finished",
+      late: "Submitted late",
+      maxMarks: "Maximum marks",
+      marks: "Achieved marks",
+      save: "Save",
+      noAnswer: "No answer",
+      correctAnswer: "Correct answer",
+      overallMarks: "Achieved overall marks",
+      grade: "Grade",
+      finish: "Finish",
+      toastMessages: {
+        updatedMark: "Marks updated!",
+        failedUpdateMark: "Unexpected error when updating the marks!",
+        graded: "Graded!",
+        failedToGrade: "Unexpected error when submiting the grade!"
       }
     },
     quizPage: {

@@ -29,7 +29,7 @@ class Assignment extends Model
 
     public function studentAssignment() : HasMany
     {
-        return $this->hasMany(StudentAssignment::class)->select(["assignment_id","student_task_name"]);
+        return $this->hasMany(StudentAssignment::class)->select(["assignment_id","student_task_name","user_id"]);
     }
 
 }

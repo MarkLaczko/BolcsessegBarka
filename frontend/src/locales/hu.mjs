@@ -39,6 +39,8 @@ export default {
       title: "Üdvözöllek",
       taskTitle: "Elkészítendő feladatok",
       materialsTitle: "Legutóbbi tananyagok",
+      noMaterialsTitle: "Nincsenek tananyagok!", 
+      noAssignmentsTitle: "Nincsenek feladataid!",
       viewNoteDialog: {
         title: "Jegyzet megtekintése",
         noteName: "Jegyzet címe:",
@@ -188,6 +190,29 @@ export default {
           failedToDeleteAssignment: "A feladat törlése sikertelen volt!",
         }
       }
+    },
+    markQuizPage: {
+      attemptOf: "próbálkozása",
+      started: "Kezdte",
+      finsihed: "Befejezte",
+      late: "Késve leadva",
+      maxMarks: "Maximum pontszám",
+      marks: "Elért pontszám",
+      save: "Mentés",
+      noAnswer: "Nincs válasz",
+      correctAnswer: "Helyes válasz",
+      overallMarks: "Elért pontszám összesen",
+      grade: "Értékelés",
+      finish: "Befejezés",
+      toastMessages: {
+        updatedMark: "Pontszám frissítve!",
+        failedUpdateMark: "A pontszám frissítése sikertelen!",
+        graded: "Értékelve!",
+        failedToGrade: "Az értékelés elküldése sikertelen!"
+      }
+    },
+    attemptPage: {
+      removeOption: "Törlés",
     },
     quizPage: {
       opens: "Nyílik",

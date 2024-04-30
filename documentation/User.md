@@ -1,13 +1,34 @@
 # Felhasználói Dokumentáció
 
+**Budapesti Műszaki Szakképzési Centrum Neumann János Informatikai Technikum**
+
+**Szakképesítés neve: Szoftverfejlesztő és -tesztelő** 
+
+**Szakképesítés száma: 5-0613-12-03**
+
+**VIZSGAREMEK**
+
+**BölcsességBárka**
+
+**Kurityák Dániel István, Laczkó Márk, Molnár Gábor**
+
+**2/14.b**
+
+**Budapest, 2024**
+
 ## Tartalomjegyzék
 
-1. [Navigációs sáv](#navigációs-sáv)
-2. [Felhasználó kezelés](#felhasználó-kezelés) (Adminok részére)
-3. [Kurzus kezelés](#kurzus-kezelés) (Adminok részére)
-4. [Kurzusaim oldal](#kurzusaim-oldal)
-5. [Egy adott kurzus oldala](#egy-adott-kurzus-oldala-diákok-számára) (Diákok számára)
-6. [Egy adott kurzus oldala](#egy-adott-kurzus-oldala-tanárok-számára) (Tanárok számára)
+1. [Bevezetés](#bevezetés)
+2. [Navigációs sáv](#navigációs-sáv)
+3. [Felhasználó kezelés](#felhasználó-kezelés) (Adminok részére)
+4. [Kurzus kezelés](#kurzus-kezelés) (Adminok részére)
+5. [Kurzusaim oldal](#kurzusaim-oldal)
+6. [Egy adott kurzus oldala](#egy-adott-kurzus-oldala-diákok-számára) (Diákok számára)
+7. [Egy adott kurzus oldala](#egy-adott-kurzus-oldala-tanárok-számára) (Tanárok számára)
+
+## Bevezetés
+
+Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevékenységeiket lebonyolítani. Egyszerű, felhasználóbarát felülettel tudják csoportokba sorolni a felhasználókat, kurzosokat tudnak létrehozni, leadandó feladatokat, jegyzeteket, kvízeket tudnak létrehozni és kitölteni.
 
 ## Navigációs sáv
 

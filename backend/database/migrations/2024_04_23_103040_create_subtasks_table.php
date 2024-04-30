@@ -17,7 +17,6 @@ return new class extends Migration
             $table->integer('order');
             $table->mediumText('question');
             $table->text('options')->nullable();
-            $table->text('solution')->nullable();
             $table->string('type');
             $table->float('marks');
         });

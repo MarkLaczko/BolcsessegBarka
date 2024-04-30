@@ -102,29 +102,6 @@
                                                 }"
                                             />
                                         </div>
-                                        <div class="my-2" v-if="subtask.type == 'short_answer' || subtask.type == 'multiple_choice'">
-                                            <label :for="'solution' + index" class="form-label mb-0">{{ messages.pages.editTaskPage.subtaskSolution }}</label>
-                                            <p><i>{{ messages.pages.editTaskPage.subtaskSolutionInstructions }}</i></p>
-                                            <Chips v-model="subtask.solution" :id="'solution' + index"
-                                                :pt="{
-                                                    container: {
-                                                        class: 'p-0'
-                                                    },
-                                                    token: {
-                                                        class: 'list-style-none badge text-bg-dark p-2 mb-2 mx-1'
-                                                    },
-                                                    removeTokenIcon: {
-                                                        class: 'ms-2'
-                                                    },
-                                                    inputToken: {
-                                                        class: 'list-style-none'
-                                                    },
-                                                    input: {
-                                                        class: 'form-control'
-                                                    }
-                                                }"
-                                            />
-                                        </div>
                                         <div class="my-2">
                                             <FormKit
                                             type="number"
@@ -234,16 +211,6 @@ const getQuiz = async () => {
     });
     form.value = response2.data.data;
     form.value.quiz_id = route.params.quizId;
-
-    const response3 = await http.get(`tasks/${route.params.taskId}/solution`, {
-        headers: {
-            Authorization: `Bearer ${userStore().token}`,
-        },
-    });
-    for (const task of response3.data.data) {
-        const idx = form.value.subtasks.findIndex(x => x.id == task.id)
-        form.value.subtasks[idx].solution = task.solution;
-    }
 };
 
 const moveItem = async (from, to) => {
@@ -277,7 +244,6 @@ const addEmptySubtask = () => {
         order: form.value.subtasks.length,
         question: "",
         options: null,
-        solution: null,
         type: "short_answer",
         marks: 0
     });
@@ -288,10 +254,6 @@ const putTask = () => {
         for (let subtask of form.value.subtasks) {
             if(subtask.options != null && subtask.options.length < 1){
                 subtask.options = null;
-            }
-
-            if(subtask.solution != null && subtask.solution.length < 1){
-                subtask.solution = null;
             }
 
             if(subtask.question == ""){

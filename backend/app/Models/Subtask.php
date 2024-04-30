@@ -18,7 +18,6 @@ class Subtask extends Model
         'order',
         'question',
         'options',
-        'solution',
         'type',
         'marks',
     ];
