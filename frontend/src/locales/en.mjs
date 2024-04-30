@@ -176,8 +176,11 @@ export default {
         }
       }
     },
+    attemptPage: {
+      removeOption: "Delete",
+    },
     markQuizPage: {
-      attemptOf: "'s attempt'",
+      attemptOf: "'s attempt",
       started: "Started",
       finsihed: "Finished",
       late: "Submitted late",
