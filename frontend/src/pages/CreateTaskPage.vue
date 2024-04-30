@@ -102,29 +102,6 @@
                                                 }"
                                             />
                                         </div>
-                                        <div class="my-2" v-if="subtask.type == 'short_answer' || subtask.type == 'multiple_choice'">
-                                            <label :for="'solution' + index" class="form-label mb-0">{{ messages.pages.createTaskPage.subtaskSolution }}</label>
-                                            <p><i>{{  messages.pages.createTaskPage.subtaskSolutionInstructions }}</i></p>
-                                            <Chips v-model="subtask.solution" :id="'solution' + index"
-                                                :pt="{
-                                                    container: {
-                                                        class: 'p-0'
-                                                    },
-                                                    token: {
-                                                        class: 'list-style-none badge text-bg-dark p-2 mb-2 mx-1'
-                                                    },
-                                                    removeTokenIcon: {
-                                                        class: 'ms-2'
-                                                    },
-                                                    inputToken: {
-                                                        class: 'list-style-none'
-                                                    },
-                                                    input: {
-                                                        class: 'form-control'
-                                                    }
-                                                }"
-                                            />
-                                        </div>
                                         <div class="my-2">
                                             <FormKit
                                             type="number"
@@ -250,7 +227,6 @@ const addEmptySubtask = () => {
         order: form.subtasks.length,
         question: "",
         options: null,
-        solution: null,
         type: "short_answer",
         marks: 0
     });
@@ -261,10 +237,6 @@ const postTask = () => {
         for (let subtask of form.subtasks) {
             if(subtask.options != null && subtask.options.length < 1){
                 subtask.options = null;
-            }
-
-            if(subtask.solution != null && subtask.solution.length < 1){
-                subtask.solution = null;
             }
 
             if(subtask.question == ""){
