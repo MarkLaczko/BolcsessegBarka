@@ -200,6 +200,9 @@ export default {
         failedToGrade: "Az értékelés elküldése sikertelen!"
       }
     },
+    attemptPage: {
+      removeOption: "Törlés",
+    },
     quizPage: {
       opens: "Nyílik",
       closes: "Zárul",
