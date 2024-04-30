@@ -322,7 +322,7 @@ public class BolcsessegBarkaTests
     }
 
     [TestMethod]
-    public void Test08_TestHomePageWorkingPaginator() 
+    public void Test08_TestHomePageWorkingPaginator()   
     {
         LoginAsAdmin();
 
@@ -343,7 +343,7 @@ public class BolcsessegBarkaTests
 
         SelectElement("a.dropdown-toggle>div.user-icon","CssSelector",true);
 
-        SelectElement("ul.dropdown-menu li:last-child>a", "CssSelector", true);
+        SelectElement(".dropdown-menu-end > div:nth-child(1) > li:nth-child(4) > a:nth-child(1)", "CssSelector", true);
 
         Wait(ExpectedConditions.TitleIs("Bejelentkezés"),TimeSpan.FromSeconds(10));
 
@@ -516,9 +516,9 @@ public class BolcsessegBarkaTests
         Navigate("Adminisztráció")!.Click();
         SelectElement("a[href='/course-administration']", "CssSelector", true);
         
-        Wait(ExpectedConditions.ElementExists(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(5) > button > i")),TimeSpan.FromSeconds(10));
+        Wait(ExpectedConditions.ElementExists(By.CssSelector(".table > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(5) > button:nth-child(1)")),TimeSpan.FromSeconds(10));
         
-        SelectElement("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(5) > button > i","CssSelector",true);
+        SelectElement(".table > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(5) > button:nth-child(1)","CssSelector",true);
 
         var newCourseName = _webDriver.FindElement(By.Name("name"));
         newCourseName.Clear();
@@ -528,7 +528,7 @@ public class BolcsessegBarkaTests
         
         Wait(ExpectedConditions.TextToBePresentInElementLocated(By.CssSelector("body"),"Fizika"),TimeSpan.FromSeconds(10));
         
-        Assert.AreEqual("Fizika", _webDriver.FindElement(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(3)")).Text);
+        Assert.AreEqual("Fizika", _webDriver.FindElement(By.CssSelector(".table > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3)")).Text);
     }
 
     [TestMethod]
