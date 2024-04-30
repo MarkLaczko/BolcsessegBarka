@@ -63,7 +63,7 @@ class AttemptController extends Controller
      */
     public function show(int $id)
     {
-        $attempt = Attempt::with(['quiz', 'quiz.topic.course.groups.users', 'user', 'answers', 'answers.subtask'])->findOrFail($id);
+        $attempt = Attempt::with(['quiz', 'quiz.tasks.subtasks', 'quiz.topic.course.groups.users', 'user', 'answers', 'answers.subtask'])->findOrFail($id);
         Gate::authorize('attempts.show', $attempt);
         return new AttemptResoruce($attempt);
     }
