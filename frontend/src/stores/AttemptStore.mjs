@@ -27,6 +27,22 @@ export const attemptStore = defineStore("attemptStore", {
       });
       this.attempts = response.data.data;
     },
+    async getAttempt(id){
+      const response = await http.get(`attempts/${id}`, {
+          headers: {
+              Authorization: `Bearer ${userStore().token}`,
+          },
+      });
+      return response.data.data;
+    },
+    async getAttemptGroups(id){
+      const response = await http.get(`attempts/${id}/groups`, {
+          headers: {
+              Authorization: `Bearer ${userStore().token}`,
+          },
+      });
+      return response.data.data;
+    },
     async postAttempt(id){
       const quiz_id = id;
       const response = await http.post(`attempts`, { quiz_id: quiz_id }, {
