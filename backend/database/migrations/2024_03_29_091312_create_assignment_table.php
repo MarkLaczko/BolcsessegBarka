@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string("task_name");
             $table->string("comment")->nullable();
             $table->dateTime("deadline");
-            $table->integer("grade")->nullable();
             $table->unsignedBigInteger("courseable_id");
             $table->string("teacher_task_name")->nullable();
         });

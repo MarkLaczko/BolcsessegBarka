@@ -17,7 +17,6 @@ class Assignment extends Model
         "task",
         "comment",
         "deadline",
-        "grade",
         "courseable_id",
         "teacher_task_name",
         "topic_id"

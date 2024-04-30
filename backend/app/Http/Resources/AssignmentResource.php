@@ -20,7 +20,6 @@ class AssignmentResource extends JsonResource
             'task_name' => $this->task_name,
             'comment' => $this->comment,
             'deadline' => $this->deadline,
-            'grade' => $this->grade,
             'course' => $this->topic->course,
             'teacher_task_name' => $this->teacher_task_name,
             'student_task' => $this->studentAssignment,
