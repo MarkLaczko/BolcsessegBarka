@@ -50,13 +50,6 @@ class TaskController extends Controller
         Gate::authorize("tasks.get", $task);
         return new TaskResource($task);
     }
-
-    public function solution(int $id) {
-        $task = Task::with(['subtasks'])
-            ->findOrFail($id);
-        Gate::authorize("tasks.get.solutions", $task);
-        return SubtaskSolutionResource::collection($task->subtasks);
-    }
  
     public function store(StoreTaskRequest $request) {
         $data = $request->validated();
@@ -76,11 +69,6 @@ class TaskController extends Controller
                 $options_implode = $this::convertArray($value['options']);
                 $data['subtasks'][$key]['options'] = $options_implode;
             }
-
-            if(isset($value['solution'])){
-                $solution_implode = $this::convertArray($value['solution']);
-                $data['subtasks'][$key]['solution'] = $solution_implode;
-            }
         }
 
         foreach ($data['subtasks'] as $key => $value) {
@@ -89,7 +77,6 @@ class TaskController extends Controller
                 'order' => $value['order'],
                 'question' => $value['question'],
                 'options' => isset($value['options']) ? $value['options'] : null,
-                'solution' => isset($value['solution']) ? $value['solution'] : null,
                 'type' => $value['type'],
                 'marks' => $value['marks'],
             ]);
@@ -117,11 +104,6 @@ class TaskController extends Controller
                 $options_implode = $this::convertArray($value['options']);
                 $data['subtasks'][$key]['options'] = $options_implode;
             }
-
-            if(isset($value['solution'])) {
-                $solution_implode = $this::convertArray($value['solution']);
-                $data['subtasks'][$key]['solution'] = $solution_implode;
-            }
         }
 
         foreach ($data['subtasks'] as $key => $value) {
@@ -132,7 +114,6 @@ class TaskController extends Controller
                         'order' => $value['order'],
                         'question' => $value['question'],
                         'options' => isset($value['options']) ? $value['options'] : null,
-                        'solution' => isset($value['solution']) ? $value['solution'] : null,
                         'type' => $value['type'],
                         'marks' => $value['marks'],
                     ]);
@@ -143,7 +124,6 @@ class TaskController extends Controller
                         'order' => $value['order'],
                         'question' => $value['question'],
                         'options' => isset($value['options']) ? $value['options'] : null,
-                        'solution' => isset($value['solution']) ? $value['solution'] : null,
                         'type' => $value['type'],
                         'marks' => $value['marks'],
                     ]);

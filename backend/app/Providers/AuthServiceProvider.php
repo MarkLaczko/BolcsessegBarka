@@ -287,23 +287,6 @@ class AuthServiceProvider extends ServiceProvider
             return Response::deny("You must have access to this tasks's course or have an ongoing attempt to get it!");
         });
 
-        Gate::define('tasks.get.solutions', function (User $user, Task $task) {
-            if($user->is_admin == 1){
-                return Response::allow();
-            }
-
-            foreach ($task->quiz->topic->course->groups as $value) {
-                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
-                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
-                });
-                if(count($teacerIn) > 0){
-                    return Response::allow();
-                }
-            }
-
-            return Response::deny("You must have access to this tasks's course to get it's solutions!");
-        });
-
         Gate::define('tasks.store', function (User $user, Quiz $quiz) {
             if($user->is_admin == 1){
                 return Response::allow();
@@ -353,23 +336,6 @@ class AuthServiceProvider extends ServiceProvider
             }
 
             return Response::deny("You must have access to this tasks's course to delete it!");
-        });
-
-        Gate::define('subtasks.solutions', function (User $user, Subtask $subtask) {
-            if($user->is_admin == 1){
-                return Response::allow();
-            }
-
-            foreach ($subtask->task->quiz->topic->course->groups as $value) {
-                $teacerIn = array_filter($value->users->toArray(), function($x) use ($user) {
-                    return $x['id'] == $user->id && $x['member']['permission'] == 'Tanár';
-                });
-                if(count($teacerIn) > 0){
-                    return Response::allow();
-                }
-            }
-
-            return Response::deny("You must have access to this solution's course to get it's solutions!");
         });
 
         Gate::define('subtasks.delete', function (User $user, Subtask $subtask) {

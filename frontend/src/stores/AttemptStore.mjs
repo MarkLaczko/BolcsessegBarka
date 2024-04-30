@@ -66,9 +66,15 @@ export const attemptStore = defineStore("attemptStore", {
     async finishSendAnswers(id){
       let attempt = this.userAttempts.find(x => x.id == id);
       if(attempt.answers.length > 0){
+        let answersToSend = [];
+        for (const answer of attempt.answers) {
+          if(answer.answer != ""){
+            answersToSend.push(answer);
+          }
+        }
         let data = {
           attempt_id: attempt.id,
-          bulk: attempt.answers
+          bulk: answersToSend
         };
         const bulkResponse = await http.post('/answers/bulk', data,{
           headers: {
@@ -101,10 +107,22 @@ export const attemptStore = defineStore("attemptStore", {
         };
       }
     },
+    async grade(id, marks, grade){
+      let data = {
+        marks: marks,
+        grade: grade,
+      }
+      const response = await http.put(`attempts/${id}`, data, {
+          headers: {
+              Authorization: `Bearer ${userStore().token}`,
+          },
+      });
+      return response.data.data;
+    },
     checkAttemptsForExpiry(){
       setInterval(async () => {
         for (const attempt of this.userAttempts) {
-          if(attempt.finish_by <= timeStore().now){
+          if(attempt.quiz.time != null && attempt.finish_by <= timeStore().now){
             let idx = this.userAttempts.findIndex(x => x.id == attempt.id);
             await this.finishSendAnswers(attempt.id);
             await this.finishAttemptSend(attempt.id);

@@ -32,8 +32,6 @@ class UpdateTaskRequest extends FormRequest
             'subtasks.*.question' => ['required', 'string', 'max:16500000'],
             'subtasks.*.options' => ['nullable', 'array'],
             'subtasks.*.options.*' => ['nullable', 'string', 'max:5000'],
-            'subtasks.*.solution' => ['nullable', 'array'],
-            'subtasks.*.solution.*' => ['nullable', 'string', 'max:5000'],
             'subtasks.*.type' => ['required', 'string', Rule::in(['short_answer', 'multiple_choice', 'essay'])],
             'subtasks.*.marks' => ['required', 'numeric', 'min:0']
         ];

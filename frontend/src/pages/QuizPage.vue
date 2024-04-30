@@ -98,7 +98,7 @@
                                 <td>{{ attempt.marks }}</td>
                                 <td>{{ attempt.grade }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-primary">{{ messages.pages.quizPage.evaluate }}</button>
+                                    <button type="button" class="btn btn-primary" @click="navigateToMarkPage(attempt.id)">{{ messages.pages.quizPage.evaluate }}</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -128,7 +128,7 @@
                                 <td v-else>-</td>
                                 <td>{{ attempt.marks }}</td>
                                 <td>{{ attempt.grade }}</td>
-                                <td v-if="attempt.end == null"><a href="#">Folytatás</a></td>
+                                <td v-if="attempt.end == null"><a href="#" @click="navigateToAttempt(attempt.id)">Folytatás</a></td>
                                 <td v-else></td>
                             </tr>
                         </tbody>
@@ -197,6 +197,14 @@ const startAttempt = async () => {
     } catch (error) {
         console.log(error)
     }
+}
+
+const navigateToMarkPage = (id) => {
+    window.location = `/attempt/${id}/mark`;
+}
+
+const navigateToAttempt = (id) => {
+    window.location = `/attempt/${id}`;
 }
 
 onMounted(async () => {

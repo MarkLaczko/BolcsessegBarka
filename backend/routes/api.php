@@ -159,9 +159,6 @@ Route::middleware('auth:sanctum')->get('/quizzes/{id}/tasks/ids', [TaskControlle
 Route::middleware('auth:sanctum')->get('/tasks/{id}', [TaskController::class,'show'])
     ->whereNumber('id')
     ->name('tasks.show');
-Route::middleware('auth:sanctum')->get('/tasks/{id}/solution', [TaskController::class,'solution'])
-    ->whereNumber('id')
-    ->name('tasks.solution');
 Route::middleware('auth:sanctum')->post('/tasks', [TaskController::class,'store'])
     ->name('tasks.store');
 Route::middleware('auth:sanctum')->put('/tasks/{id}', [TaskController::class,'update'])
@@ -170,9 +167,6 @@ Route::middleware('auth:sanctum')->put('/tasks/{id}', [TaskController::class,'up
 Route::middleware('auth:sanctum')->delete('/tasks/{id}', [TaskController::class,'destroy'])
     ->whereNumber('id')
     ->name('tasks.destroy');
-Route::middleware('auth:sanctum')->get('/subtasks/{id}/solution', [SubtaskController::class,'solution'])
-    ->whereNumber('id')
-    ->name('subtasks.solution');
 Route::middleware('auth:sanctum')->delete('/subtasks/{id}', [SubtaskController::class,'destroy'])
     ->whereNumber('id')
     ->name('subtasks.destroy');
