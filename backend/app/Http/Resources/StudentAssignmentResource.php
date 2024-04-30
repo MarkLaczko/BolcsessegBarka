@@ -20,6 +20,7 @@ class StudentAssignmentResource extends JsonResource
             "student_task_name" => $this->student_task_name,
             'grade' => $this->grade,
             'user_id' => $this->user_id,
+            'user' => $this->user,
         ];
     }
 }
