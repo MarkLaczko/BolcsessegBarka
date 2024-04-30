@@ -409,7 +409,9 @@
             },
           }"
         />
-        <div v-if="currentAssignment.teacher_task_name !== 'undefined'">Feltöltött fájl: <br>{{ currentAssignment.teacher_task_name }}</div>
+        <div v-if="currentAssignment.teacher_task_name !== 'undefined'">
+          Feltöltött fájl: <br />{{ currentAssignment.teacher_task_name }}
+        </div>
         <FormKit
           v-if="currentAssignment.teacher_task_name == 'undefined'"
           type="file"
@@ -455,11 +457,14 @@
     <BaseDialog
       v-if="DownloadAssignmentDialogVisible"
       :visible="DownloadAssignmentDialogVisible"
-      :header="messages.pages.newAssignmentPage.updateTitle"
+      :header="messages.pages.coursePage.downloadAssignmentDialog.title"
       :width="'50rem'"
     >
-      <div v-if="studentAssignments.length == 0">
-        <p>asd</p>
+      <div
+        v-if="studentAssignments.length == 0"
+        class="py-4 text-center alert alert-danger"
+      >
+        {{ messages.pages.coursePage.downloadAssignmentDialog.noAssignment }}
       </div>
       <div v-if="studentAssignments.length !== 0">
         <DataTable
@@ -472,27 +477,20 @@
             },
           }"
         >
-          <Column field="user_id" header="Diák"></Column>
-          <Column field="grade" header="Értékelés">
+          <Column field="user_id" :header="messages.pages.coursePage.downloadAssignmentDialog.student"></Column>
+          <Column field="student_task_name" :header="messages.pages.coursePage.downloadAssignmentDialog.task"></Column>
+          <Column field="id" :header="messages.pages.coursePage.downloadAssignmentDialog.download">
             <template #body="slotProp">
-              <div class="card flex justify-content-center">
-                <Dropdown
-                  @change="
-                    (Event) => (selectedGrades[slotProp.data.id] = Event.value)
-                  "
-                  :model-value="selectedGrades[slotProp.data.id]"
-                  :key="slotProp.data.id"
-                  :options="grades"
-                  optionLabel="name"
-                  placeholder="Select a grade"
-                />
-              </div>
-            </template>
-          </Column>
-          <Column field="student_task_name" header="Feladat"></Column>
-          <Column field="" header="Letöltés">
-            <template #body="slotProp">
-              <button type="button" class="btn bg-success">
+              <button
+                type="button"
+                class="btn bg-success"
+                @click="
+                  downloadAssignment(
+                    slotProp.data.id,
+                    slotProp.data.student_task_name
+                  )
+                "
+              >
                 <i class="fa-solid fa-download"></i>
               </button>
             </template>
@@ -501,23 +499,18 @@
       </div>
       <div class="d-flex justify-content-between">
         <button
-          @click="DownloadAssignmentDialogVisible = false"
+          @click="downloadAssignmentZip(studentAssignments[0].assignment_id,'Assignment.zip')"
           class="btn btn-success"
+          v-if="studentAssignments.length !== 0"
         >
-          Összes feladat letöltése
+          {{messages.pages.coursePage.downloadAssignmentDialog.downloadAllTasks}}
         </button>
         <div>
           <button
             @click="DownloadAssignmentDialogVisible = false"
             class="btn btn-outline-danger me-2"
           >
-            Bezárás
-          </button>
-          <button
-            @click="DownloadAssignmentDialogVisible = false"
-            class="btn btn-success"
-          >
-            Mentés
+          {{messages.pages.coursePage.downloadAssignmentDialog.close}}
           </button>
         </div>
       </div>
@@ -885,7 +878,7 @@
                       <button
                         type="button"
                         class="btn btn-outline-success"
-                        @click="downloadStudentAssignment(assignment.id)"
+                        @click="filteredStudentAssignment(assignment.id)"
                       >
                         <i class="fa-solid fa-download"></i>
                       </button>
@@ -1139,6 +1132,84 @@ export default {
       "destroyNote",
       "getCurrentNotes",
     ]),
+
+    async downloadAssignment(assignmentId, filename) {
+      const user = userStore();
+      try {
+        const response = await http.get(
+          `/studentAssignments/${assignmentId}/download`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+            responseType: "blob",
+          }
+        );
+        const contentDisposition = response.headers["content-disposition"];
+        let file = filename;
+        if (contentDisposition) {
+          const filenameMatch = contentDisposition.match(/filename="?(.+)"?/);
+          if (filenameMatch && filenameMatch.length === 2) {
+            file = filenameMatch[1];
+          }
+        }
+
+        const blob = new Blob([response.data], {
+          type: "application/octet-stream",
+        });
+
+        const downloadUrl = window.URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = downloadUrl;
+        link.setAttribute("download", file);
+        document.body.appendChild(link);
+        link.click();
+
+        link.parentNode.removeChild(link);
+      } catch (error) {
+        console.error("Download error:", error);
+      }
+    },
+
+    async downloadAssignmentZip(assignmentId, filename) {
+      const user = userStore();
+      try {
+        const response = await http.get(
+          `/studentAssignments/${assignmentId}/downloadZip`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+            responseType: "blob",
+          }
+        );
+        const contentDisposition = response.headers["content-disposition"];
+        let file = filename;
+        if (contentDisposition) {
+          const filenameMatch = contentDisposition.match(/filename="?(.+)"?/);
+          if (filenameMatch && filenameMatch.length === 2) {
+            file = filenameMatch[1];
+          }
+        }
+
+        const blob = new Blob([response.data], {
+          type: "application/octet-stream",
+        });
+
+        const downloadUrl = window.URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = downloadUrl;
+        link.setAttribute("download", file);
+        document.body.appendChild(link);
+        link.click();
+
+        link.parentNode.removeChild(link);
+      } catch (error) {
+        console.error("Download error:", error);
+      }
+    },
 
     toggleTopic(id) {
       this.activeTopicId = this.activeTopicId === id ? null : id;
@@ -1545,8 +1616,7 @@ export default {
         this.$toast.add(toast);
       }
     },
-    async downloadStudentAssignment(id) {
-      console.log("asd");
+    async filteredStudentAssignment(id) {
       const user = userStore();
       const response = await http.get("/studentAssignments", {
         headers: {
