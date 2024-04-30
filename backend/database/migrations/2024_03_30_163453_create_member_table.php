@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('member', function (Blueprint $table) {
-            $table->foreignId("group_id")->constrained();
-            $table->foreignId("user_id")->constrained();
+            $table->foreignId("group_id")->constrained()->onDelete('cascade');
+            $table->foreignId("user_id")->constrained()->onDelete('cascade');
             $table->string("permission", 20);
             $table->primary(["group_id","user_id"]);
         });
