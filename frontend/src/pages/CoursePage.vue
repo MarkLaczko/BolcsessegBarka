@@ -409,11 +409,13 @@
             },
           }"
         />
+        <div v-if="currentAssignment.teacher_task_name !== 'undefined'">Feltöltött fájl: <br>{{ currentAssignment.teacher_task_name }}</div>
         <FormKit
+          v-if="currentAssignment.teacher_task_name == 'undefined'"
           type="file"
           name="teacher_task"
           :label="messages.pages.newAssignmentPage.teacher_task"
-          multiple="true"
+          multiple="false"
           validation=""
           :value="currentAssignment.teacher_task"
           :classes="{
@@ -448,6 +450,77 @@
           />
         </div>
       </FormKit>
+    </BaseDialog>
+
+    <BaseDialog
+      v-if="DownloadAssignmentDialogVisible"
+      :visible="DownloadAssignmentDialogVisible"
+      :header="messages.pages.newAssignmentPage.updateTitle"
+      :width="'50rem'"
+    >
+      <div v-if="studentAssignments.length == 0">
+        <p>asd</p>
+      </div>
+      <div v-if="studentAssignments.length !== 0">
+        <DataTable
+          :value="studentAssignments"
+          tableStyle="min-width: 45rem"
+          :pt="{
+            table: {
+              class:
+                'table table-responsive table-striped align-middle text-center',
+            },
+          }"
+        >
+          <Column field="user_id" header="Diák"></Column>
+          <Column field="grade" header="Értékelés">
+            <template #body="slotProp">
+              <div class="card flex justify-content-center">
+                <Dropdown
+                  @change="
+                    (Event) => (selectedGrades[slotProp.data.id] = Event.value)
+                  "
+                  :model-value="selectedGrades[slotProp.data.id]"
+                  :key="slotProp.data.id"
+                  :options="grades"
+                  optionLabel="name"
+                  placeholder="Select a grade"
+                />
+              </div>
+            </template>
+          </Column>
+          <Column field="student_task_name" header="Feladat"></Column>
+          <Column field="" header="Letöltés">
+            <template #body="slotProp">
+              <button type="button" class="btn bg-success">
+                <i class="fa-solid fa-download"></i>
+              </button>
+            </template>
+          </Column>
+        </DataTable>
+      </div>
+      <div class="d-flex justify-content-between">
+        <button
+          @click="DownloadAssignmentDialogVisible = false"
+          class="btn btn-success"
+        >
+          Összes feladat letöltése
+        </button>
+        <div>
+          <button
+            @click="DownloadAssignmentDialogVisible = false"
+            class="btn btn-outline-danger me-2"
+          >
+            Bezárás
+          </button>
+          <button
+            @click="DownloadAssignmentDialogVisible = false"
+            class="btn btn-success"
+          >
+            Mentés
+          </button>
+        </div>
+      </div>
     </BaseDialog>
 
     <BaseDialog
@@ -747,7 +820,7 @@
                   </div>
                   <div class="col-md-6 col-12 d-flex justify-content-center">
                     <div
-                      class="btn-group me-2 flex  align-items-center"
+                      class="btn-group me-2 flex align-items-center"
                       role="group"
                       aria-label="Basic mixed styles example"
                       v-if="
@@ -771,7 +844,7 @@
                       <button
                         type="button"
                         class="btn btn-outline-success"
-                        @click="deleteAssignment(assignment.id)"
+                        @click="downloadStudentAssignment(assignment.id)"
                       >
                         <i class="fa-solid fa-download"></i>
                       </button>
@@ -783,8 +856,9 @@
                           name: 'assignment',
                           params: { id: assignment.id },
                         }"
-                        >
-                        {{ messages.pages.coursePage.viewButton }}</RouterLink>
+                      >
+                        {{ messages.pages.coursePage.viewButton }}</RouterLink
+                      >
                     </div>
                   </div>
                 </div>
@@ -940,6 +1014,9 @@ import BaseConfirmDialog from "@components/BaseConfirmDialog.vue";
 import { RouterLink } from "vue-router";
 import { useRouter } from "vue-router";
 import { getCurrentInstance } from "vue";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import Dropdown from "primevue/dropdown";
 
 export default {
   data() {
@@ -953,11 +1030,13 @@ export default {
       groupTreatmentDialog: false,
       newAssignmentDialogVisible: false,
       UpdateAssignmentDialogVisible: false,
+      DownloadAssignmentDialogVisible: false,
       newNoteDialogVisible: false,
       currentNoteVisible: false,
       isNoteReadonly: true,
       activeTopicId: null,
       currentGroups: [],
+      studentAssignments: [],
       currentNote: {},
       title: "",
       text: "",
@@ -971,6 +1050,14 @@ export default {
         teacher_task: null,
         teacher_task_name: "",
       },
+      selectedGrades: {},
+      grades: [
+        { name: "Jeles", code: 5 },
+        { name: "Jó", code: 4 },
+        { name: "Közepes", code: 3 },
+        { name: "Elégséges", code: 2 },
+        { name: "Elégtelen", code: 1 },
+      ],
     };
   },
   components: {
@@ -983,6 +1070,9 @@ export default {
     InputText,
     Editor,
     BaseConfirmDialog,
+    DataTable,
+    Column,
+    Dropdown,
   },
   methods: {
     ...mapActions(courseStore, ["getCourse"]),
@@ -1395,11 +1485,27 @@ export default {
         this.$toast.add(toast);
       }
     },
+    async downloadStudentAssignment(id) {
+      console.log("asd");
+      const user = userStore();
+      const response = await http.get("/studentAssignments", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      this.studentAssignments = response.data.data.filter(
+        (assignment) => assignment.assignment_id === id
+      );
+      this.DownloadAssignmentDialogVisible = true;
+    },
     async postNewAssignment(data) {
       try {
         const formData = new FormData();
         formData.append("task_name", data.task_name);
-        formData.append("comment", data.comment);
+        formData.append(
+          "comment",
+          data.comment == undefined ? "" : data.comment
+        );
         formData.append(
           "deadline",
           new Date(data.deadline).toISOString().slice(0, 19).replace("T", " ")
