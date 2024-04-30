@@ -38,6 +38,11 @@ export default {
       title: "Welcome",
       taskTitle: "Tasks to be completed",
       materialsTitle: "Latest Learning Materials",
+      viewNoteDialog: {
+        title: "View Note",
+        noteName: "Note Title:",
+        cancelButton: "Back"
+      }
     },
     coursesPage: {
       title: "Courses",
