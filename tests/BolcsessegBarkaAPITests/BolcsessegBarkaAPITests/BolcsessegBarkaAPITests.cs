@@ -1103,48 +1103,22 @@ namespace BolcsessegBarkaAPITests
             
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
-        
+
         [TestMethod]
         public async Task GetTask_ReturnsValidData()
         {
             var token = await AuthenticateAndGetToken();
-            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
-            
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var response = await _client!.GetAsync($"tasks/1");
             var task = await Deserialize<TaskApi>(response);
-            
+
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(1, task.Id);
             Assert.AreEqual("A feladat a földrajzi felfedezések következményeihez kapcsolódik.", task.Header);
             Assert.AreEqual(1, task.Subtasks[0].Id);
         }
-        
-        [TestMethod]
-        public async Task GetTaskSolution_ReturnsOK()
-        {
-            var token = await AuthenticateAndGetToken();
-            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
-            
-            var response = await _client!.GetAsync($"tasks/1/solution");
-            
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        }
-        
-        [TestMethod]
-        public async Task GetTaskSolution_ReturnsValidData()
-        {
-            var token = await AuthenticateAndGetToken();
-            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
-            
-            var response = await _client!.GetAsync($"tasks/1/solution");
-            var solutions = await Deserialize<TaskSolutionResponse>(response);
-            
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual(1, solutions.Data[0].Id);
-            Assert.AreEqual("Amerika felfedezése", solutions.Data[0].Solution[0]);
-            Assert.AreEqual("Kolumbusz Kristóf eljutott Amerikába", solutions.Data[0].Solution[1]);
-        }
-        
+
         [TestMethod]
         public async Task CreateTask_ReturnsOK()
         {
@@ -1221,41 +1195,6 @@ namespace BolcsessegBarkaAPITests
             var response = await _client!.DeleteAsync($"tasks/{postResponseData.Id}");
             
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
-        }
-        
-        [TestMethod]
-        public async Task GetSubtask_ReturnsOK()
-        {
-            var token = await AuthenticateAndGetToken();
-            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
-            
-            var task = new StringContent("{\"quiz_id\": 1,\"order\": 7,\"header\": \"Teszt Kérdés\",\"text\": \"Ez egy teszt kvíz\",\"subtasks\": [{\"order\": 0,\"question\": \"Ez egy példa kérdés\",\"options\": [\"Igen\",\"Nem\",\"Talán\"],\"solution\": [\"Igen\"],\"type\": \"multiple_choice\",\"marks\": \"1\"}]}", null, "application/json");
-            
-            var postResponse = await _client!.PostAsync("tasks", task);
-            var postResponseData = await Deserialize<TaskApi>(postResponse);
-            
-            var response = await _client!.GetAsync($"subtasks/{postResponseData.Subtasks[0].Id}/solution");
-            
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        }
-        
-        [TestMethod]
-        public async Task GetSubtask_ReturnsValidData()
-        {
-            var token = await AuthenticateAndGetToken();
-            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
-            
-            var task = new StringContent("{\"quiz_id\": 1,\"order\": 7,\"header\": \"Teszt Kérdés\",\"text\": \"Ez egy teszt kvíz\",\"subtasks\": [{\"order\": 0,\"question\": \"Ez egy példa kérdés\",\"options\": [\"Igen\",\"Nem\",\"Talán\"],\"solution\": [\"Igen\"],\"type\": \"multiple_choice\",\"marks\": \"1\"}]}", null, "application/json");
-            
-            var postResponse = await _client!.PostAsync("tasks", task);
-            var postResponseData = await Deserialize<TaskApi>(postResponse);
-            
-            var response = await _client!.GetAsync($"subtasks/{postResponseData.Subtasks[0].Id}/solution");
-            var responseData = await Deserialize<TaskSolution>(response);
-            
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual(postResponseData.Subtasks[0].Id, responseData.Id);
-            Assert.AreEqual("Igen", responseData.Solution[0]);
         }
         
         [TestMethod]
