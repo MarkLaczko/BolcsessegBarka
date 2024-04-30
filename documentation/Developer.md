@@ -1,21 +1,5 @@
 # Fejlesztői Dokumentáció
 
-**Budapesti Műszaki Szakképzési Centrum Neumann János Informatikai Technikum**
-
-**Szakképesítés neve: Szoftverfejlesztő és -tesztelő** 
-
-**Szakképesítés száma: 5-0613-12-03**
-
-**VIZSGAREMEK**
-
-**BölcsességBárka**
-
-**Kurityák Dániel István, Laczkó Márk, Molnár Gábor**
-
-**2/14.b**
-
-**Budapest, 2024**
-
 ## Tartalomjegyzék
 
 1. [Indítás](#indítás)
