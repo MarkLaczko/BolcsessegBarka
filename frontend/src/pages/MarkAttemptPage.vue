@@ -29,16 +29,21 @@
                     </table>
                 </div>
                 <div class="col-12">
-                    <div v-for="(task, index) of tasks.value" :key="index">
+                    <div v-for="(task, index) of tasks.value" :key="index" class="border px-2 rounded my-2">
                         <div class="my-3">
                             <h3>{{ index + 1 }}. {{ task.header }}</h3>
                             <h4>{{ task.text }}</h4>
-                            <div v-for="subtask of task.subtasks" :key="subtask.id" class="my-2">
-                                <div v-html="subtask.question">
-
-                                </div>
+                            <div v-for="subtask of task.subtasks" :key="subtask.id" class="my-2 pt-2 border px-2 rounded">
+                                <div v-html="subtask.question"></div>
                                 <div v-if="subtask.answer != undefined">
                                     <input type="text" v-if="subtask.type == 'short_answer'" :value="subtask.answer.answer" class="form-control" disabled >
+                                    <div class="form-check" v-if="subtask.type == 'multiple_choice'" v-for="(option, index) of subtask.answer.subtask.options" :key="index">
+                                        <input class="form-check-input" type="radio" :checked="subtask.answer.answer == option" :disabled="subtask.answer.answer != option">
+                                        <label class="form-check-label" :for="`option${subtask.id}number${index}`">
+                                            {{ index + 1 }}. {{ option }}
+                                        </label>
+                                    </div>
+                                    <textarea v-if="subtask.type == 'essay'" class="form-control w-100" cols="30" rows="20" :value="subtask.answer.answer"></textarea>
                                     <div class="row">
                                         <div class="col-12 col-md-6 my-3">
                                             <FormKit
@@ -100,7 +105,7 @@
                                     </div>
                                 </div>
                                 <div v-else>
-                                    <p><input type="text" class="form-control" disabled :value="messages.pages.markQuizPage.noAnswer"></p>
+                                    <p><i>{{ messages.pages.markQuizPage.noAnswer }}</i></p>
                                 </div>
                             </div>
                         </div>
