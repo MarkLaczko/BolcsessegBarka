@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAttemptRequest;
 use App\Http\Requests\UpdateAttemptRequest;
+use App\Http\Resources\AttemptQuizDetailsResource;
 use App\Http\Resources\AttemptResoruce;
 use App\Models\Attempt;
 use App\Models\Quiz;
@@ -62,7 +63,7 @@ class AttemptController extends Controller
      */
     public function show(int $id)
     {
-        $attempt = Attempt::with(['quiz', 'user', 'answers', 'answers.subtask'])->findOrFail($id);
+        $attempt = Attempt::with(['quiz', 'quiz.topic.course.groups.users', 'user', 'answers', 'answers.subtask'])->findOrFail($id);
         Gate::authorize('attempts.show', $attempt);
         return new AttemptResoruce($attempt);
     }
@@ -108,11 +109,18 @@ class AttemptController extends Controller
         return new AttemptResoruce($attempt);
     }
 
-    public function userAttempts(Request $request){
+    public function userAttempts(Request $request)
+    {
         $user = $request->user();
         $attempts = Attempt::with(['quiz', 'quiz.tasks', 'quiz.tasks.subtasks', 'user'])
             ->where('user_id', $user->id)
             ->get();
         return AttemptResoruce::collection($attempts);
+    }
+
+    public function getAttemptQuizDetails(int $id)
+    {
+        $attempt = Attempt::with(['quiz', 'quiz.topic.course.groups.users'])->findOrFail($id);
+        return new AttemptQuizDetailsResource($attempt->quiz->topic->course);
     }
 }
