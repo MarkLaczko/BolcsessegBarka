@@ -39,6 +39,11 @@ export default {
       title: "Üdvözöllek",
       taskTitle: "Elkészítendő feladatok",
       materialsTitle: "Legutóbbi tananyagok",
+      viewNoteDialog: {
+        title: "Jegyzet megtekintése",
+        noteName: "Jegyzet címe:",
+        cancelButton: "Vissza"
+      }
     },
     coursesPage: {
       title: "Kurzusok",
