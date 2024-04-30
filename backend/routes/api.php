@@ -197,7 +197,7 @@ Route::middleware('auth:sanctum')->delete('/attempts/{id}', [AttemptController::
     ->name('attempts.destroy');
 Route::middleware('auth:sanctum')->get('/user/attempts', [AttemptController::class,'userAttempts'])
     ->name('attempts.userAttempts');
-Route::middleware('auth:sanctum')->get('/attempts/{id}/quiz', [AttemptController::class,'getAttemptQuizDetails'])
+Route::middleware('auth:sanctum')->get('/attempts/{id}/groups', [AttemptController::class,'getAttemptQuizDetails'])
     ->whereNumber('id')
     ->name('attempts.getAttemptQuizDetails');
 
