@@ -85,10 +85,6 @@ export const attemptStore = defineStore("attemptStore", {
         };
       }
     },
-    removeForTest(id){
-      const idx = this.userAttempts.findIndex(x => x.id == id);
-      this.userAttempts.splice(idx, 1);
-    },
     checkAttemptsForExpiry(){
       setInterval(async () => {
         for (const attempt of this.userAttempts) {
