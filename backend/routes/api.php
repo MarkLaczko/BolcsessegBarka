@@ -110,6 +110,8 @@ Route::middleware('auth:sanctum')->put('/assignments/{id}', [AssignmentControlle
     ->name('assignments.update');
 Route::middleware('auth:sanctum')->delete('/assignments/{id}', [AssignmentController::class,'destroy'])
     ->name('assignments.destroy');
+Route::middleware('auth:sanctum')->get('/getCurrentAssignments', [AssignmentController::class,'getCurrentAssignments'])
+    ->name("assignments.getCurrentAssignments");
 
 Route::get('/topics', [TopicController::class,'index'])
     ->name('topics.index'); 
