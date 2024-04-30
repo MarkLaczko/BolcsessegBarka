@@ -16,6 +16,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId("assignment_id")->constrained("assignment","id")->onDelete('cascade');
             $table->string("student_task_name");
+            $table->integer("user_id");
+            $table->integer("grade")->nullable();
         });
         DB::statement("ALTER TABLE student_assignments ADD student_task LONGBLOB");
     }
