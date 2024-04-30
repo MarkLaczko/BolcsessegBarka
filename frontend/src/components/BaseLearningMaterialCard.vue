@@ -17,7 +17,7 @@
           <h3 class="card-text">
             <b>{{ learningMaterial.title }}</b>
           </h3>
-          <span class="badge">{{
+          <span class="badge" v-if="learningMaterial.updated_at != null">{{
             formatDate(learningMaterial.updated_at)
           }}</span>
         </div>

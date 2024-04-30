@@ -75,6 +75,7 @@
   --pagination-hover-color: #{$black};
   --badge-bg-color: #{$blue};
   --border: none;
+  --textarea-border: 1px solid #{$gray};
   --table-bg-color: #{$white};
   --input-bg-color: #{$white};
   --input-color: #{$black};
@@ -109,6 +110,7 @@
   --confirmDialog-bg-color: #{$white};
   --manageCourse-button-bg: #{$cyan};
   --actions-button-bg: #{$lightGray};
+  --textarea-bg-color: none;
 }
 
 [data-theme="dark"] {
@@ -126,6 +128,7 @@
   --pagination-hover-color: #{$white};
   --badge-bg-color: #{$darkerGrey};
   --border: 1px solid #{$white};
+  --textarea-border: 1px solid #{$white};
   --table-bg-color: #{$darkGrey};
   --input-bg-color: #{$gray};
   --input-color: #{$white};
@@ -160,6 +163,7 @@
   --confirmDialog-bg-color: #{$gray};
   --manageCourse-button-bg: #{$darkerGrey};
   --actions-button-bg: #{$darkerGrey};
+  --textarea-bg-color: #{$gray};
 }
 
 body {
@@ -399,4 +403,14 @@ div[data-pc-name="dialog"] {
   transition: opacity 2s ease, max-height 1s ease;
   max-height: 1000px; 
   opacity: 1;
+}
+
+ol.breadcrumb .breadcrumb-item {
+  color: var(--text-color);
+}
+
+textarea.form-control,textarea.form-control:focus  {
+  background-color: var(--textarea-bg-color);
+  border: var(--textarea-border);
+  color: var(--text-color);
 }

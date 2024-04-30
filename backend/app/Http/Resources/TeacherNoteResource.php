@@ -18,7 +18,7 @@ class TeacherNoteResource extends JsonResource
             "id" => $this->id,
             "title" => $this->title,
             "text" => $this->text,
-            "updated_at" => $this->updated_at->timezone('Europe/Budapest')->format('Y-m-d H:i:s'),
+            "updated_at" => $this->updated_at == null ? null : $this->updated_at->timezone('Europe/Budapest')->format('Y-m-d H:i:s'),
             "course_name" => $this->topic->course->name,
             "course_image" => $this->topic->course->image
         ];

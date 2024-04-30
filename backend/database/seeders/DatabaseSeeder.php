@@ -34,7 +34,9 @@ class DatabaseSeeder extends Seeder
             TopicSeeder::class,
             QuizSeeder::class,
             TaskSeeder::class,
-            SubtaskSeeder::class
+            SubtaskSeeder::class,
+            NoteSeeder::class,
+            AssignmentSeeder::class
         ]);
     }
 }

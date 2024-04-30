@@ -12,7 +12,7 @@ namespace BolcsessegBarkaSeleniumTests;
 public class BolcsessegBarkaTests
 {
     private WebDriver? _webDriver;
-    private const string _sut = "http://localhost:5173";
+    private const string _sut = "http://localhost";
 
     [TestInitialize]
     public void InitializeWebDriver()

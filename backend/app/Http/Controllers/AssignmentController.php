@@ -104,7 +104,7 @@ class AssignmentController extends Controller
             $query->where('user_id', $user->id);
         }])
         ->where('deadline','>', now())
-        ->orderBy('deadline','desc')
+        ->orderBy('deadline')
         ->get();
     
         return CurrentStudentAssignmentResource::collection($assignments);
