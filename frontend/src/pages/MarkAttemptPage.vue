@@ -287,7 +287,7 @@ const submitGrade = async () => {
         await attemptStore().grade(attempt.value.id, overallMarks.value, attempt.value.grade);
         let toastToAdd = {
             severity: "success",
-            detail: messages.pages.markQuizPage.toastMessages.updatedMark,
+            detail: messages.pages.markQuizPage.toastMessages.graded,
             life: 3000,
         };
         if (!themeStore().isDarkMode) {
@@ -327,3 +327,9 @@ onMounted(async () => {
     calculateMarks();
 });
 </script>
+
+<style>
+    img {
+        max-width: 100%;
+    }
+</style>
