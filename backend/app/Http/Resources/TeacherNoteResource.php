@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class NoteResource extends JsonResource
+class TeacherNoteResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,9 +18,9 @@ class NoteResource extends JsonResource
             "id" => $this->id,
             "title" => $this->title,
             "text" => $this->text,
-            "user_id" => $this->user_id,
-            "topic_id" => $this->topic_id,
-            "role" => $this->role
+            "updated_at" => $this->updated_at->timezone('Europe/Budapest')->format('Y-m-d H:i:s'),
+            "course_name" => $this->topic->course->name,
+            "course_image" => $this->topic->course->image
         ];
     }
 }

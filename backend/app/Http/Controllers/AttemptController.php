@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAttemptRequest;
 use App\Http\Requests\UpdateAttemptRequest;
+use App\Http\Resources\AttemptQuizDetailsResource;
 use App\Http\Resources\AttemptResoruce;
 use App\Models\Attempt;
 use App\Models\Quiz;
@@ -42,13 +43,19 @@ class AttemptController extends Controller
         $data = $request->validated();
         $quiz = Quiz::findOrFail($data['quiz_id']);
         Gate::authorize('attempts.store', $quiz);
+
+        $userAttempts = Attempt::where('quiz_id', $data['quiz_id'])->count();
+        if(isset($quiz->max_attempts) && $userAttempts >= $quiz->max_attempts){
+            abort(403);
+        }
+
         $attempt = Attempt::create([
             'quiz_id' => $data['quiz_id'],
             'user_id' => $request->user()->id,
             'start' => Carbon::now(),
         ]);
 
-        return new AttemptResoruce(Attempt::with(['quiz'])->findOrFail($attempt->id));
+        return new AttemptResoruce(Attempt::with(['quiz', 'user'])->findOrFail($attempt->id));
     }
 
     /**
@@ -56,7 +63,7 @@ class AttemptController extends Controller
      */
     public function show(int $id)
     {
-        $attempt = Attempt::with(['quiz', 'user', 'answers', 'answers.subtask'])->findOrFail($id);
+        $attempt = Attempt::with(['quiz', 'quiz.topic.course.groups.users', 'user', 'answers', 'answers.subtask'])->findOrFail($id);
         Gate::authorize('attempts.show', $attempt);
         return new AttemptResoruce($attempt);
     }
@@ -100,5 +107,20 @@ class AttemptController extends Controller
         ]);
 
         return new AttemptResoruce($attempt);
+    }
+
+    public function userAttempts(Request $request)
+    {
+        $user = $request->user();
+        $attempts = Attempt::with(['quiz', 'quiz.tasks', 'quiz.tasks.subtasks', 'user'])
+            ->where('user_id', $user->id)
+            ->get();
+        return AttemptResoruce::collection($attempts);
+    }
+
+    public function getAttemptQuizDetails(int $id)
+    {
+        $attempt = Attempt::with(['quiz', 'quiz.topic.course.groups.users'])->findOrFail($id);
+        return new AttemptQuizDetailsResource($attempt->quiz->topic->course);
     }
 }

@@ -571,6 +571,47 @@
     </BaseDialog>
 
     <BaseDialog
+      v-if="viewNoteVisible"
+      :visible="viewNoteVisible"
+      :width="'50rem'"
+    >
+      <div class="container rounded-3 pt-1 pb-3">
+        <h1 class="text-center my-3">
+          {{ messages.pages.coursePage.viewNoteDialog.title }}
+        </h1>
+        <div class="card">
+          <Editor
+            :readonly="true"
+            v-model="currentText"
+            :model-value="currentNote.text"
+            editorStyle="height: 320px"
+          >
+            <template v-slot:toolbar>
+              <span class="text-center">
+                {{ messages.pages.coursePage.viewNoteDialog.noteName }}
+                {{ currentNote.title }}
+              </span>
+            </template>
+          </Editor>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center mt-3">
+          <button
+            type="button"
+            class="btn"
+            :class="{
+              'btn-outline-danger': isDarkMode,
+              'btn-danger': !isDarkMode,
+            }"
+            @click="viewNoteVisible = false"
+          >
+            {{ messages.pages.coursePage.viewNoteDialog.cancelButton }}
+          </button>
+        </div>
+      </div>
+    </BaseDialog>
+
+    <BaseDialog
       v-if="currentNoteVisible"
       :visible="currentNoteVisible"
       :width="'50rem'"
@@ -871,7 +912,16 @@
                 >
                   <div class="card mt-2 text-center h-100">
                     <div class="card-header">
-                      <h4>{{ messages.pages.coursePage.note.name }}</h4>
+                      <h4>
+                        <span
+                          v-if="
+                            note.role == 'Tanár' &&
+                            note.user_id != currentUserData.id
+                          "
+                          >{{ messages.pages.coursePage.teacherText }}</span
+                        >
+                        {{ messages.pages.coursePage.note.name }}
+                      </h4>
                     </div>
                     <div
                       class="card-body d-flex justify-content-center align-items-center"
@@ -952,7 +1002,11 @@
                       <div
                         class="d-flex justify-content-center align-self-center gap-1"
                       >
-                        <button class="btn btn-primary" type="button" @click="">
+                        <button
+                          class="btn btn-primary"
+                          type="button"
+                          @click="navigateToQuizPage(quiz.id)"
+                        >
                           {{ messages.pages.coursePage.note.viewButton }}
                         </button>
                         <button
@@ -1033,6 +1087,7 @@ export default {
       DownloadAssignmentDialogVisible: false,
       newNoteDialogVisible: false,
       currentNoteVisible: false,
+      viewNoteVisible: false,
       isNoteReadonly: true,
       activeTopicId: null,
       currentGroups: [],
@@ -1107,10 +1162,15 @@ export default {
     },
 
     openCurrentNote(note) {
+      if (note.user_id == this.currentUserData.id) {
+        this.currentNoteVisible = true;
+      } else {
+        this.viewNoteVisible = true;
+      }
+
       this.currentNote = note;
       this.currentTitle = note.title;
       this.currentText = note.text;
-      this.currentNoteVisible = true;
     },
 
     async deleteNote() {
@@ -1757,6 +1817,10 @@ export default {
       window.location = `/quiz/${id}/edit`;
     };
 
+    const navigateToQuizPage = (id) => {
+      window.location = `/quiz/${id}/`;
+    };
+
     const toDate = (date) => {
       return new Date(date * 1000).toLocaleString();
     };
@@ -1764,6 +1828,7 @@ export default {
     return {
       navigateToNewQuizPage,
       navigateToEditQuizPage,
+      navigateToQuizPage,
       toDate,
     };
   },

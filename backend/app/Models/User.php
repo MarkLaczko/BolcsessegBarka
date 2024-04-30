@@ -54,11 +54,6 @@ class User extends Authenticatable
         return $this->belongsToMany(Group::class, "member")->as('member')->withPivot('permission');
     }
 
-    public function created_courses(): HasMany
-    {
-        return $this->hasMany(Course::class, "created_by");
-    }
-
     public function attempts() : HasMany 
     {
         return $this->hasMany(Attempt::class);

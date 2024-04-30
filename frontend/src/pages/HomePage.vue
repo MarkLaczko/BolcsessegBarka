@@ -2,6 +2,45 @@
   <BaseLayout>
     <BaseSpinner :loading="loading" />
 
+    <BaseDialog
+      v-if="viewNoteVisible"
+      :visible="viewNoteVisible"
+      :width="'50rem'"
+    >
+      <div class="container rounded-3 pt-1 pb-3">
+        <h1 class="text-center my-3">
+          {{ messages.pages.homePage.viewNoteDialog.title }}
+        </h1>
+        <div class="card">
+          <Editor
+            :readonly="true"            
+            :model-value="selectedMaterial.text"
+            editorStyle="height: 320px"
+          >
+            <template v-slot:toolbar>
+              <span class="text-center">
+                 {{ messages.pages.homePage.viewNoteDialog.noteName }} {{ selectedMaterial.title }}
+              </span>
+          </template>
+          </Editor>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center mt-3">
+          <button
+              type="button"
+              class="btn"
+              :class="{
+                'btn-outline-danger': isDarkMode,
+                'btn-danger': !isDarkMode,
+              }"
+              @click="(viewNoteVisible = false)"
+            >
+              {{ messages.pages.homePage.viewNoteDialog.cancelButton }}
+            </button>
+        </div>
+      </div>
+    </BaseDialog>
+
     <div v-if="!loading">
       <h1 class="text-center my-3">
         {{ messages.pages.homePage.title }} {{ currentUserData.name }}!
@@ -24,12 +63,11 @@
         <h2 class="text-center mb-3">
           <b>{{ messages.pages.homePage.materialsTitle }}</b>
         </h2>
-        <BaseLearningMaterialCard :course="'Szoftverfejlesztő'" :learningMaterial="'Tesztelés'" :image="'asd.jpeg'"
-          :releaseData="'2024.06.05'" />
-        <BaseLearningMaterialCard :course="'Frontend'" :learningMaterial="'Vue'" :image="'asd.jpeg'"
-          :releaseData="'2024.06.10'" />
-        <BaseLearningMaterialCard :course="'Backend'" :learningMaterial="'Rest API'" :image="'asd.jpeg'"
-          :releaseData="'2024.06.12'" />
+        <div v-if="learningMaterials.length > 0" v-for="learningMaterial in learningMaterials" :key="learningMaterial.id">
+          <BaseLearningMaterialCard :learningMaterial="learningMaterial" @open-material-dialog="handleMaterialDialog"/>
+        </div>
+        <h2 v-if="learningMaterials.length == 0" class="text-center my-3">Nincsenek tananyagok!</h2>
+
       </div>
     </div>
   </BaseLayout>
@@ -38,12 +76,17 @@
 <script>
 import BaseLayout from "@layouts/BaseLayout.vue";
 import BaseAssignmentCard from "@components/BaseAssignmentCard.vue";
+import Editor from "primevue/editor";
+import InputText from "primevue/inputtext";
 import BaseSpinner from "@components/BaseSpinner.vue";
+import BaseDialog from "@components/BaseDialog.vue"
 import BaseLearningMaterialCard from "@components/BaseLearningMaterialCard.vue";
 import { userStore } from "@stores/UserStore.mjs";
 import { mapActions, mapState } from "pinia";
 import Paginator from "@components/BasePaginator.vue";
 import { languageStore } from "@stores/LanguageStore.mjs";
+import { noteStore } from "@stores/NoteStore.mjs";
+import { themeStore } from "@stores/ThemeStore.mjs";
 
 export default {
   data() {
@@ -158,6 +201,9 @@ export default {
           deadline: "2024.09.13",
         },
       ],
+      learningMaterials: [],
+      viewNoteVisible: false,
+      selectedMaterial: null,
       currentPage: 1,
       pageSize: 3,
       animationDirection: "right",
@@ -169,18 +215,28 @@ export default {
     BaseAssignmentCard,
     BaseLearningMaterialCard,
     Paginator,
-    BaseSpinner
+    BaseSpinner,
+    BaseDialog,
+    InputText,
+    Editor
   },
   methods: {
     ...mapActions(userStore, ["getUser"]),
+    ...mapActions(noteStore, ["getTeacherNotes"]),
 
     onPageChanged(page) {
       this.currentPage = page;
     },
+
+    handleMaterialDialog(material) {
+      this.selectedMaterial = material;
+      this.viewNoteVisible = true;
+    }
   },
   computed: {
     ...mapState(userStore, ["currentUserData"]),
     ...mapState(languageStore, ["messages"]),
+    ...mapState(themeStore, ["isDarkMode"]),
 
     paginatedAssignments() {
       const start = (this.currentPage - 1) * this.pageSize;
@@ -199,6 +255,7 @@ export default {
   },
   async mounted() {
     await this.getUser();
+    this.learningMaterials = await this.getTeacherNotes();
     this.loading = false;
   },
 };

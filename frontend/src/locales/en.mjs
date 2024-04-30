@@ -38,6 +38,11 @@ export default {
       title: "Welcome",
       taskTitle: "Tasks to be completed",
       materialsTitle: "Latest Learning Materials",
+      viewNoteDialog: {
+        title: "View Note",
+        noteName: "Note Title:",
+        cancelButton: "Back"
+      }
     },
     coursesPage: {
       title: "Courses",
@@ -49,6 +54,7 @@ export default {
       editButton: "Edit",
       viewButton: "View",
       cancelButton: "Cancel",
+      teacherText: "Teacher's",
       groupTreatmentButton: "Manage Groups",
       confirmDialogs: {
         messageTopic: "Are you sure you want to delete this topic?",
@@ -126,7 +132,12 @@ export default {
         saveButton: "Save",
         editButton: "Edit",
         deleteButton: "Delete"
-    },
+      },
+      viewNoteDialog: {
+        title: "View Note",
+        noteName: "Note Title:",
+        cancelButton: "Back"
+      },
       accordionText: {
         actions: "Actions",
         newAssignment: "New Assignment",
@@ -163,6 +174,34 @@ export default {
           successfullyDeletedAssignment: "Assignment deletion was successful!",
           failedToDeleteAssignment: "Failed to delete assignment!",
         }
+      }
+    },
+    quizPage: {
+      opens: "Opens",
+      closes: "Closes",
+      time: "Time limit",
+      attempts: "Maximum attempts",
+      minutes: "minutes",
+      userAttempts: "Attempts",
+      user: "User",
+      begin: "Started",
+      finished: "Finished",
+      marks: "Marks",
+      grade: "Grade",
+      evaluate: "Evaluate",
+      startAttempt: "Start attempt",
+      ownAttempts: "Own attempts",
+      beginAttemptDialog: {
+        begin: "Start quiz",
+        time: "Time limit for attempt",
+        minutes: "minutes",
+        confirm: "Are you sure you want to start this quiz?",
+        attemptOnce: "This quiz can only be attempted once.",
+        attemptMultipleStart: "This quiz can be attempted",
+        attemptMultipleMiddle: "howevery many",
+        attemptMultipleEnd: "times",
+        cancel: "Cancel",
+        start: "Start",
       }
     },
     createQuizPage: {

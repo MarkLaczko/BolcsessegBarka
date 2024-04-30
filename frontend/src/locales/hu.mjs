@@ -39,6 +39,11 @@ export default {
       title: "Üdvözöllek",
       taskTitle: "Elkészítendő feladatok",
       materialsTitle: "Legutóbbi tananyagok",
+      viewNoteDialog: {
+        title: "Jegyzet megtekintése",
+        noteName: "Jegyzet címe:",
+        cancelButton: "Vissza"
+      }
     },
     coursesPage: {
       title: "Kurzusok",
@@ -50,6 +55,7 @@ export default {
       editButton: "Szerkesztés",
       viewButton: "Megtekintés",
       cancelButton: "Mégsem",
+      teacherText: "Tanári",
       groupTreatmentButton: "Csoportok kezelése",
       confirmDialogs: {
         messageTopic: "Biztos ki akarja törölni ezt a témát?",
@@ -131,6 +137,11 @@ export default {
         editButton: "Szerkesztés",
         deleteButton: "Törlés"
       },
+      viewNoteDialog: {
+        title: "Jegyzet megtekintése",
+        noteName: "Jegyzet címe:",
+        cancelButton: "Vissza",
+      },
       accordionText: {
           actions: "Műveletek",
           newAssignment: "Új feladat",
@@ -167,6 +178,34 @@ export default {
           successfullyDeletedAssignment: "A feladat törlése sikeres volt!",
           failedToDeleteAssignment: "A feladat törlése sikertelen volt!",
         }
+      }
+    },
+    quizPage: {
+      opens: "Nyílik",
+      closes: "Zárul",
+      time: "Időkorlát",
+      attempts: "Maximum próbálkozások",
+      minutes: "perc",
+      userAttempts: "Próbálkozások",
+      user: "Felhasználó",
+      begin: "Kezdte",
+      finished: "Végzett",
+      marks: "Pontszám",
+      grade: "Érdemjegy",
+      evaluate: "Értékelés",
+      startAttempt: "Próbálkozás indítása",
+      ownAttempts: "Saját próbálkozásaim",
+      beginAttemptDialog: {
+        begin: "Kvíz indítása",
+        time: "Felhasználható idő",
+        minutes: "perc",
+        confirm: "Biztos ki akarja tölteni ezt a kvízt?",
+        attemptOnce: "Ezt a kvízt csak egyszer lehet kitölteni.",
+        attemptMultipleStart: "Ezt a kvízt",
+        attemptMultipleMiddle: "akárhány",
+        attemptMultipleEnd: "alkalommal lehet kitölteni",
+        cancel: "Mégse",
+        start: "Kezdés",
       }
     },
     createQuizPage: {

@@ -99,6 +99,63 @@ class AuthServiceProvider extends ServiceProvider
                 : Response::deny("You must be an administrator or the creator of this course to delete it!");
         });
 
+        Gate::define('courses.assignGroups', function (User $user) {
+            if ($user->is_admin == 1) {
+                return Response::allow();
+            } else {
+                $isTeacher = $user->groups()->wherePivot("permission", "Tanár")->exists();
+                return $isTeacher
+                    ? Response::allow()
+                    : Response::deny("You must be an administrator or a teacher to assign a group to a course!");
+            }
+        });
+
+        Gate::define('courses.assignTopics', function (User $user) {
+            if ($user->is_admin == 1) {
+                return Response::allow();
+            } else {
+                $isTeacher = $user->groups()->wherePivot("permission", "Tanár")->exists();
+                return $isTeacher
+                    ? Response::allow()
+                    : Response::deny("You must be an administrator or a teacher to assign a topic to a course!");
+            }
+        });
+
+        //Topic gates
+
+        Gate::define('topics.store', function (User $user) {
+            if ($user->is_admin == 1) {
+                return Response::allow();
+            } else {
+                $isTeacher = $user->groups()->wherePivot("permission", "Tanár")->exists();
+                return $isTeacher
+                    ? Response::allow()
+                    : Response::deny("You must be an administrator or a teacher to create a topic!");
+            }
+        });
+
+        Gate::define('topics.update', function (User $user) {
+            if ($user->is_admin == 1) {
+                return Response::allow();
+            } else {
+                $isTeacher = $user->groups()->wherePivot("permission", "Tanár")->exists();
+                return $isTeacher
+                    ? Response::allow()
+                    : Response::deny("You must be an administrator or a teacher to update a topic!");
+            }
+        });
+
+        Gate::define('topics.destroy', function (User $user) {
+            if ($user->is_admin == 1) {
+                return Response::allow();
+            } else {
+                $isTeacher = $user->groups()->wherePivot("permission", "Tanár")->exists();
+                return $isTeacher
+                    ? Response::allow()
+                    : Response::deny("You must be an administrator or a teacher to delete a topic!");
+            }
+        });
+
         //Note gates
 
         Gate::define('notes.update', function (User $user, Note $note) {
@@ -392,7 +449,7 @@ class AuthServiceProvider extends ServiceProvider
                 $attemptsByUser = array_filter($quiz->attempts->toArray(), function($x) use ($user) {
                     return $x['user_id'] == $user->id;
                 });
-                if(count($memberIn) > 0 && count($attemptsByUser) < $quiz->max_attempts){
+                if(count($memberIn) > 0 && (isset($quiz->max_attempts) ? count($attemptsByUser) < $quiz->max_attempts : true)){
                     return Response::allow();
                 }
             }
