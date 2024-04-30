@@ -54,6 +54,7 @@ export default {
       editButton: "Edit",
       viewButton: "View",
       cancelButton: "Cancel",
+      teacherText: "Teacher's",
       groupTreatmentButton: "Manage Groups",
       confirmDialogs: {
         messageTopic: "Are you sure you want to delete this topic?",
@@ -131,7 +132,12 @@ export default {
         saveButton: "Save",
         editButton: "Edit",
         deleteButton: "Delete"
-    },
+      },
+      viewNoteDialog: {
+        title: "View Note",
+        noteName: "Note Title:",
+        cancelButton: "Back"
+      },
       accordionText: {
         actions: "Actions",
         newAssignment: "New Assignment",

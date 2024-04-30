@@ -55,6 +55,7 @@ export default {
       editButton: "Szerkesztés",
       viewButton: "Megtekintés",
       cancelButton: "Mégsem",
+      teacherText: "Tanári",
       groupTreatmentButton: "Csoportok kezelése",
       confirmDialogs: {
         messageTopic: "Biztos ki akarja törölni ezt a témát?",
@@ -135,6 +136,11 @@ export default {
         saveButton: "Mentés",
         editButton: "Szerkesztés",
         deleteButton: "Törlés"
+      },
+      viewNoteDialog: {
+        title: "Jegyzet megtekintése",
+        noteName: "Jegyzet címe:",
+        cancelButton: "Vissza",
       },
       accordionText: {
           actions: "Műveletek",
