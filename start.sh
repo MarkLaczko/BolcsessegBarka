@@ -10,7 +10,7 @@ else
     docker run -v "$(pwd)/frontend:/app" -it --entrypoint npm idomi27/vue install
 fi
 
-docker compose up -d
+docker compose up -d --build
 
 if [ -f "backend/vendor" ]; then
     echo "backend/vendor már létezik!"
