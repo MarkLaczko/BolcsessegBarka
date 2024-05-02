@@ -67,7 +67,9 @@ export default {
       },
       updateAssignmentDialog: {
         uploadedFile: "Uploaded file:",
-        noUploadedFile: "There are no tasks uploaded"
+        noUploadedFile: "There are no tasks uploaded",
+        successfullyModifyAssignment: "You have successfully modified the task!",
+        failedToModifyAssignment: "Failed to modify the task!"
       },
       downloadAssignmentDialog: {
         title: "View assignments",
@@ -601,6 +603,7 @@ export default {
       task_name: "Assignment:",
       deadlineExpired: "Sorry you missed the deadline!",
       teacherTask: "Uploaded task:",
+      downloadTeacherAssignment: "Download task"
     },
     newAssignmentPage: {
       title: "Create a new task",
