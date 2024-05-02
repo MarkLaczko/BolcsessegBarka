@@ -18,7 +18,6 @@ class StudentAssignment extends Model
         "student_task_name" ,
         "student_task",
         "user_id",
-        "grade",
     ];
 
     public function assignment() : BelongsTo
