@@ -869,18 +869,18 @@
                         <strong
                           >{{
                             messages.pages.assignmentPage.task_name
-                          }}:</strong
+                          }}</strong
                         >
                         {{ assignment.task_name }} <br />
                         <strong
-                          >{{ messages.pages.assignmentPage.deadline }}:</strong
+                          >{{ messages.pages.assignmentPage.deadline }}</strong
                         >
                         {{ assignment.deadline }} <br />
                         <span v-if="assignment.comment">
                           <strong
                             >{{
                               messages.pages.assignmentPage.comment
-                            }}:</strong
+                            }}</strong
                           >
                           {{ assignment.comment }}
                         </span>
