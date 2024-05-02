@@ -195,6 +195,7 @@ div.card-footer {
 
 .buttons:hover {
   background-color: var(--button-hover-bg-color);
+  color: #{$white};
 }
 
 ul.pagination {
@@ -382,6 +383,12 @@ div[data-pc-name="dialog"] {
 
 #manageCourses {
   background-color: var(--manageCourse-button-bg);
+  color: #{$white}; 
+}
+
+#manageCourses:hover {
+  background-color: var(--button-hover-bg-color);
+  color: #{$white}; 
 }
 
 #dropdownMenu {
