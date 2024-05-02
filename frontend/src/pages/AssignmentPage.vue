@@ -5,7 +5,7 @@
     <BaseToast/>
 
     <div class="rounded-3 my-5 py-2" v-if="!loading">
-      <div class="rounded-3 m-3 p-2 bg-white" v-for="assignment in assignments" :key="assignment.id">
+      <div class="rounded-3 m-3 p-2" :class="{'bg-white' : !isDarkMode}" v-for="assignment in assignments" :key="assignment.id">
         <p >
           {{ messages.pages.assignmentPage.task_name }} {{ assignment.task_name }} <br />
           {{ messages.pages.assignmentPage.courseName }} {{ assignment.course.name }} <br />
@@ -88,6 +88,7 @@ import Toast from "primevue/toast";
 import ProgressBar from "primevue/progressbar";
 import { mapState } from "pinia";
 import { languageStore } from "@stores/LanguageStore.mjs";
+import { themeStore } from "@stores/ThemeStore.mjs";
 import { http } from "@utils/http";
 import { userStore } from "@stores/UserStore";
 import BaseSpinner from "@components/BaseSpinner.vue"
@@ -118,6 +119,7 @@ export default {
   computed: {
     ...mapState(languageStore, ["messages"]),
     ...mapState(userStore, ["currentUserData"]),
+    ...mapState(themeStore, ["isDarkMode"]),
   },
   methods: {
     async downloadAssignment(assignmentId, filename) {
