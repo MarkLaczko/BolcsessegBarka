@@ -61,7 +61,7 @@
         <div class="d-flex justify-content-end mt-2 mb-3">
           <Button
             type="button"
-            class="btn btn-outline-danger mx-1"
+            class="btn btn-danger text-white mx-1"
             @click="newTopicDialogVisible = false"
             >{{ messages.pages.coursePage.newTopicDialog.cancelButton }}</Button
           >
@@ -71,7 +71,7 @@
             :classes="{
               input: {
                 btn: true,
-                'btn-success': true,
+                'btn-success text-white': true,
                 'w-auto': true,
               },
             }"
@@ -134,7 +134,7 @@
         <div class="d-flex justify-content-end mt-2 mb-3">
           <Button
             type="button"
-            class="btn btn-outline-danger mx-1"
+            class="btn btn-danger text-white mx-1"
             @click="editTopicDialogVisible = false"
             >{{
               messages.pages.coursePage.editTopicDialog.cancelButton
@@ -146,7 +146,7 @@
             :classes="{
               input: {
                 btn: true,
-                'btn-success': true,
+                'btn-success text-white': true,
                 'w-auto': true,
               },
             }"
@@ -212,7 +212,7 @@
       <div class="d-flex justify-content-end mt-2 mb-3">
         <Button
           type="button"
-          class="btn btn-outline-danger mx-1"
+          class="btn btn-danger text-white mx-1"
           @click="groupTreatmentDialog = false"
           >{{
             messages.pages.coursePage.groupTreatmentDialog.cancelButton
@@ -221,7 +221,7 @@
         <Button
           type="button"
           id="modifyGroups"
-          class="btn btn-outline-success mx-1"
+          class="btn btn-success text-white mx-1"
           @click="saveGroups"
           >{{
             messages.pages.coursePage.groupTreatmentDialog.saveButton
@@ -318,7 +318,7 @@
           <Button
             type="button"
             :label="messages.pages.newAssignmentPage.cancelButton"
-            class="btn btn-outline-danger mx-1 px-5"
+            class="btn btn-danger text-white mx-1 px-5"
             @click="newAssignmentDialogVisible = false"
           ></Button>
           <FormKit
@@ -328,7 +328,7 @@
             :classes="{
               input: {
                 btn: true,
-                'btn-success': true,
+                'btn-success text-white': true,
                 'w-auto': true,
                 'px-5': true,
               },
@@ -439,7 +439,7 @@
           <Button
             type="button"
             :label="messages.pages.newAssignmentPage.cancelButton"
-            class="btn btn-outline-danger mx-1 px-5"
+            class="btn btn-danger text-white mx-1 px-5"
             @click="UpdateAssignmentDialogVisible = false"
           ></Button>
           <FormKit
@@ -449,7 +449,7 @@
             :classes="{
               input: {
                 btn: true,
-                'btn-success': true,
+                'btn-success text-white': true,
                 'w-auto': true,
                 'px-5': true,
               },
@@ -521,7 +521,7 @@
               'Assignment.zip'
             )
           "
-          class="btn btn-success"
+          class="btn btn-success text-white"
           v-if="studentAssignments.length !== 0"
         >
           {{
@@ -531,7 +531,7 @@
         <div>
           <button
             @click="DownloadAssignmentDialogVisible = false"
-            class="btn btn-outline-danger me-2"
+            class="btn btn-danger text-white me-2"
           >
             {{ messages.pages.coursePage.downloadAssignmentDialog.close }}
           </button>
@@ -579,7 +579,7 @@
           <Button
             id="saveNoteButton"
             :label="messages.pages.coursePage.newNoteDialog.saveButton"
-            class="btn text-light btn-success px-5"
+            class="btn text-light btn-success text-white px-5"
             @click="saveNote"
           ></Button>
         </div>
@@ -614,11 +614,7 @@
         <div class="d-flex justify-content-center align-items-center mt-3">
           <button
             type="button"
-            class="btn"
-            :class="{
-              'btn-outline-danger': isDarkMode,
-              'btn-danger': !isDarkMode,
-            }"
+            class="btn btn-danger text-white"
             @click="viewNoteVisible = false"
           >
             {{ messages.pages.coursePage.viewNoteDialog.cancelButton }}
@@ -664,51 +660,40 @@
           />
         </div>
 
-        <div class="d-flex justify-content-center align-items-center mt-3">
-          <div class="btn-group" role="group">
+        <div class="d-flex justify-content-between align-items-center mt-3">
+          <div class="d-flex justify-content-start align-items-center gap-2">
             <button
               type="button"
-              class="btn"
-              :class="{
-                'btn-outline-secondary': isDarkMode,
-                'btn-secondary': !isDarkMode,
-              }"
+              class="btn btn-secondary"
               @click="(currentNoteVisible = false), (isNoteReadonly = true)"
             >
               {{ messages.pages.coursePage.currentNoteDialog.cancelButton }}
             </button>
             <button
               type="button"
-              class="btn"
-              :class="{
-                'btn-outline-primary': isDarkMode,
-                'btn-primary': !isDarkMode,
-              }"
+              class="btn btn-primary"
               @click="isNoteReadonly = false"
+              v-if="isNoteReadonly"
             >
               {{ messages.pages.coursePage.currentNoteDialog.editButton }}
             </button>
+          </div>
+          <div class="d-flex justify-content-end align-items-center gap-2">
             <button
               type="button"
               id="deleteNoteButton"
-              class="btn"
-              :class="{
-                'btn-outline-danger': isDarkMode,
-                'btn-danger': !isDarkMode,
-              }"
+              class="btn btn-danger text-white"
               @click="deleteNote()"
+              v-if="!isNoteReadonly"
             >
               {{ messages.pages.coursePage.currentNoteDialog.deleteButton }}
             </button>
             <button
               type="button"
               id="modifyNoteButton"
-              class="btn"
-              :class="{
-                'btn-outline-success': isDarkMode,
-                'btn-success': !isDarkMode,
-              }"
+              class="btn btn-success text-white"
               @click="(isNoteReadonly = true), updateNote()"
+              v-if="!isNoteReadonly"
             >
               {{ messages.pages.coursePage.currentNoteDialog.saveButton }}
             </button>
@@ -718,7 +703,7 @@
     </BaseDialog>
 
     <div v-if="!loading">
-      <div class="d-flex justify-content-center align-items-center gap-3">
+      <div class="d-flex justify-content-center align-items-center gap-3 mt-1">
         <h1 class="text-center">
           {{ course.name }}
         </h1>
@@ -740,7 +725,7 @@
         </button>
       </div>
 
-      <div class="d-flex justify-content-center align-items-center gap-1 mb-2">
+      <div class="d-flex justify-content-center align-items-center gap-1 my-1">
         <span class="badge fs-6" v-for="group of course.groups">{{
           group.name
         }}</span>
@@ -900,21 +885,24 @@
                     >
                       <button
                         type="button"
-                        class="btn btn-outline-danger"
+                        class="btn"
+                        :class="{'btn-danger' : !isDarkMode,'text-dark' : !isDarkMode, 'btn-light' : isDarkMode, 'text-white' : !isDarkMode}"
                         @click="deleteAssignment(assignment.id)"
                       >
                         <i class="fa-solid fa-trash"></i>
                       </button>
                       <button
                         type="button"
-                        class="btn btn-outline-warning"
+                        class="btn" 
+                        :class="{'btn-warning' : !isDarkMode,'text-dark' : !isDarkMode, 'btn-light' : isDarkMode, 'text-white' : !isDarkMode}"
                         @click="openUpdateAssignment(assignment.id)"
                       >
                         <i class="fa-solid fa-pencil"></i>
                       </button>
                       <button
                         type="button"
-                        class="btn btn-outline-success"
+                        class="btn" 
+                        :class="{'btn-success' : !isDarkMode,'text-dark' : !isDarkMode, 'btn-light' : isDarkMode, 'text-white' : !isDarkMode}"
                         @click="filteredStudentAssignment(assignment.id)"
                       >
                         <i class="fa-solid fa-download"></i>
@@ -934,7 +922,7 @@
                     }"
                   >
                     <RouterLink
-                      class="btn btn-outline-primary px-4"
+                      class="btn px-4 buttons text-light"
                       :to="{
                         name: 'assignment',
                         params: { id: assignment.id },
@@ -1044,7 +1032,7 @@
                         class="d-flex justify-content-center align-self-center gap-1"
                       >
                         <button
-                          class="btn btn-primary"
+                          class="btn buttons text-light"
                           type="button"
                           @click="navigateToQuizPage(quiz.id)"
                         >
@@ -1057,7 +1045,7 @@
                             (currentUserData.is_admin &&
                               member.permission == 'Tanár')
                           "
-                          class="btn btn-secondary text-white"
+                          class="btn" :class="{'btn-secondary' : !isDarkMode,'text-dark' : !isDarkMode, 'btn-light' : isDarkMode, 'text-white' : !isDarkMode}"
                           type="button"
                           @click="navigateToEditQuizPage(quiz.id)"
                         >
@@ -1068,7 +1056,7 @@
                             currentUserData.is_admin ||
                             member.permission == 'Tanár'
                           "
-                          class="btn btn-danger text-white"
+                          class="btn" :class="{'btn-danger' : !isDarkMode,'text-dark' : !isDarkMode, 'btn-light' : isDarkMode, 'text-white' : !isDarkMode}"
                           type="button"
                           @click="confirmDeleteSubtask(quiz.id, topic.id)"
                         >
@@ -1297,8 +1285,8 @@ export default {
         this.$confirm.require({
           message: this.messages.pages.coursePage.confirmDialogs.messageNote,
           icon: "pi pi-exclamation-triangle",
-          rejectClass: "btn btn-danger",
-          acceptClass: "btn btn-success ",
+          rejectClass: "btn btn-danger text-white",
+          acceptClass: "btn btn-success text-white",
           rejectLabel:
             this.messages.pages.coursePage.confirmDialogs.rejectLabel,
           acceptLabel:
@@ -1466,8 +1454,8 @@ export default {
         this.$confirm.require({
           message: this.messages.pages.coursePage.confirmDialogs.messageTopic,
           icon: "pi pi-exclamation-triangle",
-          rejectClass: "btn btn-danger",
-          acceptClass: "btn btn-success ",
+          rejectClass: "btn btn-danger text-white",
+          acceptClass: "btn btn-success text-white",
           rejectLabel:
             this.messages.pages.coursePage.confirmDialogs.rejectLabel,
           acceptLabel:
@@ -1602,7 +1590,7 @@ export default {
       }
     },
 
-    async findUserDetails(courseId, userId) {
+    async findUserDetails() {
       for (const group of this.course.groups) {
         let user = group.users.find(
           (x) => x.id == userStore().currentUserData.id
@@ -1793,8 +1781,8 @@ export default {
           message:
             this.messages.pages.coursePage.confirmDialogs.messageAssignment,
           icon: "pi pi-exclamation-triangle",
-          rejectClass: "btn btn-danger",
-          acceptClass: "btn btn-success ",
+          rejectClass: "btn btn-danger text-white",
+          acceptClass: "btn btn-success text-white",
           rejectLabel:
             this.messages.pages.coursePage.confirmDialogs.rejectLabel,
           acceptLabel:
@@ -1849,8 +1837,8 @@ export default {
       this.$confirm.require({
         message: "Biztos ki akarja törölni ezt a feladatot?",
         icon: "pi pi-exclamation-triangle",
-        rejectClass: "btn btn-danger",
-        acceptClass: "btn btn-success ",
+        rejectClass: "btn btn-danger text-white",
+        acceptClass: "btn btn-success text-white",
         rejectLabel: "Mégse",
         acceptLabel: "Törlés",
         accept: async () => {
@@ -1918,9 +1906,10 @@ export default {
     ...mapState(groupStore, ["groups"]),
   },
   async mounted() {
+    await this.getGroups();
     this.course = await this.getCourse(this.$route.params.id);
     await this.getAllNotesForUser();
-    await this.findUserDetails(this.course.id, this.currentUserData.id);
+    await this.findUserDetails();
     document.title = this.course.name;
     this.loading = false;
   },
