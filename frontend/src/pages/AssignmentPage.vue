@@ -11,7 +11,7 @@
           {{ messages.pages.assignmentPage.courseName }} {{ assignment.course.name }} <br />
           {{ messages.pages.assignmentPage.deadline }} {{ assignment.deadline }} <br>
           <span v-if="assignment.comment">{{ messages.pages.assignmentPage.comment }} {{ assignment.comment }}</span> <br>
-          <span v-if="assignment.teacher_task_name !== 'undefined'">{{ messages.pages.assignmentPage.teacherTask }} {{ assignment.teacher_task_name }}</span>
+          <span v-if="assignment.teacher_task_name !== null">{{ messages.pages.assignmentPage.teacherTask }} {{ assignment.teacher_task_name }}</span>
         </p>
         <div v-if="isDeadlineReached" class=" py-4 text-center alert alert-danger">
           {{ messages.pages.assignmentPage.deadlineExpired }}
@@ -49,7 +49,7 @@
           />
           <div class="d-flex justify-content-between mt-3 mb-3">
           <div class="d-flex">
-              <button v-if="assignment.teacher_task_name !== 'undefined'" class="btn btn-success" @click="downloadAssignment(assignment.id, assignment.teacher_task_name)">Feladat letöltése</button>
+              <button v-if="assignment.teacher_task_name !== null" class="btn btn-success" @click="downloadAssignment(assignment.id, assignment.teacher_task_name)">Feladat letöltése</button>
               <div v-else></div>
           </div>
           <div class="d-flex">
@@ -130,12 +130,11 @@ export default {
             responseType: 'blob' 
         });
         const contentDisposition = response.headers['content-disposition'];
-        let file = filename;
-        if (contentDisposition) {
-            const filenameMatch = contentDisposition.match(/filename="?(.+)"?/);
-            if (filenameMatch && filenameMatch.length === 2) {
-                file = filenameMatch[1];
-            }
+        let file = null
+        const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+        let matches = filenameRegex.exec(contentDisposition);
+        if (matches != null && matches[1]) { 
+          file = matches[1].replace(/['"]/g, '');
         }
 
         const blob = new Blob([response.data], { type: 'application/octet-stream' });
