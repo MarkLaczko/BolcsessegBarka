@@ -410,8 +410,8 @@
           }"
         />
         <div >
-          Feltöltött fájl: <span v-if="currentAssignment.teacher_task_name !== 'undefined'">{{ currentAssignment.teacher_task_name }}</span>
-          <span v-if="currentAssignment.teacher_task_name == 'undefined'">Nincs feltöltött feladat</span>
+          {{ messages.pages.coursePage.updateAssignmentDialog.uploadedFile }} <span v-if="currentAssignment.teacher_task_name !== null">{{ currentAssignment.teacher_task_name }}</span>
+          <span v-if="currentAssignment.teacher_task_name == null">{{ messages.pages.coursePage.updateAssignmentDialog.noUploadedFile }}</span>
         </div>
         <FormKit
           type="file"
@@ -1134,7 +1134,7 @@ export default {
       "getCurrentNotes",
     ]),
 
-    async downloadAssignment(assignmentId, filename) {
+    async downloadAssignment(assignmentId) {
       const user = userStore();
       try {
         const response = await http.get(
