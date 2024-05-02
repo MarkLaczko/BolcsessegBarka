@@ -111,6 +111,7 @@
   --manageCourse-button-bg: #{$cyan};
   --actions-button-bg: #{$lightGray};
   --textarea-bg-color: none;
+  --navbar-bg-color: #0073b3;
 }
 
 [data-theme="dark"] {
@@ -164,6 +165,7 @@
   --manageCourse-button-bg: #{$darkerGrey};
   --actions-button-bg: #{$darkerGrey};
   --textarea-bg-color: #{$gray};
+  --navbar-bg-color: #{$gray};
 }
 
 body {
@@ -171,7 +173,20 @@ body {
   color: var(--text-color);
 }
 
-nav,
+nav {
+  background-color: var(--navbar-bg-color);
+}
+
+
+
+.nav-link {
+  color: rgb(255 255 255 / 0.70);
+}
+
+.nav-link:hover {
+  color: rgb(255 255 255);
+}
+
 div.rounded-3,
 div > .darkTheme {
   background-color: var(--header-color);
@@ -413,4 +428,8 @@ textarea.form-control,textarea.form-control:focus  {
   background-color: var(--textarea-bg-color);
   border: var(--textarea-border);
   color: var(--text-color);
+}
+
+.btn {
+  font-weight: bolder !important;
 }
