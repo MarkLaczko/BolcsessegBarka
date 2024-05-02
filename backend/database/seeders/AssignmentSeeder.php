@@ -19,21 +19,21 @@ class AssignmentSeeder extends Seeder
             [
                 'task_name' => 'Ókori civilizációk kutatása',
                 'comment' => 'Az ókori Egyiptom, Görögország és Róma társadalmi szerkezete és kultúrája.',
-                'deadline' => now()->addWeeks(2),
+                'deadline' => now()->addWeeks(2)->format('Y-m-d H:i'),
                 'courseable_id' => 1,
                 'topic_id' => 1,
             ],
             [
                 'task_name' => 'Középkori Európa elemzése',
                 'comment' => 'Elemzés a középkori Európa politikai és gazdasági viszonyairól.',
-                'deadline' => now()->addWeeks(3),
+                'deadline' => now()->addWeeks(3)->format('Y-m-d H:i'),
                 'courseable_id' => 1,
                 'topic_id' => 1,
             ],
             [
                 'task_name' => 'Modern korszak fordulópontjai',
                 'comment' => 'A jelentős történelmi fordulópontok hatása a modern társadalomra.',
-                'deadline' => now()->addWeeks(4),
+                'deadline' => now()->addWeeks(4)->format('Y-m-d H:i'),
                 'courseable_id' => 1,
                 'topic_id' => 1,
             ]
