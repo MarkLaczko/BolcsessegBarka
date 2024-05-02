@@ -409,9 +409,14 @@
             },
           }"
         />
-        <div >
-          {{ messages.pages.coursePage.updateAssignmentDialog.uploadedFile }} <span v-if="currentAssignment.teacher_task_name !== null">{{ currentAssignment.teacher_task_name }}</span>
-          <span v-if="currentAssignment.teacher_task_name == null">{{ messages.pages.coursePage.updateAssignmentDialog.noUploadedFile }}</span>
+        <div>
+          {{ messages.pages.coursePage.updateAssignmentDialog.uploadedFile }}
+          <span v-if="currentAssignment.teacher_task_name !== null">{{
+            currentAssignment.teacher_task_name
+          }}</span>
+          <span v-if="currentAssignment.teacher_task_name == null">{{
+            messages.pages.coursePage.updateAssignmentDialog.noUploadedFile
+          }}</span>
         </div>
         <FormKit
           type="file"
@@ -477,9 +482,20 @@
             },
           }"
         >
-          <Column field="user.name" :header="messages.pages.coursePage.downloadAssignmentDialog.student"></Column>
-          <Column field="student_task_name" :header="messages.pages.coursePage.downloadAssignmentDialog.task"></Column>
-          <Column field="id" :header="messages.pages.coursePage.downloadAssignmentDialog.download">
+          <Column
+            field="user.name"
+            :header="messages.pages.coursePage.downloadAssignmentDialog.student"
+          ></Column>
+          <Column
+            field="student_task_name"
+            :header="messages.pages.coursePage.downloadAssignmentDialog.task"
+          ></Column>
+          <Column
+            field="id"
+            :header="
+              messages.pages.coursePage.downloadAssignmentDialog.download
+            "
+          >
             <template #body="slotProp">
               <button
                 type="button"
@@ -499,18 +515,25 @@
       </div>
       <div class="d-flex justify-content-between">
         <button
-          @click="downloadAssignmentZip(studentAssignments[0].assignment_id,'Assignment.zip')"
+          @click="
+            downloadAssignmentZip(
+              studentAssignments[0].assignment_id,
+              'Assignment.zip'
+            )
+          "
           class="btn btn-success"
           v-if="studentAssignments.length !== 0"
         >
-          {{messages.pages.coursePage.downloadAssignmentDialog.downloadAllTasks}}
+          {{
+            messages.pages.coursePage.downloadAssignmentDialog.downloadAllTasks
+          }}
         </button>
         <div>
           <button
             @click="DownloadAssignmentDialogVisible = false"
             class="btn btn-outline-danger me-2"
           >
-          {{messages.pages.coursePage.downloadAssignmentDialog.close}}
+            {{ messages.pages.coursePage.downloadAssignmentDialog.close }}
           </button>
         </div>
       </div>
@@ -840,23 +863,37 @@
                 :key="assignment.id"
               >
                 <div class="row">
-                  <div class="col-md-6 col-12">
-                    <p class="ms-2 mt-2 mb-2">
-                      {{ messages.pages.assignmentPage.task_name }}
-                      {{ assignment.task_name }} <br />
-                      {{ messages.pages.assignmentPage.deadline }}
-                      {{ assignment.deadline }} <br />
-                      <span v-if="assignment.comment"
-                        >{{ messages.pages.assignmentPage.comment }}
-                        {{ assignment.comment }}</span
-                      >
-                    </p>
+                  <div class="col-lg-6 col-md-12">
+                    <div class="p-2">
+                      <p>
+                        <strong
+                          >{{
+                            messages.pages.assignmentPage.task_name
+                          }}:</strong
+                        >
+                        {{ assignment.task_name }} <br />
+                        <strong
+                          >{{ messages.pages.assignmentPage.deadline }}:</strong
+                        >
+                        {{ assignment.deadline }} <br />
+                        <span v-if="assignment.comment">
+                          <strong
+                            >{{
+                              messages.pages.assignmentPage.comment
+                            }}:</strong
+                          >
+                          {{ assignment.comment }}
+                        </span>
+                      </p>
+                    </div>
                   </div>
-                  <div class="col-md-6 col-12 d-flex justify-content-center">
+                  <div
+                    class="col-lg-3 col-md-6 col-sm-12 d-flex justify-content-center  justify-content-lg-end align-items-center mb-2 mb-lg-0"
+                  >
                     <div
-                      class="btn-group me-2 flex align-items-center"
+                      class="btn-group"
                       role="group"
-                      aria-label="Basic mixed styles example"
+                      aria-label="Assignment Actions"
                       v-if="
                         currentUserData.is_admin || member.permission == 'Tanár'
                       "
@@ -883,17 +920,28 @@
                         <i class="fa-solid fa-download"></i>
                       </button>
                     </div>
-                    <div class="d-flex align-items-center">
-                      <RouterLink
-                        class="btn btn-outline-primary me-2 px-5"
-                        :to="{
-                          name: 'assignment',
-                          params: { id: assignment.id },
-                        }"
-                      >
-                        {{ messages.pages.coursePage.viewButton }}</RouterLink
-                      >
-                    </div>
+                  </div>
+                  <div
+                    :class="{
+                      'col-lg-3 col-md-6 col-sm-12 d-flex justify-content-center align-items-center mb-2 mb-lg-0':
+                        currentUserData.is_admin ||
+                        member.permission == 'Tanár',
+                      'col-lg-3 col-md-12 col-sm-12 d-flex justify-content-center align-items-center mb-2 mb-lg-0':
+                        !(
+                          currentUserData.is_admin ||
+                          member.permission == 'Tanár'
+                        ),
+                    }"
+                  >
+                    <RouterLink
+                      class="btn btn-outline-primary px-4"
+                      :to="{
+                        name: 'assignment',
+                        params: { id: assignment.id },
+                      }"
+                    >
+                      {{ messages.pages.coursePage.viewButton }}
+                    </RouterLink>
                   </div>
                 </div>
               </div>
@@ -1147,13 +1195,13 @@ export default {
           }
         );
         const contentDisposition = response.headers["content-disposition"];
-        let file = null
+        let file = null;
         const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
         let matches = filenameRegex.exec(contentDisposition);
-        if (matches != null && matches[1]) { 
-          file = matches[1].replace(/['"]/g, '');
+        if (matches != null && matches[1]) {
+          file = matches[1].replace(/['"]/g, "");
         }
-       
+
         const blob = new Blob([response.data], {
           type: "application/octet-stream",
         });
@@ -1644,7 +1692,7 @@ export default {
         formData.append("courseable_id", this.$route.params.id);
         formData.append("teacher_task_name", data?.teacher_task[0]?.name);
         formData.append("topic_id", this.activeTopicId);
-        
+
         const user = userStore();
         const response = await http.post(`/assignments`, formData, {
           headers: {
