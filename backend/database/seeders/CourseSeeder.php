@@ -28,7 +28,11 @@ class CourseSeeder extends Seeder
             [
                 'course_id' => '1',
                 'group_id' => '1'
-            ]
+            ],
+            [
+                'course_id' => '2',
+                'group_id' => '2'
+            ],
         ]);
     }
 }

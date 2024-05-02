@@ -37,7 +37,23 @@ class NoteSeeder extends Seeder
                 "topic_id" => 1,
                 "updated_at" => now()->subDay(10),
                 "role" => "Tanár"
-            ]
+            ],
+            [
+                "title" => "Másodfokú egyenlet",
+                "text" => "x<sup>2</sup> + bx + c = 0<br>D = b<sup>2</sup> - 4 * a * c<br>x1,2 = (-b +- √D) / 2 * a",
+                "user_id" => 1,
+                "topic_id" => 2,
+                "updated_at" => now()->subDay(3),
+                "role" => "Tanár"
+            ],
+            [
+                "title" => "Másodfokú egyenlet (órai jegyzetem)",
+                "text" => "Nem értettem semmit :(",
+                "user_id" => 2,
+                "topic_id" => 2,
+                "updated_at" => now()->subDay(3),
+                "role" => "Tanuló"
+            ],
         ]);
     }
 }
