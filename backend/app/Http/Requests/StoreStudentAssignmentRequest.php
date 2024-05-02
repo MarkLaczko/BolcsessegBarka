@@ -27,7 +27,6 @@ class StoreStudentAssignmentRequest extends FormRequest
             "student_task_name" => "required|string",
             "student_task" => "required",
             "user_id" => ["required","numeric",Rule::exists("users","id")],
-            'grade' => 'nullable|numeric|between:1,5',
         ];
     }
 }

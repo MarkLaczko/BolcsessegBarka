@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg" data-bs-theme="dark">
+  <nav class="navbar navbar-expand-lg fw-bold fs-5" data-bs-theme="dark">
     <div class="container-fluid">
       <RouterLink class="navbar-brand" :to="{ name: 'home' }"
         ><img
@@ -85,8 +85,8 @@
                 <div
                   class="user-icon"
                   style="
-                    width: 30px;
-                    height: 30px;
+                    width: 40px;
+                    height: 40px;
                     color: white;
                     display: inline-flex;
                     align-items: center;
