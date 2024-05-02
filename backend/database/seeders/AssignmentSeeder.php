@@ -22,7 +22,6 @@ class AssignmentSeeder extends Seeder
                 'deadline' => now()->addWeeks(2),
                 'courseable_id' => 1,
                 'topic_id' => 1,
-                'teacher_task_name' => 'Kutatási projekt'
             ],
             [
                 'task_name' => 'Középkori Európa elemzése',
@@ -30,7 +29,6 @@ class AssignmentSeeder extends Seeder
                 'deadline' => now()->addWeeks(3),
                 'courseable_id' => 1,
                 'topic_id' => 1,
-                'teacher_task_name' => 'Esszé írása'
             ],
             [
                 'task_name' => 'Modern korszak fordulópontjai',
@@ -38,7 +36,6 @@ class AssignmentSeeder extends Seeder
                 'deadline' => now()->addWeeks(4),
                 'courseable_id' => 1,
                 'topic_id' => 1,
-                'teacher_task_name' => 'Csoportos prezentáció'
             ]
         ]);
     }
