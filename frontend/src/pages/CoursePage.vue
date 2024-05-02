@@ -1220,7 +1220,7 @@ export default {
       }
     },
 
-    async downloadAssignmentZip(assignmentId, filename) {
+    async downloadAssignmentZip(assignmentId) {
       const user = userStore();
       try {
         const response = await http.get(
@@ -1233,12 +1233,11 @@ export default {
           }
         );
         const contentDisposition = response.headers["content-disposition"];
-        let file = filename;
-        if (contentDisposition) {
-          const filenameMatch = contentDisposition.match(/filename="?(.+)"?/);
-          if (filenameMatch && filenameMatch.length === 2) {
-            file = filenameMatch[1];
-          }
+        let file = null;
+        const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+        let matches = filenameRegex.exec(contentDisposition);
+        if (matches != null && matches[1]) {
+          file = matches[1].replace(/['"]/g, "");
         }
 
         const blob = new Blob([response.data], {
