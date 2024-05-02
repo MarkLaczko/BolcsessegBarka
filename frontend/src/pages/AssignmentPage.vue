@@ -1,78 +1,111 @@
 <template>
   <BaseLayout>
-
-    <BaseSpinner :loading="loading"/>
-    <BaseToast/>
+    <BaseSpinner :loading="loading" />
+    <BaseToast />
 
     <div class="rounded-3 my-5 py-2" v-if="!loading">
-      <div class="rounded-3 m-3 p-2 bg-white" v-for="assignment in assignments" :key="assignment.id">
-        <p >
-          {{ messages.pages.assignmentPage.task_name }} {{ assignment.task_name }} <br />
-          {{ messages.pages.assignmentPage.courseName }} {{ assignment.course.name }} <br />
-          {{ messages.pages.assignmentPage.deadline }} {{ assignment.deadline }} <br>
-          <span v-if="assignment.comment">{{ messages.pages.assignmentPage.comment }} {{ assignment.comment }}</span> <br>
-          <span v-if="assignment.teacher_task_name !== null">{{ messages.pages.assignmentPage.teacherTask }} {{ assignment.teacher_task_name }}</span>
+      <div
+        class="rounded-3 m-3 p-2 bg-white"
+        v-for="assignment in assignments"
+        :key="assignment.id"
+      >
+        <p>
+          {{ messages.pages.assignmentPage.task_name }}
+          {{ assignment.task_name }} <br />
+          {{ messages.pages.assignmentPage.courseName }}
+          {{ assignment.course.name }} <br />
+          {{ messages.pages.assignmentPage.deadline }}
+          {{ assignment.deadline }} <br />
+          <span v-if="assignment.comment"
+            >{{ messages.pages.assignmentPage.comment }}
+            {{ assignment.comment }}</span
+          >
+          <br />
+          <span v-if="assignment.teacher_task_name !== null"
+            >{{ messages.pages.assignmentPage.teacherTask }}
+            {{ assignment.teacher_task_name }}</span
+          >
         </p>
-        <div v-if="isDeadlineReached" class=" py-4 text-center alert alert-danger">
+        <div
+          v-if="isDeadlineReached"
+          class="py-4 text-center alert alert-danger"
+        >
           {{ messages.pages.assignmentPage.deadlineExpired }}
         </div>
         <div class="d-flex justify-content-end">
-          <RouterLink v-if="isDeadlineReached" class="btn btn-outline-danger px-5" :to="{ name: 'course', params: { id: assignment.course.id }}">{{messages.pages.assignmentPage.returnButton}}</RouterLink>
+          <RouterLink
+            v-if="isDeadlineReached"
+            class="btn btn-outline-danger px-5"
+            :to="{ name: 'course', params: { id: assignment.course.id } }"
+            >{{ messages.pages.assignmentPage.returnButton }}</RouterLink
+          >
         </div>
         <div v-if="!isDeadlineReached">
           <FormKit
-          type="form"
-          :actions="false"
-          @submit="postNewStudentAssignment"
-          :incomplete-message="
-            messages.pages.userManagementPage.newUserDialog.validationMessages
-              .matchAllValidationMessage
-          "
-        >
-          <FormKit
-            type="file"
-            name="student_task"
-            :label="
-              messages.pages.newAssignmentPage.teacher_task
+            type="form"
+            :actions="false"
+            @submit="postNewStudentAssignment"
+            :incomplete-message="
+              messages.pages.userManagementPage.newUserDialog.validationMessages
+                .matchAllValidationMessage
             "
-            multiple="false"
-            validation=""
-            :classes="{
-              input: {
-                'mb-1': true,
-                'form-control': true,
-              },
-              noFiles: {
-                'd-none': true
-              },
-            }"
-          />
-          <div class="d-flex justify-content-between mt-3 mb-3">
-          <div class="d-flex">
-              <button v-if="assignment.teacher_task_name !== null" class="btn btn-success" @click="downloadAssignment(assignment.id, assignment.teacher_task_name)">Feladat letöltése</button>
-              <div v-else></div>
-          </div>
-          <div class="d-flex">
-              <RouterLink class="btn btn-outline-danger px-5" :to="{ name: 'course', params: { id: assignment.course.id }}">{{messages.pages.assignmentPage.returnButton}}</RouterLink>
-              <FormKit
+          >
+            <FormKit
+              type="file"
+              name="student_task"
+              :label="messages.pages.newAssignmentPage.teacher_task"
+              multiple="false"
+              validation=""
+              :classes="{
+                input: {
+                  'mb-1': true,
+                  'form-control': true,
+                },
+                noFiles: {
+                  'd-none': true,
+                },
+              }"
+            />
+            <div class="d-flex justify-content-between mt-3 mb-3">
+              <div class="d-flex">
+                <button
+                  v-if="assignment.teacher_task_name !== null"
+                  class="btn btn-success"
+                  type="button"
+                  @click="
+                    downloadAssignment(
+                      assignment.id,
+                      assignment.teacher_task_name
+                    )
+                  "
+                >
+                  {{ messages.pages.assignmentPage.downloadTeacherAssignment }}
+                </button>
+                <div v-else></div>
+              </div>
+              <div class="d-flex">
+                <RouterLink
+                  class="btn btn-outline-danger px-5"
+                  :to="{ name: 'course', params: { id: assignment.course.id } }"
+                  >{{ messages.pages.assignmentPage.returnButton }}</RouterLink
+                >
+                <FormKit
                   type="submit"
                   :label="messages.pages.newAssignmentPage.saveButton"
                   id="addAssignmentButton"
                   :classes="{
-                      input: {
-                          btn: true,
-                          'btn-success': true,
-                          'w-auto': true,
-                          'px-5' : true,
-                          'ms-1' : true
-                      },
+                    input: {
+                      btn: true,
+                      'btn-success': true,
+                      'w-auto': true,
+                      'px-5': true,
+                      'ms-1': true,
+                    },
                   }"
-              />
-          </div>
-      </div>
-
-
-        </FormKit>
+                />
+              </div>
+            </div>
+          </FormKit>
         </div>
       </div>
     </div>
@@ -90,7 +123,7 @@ import { mapState } from "pinia";
 import { languageStore } from "@stores/LanguageStore.mjs";
 import { http } from "@utils/http";
 import { userStore } from "@stores/UserStore";
-import BaseSpinner from "@components/BaseSpinner.vue"
+import BaseSpinner from "@components/BaseSpinner.vue";
 import BaseToast from "@components/BaseToast.vue";
 
 export default {
@@ -102,7 +135,7 @@ export default {
     Toast,
     ProgressBar,
     BaseSpinner,
-    BaseToast
+    BaseToast,
   },
   data() {
     return {
@@ -112,7 +145,7 @@ export default {
       assignments: [],
       isDeadlineReached: false,
       deadlineDate: null,
-      loading: true
+      loading: true,
     };
   },
   computed: {
@@ -120,39 +153,44 @@ export default {
     ...mapState(userStore, ["currentUserData"]),
   },
   methods: {
-    async downloadAssignment(assignmentId, filename) {
-    const user = userStore();
-    try {
-        const response = await http.get(`/assignments/${assignmentId}/download`, {
+    async downloadAssignment(assignmentId) {
+      const user = userStore();
+      try {
+        const response = await http.get(
+          `/assignments/${assignmentId}/download`,
+          {
             headers: {
-                Authorization: `Bearer ${user.token}`,
+              Authorization: `Bearer ${user.token}`,
             },
-            responseType: 'blob' 
-        });
-        const contentDisposition = response.headers['content-disposition'];
-        let file = null
+            responseType: "blob",
+          }
+        );
+        const contentDisposition = response.headers["content-disposition"];
+        let file = null;
         const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
         let matches = filenameRegex.exec(contentDisposition);
-        if (matches != null && matches[1]) { 
-          file = matches[1].replace(/['"]/g, '');
+        if (matches != null && matches[1]) {
+          file = matches[1].replace(/['"]/g, "");
         }
 
-        const blob = new Blob([response.data], { type: 'application/octet-stream' });
+        const blob = new Blob([response.data], {
+          type: "application/octet-stream",
+        });
 
         const downloadUrl = window.URL.createObjectURL(blob);
 
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = downloadUrl;
-        link.setAttribute('download', file); 
+        link.setAttribute("download", file);
         document.body.appendChild(link);
         link.click();
 
         link.parentNode.removeChild(link);
-    } catch (error) {
-        console.error('Download error:', error);
-    }
-},
-    async getAssignments(){
+      } catch (error) {
+        console.error("Download error:", error);
+      }
+    },
+    async getAssignments() {
       const user = userStore();
       const response = await http.get(`/assignments/${this.$route.params.id}`, {
         headers: {
@@ -165,24 +203,24 @@ export default {
     async postNewStudentAssignment(data) {
       try {
         const formData = new FormData();
-          formData.append('assignment_id', this.$route.params.id)
-          formData.append('student_task_name', data.student_task[0].name);
-          formData.append('student_task', data.student_task[0].file);
-          formData.append('user_id', this.currentUserData.id);
-          
+        formData.append("assignment_id", this.$route.params.id);
+        formData.append("student_task_name", data.student_task[0].name);
+        formData.append("student_task", data.student_task[0].file);
+        formData.append("user_id", this.currentUserData.id);
+
         const user = userStore();
         await http.post(`/studentAssignments`, formData, {
           headers: {
             Authorization: `Bearer ${user.token}`,
-            'Content-Type': 'application/x-www-form-urlencoded' 
+            "Content-Type": "application/x-www-form-urlencoded",
           },
         });
-
 
         let toast = {
           severity: "success",
           detail:
-            this.messages.pages.newAssignmentPage.toastMessages.successfullyCreatedAssignment,
+            this.messages.pages.newAssignmentPage.toastMessages
+              .successfullyCreatedAssignment,
           life: 3000,
         };
         if (!this.isDarkMode) {
@@ -190,12 +228,12 @@ export default {
         }
 
         this.$toast.add(toast);
-
       } catch (error) {
         let toast = {
           severity: "error",
           detail:
-            this.messages.pages.newAssignmentPage.toastMessages.failedToCreateAssignment,
+            this.messages.pages.newAssignmentPage.toastMessages
+              .failedToCreateAssignment,
           life: 3000,
         };
         if (!this.isDarkMode) {
@@ -207,7 +245,7 @@ export default {
     checkDeadline() {
       const currentDateTime = new Date();
       const deadlineDateTime = new Date(Date.parse(this.deadlineDate));
-      
+
       if (currentDateTime >= deadlineDateTime) {
         this.isDeadlineReached = true;
       } else {
@@ -215,28 +253,18 @@ export default {
       }
     },
   },
-  async mounted(){
+  async mounted() {
     await this.getAssignments();
     this.checkDeadline();
     this.loading = false;
   },
   watch: {
-  assignments: {
-    handler: function(newAssignments) {
-      this.checkDeadline();
+    assignments: {
+      handler: function (newAssignments) {
+        this.checkDeadline();
+      },
+      deep: true,
     },
-    deep: true
-  }
-},
+  },
 };
 </script>
-
-<style scoped>
-.text-custom {
-  font-size: 5rem;
-}
-
-.border {
-  border-width: 2px;
-}
-</style>
