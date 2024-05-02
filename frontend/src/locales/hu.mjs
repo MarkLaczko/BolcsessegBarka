@@ -68,7 +68,9 @@ export default {
       },
       updateAssignmentDialog: {
         uploadedFile: "Feltöltött fájl:",
-        noUploadedFile: "Nincs feltöltött feladat"
+        noUploadedFile: "Nincs feltöltött feladat",
+        successfullyModifyAssignment: "Sikeresen módosítottad a feladatot!",
+        failedToModifyAssignment: "Sikertelen volt a feladat módosítása!"
       },
       downloadAssignmentDialog: {
         title: "Leadott feladatok megtekintése",
@@ -610,6 +612,7 @@ export default {
       task_name: "Feladat:",
       deadlineExpired: "Sajnálom kicsúsztál a határidőből!",
       teacherTask: "Feltöltött feladat:",
+      downloadTeacherAssignment: "Feladat letöltése"
     },
     newAssignmentPage: {
       title: "Új feladat létrehozása",
