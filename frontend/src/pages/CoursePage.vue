@@ -1759,7 +1759,7 @@ export default {
           severity: "success",
           detail:
             this.messages.pages.newAssignmentPage.toastMessages
-              .successfullyCreatedAssignment,
+              .successfullyModifyAssignment,
           life: 3000,
         };
         if (!this.isDarkMode) {
@@ -1776,7 +1776,7 @@ export default {
           severity: "error",
           detail:
             this.messages.pages.newAssignmentPage.toastMessages
-              .failedToCreateAssignment,
+              .failedToModifyAssignment,
           life: 3000,
         };
         if (!this.isDarkMode) {
