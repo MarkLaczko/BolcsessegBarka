@@ -1,9 +1,13 @@
-FROM node:20-alpine3.17
+FROM node:20-alpine3.17 as build
 
 WORKDIR /app
 
-COPY package.json /app/package.json
+ADD . .
 
 RUN npm install
 
-CMD ["npm", "run", "dev", "--","--host"]
+RUN npm run build
+
+FROM  idomi27/vue-runner as prod
+
+COPY --from=build /app/dist /usr/share/nginx/html

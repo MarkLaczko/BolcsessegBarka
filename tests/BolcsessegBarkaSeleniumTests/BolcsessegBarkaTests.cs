@@ -622,17 +622,21 @@ public class BolcsessegBarkaTests
         
         Wait(ExpectedConditions.TextToBePresentInElementLocated(By.CssSelector("body"), "Informatika"), TimeSpan.FromSeconds(10));
         
-        Assert.AreEqual(2, _webDriver.FindElements(By.CssSelector("tr[tabindex='-1']")).Count);
+        Assert.AreEqual(3, _webDriver.FindElements(By.CssSelector("tr[tabindex='-1']")).Count);
         Thread.Sleep(500);
         
-        SelectElement("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(2) > td:nth-child(6) > button > i","CssSelector",true);
+        IWebElement deleteBtn = _webDriver.FindElement(By.CssSelector(".table > tbody:nth-child(2) > tr:nth-child(3) > td:nth-child(6) > button:nth-child(1)"));
+        ((IJavaScriptExecutor)_webDriver).ExecuteScript("arguments[0].scrollIntoView(true);", deleteBtn);
+        Thread.Sleep(2000);
+        
+        SelectElement(".table > tbody:nth-child(2) > tr:nth-child(3) > td:nth-child(6) > button:nth-child(1)","CssSelector",true);
         
         Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("button[data-pc-name='acceptbutton']")),TimeSpan.FromSeconds(10));
         SelectElement("button[data-pc-name='acceptbutton']","CssSelector",true);
         
-        new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10)).Until(drv => drv.FindElements(By.CssSelector("tr[tabindex='-1']")).Count == 1);
+        new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10)).Until(drv => drv.FindElements(By.CssSelector("tr[tabindex='-1']")).Count == 2);
         
-        Assert.AreEqual(1, _webDriver.FindElements(By.CssSelector("tr[tabindex='-1']")).Count);
+        Assert.AreEqual(2, _webDriver.FindElements(By.CssSelector("tr[tabindex='-1']")).Count);
     }
 
     [TestMethod]
@@ -648,7 +652,7 @@ public class BolcsessegBarkaTests
         Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(6) > button > i")), TimeSpan.FromSeconds(10));
         SelectElement("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(6) > button > i", "CssSelector", true);
         
-        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("tbody > tr:nth-child(1) > td:nth-child(1) > div > button > i")), TimeSpan.FromSeconds(10));
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div[name='dialog'] ")), TimeSpan.FromSeconds(10));
         SelectElement("tbody > tr:nth-child(1) > td:nth-child(1) > div > button > i", "CssSelector", true);
         SelectElement("#modifyGroupButton","CssSelector",true);
         
