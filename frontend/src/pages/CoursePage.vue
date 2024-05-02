@@ -1443,7 +1443,6 @@ export default {
 
         this.$toast.add(toast);
       } catch (error) {
-        console.log(error);
         let toast = {
           severity: "error",
           detail:
@@ -1770,7 +1769,6 @@ export default {
         this.$toast.add(toast);
         this.newAssignmentDialogVisible = false;
       } catch (error) {
-        console.log(error);
         let toast = {
           severity: "error",
           detail:
