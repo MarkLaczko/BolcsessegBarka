@@ -66,6 +66,10 @@ export default {
         rejectLabel: "Mégsem",
         acceptLabel: "Törlés"
       },
+      updateAssignmentDialog: {
+        uploadedFile: "Feltöltött fájl:",
+        noUploadedFile: "Nincs feltöltött feladat"
+      },
       downloadAssignmentDialog: {
         title: "Leadott feladatok megtekintése",
         noAssignment: "Nincs leadott feladat!",
