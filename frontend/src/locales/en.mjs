@@ -65,6 +65,10 @@ export default {
         rejectLabel: "Cancel",
         acceptLabel: "Delete"
       },
+      updateAssignmentDialog: {
+        uploadedFile: "Uploaded file:",
+        noUploadedFile: "There are no tasks uploaded"
+      },
       downloadAssignmentDialog: {
         title: "View assignments",
         noAssignment: "No assignment submitted!",
