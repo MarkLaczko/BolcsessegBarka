@@ -16,12 +16,10 @@ class TopicSeeder extends Seeder
         DB::table('topics')->insert([
             [
                 'name' => 'Történelmi korszakok',
-                'order' => 1,
                 'course_id' => 1
             ],
             [
                 'name' => 'Függvények',
-                'order' => 2,
                 'course_id' => 2
             ]
         ]);
