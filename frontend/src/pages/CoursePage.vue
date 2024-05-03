@@ -40,24 +40,6 @@
           }"
         />
 
-        <FormKit
-          type="text"
-          name="order"
-          :label="messages.pages.coursePage.newTopicDialog.orderLabel"
-          validation="number"
-          :validation-messages="{
-            number:
-              messages.pages.coursePage.newTopicDialog.validationMessages
-                .orderNumber,
-          }"
-          :classes="{
-            input: {
-              'mb-1': true,
-              'form-control': true,
-            },
-          }"
-        />
-
         <div class="d-flex justify-content-end mt-2 mb-3">
           <Button
             type="button"
@@ -104,24 +86,6 @@
             length:
               messages.pages.coursePage.editTopicDialog.validationMessages
                 .nameLength,
-          }"
-          :classes="{
-            input: {
-              'mb-1': true,
-              'form-control': true,
-            },
-          }"
-        />
-
-        <FormKit
-          type="text"
-          name="order"
-          :label="messages.pages.coursePage.editTopicDialog.orderLabel"
-          validation="number"
-          :validation-messages="{
-            number:
-              messages.pages.coursePage.editTopicDialog.validationMessages
-                .orderNumber,
           }"
           :classes="{
             input: {
@@ -198,7 +162,7 @@
             input: 'form-check-input me-2',
           },
           transition: {
-            name: 'slide-fade',
+            name: 'multi-select-fade',
           },
           item: {
             class: 'd-flex',
