@@ -601,7 +601,7 @@ export default {
     },
     assignmentPage: {
       dragFileText: "Húzza ide a fájlokat a feltöltéshez",
-      returnButton: "Vissza",
+      returnButton: "Mégsem",
       comment: "Hozzászólás:",
       deadline: "Határidő:",
       courseName: "Kurzus:",
