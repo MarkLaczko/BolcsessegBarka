@@ -175,7 +175,7 @@
         input: 'form-check-input me-2',
       },
       transition: {
-        name: 'slide-fade',
+        name: 'multi-select-fade',
       },
       item: {
         class: 'd-flex',
