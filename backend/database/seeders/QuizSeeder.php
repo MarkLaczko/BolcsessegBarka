@@ -20,8 +20,17 @@ class QuizSeeder extends Seeder
                 'topic_id' => 1,
                 'max_attempts' => 5,
                 'opens' => now()->subDay(),
-                'closes' => now()->addDay(),
+                'closes' => now()->addDays(35),
                 'time' => 60
+            ],
+            [
+                'id' => 2,
+                'name' => 'Röpdolgozat',
+                'topic_id' => 2,
+                'max_attempts' => 1,
+                'opens' => now()->subDays(2),
+                'closes' => now()->addDays(33),
+                'time' => 10
             ]
         ]);
     }

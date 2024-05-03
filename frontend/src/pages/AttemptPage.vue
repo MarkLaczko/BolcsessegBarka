@@ -1,9 +1,9 @@
 <template>
     <BaseLayout>
-        <div v-if="!loading" class="mb-4">
+        <div v-if="!loading" class="mb-5">
             <h1>{{ attemptDetails.value.quiz.name }}</h1>
             <div class="my-3" v-if="attemptDetails.value.quiz.time != null">
-                <span class="p-2 bg-secondary rounded-pill">
+                <span class="p-2 bg-primary text-white fw-bold rounded-pill">
                     {{ convertSecondstoTime((attemptDetails.value.start + attemptDetails.value.quiz.time * 60) - timeStore().now) }}
                 </span>
             </div>
@@ -15,7 +15,7 @@
                 <div class="my-4" v-for="(subtask, index2) of task.subtasks" :key="subtask.id">
                     <div v-html="subtask.question"></div>
                     <div>
-                        <input type="text" class="form-control" v-if="subtask.type == 'short_answer'" @input="event => attemptStore().addAnswer(route.params.id, subtask.id, event.target.value)">
+                        <input type="text" class="form-control form-control-dark" v-if="subtask.type == 'short_answer'" @input="event => attemptStore().addAnswer(route.params.id, subtask.id, event.target.value)">
                         <div v-if="subtask.type == 'multiple_choice'">
                             <div class="form-check" v-for="(option, index) of subtask.options" :key="index">
                                 <input class="form-check-input" type="radio" :value="option" :name="`option${subtask.id}`" :id="`option${subtask.id}number${index}`" @click="event => attemptStore().addAnswer(route.params.id, subtask.id, event.target.value)">
@@ -35,7 +35,7 @@
                 </div>
 
             </div>
-            <button type="button" class="btn btn-success" @click="submitAttempt">Elküldés</button>
+            <button type="button" class="btn btn-success text-white" @click="submitAttempt">Elküldés</button>
         </div>
     </BaseLayout>
 </template>

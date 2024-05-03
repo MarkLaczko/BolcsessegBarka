@@ -25,6 +25,12 @@ class TaskSeeder extends Seeder
                 'order' => 1,
                 'header' => 'A feladat Németország 19-20. századi történetével kapcsolatos.',
                 'text' => '(komplex korszakokon átívelő)',
+            ],
+            [
+                'quiz_id' => 2,
+                'order' => 0,
+                'header' => 'Másodfokú egyenlet',
+                'text' => 'Oldd meg a másodfokú egyenleteket!',
             ]
         ]);
     }

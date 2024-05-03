@@ -65,6 +65,16 @@ class GroupSeeder extends Seeder
                 'user_id' => '1',
                 'permission' => 'Tanár'
             ], 
+            [
+                'group_id' => '1',
+                'user_id' => '2',
+                'permission' => 'Tanuló'
+            ],
+            [
+                'group_id' => '2',
+                'user_id' => '2',
+                'permission' => 'Tanuló'
+            ], 
         ]);
     }
 }

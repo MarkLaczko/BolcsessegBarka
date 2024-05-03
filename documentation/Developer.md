@@ -5,6 +5,7 @@
 1. [Indítás](#indítás)
    - [Beépített felhasználók](#beépített-felhasználók)
    - [Adatbázis](#adatbázis)
+   - [Tesztelési jegyzőkönyv](#tesztelési-jegyzőkönyv)
 2. [API dokumentáció](#api-dokumentáció)
    - [Csoportok, felhasználó regisztrálás, bejelentkezés](#csoportokhoz-és-felhasználó-regisztrálásához-bejelentkezéséhez-szükséges-routeok)
    - [Felhasználó routeok](#felhasználóhoz-kapcsolodó-routeok)
@@ -70,6 +71,10 @@ A projekt elindításához futassa le a `start.sh` fájlt.
 Az adatbázis EK diagramja [itt](https://dbdiagram.io/d/65f97220ae072629ce6400fe) érhető el.
 
 ![EK diagram](/documentation/er_diagram.png)
+
+### Tesztelési jegyzőkönyv
+
+A teszteléi jegyzőkönyv [itt](https://docs.google.com/spreadsheets/d/11gIBbxXhjW49-Xj5zJ5saSNCxc-tVdxybsBv-37Cc1k/edit?usp=sharing) érhető el.
 
 ## API Dokumentáció
 

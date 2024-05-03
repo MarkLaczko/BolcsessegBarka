@@ -36,7 +36,7 @@
                             <div v-for="subtask of task.subtasks" :key="subtask.id" class="my-2 pt-2 border px-2 rounded">
                                 <div v-html="subtask.question"></div>
                                 <div v-if="subtask.answer != undefined">
-                                    <input type="text" v-if="subtask.type == 'short_answer'" :value="subtask.answer.answer" class="form-control" disabled >
+                                    <input type="text" v-if="subtask.type == 'short_answer'" :value="subtask.answer.answer" class="form-control form-control-dark" disabled >
                                     <div class="form-check" v-if="subtask.type == 'multiple_choice'" v-for="(option, index) of subtask.answer.subtask.options" :key="index">
                                         <input class="form-check-input" type="radio" :checked="subtask.answer.answer == option" :disabled="subtask.answer.answer != option">
                                         <label class="form-check-label" :for="`option${subtask.id}number${index}`">
@@ -54,7 +54,7 @@
                                                 :id="`maxMarks${subtask.answer.id}`"
                                                 :classes="{
                                                     label: 'form-label',
-                                                    input: 'form-control'
+                                                    input: 'form-control form-control-dark'
                                                 }"
                                             />
                                         </div>
@@ -70,14 +70,15 @@
                                                     :label="messages.pages.markQuizPage.marks"
                                                     :id="`marks${subtask.answer.id}`"
                                                     step="0.5"
-                                                    validation="required|min:0"
+                                                    :disabled="subtask.correct"
+                                                    :validation="`required|min:0|max:${subtask.maxMarks}`"
                                                     :validation-messages="{
                                                         required: messages.pages.editTaskPage.marksRequired,
                                                         min: messages.pages.editTaskPage.marksMin,
                                                     }"
                                                     :classes="{
                                                         label: 'form-label',
-                                                        input: 'form-control'
+                                                        input: 'form-control form-control-dark'
                                                     }"
                                                 />
 
@@ -90,6 +91,7 @@
                                                         label: 'form-check-label ms-2',
                                                         input: 'form-check-input'
                                                     }"
+                                                    @click="subtask.marks = subtask.correct == false ? subtask.maxMarks : 0"
                                                 />
 
                                                 <FormKit
@@ -97,7 +99,7 @@
                                                     :label="messages.pages.markQuizPage.save"
                                                     :id="`submit${subtask.answer.id}`"
                                                     :classes="{
-                                                        input: 'btn btn-success mt-2'
+                                                        input: 'btn btn-success text-white mt-2'
                                                     }"
                                                 />
                                             </FormKit>
@@ -123,7 +125,7 @@
                                 id="overallMarks"
                                 :classes="{
                                     label: 'form-label',
-                                    input: 'form-control'
+                                    input: 'form-control form-control-dark'
                                 }"
                             />
                         </div>
@@ -145,7 +147,7 @@
                                     }"
                                     :classes="{
                                         label: 'form-label',
-                                        input: 'form-control'
+                                        input: 'form-control form-control-dark'
                                     }"
                                 />
 
@@ -159,7 +161,7 @@
                                         :label="messages.pages.markQuizPage.save"
                                         id="submitGrade"
                                         :classes="{
-                                            input: 'btn btn-success mt-2'
+                                            input: 'btn btn-success text-white mt-2'
                                         }"
                                     />
                                 </div>
