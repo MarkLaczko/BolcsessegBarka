@@ -3,7 +3,7 @@ export default {
     registerPage: {
       title: "Registration",
       submitButton: "Register",
-      accountText: "Don't have an account yet?",
+      accountText: "Already have an account?",
       namePlaceholder: "Name",
       emailPlaceholder: "E-mail",
       passwordPlaceholder: "Password",
@@ -83,13 +83,11 @@ export default {
       newTopicDialog: {
         title: "Add New Topic",
         nameLabel: "Name",
-        orderLabel: "Order",
         saveButton: "Save",
         cancelButton: "Cancel",
         validationMessages: {
           nameRequired: "Selecting a topic name is required.",
           nameLength: "The topic name must be less than 60 characters.",
-          orderNumber: "Order must be a number.",
           matchAllValidationMessage:
             "Sorry, not all fields have been filled out correctly.",
         },
@@ -97,12 +95,10 @@ export default {
       editTopicDialog: {
         title: "Edit Topic",
         nameLabel: "Name",
-        orderLabel: "Order",
         saveButton: "Save",
         cancelButton: "Cancel",
         validationMessages: {
           nameLength: "The topic name must be less than 60 characters.",
-          orderNumber: "The order must be a number.",
           matchAllValidationMessage: "Sorry, not all fields were filled out correctly.",
         },
       },
@@ -597,7 +593,7 @@ export default {
     assignmentPage: {
       dragFileText: "Drag files here to upload",
       returnButton: "Return",
-      comment: "Comment",
+      comment: "Comment:",
       deadline: "Deadline:",
       courseName: "Course:",
       task_name: "Assignment:",

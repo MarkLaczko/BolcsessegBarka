@@ -3,7 +3,7 @@ export default {
     registerPage: {
       title: "Regisztráció",
       submitButton: "Regisztráció",
-      accountText: "Még nincs fiókja?",
+      accountText: "Már van fiókja?",
       namePlaceholder: "Név",
       emailPlaceholder: "E-mail",
       passwordPlaceholder: "Jelszó",
@@ -84,14 +84,12 @@ export default {
       newTopicDialog: {
         title: "Új téma felvétele",
         nameLabel: "Név",
-        orderLabel: "Sorrend",
         saveButton: "Mentés",
         cancelButton: "Mégsem",
         validationMessages: {
           nameRequired: "A téma nevének kiválasztása kötelező.",
           nameLength:
             "A téma nevének kevesebbnek kell lennie, mint 60 karakter.",
-          orderNumber: "A sorrend csak szám lehet.",
           matchAllValidationMessage:
             "Sajnáljuk, nem minden mezőt töltöttek ki helyesen.",
         },
@@ -99,13 +97,11 @@ export default {
       editTopicDialog: {
         title: "Téma modósítása",
         nameLabel: "Név",
-        orderLabel: "Sorrend",
         saveButton: "Mentés",
         cancelButton: "Mégsem",
         validationMessages: {
           nameLength:
             "A téma nevének kevesebbnek kell lennie, mint 60 karakter.",
-          orderNumber: "A sorrend csak szám lehet.",
           matchAllValidationMessage:
             "Sajnáljuk, nem minden mezőt töltöttek ki helyesen.",
         },
