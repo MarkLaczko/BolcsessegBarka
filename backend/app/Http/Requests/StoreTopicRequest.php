@@ -22,8 +22,7 @@ class StoreTopicRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ["required", "max: 60"],
-            "order" => ["nullable"]
+            "name" => ["required", "max: 60"]
         ];
     }
 }
