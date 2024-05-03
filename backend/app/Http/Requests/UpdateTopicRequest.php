@@ -22,8 +22,7 @@ class UpdateTopicRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ["max: 60"],
-            "order" => ["nullable"]
+            "name" => ["max: 60"]
         ];
     }
 }
