@@ -14,7 +14,6 @@ class Topic extends Model
 
     protected $fillable = [
         "name",
-        "order"
     ];
 
     public function notes() : HasMany
