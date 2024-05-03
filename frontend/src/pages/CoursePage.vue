@@ -628,7 +628,7 @@
           <div class="d-flex justify-content-start align-items-center gap-2">
             <button
               type="button"
-              class="btn btn-secondary"
+              class="btn btn-secondary" :class="{'text-white' : isDarkMode, 'text-dark' : !isDarkMode}"
               @click="(currentNoteVisible = false), (isNoteReadonly = true)"
             >
               {{ messages.pages.coursePage.currentNoteDialog.cancelButton }}
@@ -761,12 +761,12 @@
                   >
                 </li>
                 <li>
-                  <button
-                    class="dropdown-item text-center"
+                  <a
+                    class="dropdown-item text-center btn"
                     @click="navigateToNewQuizPage(course.id, topic.id)"
                   >
                     {{ messages.pages.coursePage.accordionText.newQuiz }}
-                  </button>
+                  </a>
                 </li>
                 <li>
                   <a
@@ -1009,7 +1009,7 @@
                             (currentUserData.is_admin &&
                               member.permission == 'Tanár')
                           "
-                          class="btn" :class="{'btn-secondary' : !isDarkMode,'text-dark' : !isDarkMode, 'btn-light' : isDarkMode, 'text-white' : !isDarkMode}"
+                          class="btn" :class="{'btn-warning' : !isDarkMode,'text-dark' : !isDarkMode, 'btn-light' : isDarkMode, 'text-white' : !isDarkMode}"
                           type="button"
                           @click="navigateToEditQuizPage(quiz.id)"
                         >
