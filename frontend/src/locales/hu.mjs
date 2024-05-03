@@ -616,7 +616,7 @@ export default {
       task_nameLabel: "Feladat címe",
       saveButton: "Mentés",
       cancelButton: "Mégsem",
-      comment: "Hozzászólás",
+      comment: "Hozzászólás:",
       deadline: "Határidő",
       courseName: "Kurzus neve",
       topic_name: "Téma kiválasztása",

@@ -607,7 +607,7 @@ export default {
       task_nameLabel: "Task title",
       saveButton: "Save",
       cancelButton: "Cancel",
-      comment: "Comment",
+      comment: "Comment:",
       deadline: "Deadline",
       courseName: "Course name",
       topic_name: "Select a topic",
