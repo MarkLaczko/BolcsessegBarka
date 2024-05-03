@@ -8,33 +8,8 @@
       </h1>
 
       <BaseConfirmDialog />
-
-      <Toast :pt="{
-      root: {
-        class: 'w-25',
-      },
-      detail: {
-        class: 'text-center',
-      },
-      icon: {
-        class: 'mt-1 ms-1',
-      },
-      text: {
-        class: 'w-75 mx-auto',
-      },
-      container: {
-        class: ' rounded w-75',
-      },
-      buttonContainer: {
-        class: 'w-25 d-flex justify-content-center ms-auto',
-      },
-      button: {
-        class: 'btn mb-2',
-      },
-      transition: {
-        name: 'slide-fade',
-      },
-    }" />
+      <BaseToast />
+      
       <BaseDialog v-if="addCourseDialogVisible" :width="'25rem'" :visible="addCourseDialogVisible"
         :header="messages.pages.courseManagementPage.newCourseDialog.title">
         <FormKit type="form" :actions="false" @submit="postCourses" :incomplete-message="messages.pages.courseManagementPage.newCourseDialog
@@ -67,12 +42,13 @@
     }" :title="messages.pages.courseManagementPage.newCourseDialog.fileUpload
       " />
           <div class="d-flex justify-content-end mt-2 mb-3">
-            <Button type="button" label="Mégse" class="btn btn-outline-danger mx-1"
+            <Button type="button" label="Mégse" class="btn btn-danger text-white mx-1"
               @click="addCourseDialogVisible = false"></Button>
             <FormKit type="submit" label="Mentés" :classes="{
       input: {
         btn: true,
         'btn-success': true,
+        'text-white': true,
         'w-auto': true,
         'addCourse': true
       },
@@ -148,12 +124,13 @@
     }" />
 
           <div class="d-flex justify-content-end mt-2 mb-3">
-            <Button type="button" label="Mégse" class="btn btn-outline-danger mx-1"
+            <Button type="button" label="Mégse" class="btn btn-danger text-white mx-1"
               @click="modifyCourseDialogVisible = false"></Button>
             <FormKit type="submit" label="Mentés" :classes="{
       input: {
         btn: true,
         'btn-success': true,
+        'text-white': true,
         'w-auto': true,
         'modifyCourse': true
       },
@@ -280,7 +257,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import RadioButton from "primevue/radiobutton";
 import InputText from "primevue/inputtext";
-import Toast from "primevue/toast";
+import BaseToast from "@components/BaseToast.vue";
 import BaseSpinner from "@components/BaseSpinner.vue";
 import BaseDialog from "@components/BaseDialog.vue";
 import BaseConfirmDialog from "@components/BaseConfirmDialog.vue";
@@ -304,7 +281,7 @@ export default {
     Column,
     RadioButton,
     InputText,
-    Toast,
+    BaseToast,
     RadioButton,
     MultiSelect,
     BaseSpinner,
@@ -408,8 +385,8 @@ export default {
       this.$confirm.require({
         message: this.messages.pages.courseManagementPage.confirmDialogs.message,
         icon: 'pi pi-exclamation-triangle',
-        rejectClass: 'btn btn-danger',
-        acceptClass: 'btn btn-success ',
+        rejectClass: 'btn btn-danger text-white',
+        acceptClass: 'btn btn-success text-white',
         rejectLabel: this.messages.pages.courseManagementPage.confirmDialogs.rejectLabel,
         acceptLabel: this.messages.pages.courseManagementPage.confirmDialogs.acceptLabel,
         accept: async () => {
@@ -457,8 +434,8 @@ export default {
       this.$confirm.require({
         message: this.messages.pages.courseManagementPage.confirmDialogs.message,
         icon: 'pi pi-exclamation-triangle',
-        rejectClass: 'btn btn-danger',
-        acceptClass: 'btn btn-success ',
+        rejectClass: 'btn btn-danger text-white',
+        acceptClass: 'btn btn-success text-white',
         rejectLabel: this.messages.pages.courseManagementPage.confirmDialogs.rejectLabel,
         acceptLabel: this.messages.pages.courseManagementPage.confirmDialogs.acceptLabel,
         accept: async () => {
@@ -587,30 +564,6 @@ export default {
 </script>
 
 <style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.slide-fade-enter-active {
-  transition: all 0.3s ease-out;
-}
-
-.slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  transform: translateY(-20px);
-  opacity: 0;
-}
-
 span.formkit-no-files {
   display: none;
 }

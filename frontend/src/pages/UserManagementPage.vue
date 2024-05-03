@@ -8,33 +8,8 @@
       </h1>
 
       <BaseConfirmDialog />
+      <BaseToast />
 
-      <Toast :pt="{
-      root: {
-        class: 'w-25',
-      },
-      detail: {
-        class: 'text-center',
-      },
-      icon: {
-        class: 'mt-1 ms-1',
-      },
-      text: {
-        class: 'w-75 mx-auto',
-      },
-      container: {
-        class: ' rounded w-75',
-      },
-      buttonContainer: {
-        class: 'w-25 d-flex justify-content-center ms-auto',
-      },
-      button: {
-        class: 'btn mb-2',
-      },
-      transition: {
-        name: 'slide-fade',
-      },
-    }" />
       <BaseDialog v-if="addUserDialogVisible" :width="'25rem'" :visible="addUserDialogVisible"
         :header="messages.pages.userManagementPage.newUserDialog.title" >
         <FormKit type="form" :actions="false" @submit="postUser" :incomplete-message="messages.pages.userManagementPage.newUserDialog.validationMessages
@@ -102,12 +77,13 @@
     }" />
           <div class="d-flex justify-content-end mt-2 mb-3">
             <Button type="button" :label="messages.pages.userManagementPage.newUserDialog.cancelButton
-      " class="btn btn-outline-danger mx-1" @click="addUserDialogVisible = false"></Button>
+      " class="btn btn-danger text-white mx-1" @click="addUserDialogVisible = false"></Button>
             <FormKit type="submit" :label="messages.pages.userManagementPage.newUserDialog.saveButton
       " id="addUserButton" :classes="{
       input: {
         btn: true,
         'btn-success': true,
+        'text-white': true,
         'w-auto': true,
       },
     }" />
@@ -183,12 +159,13 @@
       },
     }" />
           <div class="d-flex justify-content-end mt-2 mb-3">
-            <Button type="button" label="Mégse" class="btn btn-outline-danger mx-1"
+            <Button type="button" label="Mégse" class="btn btn-danger text-white mx-1"
               @click="modifyUserDialogVisible = false"></Button>
             <FormKit type="submit" label="Mentés" :classes="{
       input: {
         btn: true,
         'btn-success': true,
+        'text-white': true,
         'w-auto': true,
       },
     }" />
@@ -340,6 +317,7 @@ import { FilterMatchMode } from "primevue/api";
 import { themeStore } from "@stores/ThemeStore.mjs";
 import { languageStore } from "@stores/LanguageStore.mjs";
 import BaseConfirmDialog from "@components/BaseConfirmDialog.vue";
+import BaseToast from "@components/BaseToast.vue";
 
 export default {
   components: {
@@ -350,7 +328,7 @@ export default {
     Column,
     RadioButton,
     InputText,
-    Toast,
+    BaseToast,
     RadioButton,
     BaseSpinner,
     BaseConfirmDialog,
@@ -442,8 +420,8 @@ export default {
       this.$confirm.require({
         message: this.messages.pages.userManagementPage.confirmDialogs.message,
         icon: 'pi pi-exclamation-triangle',
-        rejectClass: 'btn btn-danger',
-        acceptClass: 'btn btn-success ',
+        rejectClass: 'btn btn-danger text-white',
+        acceptClass: 'btn btn-success text-white',
         rejectLabel: this.messages.pages.userManagementPage.confirmDialogs.rejectLabel,
         acceptLabel: this.messages.pages.userManagementPage.confirmDialogs.acceptLabel,
         accept: async () => {
@@ -494,8 +472,8 @@ export default {
       this.$confirm.require({
         message: this.messages.pages.userManagementPage.confirmDialogs.message,
         icon: 'pi pi-exclamation-triangle',
-        rejectClass: 'btn btn-danger',
-        acceptClass: 'btn btn-success ',
+        rejectClass: 'btn btn-danger text-white',
+        acceptClass: 'btn btn-success text-white',
         rejectLabel: this.messages.pages.userManagementPage.confirmDialogs.rejectLabel,
         acceptLabel: this.messages.pages.userManagementPage.confirmDialogs.acceptLabel,
         accept: async () => {
@@ -607,29 +585,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.slide-fade-enter-active {
-  transition: all 0.3s ease-out;
-}
-
-.slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  transform: translateY(-20px);
-  opacity: 0;
-}
-</style>
