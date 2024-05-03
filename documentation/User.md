@@ -13,6 +13,13 @@
 9.  [Kvíz módosítása](#kvíz-módosítása) (Tanárok számára)
 10. [Kvíz kitöltése](#kvíz-kitöltése)
 11. [Kvíz értékelése](#kvíz-értékelése) (Tanárok számára)
+12. [Új feladat létrehozása](#új-feladat-létrehozása) (Tanárok számára)
+13. [Feladat módosítása](#feladat-módosítása) (Tanárok számára)
+14. [Feladat törlése](#feladat-törlése) (Tanárok számára)
+15. [Feladat letöltése](#feladat-letöltése) (Tanárok számára)
+16. [Feladat leadása](#feladat-leadása) (Diákok számára)
+
+
 
 ## Bevezetés
 
@@ -430,3 +437,145 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 2. **Értékelés**
 
    - Az értékelés befejezéséhez az oldal alján található `Értékelés` rész a lap alján található. Itt látható az elért pontszám, valamint adható meg szöveges (maximum 10 akrakter hosszú) értékelés. Ennek elmentéséhez a `Mentés` gombra kell kattintani. A `Befejezés` gomb visszavisz a kvíz oldalára.
+
+
+## Új feladat létrehozása
+
+### Bevezetés:
+
+> Új feladat létrehozása a kurzus oldaláról, azon belül is egy témából érhető el a `Műveletek`, `Új feladat` gombra kattintva. 
+
+### Funkciók és használat:
+
+1. **Feladat címe**
+
+   - Kötelező kitölteni, a maximális hosszúsága 255 karakter lehet. 
+
+2. **Hozzászólás**
+
+   - Nem kötelező kitölteni, a maximális hosszúsága 255 karakter lehet. A diákok számára lehet írni megjegyzést a feladattal kapcsolatban.
+
+3. **Határidő**
+
+   - Kötelező kitölteni, itt lehet beállítani, hogy a diák meddig adhatja le a feladatot.
+
+4. **Feladat/Jegyzet feltöltése diákok számára**
+
+   - Nem kötelező kitölteni, fel tud tölteni egy fájlt amit szeretné hogy a diákok lássanak. 
+
+5. **Mégsem gomb**
+
+   - Ezzel a gombbal lehet elvetni a feladat létrehozását.
+
+6. **Mentés gomb**
+
+   - Ezzel a gombbal lehet elmenteni a feladatot ami annál a témánál fog megjelenni ahol rá lett nyomva a művelet gombra.
+
+
+## Feladat módosítása
+
+### Bevezetés:
+
+> A feladat módosítása a kurzus oldaláról, a létrehozott feladat kártyán látható ceruza ikonra kattintva érhető el.
+
+### Funkciók és használat:
+
+1. **Feladat címe**
+
+   - Kötelező kitölteni, a maximális hosszúsága 255 karakter lehet. 
+
+2. **Hozzászólás**
+
+   - Nem kötelező kitölteni, a maximális hosszúsága 255 karakter lehet. A diákok számára lehet írni megjegyzést a feladattal kapcsolatban.
+
+3. **Határidő**
+
+   - Kötelező kitölteni, itt lehet módosítani, hogy a diák meddig adhatja le a feladatot.
+
+4. **Feladat/Jegyzet feltöltése diákok számára**
+
+   - Nem kötelező kitölteni, itt lehet hozzáadni vagy módosítani egy fájlt amit szeretné hogy a diákok lássanak. 
+
+5. **Mégsem gomb**
+
+   - Ezzel a gombbal lehet elvetni a feladat módosítását.
+
+6. **Mentés gomb**
+
+   - Ezzel a gombbal lehet elmenteni a módosított feladatot.
+
+## Feladat törlése
+
+> A feladat törlése a kurzus oldaláról, a létrehozott feladat kártyán látható kuka ikonra kattintva érhető el. Miután rányom a gombra egy megerősítő ablakot feldobni.
+
+### Funkciók és használat:
+
+1. **Mégsem**
+
+   - Ezzel a gombbal elveti a törlést és így megmarad a feladat. 
+
+2. **Mentés**
+
+   - Ezzel a gombbal tudja véglegesíteni a törlést és így végleg törli a feladatot.
+
+## Feladat letöltése 
+
+> A feladatot letölteni a kurzus oldaláról, a létrehozott feladat kártyán látható letöltés ikonra kattintva érhető el. Miután rányom a gombra felfog ugrani egy ablak amin megjelennek az ahhoz a témához tartozó összes feladat amit a diákok adtak le.
+
+### Funkciók és használat:
+
+1. **Táblázat**
+
+   - **1. oszlop:** Ebben az oszlopban látható, hogy melyik diák adta le a feladatot. 
+   - **2. oszlop:** Ebben az oszlopban látható, a leadott fájl neve.
+   - **3. oszlop:** Ebben az oszlopban látható, lehet letölteni a feladatot amit a diák feltöltött.
+
+2. **Összes feladat letöltése**
+
+   - Ezzel a gombbal tudja letölteni az összes diák álltal leadott feladatot ami ahhoz a feladathoz tartozik.
+
+2. **Bezárás**
+
+   - Ezzel a gombbal tudja becsukni a felugró ablakot.
+
+## Feladat leadása
+
+> A feladatot leadni a kurzus oldaláról, a létrehozott feladat kártyán látható `Megtekintés` gombra kattintva lehet.
+
+### Funkciók és használat:
+
+1. **Feladat**
+
+   - Ez a létrehozott feladat címét mutatja.
+
+2. **Kurzus**
+
+   - Ez azt mutatja meg, hogy melyik kurzusba tarozik a feladat.
+
+3. **Határidő**
+
+   - Ez azt mutatja meg, hogy meddig lehet feltölteni a feladatot.
+
+4. **Hozzászólás**
+
+   - Ez csak akkor jelenik meg hogyha a tanár írt a feladathoz megjegyzést.
+
+5. **Feltöltött feladat**
+
+   - Itt látható a tanár álltal feltölött tananyag címe.
+
+ 6. **Feladat / jegyzet feltöltése diákok számára.**  
+
+   - A diák itt tudja feltölteni a tanár számára a kész feladatot.
+
+ 7. **Feladat letöltése**  
+
+   - A diák le tudja tölteni amit a tanár feltöltött a diákok számára.
+
+8. **Mégsem**  
+
+   - A mégse gombra kattintva vissza tud menni a feladathoz tartozó kurzus oldalára
+
+9. **Mentés**  
+
+   - Feltudja tölteni a feladatot és visszaviszi a kurzus 

@@ -592,7 +592,7 @@ export default {
     },
     assignmentPage: {
       dragFileText: "Drag files here to upload",
-      returnButton: "Return",
+      returnButton: "Cancel",
       comment: "Comment:",
       deadline: "Deadline:",
       courseName: "Course:",
