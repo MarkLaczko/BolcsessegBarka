@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('topics', function (Blueprint $table) {
             $table->id();
             $table->string("name",60);
-            $table->integer("order")->nullable();
             $table->foreignId("course_id")->nullable()->constrained()->onDelete('cascade');
         });
     }
