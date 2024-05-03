@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="col-md-3 d-flex justify-content-center align-items-center">
-        <button @click.prevent="openDialog(learningMaterial)" class="btn text-white my-2 buttons">{{
+        <button @click.prevent="openDialog(learningMaterial)" class="btn text-white my-2 me-md-2 buttons">{{
           messages.components.BaseLearningMaterialCard.viewButton
         }}</button>
       </div>
