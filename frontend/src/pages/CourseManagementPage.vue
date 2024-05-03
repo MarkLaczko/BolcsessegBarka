@@ -35,27 +35,8 @@
         name: 'slide-fade',
       },
     }" />
-      <Dialog v-if="addCourseDialogVisible" v-model:visible="addCourseDialogVisible" modal
-        :header="messages.pages.courseManagementPage.newCourseDialog.title" :style="{ width: '25rem' }" :pt="{
-      root: {
-        class: 'modal-dialog p-3 rounded shadow border',
-      },
-      header: {
-        class: 'd-flex justify-content-between align-items-center pb-2',
-      },
-      title: {
-        class: 'modal-title fw-bold',
-      },
-      closeButton: {
-        class: 'btn btn-outline-dark btn-sm',
-      },
-      closeButtonIcon: {
-        class: 'fa-solid fa-x',
-      },
-      transition: {
-        name: 'slide-fade',
-      },
-    }">
+      <BaseDialog v-if="addCourseDialogVisible" :width="'25rem'" :visible="addCourseDialogVisible"
+        :header="messages.pages.courseManagementPage.newCourseDialog.title">
         <FormKit type="form" :actions="false" @submit="postCourses" :incomplete-message="messages.pages.courseManagementPage.newCourseDialog
       .validationMessages.matchAllValidationMessage
       ">
@@ -98,30 +79,11 @@
     }" />
           </div>
         </FormKit>
-      </Dialog>
-      <Dialog v-if="modifyCourseDialogVisible" v-model:visible="modifyCourseDialogVisible" modal :header="messages.pages.courseManagementPage.editCourseDialog.title +
+      </BaseDialog>
+      <BaseDialog v-if="modifyCourseDialogVisible" :width="'25rem'" :visible="modifyCourseDialogVisible" :header="messages.pages.courseManagementPage.editCourseDialog.title +
       ' ' +
       currentlyModifyingCourse.name
-      " :style="{ width: '25rem' }" :pt="{
-      root: {
-        class: 'modal-dialog p-3 rounded shadow border',
-      },
-      header: {
-        class: 'd-flex justify-content-between align-items-center pb-2',
-      },
-      title: {
-        class: 'modal-title fw-bold',
-      },
-      closeButton: {
-        class: 'btn btn-outline-dark btn-sm',
-      },
-      closeButtonIcon: {
-        class: 'fa-solid fa-x',
-      },
-      transition: {
-        name: 'slide-fade',
-      },
-    }">
+      ">
         <FormKit type="form" :actions="false" @submit="updateCourse" :value="currentlyModifyingCourse"
           :incomplete-message="messages.pages.courseManagementPage.editCourseDialog
       .validationMessages.matchAllValidationMessage
@@ -198,7 +160,7 @@
     }" />
           </div>
         </FormKit>
-      </Dialog>
+      </BaseDialog>
       <div>
         <div class="card darkTheme">
           <Toolbar :pt="{
@@ -318,9 +280,9 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import RadioButton from "primevue/radiobutton";
 import InputText from "primevue/inputtext";
-import Dialog from "primevue/dialog";
 import Toast from "primevue/toast";
 import BaseSpinner from "@components/BaseSpinner.vue";
+import BaseDialog from "@components/BaseDialog.vue";
 import BaseConfirmDialog from "@components/BaseConfirmDialog.vue";
 import { http } from "@utils/http";
 import { mapActions, mapState } from "pinia";
@@ -342,12 +304,12 @@ export default {
     Column,
     RadioButton,
     InputText,
-    Dialog,
     Toast,
     RadioButton,
     MultiSelect,
     BaseSpinner,
-    BaseConfirmDialog
+    BaseConfirmDialog,
+    BaseDialog
   },
   data() {
     return {

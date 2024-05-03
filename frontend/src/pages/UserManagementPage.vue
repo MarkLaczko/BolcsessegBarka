@@ -35,27 +35,8 @@
         name: 'slide-fade',
       },
     }" />
-      <Dialog v-if="addUserDialogVisible" v-model:visible="addUserDialogVisible" modal
-        :header="messages.pages.userManagementPage.newUserDialog.title" :style="{ width: '25rem' }" :pt="{
-      root: {
-        class: 'modal-dialog p-3 rounded shadow border',
-      },
-      header: {
-        class: 'd-flex justify-content-between align-items-center pb-2',
-      },
-      title: {
-        class: 'modal-title fw-bold',
-      },
-      closeButton: {
-        class: 'btn btn-outline-dark btn-sm',
-      },
-      closeButtonIcon: {
-        class: 'fa-solid fa-x',
-      },
-      transition: {
-        name: 'slide-fade',
-      },
-    }">
+      <BaseDialog v-if="addUserDialogVisible" :width="'25rem'" :visible="addUserDialogVisible"
+        :header="messages.pages.userManagementPage.newUserDialog.title" >
         <FormKit type="form" :actions="false" @submit="postUser" :incomplete-message="messages.pages.userManagementPage.newUserDialog.validationMessages
       .matchAllValidationMessage
       ">
@@ -132,30 +113,11 @@
     }" />
           </div>
         </FormKit>
-      </Dialog>
-      <Dialog v-if="modifyUserDialogVisible" v-model:visible="modifyUserDialogVisible" modal :header="messages.pages.userManagementPage.editUserDialog.title +
+      </BaseDialog>
+      <BaseDialog v-if="modifyUserDialogVisible" :width="'25rem'" :visible="modifyUserDialogVisible" :header="messages.pages.userManagementPage.editUserDialog.title +
       ': ' +
       currentlyModifyingUser.name
-      " :style="{ width: '25rem' }" :pt="{
-      root: {
-        class: 'modal-dialog p-3 rounded shadow border',
-      },
-      header: {
-        class: 'd-flex justify-content-between align-items-center pb-2',
-      },
-      title: {
-        class: 'modal-title fw-bold',
-      },
-      closeButton: {
-        class: 'btn btn-outline-dark btn-sm',
-      },
-      closeButtonIcon: {
-        class: 'fa-solid fa-x',
-      },
-      transition: {
-        name: 'slide-fade',
-      },
-    }">
+      ">
         <FormKit type="form" :actions="false" @submit="updateUser" :value="currentlyModifyingUser" :incomplete-message="messages.pages.userManagementPage.editUserDialog.validationMessages
       .matchAllValidationMessage
       ">
@@ -232,7 +194,7 @@
     }" />
           </div>
         </FormKit>
-      </Dialog>
+      </BaseDialog>
       <div>
         <div class="card darkTheme">
           <Toolbar :pt="{
@@ -368,9 +330,9 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import RadioButton from "primevue/radiobutton";
 import InputText from "primevue/inputtext";
-import Dialog from "primevue/dialog";
 import Toast from "primevue/toast";
 import BaseSpinner from "@components/BaseSpinner.vue";
+import BaseDialog from "@components/BaseDialog.vue";
 import { http } from "@utils/http";
 import { mapState } from "pinia";
 import { userStore } from "@stores/UserStore";
@@ -388,11 +350,11 @@ export default {
     Column,
     RadioButton,
     InputText,
-    Dialog,
     Toast,
     RadioButton,
     BaseSpinner,
-    BaseConfirmDialog
+    BaseConfirmDialog,
+    BaseDialog
   },
   data() {
     return {
