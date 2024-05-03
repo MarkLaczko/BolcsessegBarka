@@ -440,3 +440,21 @@ textarea.form-control,textarea.form-control:focus  {
 .btn {
   font-weight: bolder !important;
 }
+
+input[type="file"], .form-control-dark {
+  background-color: var(--input-bg-color);
+  color: var(--input-color);
+}
+
+.multi-select-fade-enter-active, .multi-select-fade-leave-active {
+  transition: opacity 0.5s;
+}
+.multi-select-fade-enter, .multi-select-fade-enter-from {
+  opacity: 0;
+}
+.multi-select-fade-enter-to {
+  opacity: 1;
+}
+.multi-select-fade-leave-to {
+  opacity: 0;
+}
