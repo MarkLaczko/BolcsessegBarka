@@ -304,15 +304,6 @@ div.user-icon {
   color: var(--text-color);
 }
 
-.form-check-input:checked {
-  background-color: var(--switched-switchButton-bg-color);
-  border-color: var(--switched-switchButton-bg-color);
-}
-
-.form-check-input {
-  --bs-form-check-bg: var(--switchButton-bg-color);
-}
-
 .form-switch .form-check-input {
   --bs-form-switch-bg: var(--formSwitch-color);
   background-image: var(--bs-form-switch-bg);
@@ -457,4 +448,10 @@ input[type="file"], .form-control-dark {
 }
 .multi-select-fade-leave-to {
   opacity: 0;
+}
+
+.form-control-dark,.form-control-dark:focus  {
+  background-color: var(--textarea-bg-color);
+  border: var(--textarea-border);
+  color: var(--text-color);
 }
