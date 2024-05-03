@@ -28,11 +28,7 @@
         <div class="d-flex justify-content-center align-items-center mt-3">
           <button
               type="button"
-              class="btn"
-              :class="{
-                'btn-outline-danger': isDarkMode,
-                'btn-danger': !isDarkMode,
-              }"
+              class="btn btn-danger text-white"
               @click="(viewNoteVisible = false)"
             >
               {{ messages.pages.homePage.viewNoteDialog.cancelButton }}
