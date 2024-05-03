@@ -21,7 +21,7 @@
         <div class="d-flex justify-content-end">
           <RouterLink
             v-if="isDeadlineReached"
-            class="btn btn-outline-danger px-5"
+            class="btn btn-danger text-white px-3"
             :to="{ name: 'course', params: { id: assignment.course.id } }"
             >{{ messages.pages.assignmentPage.returnButton }}</RouterLink
           >
@@ -56,7 +56,7 @@
               <div class="d-flex">
                 <button
                   v-if="assignment.teacher_task_name !== null"
-                  class="btn btn-success"
+                  class="btn btn-success ms-2 text-white"
                   type="button"
                   @click="
                     downloadAssignment(
@@ -69,9 +69,9 @@
                 </button>
                 <div v-else></div>
               </div>
-              <div class="d-flex">
+              <div class="d-flex justify-content-center align-items-center">
                 <RouterLink
-                  class="btn btn-outline-danger px-5"
+                  class="btn btn-danger text-white px-3 ms-2"
                   :to="{ name: 'course', params: { id: assignment.course.id } }"
                   >{{ messages.pages.assignmentPage.returnButton }}</RouterLink
                 >
@@ -83,9 +83,10 @@
                     input: {
                       btn: true,
                       'btn-success': true,
+                      'text-white': true,
                       'w-auto': true,
-                      'px-5': true,
-                      'ms-1': true,
+                      'px-3': true,
+                      'ms-2': true,
                     },
                   }"
                 />
