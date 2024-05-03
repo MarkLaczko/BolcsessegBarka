@@ -109,12 +109,15 @@
               'px-3': true,
               'formButton' : true
             },
+            outer: {
+              'ms-2' : true
+            }
           }"
         >
           {{ messages.pages.loginPage.loginButtonText }}
         </FormKit>
 
-        <RouterLink :to="{ name: 'register' }" class="btn formLink h-100">
+        <RouterLink :to="{ name: 'register' }" class="btn formLink h-100 me-2">
           {{ messages.pages.loginPage.accountText }}
         </RouterLink>
       </div>

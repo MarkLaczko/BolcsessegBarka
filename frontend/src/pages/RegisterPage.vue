@@ -183,7 +183,7 @@
           }
         }"
       />
-      <div class="d-flex gap-2 justify-content-center mt-3 mb-2">
+      <div class="d-flex gap-2 justify-content-center align-items-center mt-3 mb-2">
         <FormKit
           type="submit"
           :classes="{
