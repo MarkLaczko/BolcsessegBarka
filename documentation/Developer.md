@@ -3223,11 +3223,13 @@ PrimeVue Dialog felugró ablak.
 
 ### Komponens leírás:
 
-> A `BaseLearningMaterialCard` komponens egy reszponzív kártyát hoz létre, amely tartalmaz egy képet, a tananyag címét, a kurzus nevét és a megjelenési dátumot. A komponens a Pinia állapotkezelőt használja a nyelvi üzenetek dinamikus kezelésére.
+- **Képoszlop:** Megjeleníti a tananyag képét, amely adaptív méretű és kitölti a rendelkezésre álló területet.
+- **Szöveges oszlop:** Megjeleníti a kurzus nevét és a tananyag címét, valamint azt hogy a tananyag mikor lett legutóbb frissítve/kiadva.
+- **Gomboszlop:** Tartalmaz egy gombot, amely lehetőséget ad a tananyag részletes megtekintésére.
 
 ### Használat:
 
-A komponens az `image`, `course`, `learningMaterial`, és `releaseData` prop-okat várja, amelyek az anyag vizuális és szöveges adatait adják meg.
+A komponens a `learningMaterial` objektum prop-ot várja, amely tartalmazza a tananyaghoz kapcsolódó adatokat, mint a kép, a kurzus neve, a tananyag címe, és a frissítési dátum.
 
 ### Példa a komponens használatára egy szülőkomponensben:
 
@@ -3235,10 +3237,12 @@ A komponens az `image`, `course`, `learningMaterial`, és `releaseData` prop-oka
 <template>
   <div>
     <BaseLearningMaterialCard
-      image="course-image.jpg"
-      course="Web Development"
-      learningMaterial="Introduction to Vue.js"
-      releaseData="2023-04-01"
+      :learningMaterial="{
+        course_image: 'course-image.jpg',
+        course_name: 'Web Development',
+        title: 'Introduction to Vue.js',
+        updated_at: '2023-04-01'
+      }"
     />
   </div>
 </template>
@@ -3254,38 +3258,37 @@ A komponens az `image`, `course`, `learningMaterial`, és `releaseData` prop-oka
 </script>
 ```
 
-### Template részletei:
-
-A `template`-ben egy Bootstrap `card` szerkezetet használunk, amely három oszlopra van osztva:
-
-- **Képoszlop**: Itt jelenik meg a tananyag képe, amely reszponzív és kitölti a rendelkezésre álló területet.
-- **Szöveges oszlop**: Itt található a tananyag és a kurzus címe, valamint a megjelenési dátum.
-- **Gomboszlop**: Egy gomb, amely lehetőséget ad a tananyag részletes megtekintésére.
-
 ### Komponens tulajdonságok:
 
-- `image`: A tananyag képének elérési útja.
-- `course`: A kurzus neve.
-- `learningMaterial`: A tananyag címe.
-- `releaseData`: A tananyag megjelenési dátuma.
+- `learningMaterial`: Egy objektum, amely tartalmazza a tananyaghoz kapcsolódó adatokat:
+  - `course_image`: A kurzus képének útvonala Base64 formátumban.
+  - `course_name`: A kurzus neve.
+  - `title`: A tananyag címe.
+  - `updated_at`: A tananyag frissítési dátuma.
 
 ### Számított tulajdonságok:
 
 - **messages**: A nyelvi üzeneteket kezeli a Pinia állapotkezelőn keresztül, így biztosítva, hogy a komponens nyelvi adaptációja dinamikusan történjen.
 
+### Metódusok
+
+- `formatDate(dateStr)`: Megformázza a dátumot **YYYY.MM.DD** formátumban.
+- `getImageSrc(base64Data)`: Át konvertálja a `Base64` adatot kép URL-lé.
+- `openDialog(material)`: Egy dialógusablakot nyit meg a tananyag részleteivel.
+
 ### Stílusok:
 
-> A komponens stílusai biztosítják, hogy a kártya jól nézzen ki minden eszközön. A `img-fluid`, `rounded-start`, és `object-fit-cover` osztályok gondoskodnak arról, hogy a képek reszponzívak és esztétikusak legyenek.
+> A komponens stílusai biztosítják, hogy a kártya minden eszközön jól nézzen ki. Az `img-fluid`, `object-fit-cover` és `responsive-rounded` osztályok gondoskodnak a képek reszponzív és esztétikus megjelenéséről.
 
 ### `BaseCourseCard`
 
 ### Beveztés:
 
-> A `BaseCourseCard` ideális arra, hogy rövid összefoglalót nyújtson egy kurzusról, beleértve annak képét, címét és csoporttagságát. A komponens továbbá egy közvetlen útválasztási linket is biztosít a kurzus részletes megtekintéséhez.
+> A BaseCourseCard egy reszponzív, vizuálisan vonzó kártya komponens, amely bemutatja a kurzusok alapvető információit, beleértve a képét, címét és a csoporttagságait. A komponens továbbá biztosít egy közvetlen útválasztási linket, amely lehetővé teszi a felhasználók számára, hogy közvetlenül a kurzus részleteire navigáljanak.
 
 ### Használat:
 
-> A komponens a `title`, `image`, `courseId`, és `groupName` propokat fogadja, melyek a kurzus alapvető adatait határozzák meg. Ezek a propok lehetővé teszik a komponens széleskörű alkalmazhatóságát és könnyű integrálását különböző felületeken.
+> A komponens a `title`, `image`, `courseId`, és `groups` propokat fogadja, amelyek a kurzus alapvető adatait definiálják. Ezek a propok lehetővé teszik a komponens széleskörű alkalmazhatóságát és könnyű integrálását különböző felületeken.
 
 ### Példa:
 
@@ -3296,7 +3299,7 @@ A `template`-ben egy Bootstrap `card` szerkezetet használunk, amely három oszl
       title="Webfejlesztés"
       image="encodedImageString"
       courseId="102"
-      groupName="Haladó Tanfolyamok"
+      :groups="[{ id: 1, name: 'Haladó Tanfolyamok' }]"
     />
   </div>
 </template>
@@ -3314,17 +3317,17 @@ A `template`-ben egy Bootstrap `card` szerkezetet használunk, amely három oszl
 
 ### Template struktúra:
 
-- **Kártya**: A Bootstrap `card` osztályát használja a vizuális keret biztosításához.
-- **Kép:** A kurzushoz tartozó képet Base64 kódolásban jeleníti meg, ami az adatátvitelt egyszerűsíti.
-- **Szöveges Tartalom:** A kurzus címe és a csoport neve a kártya testében (`card-body`) jelenik meg, középre igazítva.
-- **Navigációs Link:** Egy `RouterLink` komponens, amely lehetővé teszi a felhasználó számára, hogy közvetlenül a kurzus részletes oldalára navigáljon.
+- **Kártya:** Használja a Bootstrap `card` osztályát a vizuális keret biztosításához.
+- **Kép:** A kurzushoz tartozó képet jeleníti meg `Base64` kódolásban, ami egyszerűsíti az adatátvitelt.
+- **Szöveges Tartalom:** Középre igazított módon megjeleníti a kurzus címét és a csoportok neveit.
+- **Navigációs Link:** Egy `RouterLink` komponens segítségével lehetővé teszi a felhasználók számára, hogy közvetlenül a kurzus részletes oldalára navigáljanak.
 
 ### Komponens tulajdonságok:
 
 - **title:** A kurzus címe.
-- **image:** A kurzus képének Base64 kódolt stringje.
+- **image:** A kurzus képének `Base64` kódolt stringje.
 - **courseId:** A kurzus azonosítója.
-- **groupName:** A kurzushoz tartozó csoport neve.
+- **groups:** A kurzushoz tartozó csoportok listája. Mindegyik csoport objektum tartalmaz egy **id** és **name** kulcsot.
 
 ### Számított tulajdonságok:
 
@@ -3338,11 +3341,11 @@ A `template`-ben egy Bootstrap `card` szerkezetet használunk, amely három oszl
 
 ### Áttekintés:
 
-> A `BaseAssignmentCard` komponens egy kártya formátumban jeleníti meg a feladatok alapvető információit, mint például a címét, a feladat képét, és a beadási határidőt. Ezen kívül tartalmaz egy gombot, amely a felhasználót az adott feladat oldalára irányítja.
+> A `BaseAssignmentCard` egy reszponzív kártya komponens, amely megjeleníti a feladatok alapvető információit, mint például a címét, a képét, és a beadási határidőt. Ezen kívül tartalmaz egy gombot, amely a felhasználót közvetlenül az adott feladat részletező oldalára irányítja.
 
 ### Használat:
 
-> A komponens a `title`, `image`, és `deadline` prop-okat fogadja. Ezekkel a paraméterekkel a feladatokat könnyedén és hatékonyan jeleníthetjük meg a felhasználók számára. A komponens a Pinia állapotkezelőt használja a nyelvi üzenetek dinamikus kezelésére.
+> A komponens egy `assignment` objektum prop-ot fogad, amely tartalmazza a feladat alapvető adatait. Ez lehetővé teszi a feladatok könnyedén és hatékonyan való megjelenítését a felhasználók számára.
 
 ### Példa:
 
@@ -3350,9 +3353,12 @@ A `template`-ben egy Bootstrap `card` szerkezetet használunk, amely három oszl
 <template>
   <div>
     <BaseAssignmentCard
-      title="Programozási Alapok"
-      image="programozas_kep.png"
-      deadline="2023-12-15"
+      :assignment="{
+        task_name: 'Programozási Alapok',
+        course_image: 'programozas_kep.png',
+        deadline: '2023-12-15',
+        id: 102
+      }"
     />
   </div>
 </template>
@@ -3370,15 +3376,13 @@ A `template`-ben egy Bootstrap `card` szerkezetet használunk, amely három oszl
 
 ### Template Struktúra:
 
-- **Kártya Fejléc:** Tartalmazza a feladat címét, amely középre van igazítva.
-- **Kártya Törzs:** Itt jelenik meg a feladat képe, amely szintén központi helyet kap. Alatta található egy gomb, amely a feladat részleteire mutató oldalra vezet.
-- **Kártya Lábléc:** Megjeleníti a feladat beadási határidejét, amely kivan emelve, hogy felhívja a figyelmet a határidő fontosságára.
+- **Kártya Fejléc:** Tartalmazza a feladat címét (`task_name`), amely középre van igazítva.
+- **Kártya Törzs:** Itt jelenik meg a feladat képe (`course_image`), amely szintén központi helyet kap. Alatta egy gomb található, amely a feladat részleteire mutató oldalra vezet.
+- **Kártya Lábléc:** Megjeleníti a feladat beadási határidejét (`deadline`), amely ki van emelve, hogy felhívja a figyelmet a határidő fontosságára.
 
 ### Komponens tulajdonságok:
 
-- `title`: A feladat címe.
-- `image`: A feladat képének URL-címe.
-- `deadline`: A feladat beadási határideje.
+- **assignment:** Egy objektum, amely tartalmazza a feladat adatait, mint a cím (`task_name`), a kép (`course_image`), a beadási határidő (`deadline`) és az egyedi azonosító (`id`).
 
 ### Számított tulajdonságok:
 
@@ -3510,23 +3514,24 @@ A `template`-ben egy Bootstrap `card` szerkezetet használunk, amely három oszl
 
 ### `HomePage`
 
-> A Főoldal komponens a webalkalmazás kezdőlapját jelenti, amely dinamikusan jeleníti meg a felhasználó számára releváns tartalmakat, mint például feladatokat és tananyagokat. A komponens integrálja az `BaseLayout`, `BaseSpinner`, `BaseAssignmentCard`, `BaseLearningMaterialCard`, és `BasePaginator` komponenseket a felhasználói felület egyszerű és interaktív kialakításához.
+> A `HomePage` komponens a webalkalmazás kezdőlapját jelenti, amely dinamikusan jeleníti meg a felhasználó számára releváns tartalmakat, mint például feladatokat, tananyagokat. A komponens integrálja többek között az `BaseLayout`, `BaseSpinner`, `BaseAssignmentCard`, `BaseLearningMaterialCard`, és `BasePaginator` komponenseket a felhasználói felület egyszerű és interaktív kialakításához.
 
 ### Komponens Struktúra
 
 **Template Részletezése:**
 
-- **BaseLayout**: Ez a komponens biztosítja az oldal alapvető elrendezését.
-- **BaseSpinner**: Egy töltő animáció, amely akkor jelenik meg, amikor az oldal adatai még betöltés alatt állnak.
-- **H1 & H2 Címek**: Üdvözlő üzenet, amely a felhasználó nevét is megjeleníti, valamint külön szekciókat határoz meg a feladatoknak és tananyagoknak.
-- **BaseAssignmentCard & BaseLearningMaterialCard**: Ezek a kártyák az egyes feladatokat és tananyagokat mutatják be részletesen.
-- **Paginator**: Lapozó komponens, amely lehetővé teszi a feladatok lapozását.
+- **BaseLayout:** Ez a komponens biztosítja az oldal alapvető elrendezését.
+- **BaseSpinner:** Egy töltő animáció, amely akkor jelenik meg, amikor az oldal adatai még betöltés alatt állnak.
+- **BaseDialog:** Egy párbeszédablak, amelyet akkor jelenítünk meg, amikor egy tananyag jegyzetének megtekintése szükséges.
+- **Üdvözlő Üzenetek:** Üdvözlő üzenet, amely a felhasználó nevét is megjeleníti, valamint külön szekciókat határoz meg a feladatoknak és tananyagoknak.
+- **BaseAssignmentCard & BaseLearningMaterialCard:** Ezek a kártyák az egyes feladatokat és tananyagokat mutatják be részletesen.
+- **Paginator:** Lapozó komponens, amely lehetővé teszi a feladatok lapozását.
 
 **Script Részletezése:**
 
-- **Belső Állapotok**: Tartalmazza a feladatok listáját, az aktuális oldalszámot, az animáció irányát, és a betöltés állapotát.
-- **Módszerek (Methods) és Számított Tulajdonságok (Computed)**: Az `onPageChanged` metódus kezeli az oldalszám változását, a `paginatedAssignments` kiszámítja az aktuális oldalon megjelenő feladatokat, és a `totalPages` meghatározza az összes oldal számát.
-- **Életciklus metódus (Mounted)**: A `mounted` életciklus metódusban a `getUser` metódust hívjuk meg a felhasználói adatok lekérésére, és beállítjuk a `loading` állapotot `false`-ra a betöltés befejezése után.
+- **Belső Állapotok:** Tartalmazza a feladatok listáját, a tananyagokat, az aktuális oldalszámot, az animáció irányát, a betöltés állapotát, a jegyzet láthatóságát, és a megtekintés alatt áló tananyag adatait.
+- **Módszerek és Számított Tulajdonságok:** A `onPageChanged` metódus kezeli az oldalszám változását, a `paginatedAssignments` kiszámítja az aktuális oldalon megjelenő feladatokat, és a `totalPages` meghatározza az összes oldal számát. Az `handleMaterialDialog` metódus kezeli a tananyagokhoz kapcsolódó párbeszédablak megjelenítését.
+- **Életciklus metódus (Mounted):** A `mounted` életciklus metódusban lekérdezzük a felhasználói adatokat, a feladatokat, és a tananyagokat, majd beállítjuk a `loading` állapotot `false`-ra a betöltés befejezése után.
 
 ### Stílusok (Styles)
 
@@ -3537,28 +3542,23 @@ A stílusok részletesen kezelik az animációkat és a médialekérdezéseket, 
 
 ### `CoursesPage`
 
-> A `CoursesPage` komponens egy kulcsfontosságú oldal, amely lehetővé teszi a felhasználók számára, hogy megtekinthessék az összes elérhető kurzust, amelyekhez hozzáférhetnek. Ez az oldal dinamikusan jeleníti meg a kurzusokat `BaseCourseCard` komponensek formájában, amelyek a kurzusok alapvető információit tartalmazzák.
+> A `CoursesPage` komponens egy kulcsfontosságú oldal a webalkalmazásban, amely lehetővé teszi a felhasználók számára, hogy megtekinthessék és hozzáférjenek az összes elérhető kurzushoz. Ez az oldal dinamikusan jeleníti meg a kurzusokat `BaseCourseCard` komponensek formájában, amelyek részletes információkat tartalmaznak az egyes kurzusokról.
 
 ### Komponens Struktúra
 
 #### **Template Áttekintés:**
 
 - **BaseLayout:** Ez az elrendezési keret biztosítja az oldal konzisztens kinézetét és struktúráját az alkalmazáson belül.
-- **BaseSpinner:** Egy töltésjelző animáció, amely megjelenik, amíg a kurzusok töltődnek.
-- **Dinamikus Tartalom Megjelenítése:** A kurzusokat dinamikusan jeleníti meg, amennyiben vannak elérhető kurzusok. Ha nincsenek kurzusok, egy üzenet jelenik meg, amely tájékoztatja a felhasználót erről.
-
-**Dinamikus Kurzuskártyák:** Az egyes kurzusok részleteit [`BaseCourseCard`](#basecoursecard) komponensek mutatják be, amelyek tartalmazzák a kurzus nevét, képét, és egyéb releváns adatokat.
+- **BaseSpinner:** Egy töltésjelző animáció, amely megjelenik, míg a kurzusok betöltődnek.
+- **Dinamikus Kurzuskártyák:** A kurzusokat a `BaseCourseCard` komponensek mutatják be dinamikusan, amelyek tartalmazzák a kurzusok nevét, képét, azonosítóját, és a hozzájuk kapcsolódó csoportokat.
 
 ### Script Részletek
 
-#### **Belső Állapotok:**
-
-- **courses:** Egy tömb, amely a felhasználó számára elérhető kurzusokat tárolja.
-- **loading:** Egy logikai változó, amely a betöltés állapotát jelzi.
-
-#### **Metódusok:**
-
-- `getCourses()`: Ez a metódus lekéri a kurzusokat az API-tól, és dinamikusan tölti fel a `courses` tömböt a felhasználó által elérhető kurzusokkal.
+- **Belső Állapotok:**
+  - **courses:** Egy tömb, amely a felhasználó számára elérhető kurzusokat tárolja.
+  - **loading:** Egy logikai változó, amely a betöltés állapotát jelzi.
+- **Metódusok:**
+  - **getCourses():** Ez a metódus lekéri az API-tól a kurzusokat, figyelembe véve a felhasználóhoz kapcsolódó csoporttagságokat, és dinamikusan tölti fel a `courses` tömböt a hozzáférhető kurzusokkal.
 
 ### Stílusok és Animációk
 
@@ -3570,7 +3570,7 @@ A `CoursesPage` komponens integrálja a `languageStore`-t a lokalizált üzenete
 
 ### `CoursePage`
 
-> A `CoursePage` komponens egy dinamikus felületet biztosít, ahol a diákok kurzus-specifikus témákat tekinthetnek meg, jegyzeteket hozhatnak létre és feladatokat adhatnak be. A tanárok és adminisztrátorok pedig témákat szerkeszthetnek és kezelhetnek, illetve feladatok és jegyzeteket adhatnak hozzá az adott témához. Ez a komponens több újrafelhasználható komponenst integrál, és kezeli az állapotokat és viselkedéseket.
+> A _CoursePage_ komponens egy dinamikus felületet biztosít, ahol a diákok és tanárok kurzus-specifikus tevékenységeket végezhetnek, mint például témák kezelése, jegyzetek és feladatok létrehozása, valamint feladatok szerkesztése és letöltése. Ez a komponens több újrafelhasználható komponenst integrál, mint például `BaseSpinner`, `BaseDialog`, és `BaseLayout`, és kezeli az állapotokat és viselkedéseket az alkalmazásban.
 
 ### Komponens Struktúra
 
@@ -3578,75 +3578,46 @@ A `CoursesPage` komponens integrálja a `languageStore`-t a lokalizált üzenete
 
 - **BaseLayout:** Ez a fő elrendezési keret a lap számára, biztosítva az alkalmazáson belüli konzisztens stílust és szerkezetet.
 - **BaseSpinner:** Betöltési animációt jelenít meg, amíg az adatok be nem töltődnek.
-- **BaseDialogok:** Több példányban van használva – témák, jegyzetek kezelésénél, mindezek mellett `FormKit`-et használ az űrlapkezeléshez és validáláshoz.
-
-**Dinamikus Tartalom Megjelenítése:** Feltételesen jeleníti meg a tartalmat a betöltés állapotától függően, és lehetőséget biztosít témák, jegyzetek hozzáadására, szerkesztésére és törlésére, témákat kizárólag a tanárok és az adminisztrátorok kezelhetik.
-
-#### **Dialog Komponensek**
-
-1. **Új Téma Hozzáadása** (`newTopicDialogVisible`):
-
-   - Megjeleníti a témahozzáadás űrlapot.
-   - Validációkat tartalmaz a téma nevére és sorrendjére.
-   - Gombok az űrlap beküldésére vagy az ablak bezárására.
-
-2. **Téma Szerkesztése** (`editTopicDialogVisible`):
-
-   - Ugyanazokat az űrlapelemeket használja, mint az új téma hozzáadása, de előre betölti az aktuális téma adatait.
-   - Az űrlap lehetőséget ad a témák módosítására és frissítésére.
-
-3. **Csoportok Kezelése** (`groupTreatmentDialog`):
-
-   - Egy `MultiSelect` komponens segítségével lehetőséget nyújt csoportok kiválasztására és kezelésére.
-   - Csoportok mentése vagy változtatások elvetése lehetséges.
-
-4. **Új Feladat** (`newAssignmentDialogVisible`):
-
-   - Lehetővé teszi új feladat létrehozását az űrlapon keresztül, ahol több mező (pl. határidő, feladat leírása) kitöltése szükséges.
-
-5. **Feladat Szerkesztése** (`UpdateAssignmentDialogVisible`):
-
-   - Hasonló funkciók, mint az új feladatnál, de az aktuális feladat adataival előre betöltve.
-
-6. **Feladatok letöltése** (`DownloadAssignmentDialogVisible`):
-
-   - Lehetővé teszi a tanárok számára, hogy letöltsék a diákok által feltöltött feladatokat.
-   - Letudják tölteni egy adott diák feladatát és letudják tölteni az összes feladatot egy `ZIP` fájlba.
-
-7. **Jegyzetek Kezelése** (`newNoteDialogVisible`, `currentNoteVisible`):
-   - Új jegyzet létrehozása és meglévő jegyzet megtekintése vagy szerkesztése.
-   - Tartalmazza a szövegszerkesztőt a jegyzet tartalmának szerkesztésére.
-   - Itt lehet kezelni a jegyzettel kapcsolatos funkciókat: törlés, frissítés.
+- **BaseDialogok:** Több párbeszédpanel példány használata az új témák hozzáadásához, témák szerkesztéséhez, csoportok kezeléséhez, új feladatok létrehozásához, jegyzetek kezeléséhez, kvízek létrehozásához és kezeléséhez.
 
 ### Script Részletek
 
 #### **Belső Állapotok:**
 
-- A kurzussal kapcsolatos információkat és a témaadatokat helyileg tárolják a komponens adatfunkciójában.
-- A párbeszédablakok láthatósági zászlói szabályozzák a téma, feladat, jegyezet modális párbeszédablakok megjelenítését.
+- **courses:** A kurzus adatokat tároló objektum.
+- **topics:** A kurzushoz tartozó témák listája.
+- **loading:** Betöltés állapotának jelzése.
+- **member:** A jelenlévő felhasználó jogosultságát adja meg.
+- **Dialogus ablakok láthatóság:** Ezek az állapotok határozzák meg hogy melyik dialogus ablak milyen feltétel alapján legyen látható.
+- **isNoteReadonly:** Azt határozza meg a jegyzetek esetében hogy egy jegyzet csak olvasható vagy írható is.
+- **currentGroups:** A `MultiSelect` komponensben kijelölt csoportok kerülnek bele.
+- **title és text:** A jegyzet létrehozásához használatos állapotok.
+- **currentTitle és currentText:** A már meglévő jegyzetek betöltésére szolgáló állapotok.
+- **currentlyModifyingNote:** Az éppen módosítás alatt álló jegyzet kerül bele.
 
 #### **Metódusok és Eseménykezelők:**
 
 #### Téma
 
-- A témakezelő funkciók (`addTopic`, `editTopic`, `deleteTopic`) csak a tanárok és az adminisztrátorok számára érhetők el, biztosítva az adatok integritását és a jogosultságok szerinti hozzáférést.
+- A témakezelő funkciók (`addTopic`, `editTopic`, `putTopic`, `deleteTopic`) csak a tanárok és az adminisztrátorok számára érhetők el, biztosítva az adatok integritását és a jogosultságok szerinti hozzáférést.
+- A `toggleTopic` függvény felelős az `activeTopicId` állapot frissítéséért, ami lehetővé teszi számunkra, hogy nyomon kövessük, melyik témához kívánunk például új jegyzetet hozzáadni.
 
 #### Jegyzet
 
 - A jegyzetkezelő funkciók (`deleteNote`, `updateNote`, `saveNote`,`openCurrentNote`) minden felhasználó számára elérhetőek, lehetővé téve számukra, hogy egyszerűen és hatékonyan kezeljék saját jegyzeteiket.
+- A `getAllNotesForUser`, `getCurrentNotes` függvények, a bejelentkezett felhasználóhoz mérten adja vissza a jegyzeteket.
 
 #### Feladat
 
-- A feladatkezelő funkciók (`postNewAssignment`, `openUpdateAssignment`, `filteredStudentAssignment`,`updateAssignment`, `deleteAssignment`) a `tanárok` és az `adminok` számára elérhetőek, lehetővé téve számukra, hogy egyszerűen és hatékonyan kezeljék a feladatokat.
+- A feladatkezelő funkciók (`postNewAssignment`, `openUpdateAssignment`, `filteredStudentAssignment`,`updateAssignment`, `deleteAssignment`,`downloadAssignment`) a `tanárok` és az `adminok` számára elérhetőek, lehetővé téve számukra, hogy egyszerűen és hatékonyan kezeljék a feladatokat.
+
+#### Csoportok
+
+- A `saveGroups` függvénnyel tudjuk a csoportokat hozzárendelni az adott kurzushoz.
 
 #### Felhasználói jogosultságok
 
 - A `findUserDetails` metódus feladata, hogy az adott felhasználóhoz tartozó jogosultságokat azonosítsa egy meghatározott kurzus és csoport kontextusában. Ez a metódus segít megállapítani, hogy a felhasználónak milyen hozzáférési szintje van a kurzushoz és annak tartalmához, beleértve a témákat, feladatokat és egyéb kapcsolódó anyagokat.
-
-#### Dinamikus Tartalom Kezelése:
-
-- Téma, jegyzet hozzáadása, szerkesztése, törlése funkciók.
-- Csoportok hozzárendelése.
 
 #### **Állapotok és Adatkezelés:**
 
@@ -3654,17 +3625,10 @@ A `CoursesPage` komponens integrálja a `languageStore`-t a lokalizált üzenete
 
 - `userStore`, `courseStore`, `groupStore`, `topicStore`, `noteStore` használata az adatok és állapotok kezelésére.
 - `themeStore`, `languageStore` használata a nyelvi adatok és stílusok kezeléséhez.
-- Aszinkron műveletek kezelése és az állapotok frissítése a szerver válaszai alapján.
 
 #### **Jogosultságok Kezelése:**
 
 - A `userStore` segítségével ellenőrizhető, hogy a jelenlegi felhasználó rendelkezik-e a szükséges adminisztrátori jogosultsággal.
-
-### Stílusok és Animációk
-
-#### **CSS Animációk:**
-
-- Átmeneti effektusokat definiál a témalistában lévő bejegyzések számára, hogy javítsák a felhasználói élményt, amikor témákat adnak hozzá vagy távolítanak el a listáról.
 
 ### `CourseManagementPage`
 
@@ -3676,8 +3640,9 @@ A `CoursesPage` komponens integrálja a `languageStore`-t a lokalizált üzenete
 
 - **BaseLayout:** Az oldal alapvető elrendezési keretét biztosítja, amely konzisztens felhasználói felületet nyújt.
 - **BaseSpinner:** Egy töltésjelző, amely akkor jelenik meg, amikor az oldal adatokat tölt be.
-- **Dialog:** Modális ablakok, amelyeket új kurzus hozzáadásához vagy meglévő kurzus módosításához használnak.
-- **Toast:** Üzeneteket jelenít meg a kurzusműveletek eredményéről, mint például sikeres létrehozás vagy törlés.
+- **BaseDialog:** Modális ablakok, amelyeket új kurzus hozzáadásához vagy meglévő kurzus módosításához használnak.
+- **BaseToast:** Üzeneteket jelenít meg a kurzusműveletek eredményéről, mint például sikeres létrehozás vagy törlés.
+- **BaseConfirmDialog:** Törlési folyamatok során jelenik meg, egy felugró ablak, ami megkérdezi a felhasználót, hogy valóban szeretné-e törölni az adott kurzust.
 
 #### **Dinamikus Funkciók:**
 
@@ -3691,11 +3656,18 @@ A `CoursesPage` komponens integrálja a `languageStore`-t a lokalizált üzenete
 - **courses:** Tömb, amely a rendelkezésre álló kurzusokat tartalmazza.
 - **loading:** Egy boolean típusú változó, amely jelzi, hogy az oldal betöltése folyamatban van-e.
 - **addCourseDialogVisible, modifyCourseDialogVisible:** Logikai változók, amelyek az új kurzus hozzáadása és meglévő kurzus módosítása dialógusablakok láthatóságát szabályozzák.
+- **filters:** A `primeVue` által használatos szűrési feltételt tároló állapot.
+- **selectedCourses:** A több kurzus törlése esetén való kiválasztás során kerülnek bele a kurzusok.
+- **currentlyModifyingCourse:** A jelenleg modósítás alatt áló kurzus kerül bele.
 
 #### **Metódusok:**
 
-- **getCourses, postCourses, deleteCourse, updateCourse:** Funkciók, amelyek az adott kurzusokkal kapcsolatos API hívásokat kezelik.
+- **getCourses, postCourses, deleteCourse, deleteMultipleCourses, updateCourse:** Funkciók, amelyek az adott kurzusokkal kapcsolatos API hívásokat kezelik.
 - **handleFileChange:** Kezeli a fájlkiválasztó eseményeket a kurzus képének frissítéséhez.
+- **groupsNoUselessData:** Ez a függvény adja át a `MultiSelect` komponensnek az elérhető csoportokat mindeféle felesleges adat nélkül.
+- **handleFileChange:** A `handleFileChange` metódus a fájlválasztóból kiválasztott képfájl tartalmát olvassa be és tárolja el `base64` kódolt formátumban a `currentlyModifyingCourse.image` tulajdonságban.
+- **selectAllCourses:** A `selectAllCourses` metódus kiválasztja vagy törli a kiválasztást minden kurzusról a listából, attól függően, hogy jelenleg minden kurzus kiválasztva van-e vagy sem.
+- **exportCSV:** Az `exportCSV` metódus a `DataTable` komponens `exportCSV` funkcióját hívja meg, hogy exportálja az aktuális kurzuslistát CSV fájl formátumban.
 
 ### Stílusok és Animációk
 
@@ -3711,21 +3683,18 @@ A `CourseManagementPage` komponens egy komplex, de könnyen kezelhető felülete
 
 ### `UserManagementPage`
 
-> A `UserManagementPage` egy központi kezelőfelület, amely lehetővé teszi a felhasználók kezelését egy oktatási környezetben. A komponens segítségével az adminisztrátorok hozzáadhatnak, módosíthatnak és törölhetnek felhasználókat, valamint beállíthatják azok adminisztratív jogosultságait.
+> A `UserManagementPage` egy központi kezelőfelület, amely lehetővé teszi a felhasználók kezelését egy oktatási környezetben. A komponens segítségével az adminisztrátorok hozzáadhatnak, módosíthatnak, és törölhetnek felhasználókat, valamint beállíthatják azok adminisztratív jogosultságait.
 
 ### Komponens Struktúra
 
 #### **Template Áttekintés:**
 
-- **BaseLayout:** Ez az oldal alapvető elrendezési keretét biztosítja.
+- **BaseLayout:** Az oldal alapvető elrendezési keretét biztosítja.
 - **BaseSpinner:** Egy töltésjelző, amely a felhasználói adatok betöltése közben jelenik meg.
-- **Dialog:** Dialógusablakok új felhasználó hozzáadásához és meglévő felhasználók módosításához.
-- **Toast:** Üzenetek megjelenítése a felhasználói műveletek eredményéről.
-
-#### **Dinamikus Tartalom:**
-
-- **DataTable:** Egy táblázat, amely a felhasználókat listázza, lehetőséget nyújtva a kiválasztott felhasználók módosítására vagy törlésére.
-- **Toolbar:** Eszköztár, amely gombokat tartalmaz új felhasználó létrehozásához, több felhasználó törléséhez és exportáláshoz.
+- **BaseDialog:** Dialógusablakok új felhasználó hozzáadásához és meglévő felhasználók módosításához.
+- **BaseToast:** Üzenetek megjelenítése a felhasználói műveletek eredményéről.
+- **Toolbar és DataTable:** Eszköztár és táblázat a felhasználók kezelésére, új felhasználó hozzáadásához, törléséhez és exportáláshoz.
+- **BaseConfirmDialog:** Törlési folyamatok során jelenik meg, egy felugró ablak, ami megkérdezi a felhasználót, hogy valóban szeretné-e törölni az adott felhasználót.
 
 ### Script Részletek
 
@@ -3734,10 +3703,16 @@ A `CourseManagementPage` komponens egy komplex, de könnyen kezelhető felülete
 - **users:** Tömb, amely a felhasználókat tartalmazza.
 - **loading:** Boolean típusú változó, amely jelzi, hogy az oldal betöltése folyamatban van-e.
 - **addUserDialogVisible, modifyUserDialogVisible:** Logikai változók, amelyek az új felhasználó hozzáadása és meglévő felhasználó módosítása dialógusablakok láthatóságát szabályozzák.
+- **filters:** A `primeVue` által használatos szűrési feltételt tároló állapot.
+- **selectedUsers:** A több felhasználó törlése esetén való kiválasztás során kerülnek bele a felhasználók.
+- **currentlyModifyingUser:** A jelenleg modósítás alatt áló felhasználó kerül bele.
+- **checked:** A `checked` állapot a felhasználó adminisztrátori státuszát jelzi, amely a rádiógomb segítségével szinkronizálva van a felhasználói adatmodell `is_admin` mezőjével.
 
 #### **Metódusok:**
 
-- **getUsers, postUser, deleteUser, updateUser:** Funkciók, amelyek az adott felhasználókkal kapcsolatos API hívásokat kezelik.
+- **getUsers, postUser, deleteUser, deleteMultipleUsers, updateUser:** Funkciók, amelyek az adott felhasználókkal kapcsolatos API hívásokat kezelik.
+- **selectAllUsers:** A `selectAllUsers` metódus kiválasztja vagy törli a kiválasztást minden felhasználóról a listából, attól függően, hogy jelenleg minden felhasználó kiválasztva van-e vagy sem.
+- **exportCSV:** Az `exportCSV` metódus a `DataTable` komponens `exportCSV` funkcióját hívja meg, hogy exportálja az aktuális felhasználólistát CSV fájl formátumban.
 
 ### Stílusok és Animációk
 
