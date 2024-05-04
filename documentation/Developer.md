@@ -13,6 +13,7 @@
    - [Téma routeok](#témához-kapcsolodó-routeok)
    - [Kvíz routeok](#kvízekhez-kapcsolodó-routeok)
    - [Jegyzet routeok](#jegyzethez-kapcsolodó-routeok)
+   - [Feladat routeok](#feladathoz-kapcsolodó-routeok)
 3. [Komponensek](#komponensek)
    - [BaseDialog](#basedialog)
    - [BaseSpinner](#basespinner)
@@ -64,7 +65,7 @@ A projekt elindításához futassa le a `start.sh` fájlt.
 
 #### Felhasználó
 
-- Felhasználónév: `sser`
+- Felhasználónév: `user`
 - E-mail cím: `user@user.com`
 - Jelszó: `user1234`
 
@@ -916,10 +917,8 @@ Egy JSON tömböt ad vissza `data` néven, melyben objektumok találhatóak a k�
 - `id`: A kurzus azonosítója.
 - `name`: A kurzus neve.
 - `image`: A kurzus képe `base64` formátumban.
-- `topics`: Az adott kurzushoz tartozó témákat adja vissza.
-  - `assignments`: Az adott témához tartozó beadandók tömbje.
-  - `notes`: Az adott témához tartozó jegyzetek tömbje.
-  - `quizzes`: Az adott témához tartozó kvízek tömbje.
+- `groups`: Az adott kurzushoz tartozó csoportokat foglalja magába, ezen belül az adott csoporthoz tartozó felhasználókat is visszaadja.
+- `created_by`: Az adott kurzust létrehozó felhasználó azonosítója.
 
 #### Példa
 
@@ -936,18 +935,64 @@ Válasz:
   "data": [
     {
       "id": 1,
-      "name": "Matematika",
-      "image": "iVBORw0KGgoAAAANSUhEUgAAABMC...",
-      "topics": [
+      "name": "Történelem",
+      "image": "KSDJASD...",
+      "groups": [
         {
           "id": 1,
-          "name": "AlmaFa",
-          "order": 2,
-          "assignments": [],
-          "notes": [],
-          "quizzes": []
+          "name": "9.a",
+          "users": [
+            {
+              "id": 1,
+              "name": "admin",
+              "email": "admin@admin.com",
+              "is_admin": 1,
+              "member": {
+                "group_id": 1,
+                "user_id": 1,
+                "permission": "Tanár"
+              }
+            },
+            {
+              "id": 2,
+              "name": "user",
+              "email": "user@user.com",
+              "is_admin": 0,
+              "member": {
+                "group_id": 1,
+                "user_id": 2,
+                "permission": "Tanuló"
+              }
+            }
+          ]
         }
-      ]
+      ],
+      "created_by": null
+    },
+    {
+      "id": 2,
+      "name": "Matematika",
+      "image": "LFHK3...",
+      "groups": [
+        {
+          "id": 2,
+          "name": "9.b",
+          "users": [
+            {
+              "id": 2,
+              "name": "user",
+              "email": "user@user.com",
+              "is_admin": 0,
+              "member": {
+                "group_id": 2,
+                "user_id": 2,
+                "permission": "Tanuló"
+              }
+            }
+          ]
+        }
+      ],
+      "created_by": null
     }
   ]
 }
@@ -966,15 +1011,16 @@ Egy kurzus lekérése azonosító alapján.
 
 #### Válasz
 
-Egy JSON tömböt ad vissza `data` néven, melyben objektumok találhatóak a következőkkel:
+Egy JSON objektumot ad vissza `data` néven, melyben objektumok és tömbök találhatóak a következőkkel:
 
 - `id`: A kurzus azonosítója.
 - `name`: A kurzus neve.
 - `image`: A kurzus képe `base64` formátumban.
-- `topics`: Az adott kurzushoz tartozó témákat adja vissza.
-  - `assignments`: Az adott témához tartozó beadandók tömbje.
-  - `notes`: Az adott témához tartozó jegyzetek tömbje.
-  - `quizzes`: Az adott témához tartozó kvízek tömbje.
+- `topics`: A kurzushoz tartozó téma.
+- `assignment`: Az adott topichoz tartozó feladat.
+- `quizzes`: Az adott topichoz tartozó kvízeket adja vissza.
+- `groups`: Az adott kurzushoz tartozó csoportokat azon belül pedig a felhasználókat adja meg.
+- `created_by`: Az adott kurzust létrehozó felhasználó azonosítója.
 
 #### Példa
 
@@ -990,18 +1036,100 @@ Válasz:
 {
   "data": {
     "id": 1,
-    "name": "Matematika",
-    "image": "iVBORw0KGgoAAAANSUhEUgAAABMC...",
+    "name": "Történelem",
+    "image": "KSDJASD...",
     "topics": [
       {
         "id": 1,
-        "name": "AlmaFa",
-        "order": 2,
-        "assignments": [],
-        "notes": [],
-        "quizzes": []
+        "name": "Történelmi korszakok",
+        "assignment": [
+          {
+            "id": 1,
+            "task_name": "Ókori civilizációk kutatása",
+            "comment": "Az ókori Egyiptom, Görögország és Róma társadalmi szerkezete és kultúrája.",
+            "deadline": "2024-05-18 12:34:00",
+            "course": {
+              "id": 1,
+              "name": "Történelem",
+              "image": "KSDJASD...",
+              "created_by": null
+            },
+            "teacher_task_name": null,
+            "student_task": []
+          },
+          {
+            "id": 2,
+            "task_name": "Középkori Európa elemzése",
+            "comment": "Elemzés a középkori Európa politikai és gazdasági viszonyairól.",
+            "deadline": "2024-05-25 12:34:00",
+            "course": {
+              "id": 1,
+              "name": "Történelem",
+              "image": "KSDJASD...",
+              "created_by": null
+            },
+            "teacher_task_name": null,
+            "student_task": []
+          },
+          {
+            "id": 3,
+            "task_name": "Modern korszak fordulópontjai",
+            "comment": "A jelentős történelmi fordulópontok hatása a modern társadalomra.",
+            "deadline": "2024-06-01 12:34:00",
+            "course": {
+              "id": 1,
+              "name": "Történelem",
+              "image": "KSDJASD...",
+              "created_by": null
+            },
+            "teacher_task_name": null,
+            "student_task": []
+          }
+        ],
+        "quizzes": [
+          {
+            "id": 1,
+            "name": "2023 május emelt",
+            "max_attempts": 5,
+            "opens": 1714739646,
+            "closes": 1717850046,
+            "time": 60,
+            "number_of_tasks": 2
+          }
+        ]
       }
-    ]
+    ],
+    "groups": [
+      {
+        "id": 1,
+        "name": "9.a",
+        "users": [
+          {
+            "id": 1,
+            "name": "admin",
+            "email": "admin@admin.com",
+            "is_admin": 1,
+            "member": {
+              "group_id": 1,
+              "user_id": 1,
+              "permission": "Tanár"
+            }
+          },
+          {
+            "id": 2,
+            "name": "user",
+            "email": "user@user.com",
+            "is_admin": 0,
+            "member": {
+              "group_id": 1,
+              "user_id": 2,
+              "permission": "Tanuló"
+            }
+          }
+        ]
+      }
+    ],
+    "created_by": null
   }
 }
 ```
@@ -1030,6 +1158,7 @@ Egy JSON objektumot ad vissza `data` néven a következőkkel:
 - `id`: A kurzus azonosítója.
 - `name`: A kurzus neve.
 - `image`: A kurzus képe `base64` formátumban.
+- `created_by`: Az adott kurzust létrehozó felhasználó azonosítója.
 
 #### Példa
 
@@ -1055,7 +1184,8 @@ Válasz:
   "data": {
     "id": 2,
     "name": "Fizika",
-    "image": "OIINHUIuinoioiIO234dsf..."
+    "image": "OIINHUIuinoioiIO234dsf...",
+    "created_by": 1
   }
 }
 ```
@@ -1085,6 +1215,7 @@ Egy JSON objektumot ad vissza `data` néven a következőkkel:
 - `id`: A kurzus azonosítója.
 - `name`: A kurzus neve.
 - `image`: A kurzus képe `base64` formátumban.
+- `created_by`: Az adott kurzust létrehozó felhasználó azonosítója.
 
 #### Példa
 
@@ -1110,7 +1241,8 @@ Válasz:
   "data": {
     "id": 2,
     "name": "Informatika",
-    "image": "odsfgfdngfusdfsduf..."
+    "image": "odsfgfdngfusdfsduf...",
+    "created_by": 1
   }
 }
 ```
@@ -1218,6 +1350,7 @@ Egy JSON objektumot ad vissza a következőkkel:
 - `message`: A hozzárendelés sikerességének/sikertelenségének üzenete.
 - `course`: A kurzus adatai.
 - `groups`: A kurzushoz tartozó csoportok adatai.
+- `created_by`: Az adott kurzust létrehozó felhasználó azonosítója.
 
 #### Példa
 
@@ -1245,6 +1378,7 @@ Válasz:
         "id": 1,
         "name": "Matematika",
         "image": "iVBORw0KGgoAAAANSU...",
+        "created_by": 1,
         "groups": [
             {
                 "id": 8,
@@ -1294,6 +1428,9 @@ Egy JSON objektumot ad vissza `data` néven a következőkkel:
 - `name`: A kurzus neve.
 - `image`: A kurzus képe `base64` formátumban.
 - `topics`: A kurzushoz tartozó témákat adja meg.
+- `assignment`: Az adott témához tartozó feladatokat adja meg.
+- `quizzes`: Az adott témához tartozó kvízeket adja vissza.
+- `created_by`: Az adott kurzust létrehozó felhasználó azonosítója.
 
 #### Példa
 
@@ -1317,15 +1454,70 @@ Válasz:
 {
   "data": {
     "id": 1,
-    "name": "Matematika",
-    "image": "iVBORw0KGgoAAAANSUh...",
+    "name": "Történelem",
+    "image": "asdasdasdad...",
     "topics": [
       {
         "id": 1,
-        "name": "AlmaFa",
-        "order": 2
+        "name": "Történelmi korszakok",
+        "assignment": [
+          {
+            "id": 1,
+            "task_name": "Ókori civilizációk kutatása",
+            "comment": "Az ókori Egyiptom, Görögország és Róma társadalmi szerkezete és kultúrája.",
+            "deadline": "2024-05-18 12:51:00",
+            "course": {
+              "id": 1,
+              "name": "Történelem",
+              "image": "asdasdasdad...",
+              "created_by": null
+            },
+            "teacher_task_name": null,
+            "student_task": []
+          },
+          {
+            "id": 2,
+            "task_name": "Középkori Európa elemzése",
+            "comment": "Elemzés a középkori Európa politikai és gazdasági viszonyairól.",
+            "deadline": "2024-05-25 12:51:00",
+            "course": {
+              "id": 1,
+              "name": "Történelem",
+              "image": "asdasdasdad...",
+              "created_by": null
+            },
+            "teacher_task_name": null,
+            "student_task": []
+          },
+          {
+            "id": 3,
+            "task_name": "Modern korszak fordulópontjai",
+            "comment": "A jelentős történelmi fordulópontok hatása a modern társadalomra.",
+            "deadline": "2024-06-01 12:51:00",
+            "course": {
+              "id": 1,
+              "name": "Történelem",
+              "image": "asdasdasdad...",
+              "created_by": null
+            },
+            "teacher_task_name": null,
+            "student_task": []
+          }
+        ],
+        "quizzes": [
+          {
+            "id": 1,
+            "name": "2023 május emelt",
+            "max_attempts": 5,
+            "opens": 1714740710,
+            "closes": 1717851110,
+            "time": 60,
+            "number_of_tasks": 2
+          }
+        ]
       }
-    ]
+    ],
+    "created_by": 1
   }
 }
 ```
@@ -1414,9 +1606,7 @@ Egy JSON tömböt ad vissza `data` néven, melyben objektumok találhatóak a k�
 
 - `id`: A téma azonosítója.
 - `name`: A téma neve.
-- `order`: A téma sorrendjének száma.
 - `assignment`: A témához tartozó feladatok.
-- `notes`: A témához tartozó jegyzetek.
 - `quizzes`: A témához tartozó kvízek.
 
 #### Példa
@@ -1435,7 +1625,6 @@ Válasz:
     {
       "id": 1,
       "name": "Történelmi korszakok",
-      "order": 1,
       "assignment": [
         {
           "id": 1,
@@ -1453,14 +1642,6 @@ Válasz:
           "student_task": []
         }
       ],
-      "notes": [
-        {
-          "id": 1,
-          "title": "Jegyzetem",
-          "text": "Jegyzet",
-          "user_id": 1
-        }
-      ],
       "quizzes": [
         {
           "id": 1,
@@ -1476,9 +1657,7 @@ Válasz:
     {
       "id": 4,
       "name": "Téma2",
-      "order": null,
       "assignment": [],
-      "notes": [],
       "quizzes": []
     }
   ]
@@ -1502,9 +1681,7 @@ Egy JSON objektumot ad vissza `data` néven a következőkkel:
 
 - `id`: A téma azonosítója.
 - `name`: A téma neve.
-- `order`: A téma sorrendjének száma.
 - `assignment`: A témához tartozó feladatok.
-- `notes`: A témához tartozó jegyzetek.
 - `quizzes`: A témához tartozó kvízek.
 
 #### Példa
@@ -1522,9 +1699,7 @@ Válasz:
   "data": {
     "id": 4,
     "name": "Téma2",
-    "order": null,
     "assignment": [],
-    "notes": [],
     "quizzes": []
   }
 }
@@ -1545,7 +1720,6 @@ Az alábbi hibakódokat adhatja vissza a végpont:
 #### Törzs
 
 - `name`: A téma neve.
-- `order`: A téma sorrendjének száma.
 
 #### Válasz
 
@@ -1553,7 +1727,6 @@ Egy JSON objektumot ad vissza `data` néven a következőkkel:
 
 - `id`: A téma azonosítója.
 - `name`: A téma neve.
-- `order`: A téma sorrendjének száma.
 
 #### Példa
 
@@ -1567,8 +1740,7 @@ Törzs:
 
 ```json
 {
-  "name": "Objektumok",
-  "order": 5
+  "name": "Objektumok"
 }
 ```
 
@@ -1578,8 +1750,7 @@ Válasz:
 {
   "data": {
     "id": 4,
-    "name": "Objektumok",
-    "order": 5
+    "name": "Objektumok"
   }
 }
 ```
@@ -1600,7 +1771,6 @@ Téma szerkesztése.
 #### Törzs
 
 - `name`: A téma neve.
-- `order`: A téma sorrendjének száma.
 
 #### Válasz
 
@@ -1608,9 +1778,7 @@ Egy JSON objektumot ad vissza `data` néven a következőkkel:
 
 - `id`: A téma azonosítója.
 - `name`: A téma neve.
-- `order`: A téma sorrendjének száma.
 - `assignment`: A témához tartozó feladatok.
-- `notes`: A témához tartozó jegyzetek.
 - `quizzes`: A témához tartozó kvízek.
 
 #### Példa
@@ -1625,8 +1793,7 @@ Törzs:
 
 ```json
 {
-  "name": "Új Téma",
-  "order": 20
+  "name": "Új Téma"
 }
 ```
 
@@ -1637,9 +1804,7 @@ Válasz:
   "data": {
     "id": 5,
     "name": "Új Téma",
-    "order": 20,
     "assignment": [],
-    "notes": [],
     "quizzes": []
   }
 }
@@ -1651,6 +1816,7 @@ Az alábbi hibakódokat adhatja vissza a végpont:
 
 - `401 Unauthorized`: Hiányzik a Bearer token.
 - `404 Not Found`: Nincs ilyen rekord az adatbázisban.
+- `403 Forbidden`: A felhasználónak nincs jogosultsága.
 - `422 Unprocessable Content`: Hiba a törzs adataiban.
 - `500 Internal Server Error`: Váratlan hiba történt a szerveren.
 
@@ -1682,24 +1848,25 @@ Az alábbi hibakódokat adhatja vissza a végpont:
 
 - `401 Unauthorized`: Hiányzik a Bearer token.
 - `404 Not Found`: Nincs ilyen rekord az adatbázisban.
+- `403 Forbidden`: A felhasználónak nincs jogosultsága.
 - `500 Internal Server Error`: Váratlan hiba történt a szerveren.
 
 ### Kvízekhez kapcsolodó routeok:
 
-| Method | URI                         | Name              | Controller        | Action   |
-| ------ | --------------------------- | ----------------- | ----------------- | -------- |
-| GET    | /api/quizzes                | quizzes.index     | QuizController    | index    |
-| GET    | /api/quizzes/{id}           | quizzes.show      | QuizController    | show     |
-| POST   | /api/quizzes                | quizzes.store     | QuizController    | store    |
-| PUT    | /api/quizzes/{id}           | quizzes.update    | QuizController    | update   |
-| DELETE | /api/quizzes/{id}           | quizzes.destory   | QuizController    | destroy  |
-| GET    | /api/quizzes/{id}/tasks     | tasks.index       | TaskController    | index    |
-| GET    | /api/quizzes/{id}/tasks/ids | tasks.taskIds     | TaskController    | taskIds  |
-| GET    | /api/tasks/{id}             | tasks.show        | TaskController    | show     |
-| POST   | /api/tasks                  | tasks.store       | TaskController    | store    |
-| PUT    | /api/tasks/{id}             | tasks.update      | TaskController    | update   |
-| DELETE | /api/tasks/{id}             | tasks.destory     | TaskController    | destroy  |
-| DELETE | /api/subtasks/{id}          | subtasks.destroy  | SubtaskController | destroy  |
+| Method | URI                         | Name             | Controller        | Action  |
+| ------ | --------------------------- | ---------------- | ----------------- | ------- |
+| GET    | /api/quizzes                | quizzes.index    | QuizController    | index   |
+| GET    | /api/quizzes/{id}           | quizzes.show     | QuizController    | show    |
+| POST   | /api/quizzes                | quizzes.store    | QuizController    | store   |
+| PUT    | /api/quizzes/{id}           | quizzes.update   | QuizController    | update  |
+| DELETE | /api/quizzes/{id}           | quizzes.destory  | QuizController    | destroy |
+| GET    | /api/quizzes/{id}/tasks     | tasks.index      | TaskController    | index   |
+| GET    | /api/quizzes/{id}/tasks/ids | tasks.taskIds    | TaskController    | taskIds |
+| GET    | /api/tasks/{id}             | tasks.show       | TaskController    | show    |
+| POST   | /api/tasks                  | tasks.store      | TaskController    | store   |
+| PUT    | /api/tasks/{id}             | tasks.update     | TaskController    | update  |
+| DELETE | /api/tasks/{id}             | tasks.destory    | TaskController    | destroy |
+| DELETE | /api/subtasks/{id}          | subtasks.destroy | SubtaskController | destroy |
 
 ### `GET /api/quizzes`
 
@@ -2484,13 +2651,15 @@ Az alábbi hibakódokat adhatja vissza a végpont:
 
 ### Jegyzethez kapcsolodó routeok:
 
-| Method | URI             | Name          | Controller     | Action  |
-| ------ | --------------- | ------------- | -------------- | ------- |
-| GET    | /api/notes      | notes.index   | NoteController | index   |
-| GET    | /api/notes/{id} | notes.show    | NoteController | show    |
-| POST   | /api/notes      | notes.store   | NoteController | store   |
-| PUT    | /api/notes/{id} | notes.update  | NoteController | update  |
-| DELETE | /api/notes/{id} | notes.destroy | NoteController | destroy |
+| Method | URI                  | Name                  | Controller     | Action          |
+| ------ | -------------------- | --------------------- | -------------- | --------------- |
+| GET    | /api/notes           | notes.index           | NoteController | index           |
+| GET    | /api/notes/{id}      | notes.show            | NoteController | show            |
+| POST   | /api/notes           | notes.store           | NoteController | store           |
+| PUT    | /api/notes/{id}      | notes.update          | NoteController | update          |
+| DELETE | /api/notes/{id}      | notes.destroy         | NoteController | destroy         |
+| GET    | /api/getCurrentNotes | notes.getCurrentNotes | NoteController | getCurrentNotes |
+| GET    | /api/getTeacherNotes | notes.getTeacherNotes | NoteController | getTeacherNotes |
 
 ### `GET /api/notes`
 
@@ -2504,6 +2673,8 @@ Egy JSON tömböt ad vissza `data` néven, melyben objektumok találhatóak a k�
 - `title`: A jegyzet címe.
 - `text`: A jegyzet szövege.
 - `user_id`: A jegyzetet létrehozó felhasználó azonosítója.
+- `topic_id`: Annak a témának az azonosítója amelyikhez az adott jegyzet tartozik.
+- `role`: Jelzi, hogy a jegyzetet egy tanár vagy tanuló készítette.
 
 #### Példa
 
@@ -2522,13 +2693,17 @@ Válasz:
       "id": 1,
       "title": "Jegyzet1",
       "text": "Ez egy teszt jegyzet.",
-      "user_id": 1
+      "user_id": 1,
+      "topic_id": 1,
+      "role": "Tanár"
     },
     {
       "id": 1,
       "title": "Jegyzet2",
       "text": "Ez is egy teszt jegyzet.",
-      "user_id": 2
+      "user_id": 2,
+      "topic_id": 1,
+      "role": "Diák"
     }
   ]
 }
@@ -2553,6 +2728,8 @@ Egy JSON objektumot ad vissza `data` néven a következőkkel:
 - `title`: A jegyzet címe.
 - `text`: A jegyzet szövege.
 - `user_id`: A jegyzetet létrehozó felhasználó azonosítója.
+- `topic_id`: Annak a témának az azonosítója amelyikhez az adott jegyzet tartozik.
+- `role`: Jelzi, hogy a jegyzetet egy tanár vagy tanuló készítette.
 
 #### Példa
 
@@ -2570,7 +2747,9 @@ Válasz:
     "id": 1,
     "title": "Jegyzet1",
     "text": "Ez egy teszt jegyzet.",
-    "user_id": 1
+    "user_id": 1,
+    "topic_id": 1,
+    "role": "Tanár"
   }
 }
 ```
@@ -2593,6 +2772,7 @@ Az alábbi hibakódokat adhatja vissza a végpont:
 - `text`: A jegyzet szövege.
 - `topic_id`: Azon téma azonosítója, amelyhez a jegyzetet kapcsolni kívánjuk.
 - `user_id`: A jegyzetet létrehozó felhasználó azonosítója.
+- `role`: Jelzi, hogy a jegyzetet egy tanár vagy tanuló készítette.
 
 #### Válasz
 
@@ -2602,6 +2782,8 @@ Egy JSON objektumot ad vissza `data` néven a következőkkel:
 - `title`: A jegyzet címe.
 - `text`: A jegyzet szövege.
 - `user_id`: A jegyzetet létrehozó felhasználó azonosítója.
+- `topic_id`: Azon téma azonosítója, amelyhez a jegyzetet kapcsolni kívánjuk.
+- `role`: Jelzi, hogy a jegyzetet egy tanár vagy tanuló készítette.
 
 #### Példa
 
@@ -2618,7 +2800,8 @@ Törzs:
   "title": "Jegyzetem",
   "text": "Jegyzet",
   "topic_id": 1,
-  "user_id": 1
+  "user_id": 1,
+  "role": "Tanuló"
 }
 ```
 
@@ -2630,7 +2813,9 @@ Válasz:
     "id": 3,
     "title": "Jegyzetem",
     "text": "Jegyzet",
-    "user_id": 1
+    "user_id": 1,
+    "topic_id": 1,
+    "role": "Tanuló"
   }
 }
 ```
@@ -2686,7 +2871,9 @@ Válasz:
     "id": 3,
     "title": "2.Jegyzetem",
     "text": "Ez a második Jegyzetem.",
-    "user_id": 1
+    "user_id": 1,
+    "topic_id": 1,
+    "role": "Tanuló"
   }
 }
 ```
@@ -2730,6 +2917,174 @@ Az alábbi hibakódokat adhatja vissza a végpont:
 - `401 Unauthorized`: Hiányzik a Bearer token.
 - `403 Forbidden`: A felhasználónak nincs jogosultsága.
 - `404 Not Found`: Nincs ilyen rekord az adatbázisban.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `GET /api/getCurrentNotes`
+
+Visszaadja a tanuló által létrehozott, tanár által közzétett jegyzeteket azok alapján, hogy melyik kurzushoz és csoporthoz tartozik.
+
+#### Válasz
+
+Egy JSON tömböt ad vissza `data` néven, melyben objektumok találhatóak a következőkkel:
+
+- `id`: A jegyzet azonosítója.
+- `title`: A jegyzet címe.
+- `text`: A jegyzet szövege.
+- `user_id`: A jegyzetet létrehozó felhasználó azonosítója.
+- `topic_id`: Annak a témának az azonosítója amelyikhez az adott jegyzet tartozik.
+- `role`: Jelzi, hogy a jegyzetet egy tanár vagy tanuló készítette.
+
+#### Példa
+
+URI:
+
+```
+/api/getCurrentNotes
+```
+
+Válasz:
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Ókori civilizációk",
+      "text": "Egyiptomi Birodalom, Görög Poliszok, Római Köztársaság",
+      "user_id": 1,
+      "topic_id": 1,
+      "role": "Tanár"
+    },
+    {
+      "id": 2,
+      "title": "Középkori Európa",
+      "text": "A Karoling Királyság, A Keresztes Háborúk, A Fekete Halál",
+      "user_id": 2,
+      "topic_id": 1,
+      "role": "Tanuló"
+    }
+  ]
+}
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### `GET /api/getTeacherNotes`
+
+Visszaadja az összes tanári jegyzetet aszerint, hogy az adott felhasználó részese-e a megfelelő kurzusnak, csoportnak.
+
+#### Válasz
+
+Egy JSON tömböt ad vissza `data` néven, melyben objektumok találhatóak a következőkkel:
+
+- `id`: A jegyzet azonosítója.
+- `title`: A jegyzet címe.
+- `text`: A jegyzet szövege.
+- `updated_at`: A legutolsó frissítés óta eltelt idő.
+- `course_name`: A jegyzetet tartalmazó kurzus neve.
+- `course_image`: A jegyzetet tartalmazó kurzus képe.
+
+#### Példa
+
+URI:
+
+```
+/api/getTeacherNotes
+```
+
+Válasz:
+
+```json
+{
+  "data": [
+    {
+      "id": 2,
+      "title": "Középkori Európa",
+      "text": "A Karoling Királyság, A Keresztes Háborúk, A Fekete Halál",
+      "updated_at": "2024-05-01 14:51:50",
+      "course_name": "Történelem",
+      "course_image": "asdasdasdad..."
+    },
+    {
+      "id": 1,
+      "title": "Ókori civilizációk",
+      "text": "Egyiptomi Birodalom, Görög Poliszok, Római Köztársaság",
+      "updated_at": "2024-04-29 14:51:50",
+      "course_name": "Történelem",
+      "course_image": "asdasdasdad..."
+    }
+  ]
+}
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
+- `500 Internal Server Error`: Váratlan hiba történt a szerveren.
+
+### Feladathoz kapcsolodó routeok:
+
+| Method | URI                        | Name                              | Controller           | Action                |
+| ------ | -------------------------- | --------------------------------- | -------------------- | --------------------- |
+| GET    | /api/getCurrentAssignments | assignments.getCurrentAssignments | AssignmentController | getCurrentAssignments |
+
+### `GET /api/getCurrentAssignments`
+
+Visszaadja az összes tanár által kitett feladatot, aszerint hogy az adott felhasználó részese-e a megfelelő kurzusnak, csoportnak és a diák még nem adta le a feladatot, illetve a beadási határidő még nem járt le.
+
+#### Válasz
+
+Egy JSON tömböt ad vissza `data` néven, melyben objektumok találhatóak a következőkkel:
+
+- `id`: A feladat azonosítója.
+- `task_name`: A feladat neve.
+- `deadline`: A feladat lejárati dátuma.
+- `course_image`: A feladatot tartalmazó kurzus képe.
+- `student_assignment`: Itt jelenik meg a diák által benyújtott feladat.
+
+#### Példa
+
+URI:
+
+```
+/api/getCurrentAssignments
+```
+
+Válasz:
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "task_name": "Ókori civilizációk kutatása",
+      "deadline": "2024.05.18 12:51:00",
+      "course_image": "asdasdasdad...",
+      "student_assignment": []
+    },
+    {
+      "id": 2,
+      "task_name": "Középkori Európa elemzése",
+      "deadline": "2024.05.25 14:51:00",
+      "course_image": "asdasdasdad...",
+      "student_assignment": []
+    }
+  ]
+}
+```
+
+#### Hibakódok
+
+Az alábbi hibakódokat adhatja vissza a végpont:
+
+- `401 Unauthorized`: Hiányzik a Bearer token.
 - `500 Internal Server Error`: Váratlan hiba történt a szerveren.
 
 ## Komponensek
@@ -3150,6 +3505,7 @@ A `template`-ben egy Bootstrap `card` szerkezetet használunk, amely három oszl
   };
 </script>
 ```
+
 ## Oldalak:
 
 ### `HomePage`
