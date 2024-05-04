@@ -110,12 +110,12 @@ Route::middleware('auth:sanctum')->put('/assignments/{id}', [AssignmentControlle
     ->name('assignments.update');
 Route::middleware('auth:sanctum')->delete('/assignments/{id}', [AssignmentController::class,'destroy'])
     ->name('assignments.destroy');
-Route::get('/assignments/{id}/download', [AssignmentController::class,'download'])
+Route::middleware('auth:sanctum')->get('/assignments/{id}/download', [AssignmentController::class,'download'])
     ->name('assignments.download');
 Route::middleware('auth:sanctum')->get('/getCurrentAssignments', [AssignmentController::class,'getCurrentAssignments'])
     ->name("assignments.getCurrentAssignments");
 
-Route::get('/topics', [TopicController::class,'index'])
+Route::middleware('auth:sanctum')->get('/topics', [TopicController::class,'index'])
     ->name('topics.index'); 
 Route::middleware('auth:sanctum')->get('/topics/{id}', [TopicController::class,'show'])
     ->name('topics.show'); 
@@ -136,9 +136,9 @@ Route::middleware('auth:sanctum')->put('/studentAssignments/{id}', [StudentAssig
     ->name('studentAssignments.update');
 Route::middleware('auth:sanctum')->delete('/studentAssignments/{id}', [StudentAssignmentController::class,'destroy'])
     ->name('studentAssignments.destroy');
-Route::get('/studentAssignments/{id}/download', [StudentAssignmentController::class,'download'])
+Route::middleware('auth:sanctum')->get('/studentAssignments/{id}/download', [StudentAssignmentController::class,'download'])
     ->name('studentAssignments.download');
-Route::get('/studentAssignments/{id}/downloadZip', [StudentAssignmentController::class,'createZip'])
+Route::middleware('auth:sanctum')->get('/studentAssignments/{id}/downloadZip', [StudentAssignmentController::class,'createZip'])
     ->name('studentAssignments.createZip');
 
 
