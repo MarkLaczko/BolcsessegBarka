@@ -29,12 +29,13 @@
     }" />
           <div class="d-flex justify-content-end mt-2 mb-3">
             <Button type="button" :label="messages.pages.groupManagementPage.newGroupDialog.cancelButton
-      " class="btn btn-outline-danger mx-1" @click="addGroupDialogVisible = false"></Button>
+      " class="btn btn-danger text-white mx-1" @click="addGroupDialogVisible = false"></Button>
             <FormKit type="submit" :label="messages.pages.groupManagementPage.newGroupDialog.saveButton
       " id="addGroupButton" :classes="{
       input: {
         btn: true,
         'btn-success': true,
+        'text-white': true,
         'w-auto': true,
       },
     }" />
@@ -178,12 +179,13 @@
           </DataTable>
           <div class="d-flex justify-content-end mt-2 mb-3">
             <Button type="button" :label="messages.pages.groupManagementPage.editGroupDialog.cancelButton
-      " class="btn btn-outline-danger mx-1" @click="closeModifyWindow"></Button>
+      " class="btn btn-danger text-white mx-1" @click="closeModifyWindow"></Button>
             <FormKit type="submit" :label="messages.pages.groupManagementPage.editGroupDialog.saveButton
       " id="modifyGroupButton" :classes="{
       input: {
         btn: true,
         'btn-success': true,
+        'text-white': true,
         'w-auto': true,
       },
     }" />
@@ -546,8 +548,8 @@ export default {
       this.$confirm.require({
         message: this.messages.pages.groupManagementPage.confirmDialogs.delete,
         icon: 'pi pi-exclamation-triangle',
-        rejectClass: 'btn btn-danger',
-        acceptClass: 'btn btn-success ',
+        rejectClass: 'btn btn-danger text-white',
+        acceptClass: 'btn btn-success text-white',
         rejectLabel: 'Mégse',
         acceptLabel: 'Törlés',
         accept: () => {
@@ -591,8 +593,8 @@ export default {
       this.$confirm.require({
         message: this.messages.pages.groupManagementPage.confirmDialogs.bulkDelete,
         icon: 'pi pi-exclamation-triangle',
-        rejectClass: 'btn btn-danger',
-        acceptClass: 'btn btn-success ',
+        rejectClass: 'btn btn-danger text-white',
+        acceptClass: 'btn btn-success text-white',
         rejectLabel: 'Mégse',
         acceptLabel: 'Törlés',
         accept: () => {
@@ -613,29 +615,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.slide-fade-enter-active {
-  transition: all 0.3s ease-out;
-}
-
-.slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  transform: translateY(-20px);
-  opacity: 0;
-}
-</style>

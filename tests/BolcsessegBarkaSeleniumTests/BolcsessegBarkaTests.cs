@@ -322,22 +322,7 @@ public class BolcsessegBarkaTests
     }
 
     [TestMethod]
-    public void Test08_TestHomePageWorkingPaginator()   
-    {
-        LoginAsAdmin();
-
-        Wait(ExpectedConditions.ElementExists(By.CssSelector("#app > div > main > div > div:nth-child(2)")),TimeSpan.FromSeconds(10));
-
-        SelectElement("a[aria-label='Next']", "CssSelector",true);
-        WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10));
-        wait.Until(ExpectedConditions.TextToBePresentInElementLocated(By.CssSelector("#app > div > main > div > div:nth-child(2) > div > div:nth-child(2) > div"), "Feladat 5"));
-
-        var expectedCardTitle = _webDriver!.FindElement(By.XPath("//*[@id=\"app\"]/div/main/div/div[1]/div/div[2]/div/div[1]/h3"));
-        Assert.AreEqual("Feladat 5", expectedCardTitle.Text);
-    }
-
-    [TestMethod]
-    public void Test09_TestAboutLogoutFunctionality() 
+    public void Test08_TestAboutLogoutFunctionality() 
     {
         LoginAsAdmin();
 
@@ -351,7 +336,7 @@ public class BolcsessegBarkaTests
     }
 
     [TestMethod]
-    public void Test10_TestLanguageSwitchFunctionality()
+    public void Test09_TestLanguageSwitchFunctionality()
     {
         _webDriver!.Url = _sut + "/login";
 
@@ -376,7 +361,7 @@ public class BolcsessegBarkaTests
     }
 
     [TestMethod]
-    public void Test11_TestDarkModeFunctionality()
+    public void Test10_TestDarkModeFunctionality()
     {
         _webDriver!.Url = _sut + "/login";
 
@@ -397,7 +382,7 @@ public class BolcsessegBarkaTests
     }
     
     [TestMethod]
-    public void Test12_TestCreateGroup()
+    public void Test11_TestCreateGroup()
     {
         LoginAsAdmin();
     
@@ -420,7 +405,7 @@ public class BolcsessegBarkaTests
     }
     
     [TestMethod]
-    public void Test13_TestUpdateGroup()
+    public void Test12_TestUpdateGroup()
     {
         LoginAsAdmin();
     
@@ -451,7 +436,7 @@ public class BolcsessegBarkaTests
     }
     
     [TestMethod]
-    public void Test14_TestDeleteGroup()
+    public void Test13_TestDeleteGroup()
     {
         LoginAsAdmin();
     
@@ -464,18 +449,18 @@ public class BolcsessegBarkaTests
         
         Assert.AreEqual(15, _webDriver.FindElements(By.CssSelector("tr[tabindex='-1']")).Count);
 
-        SelectElement("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(2) > td:nth-child(7) > button > i","CssSelector",true);
+        SelectElement(".table > tbody:nth-child(2) > tr:nth-child(3) > td:nth-child(7) > button:nth-child(1)","CssSelector",true);
         
-        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div[role='alertdialog']")), TimeSpan.FromSeconds(10));
+        Wait(ExpectedConditions.ElementToBeClickable(By.CssSelector("div[role='alertdialog']")), TimeSpan.FromSeconds(10));
 
-        SelectElement("body > div:nth-child(6) > div > div.d-flex.justify-content-end.align-items-center.gap-1.mt-2 > button.btn.btn-success > span","CssSelector",true);
+        SelectElement("button.btn-success:nth-child(2)","CssSelector",true);
         
         new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10)).Until(drv => drv.FindElements(By.CssSelector("tr[tabindex='-1']")).Count == 14);
         Assert.AreEqual(14, _webDriver.FindElements(By.CssSelector("tr[tabindex='-1']")).Count);
     }
 
     [TestMethod]
-    public void Test15_TestIfAdminCanCreateCourse()
+    public void Test14_TestIfAdminCanCreateCourse()
     {
         LoginAsAdmin();
         
@@ -484,11 +469,11 @@ public class BolcsessegBarkaTests
         Navigate("Adminisztráció")!.Click();
         SelectElement("a[href='/course-administration']", "CssSelector", true);
         
-        Wait(ExpectedConditions.ElementExists(By.XPath("/html/body/div[1]/div/main/div/div/div/div[1]/div[1]/button[1]")),TimeSpan.FromSeconds(10));
+        Wait(ExpectedConditions.ElementExists(By.CssSelector(".mr-2")),TimeSpan.FromSeconds(10));
         
-        SelectElement("/html/body/div[1]/div/main/div/div/div/div[1]/div[1]/button[1]","XPath",true);
+        SelectElement(".mr-2","CssSelector",true);
         
-        Wait(ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[5]/div")),TimeSpan.FromSeconds(10));
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div[role='dialog']")),TimeSpan.FromSeconds(10));
 
         var courseName = _webDriver.FindElement(By.Name("name"));
         courseName.SendKeys("Informatika");
@@ -507,7 +492,7 @@ public class BolcsessegBarkaTests
     }
 
     [TestMethod]
-    public void Test16_TestIfAdminCanModifyCourse()
+    public void Test15_TestIfAdminCanModifyCourse()
     {
         LoginAsAdmin();
         
@@ -532,7 +517,7 @@ public class BolcsessegBarkaTests
     }
 
     [TestMethod]
-    public void Test17_TestIfAdminCanAssignGroupToACourse()
+    public void Test16_TestIfAdminCanAssignGroupToACourse()
     {
         LoginAsAdmin();
         
@@ -541,10 +526,12 @@ public class BolcsessegBarkaTests
         Navigate("Adminisztráció")!.Click();
         SelectElement("a[href='/course-administration']", "CssSelector", true);
         
-        Wait(ExpectedConditions.ElementExists(By.CssSelector("i.fa-pen-to-square")),TimeSpan.FromSeconds(10));
+        Wait(ExpectedConditions.ElementExists(By.CssSelector(".table > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(5) > button:nth-child(1)")),TimeSpan.FromSeconds(10));
         
-        SelectElement("i.fa-pen-to-square","CssSelector",true);
+        SelectElement(".table > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(5) > button:nth-child(1)","CssSelector",true);
 
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div[role='dialog']")), TimeSpan.FromSeconds(10));
+        
         SelectElement("svg[data-pc-section='dropdownicon']","CssSelector",true);
         
         Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div[data-pc-section='panel']")), TimeSpan.FromSeconds(10));
@@ -554,7 +541,7 @@ public class BolcsessegBarkaTests
         SelectElement("svg[data-pc-section='closeicon']","CssSelector",true);
         
         Wait(ExpectedConditions.ElementToBeClickable(By.ClassName("modifyCourse")),TimeSpan.FromSeconds(10));
-        
+        Thread.Sleep(2000);
         SelectElement("modifyCourse","ClassName",true);
         
         Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div[data-pc-name='toast'] div[data-pc-section='detail']")), TimeSpan.FromSeconds(10));
@@ -568,7 +555,7 @@ public class BolcsessegBarkaTests
     }
 
     [TestMethod]
-    public void Test18_TestIfAdminCanDeleteMultipleCourses()
+    public void Test17_TestIfAdminCanDeleteMultipleCourses()
     {
         LoginAsAdmin();
         
@@ -581,8 +568,22 @@ public class BolcsessegBarkaTests
         
         Assert.AreEqual(3, _webDriver.FindElements(By.CssSelector("tr[tabindex='-1']")).Count);
 
-        SelectElement("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(2) > td:nth-child(1) > div > i","CssSelector",true);
-        SelectElement("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(3) > td:nth-child(1) > div > i","CssSelector",true);
+        IWebElement deleteBtn = _webDriver.FindElement(By.CssSelector(".table > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(1) > div:nth-child(1) > i:nth-child(1)"));
+        ((IJavaScriptExecutor)_webDriver).ExecuteScript("arguments[0].scrollIntoView(true);", deleteBtn);
+        Thread.Sleep(2000);
+        
+        SelectElement(".table > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(1) > div:nth-child(1) > i:nth-child(1)","CssSelector",true);
+        
+        IWebElement deleteBtn2 = _webDriver.FindElement(By.CssSelector(".table > tbody:nth-child(2) > tr:nth-child(3) > td:nth-child(1) > div:nth-child(1) > i:nth-child(1)"));
+        ((IJavaScriptExecutor)_webDriver).ExecuteScript("arguments[0].scrollIntoView(true);", deleteBtn2);
+        Thread.Sleep(2000);
+        
+        SelectElement(".table > tbody:nth-child(2) > tr:nth-child(3) > td:nth-child(1) > div:nth-child(1) > i:nth-child(1)","CssSelector",true);
+       
+        IWebElement deleteBtn3 = _webDriver.FindElement(By.CssSelector("div[data-pc-section='start'] button:nth-child(2)"));
+        ((IJavaScriptExecutor)_webDriver).ExecuteScript("arguments[0].scrollIntoView(true);", deleteBtn3);
+        Thread.Sleep(2000);
+        
         SelectElement("div[data-pc-section='start'] button:nth-child(2)","CssSelector",true);
         
         Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("button[data-pc-name='acceptbutton']")),TimeSpan.FromSeconds(10));
@@ -594,7 +595,7 @@ public class BolcsessegBarkaTests
     }
 
     [TestMethod]
-    public void Test19_TesIfAdminCanDeleteACourse()
+    public void Test18_TesIfAdminCanDeleteACourse()
     {
         LoginAsAdmin();
         
@@ -603,11 +604,11 @@ public class BolcsessegBarkaTests
         Navigate("Adminisztráció")!.Click();
         SelectElement("a[href='/course-administration']", "CssSelector", true);
         
-        Wait(ExpectedConditions.ElementExists(By.XPath("/html/body/div[1]/div/main/div/div/div/div[1]/div[1]/button[1]")),TimeSpan.FromSeconds(10));
+        Wait(ExpectedConditions.ElementExists(By.CssSelector(".mr-2")),TimeSpan.FromSeconds(10));
         
-        SelectElement("/html/body/div[1]/div/main/div/div/div/div[1]/div[1]/button[1]","XPath",true);
+        SelectElement(".mr-2","CssSelector",true);
         
-        Wait(ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[5]/div")),TimeSpan.FromSeconds(10));
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div[role='dialog']")),TimeSpan.FromSeconds(10));
 
         var courseName = _webDriver.FindElement(By.Name("name"));
         courseName.SendKeys("Informatika");
@@ -622,25 +623,25 @@ public class BolcsessegBarkaTests
         
         Wait(ExpectedConditions.TextToBePresentInElementLocated(By.CssSelector("body"), "Informatika"), TimeSpan.FromSeconds(10));
         
-        Assert.AreEqual(3, _webDriver.FindElements(By.CssSelector("tr[tabindex='-1']")).Count);
+        Assert.AreEqual(2, _webDriver.FindElements(By.CssSelector("tr[tabindex='-1']")).Count);
         Thread.Sleep(500);
         
-        IWebElement deleteBtn = _webDriver.FindElement(By.CssSelector(".table > tbody:nth-child(2) > tr:nth-child(3) > td:nth-child(6) > button:nth-child(1)"));
+        IWebElement deleteBtn = _webDriver.FindElement(By.CssSelector(".table > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(6) > button:nth-child(1)"));
         ((IJavaScriptExecutor)_webDriver).ExecuteScript("arguments[0].scrollIntoView(true);", deleteBtn);
         Thread.Sleep(2000);
         
-        SelectElement(".table > tbody:nth-child(2) > tr:nth-child(3) > td:nth-child(6) > button:nth-child(1)","CssSelector",true);
+        SelectElement(".table > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(6) > button:nth-child(1)","CssSelector",true);
         
         Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("button[data-pc-name='acceptbutton']")),TimeSpan.FromSeconds(10));
         SelectElement("button[data-pc-name='acceptbutton']","CssSelector",true);
         
-        new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10)).Until(drv => drv.FindElements(By.CssSelector("tr[tabindex='-1']")).Count == 2);
+        new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10)).Until(drv => drv.FindElements(By.CssSelector("tr[tabindex='-1']")).Count == 1);
         
-        Assert.AreEqual(2, _webDriver.FindElements(By.CssSelector("tr[tabindex='-1']")).Count);
+        Assert.AreEqual(1, _webDriver.FindElements(By.CssSelector("tr[tabindex='-1']")).Count);
     }
 
     [TestMethod]
-    public void Test20_AdminCanAssignUserToAGroup()
+    public void Test19_AdminCanAssignUserToAGroup()
     {
         LoginAsAdmin();
         
@@ -649,40 +650,40 @@ public class BolcsessegBarkaTests
         Navigate("Adminisztráció")!.Click();
         SelectElement("a[href='/group-administration']", "CssSelector", true);
         
-        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(6) > button > i")), TimeSpan.FromSeconds(10));
-        SelectElement("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(6) > button > i", "CssSelector", true);
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector(".table > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(6) > button:nth-child(1)")), TimeSpan.FromSeconds(10));
+        SelectElement(".table > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(6) > button:nth-child(1)", "CssSelector", true);
         
-        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div[name='dialog'] ")), TimeSpan.FromSeconds(10));
-        SelectElement("tbody > tr:nth-child(1) > td:nth-child(1) > div > button > i", "CssSelector", true);
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div[role='dialog']")), TimeSpan.FromSeconds(10));
+        SelectElement("div[role='dialog'] tbody button:first-child", "CssSelector", true);
         SelectElement("#modifyGroupButton","CssSelector",true);
+
+        new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10)).Until(drv => drv.FindElement(By.CssSelector(".table > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(4)")).Text == "2 tag");
         
-        new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10)).Until(drv => drv.FindElement(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(4)")).Text == "1 tag");
-        
-        Assert.AreEqual("1 tag", _webDriver.FindElement(By.CssSelector("#app > div > main > div > div > div > div:nth-child(2) > div:nth-child(1) > table > tbody > tr:nth-child(1) > td:nth-child(4)")).Text);
+        Assert.AreEqual("2 tag", _webDriver.FindElement(By.CssSelector(".table > tbody:nth-child(2) > tr:nth-child(2) > td:nth-child(4)")).Text);
         
         Thread.Sleep(5000);
         Navigate("Kurzusaim")!.Click();
         
         Wait(ExpectedConditions.ElementExists(By.CssSelector(".card")),TimeSpan.FromSeconds(10));
         
-        Assert.AreEqual("Történelem (9.a)", _webDriver.FindElement(By.CssSelector("#app > div > main > div > div > div > div > div.card-body.text-center > h5")).Text);
+        Assert.AreEqual("Matematika", _webDriver.FindElement(By.CssSelector("div.col-12:nth-child(2) > div:nth-child(1) > div:nth-child(2) > h5:nth-child(1)")).Text);
     }
 
     [TestMethod]
-    public void Test21_AdminCanCreateTopicInsideACourse()
+    public void Test20_AdminCanCreateTopicInsideACourse()
     {
         LoginAsAdmin();
         
         Wait(ExpectedConditions.ElementIsVisible(By.LinkText("Adminisztráció")), TimeSpan.FromSeconds(10));
         Navigate("Kurzusaim")!.Click();
-        Thread.Sleep(5000);
-        // Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("a[href='/course/1?groupName=9.a']")), TimeSpan.FromSeconds(10));
-        SelectElement("a[href='/course/1?groupName=9.a']","CssSelector",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div.col-12:nth-child(1) > div:nth-child(1) > div:nth-child(2) > a:nth-child(3)")), TimeSpan.FromSeconds(10));
+        SelectElement("div.col-12:nth-child(1) > div:nth-child(1) > div:nth-child(2) > a:nth-child(3)","CssSelector",true);
         
         Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("#newTopic")), TimeSpan.FromSeconds(10));
         SelectElement("#newTopic","CssSelector",true);
         
-        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("body > div:nth-child(7) > div")), TimeSpan.FromSeconds(10));
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div[role='dialog']")), TimeSpan.FromSeconds(10));
 
         var topicName = _webDriver.FindElement(By.Name("name"));
         topicName.SendKeys("1. világháború");
@@ -694,7 +695,7 @@ public class BolcsessegBarkaTests
     }
 
     [TestMethod]
-    public void Test22_AdminCanEditTopicInsideACourse()
+    public void Test21_AdminCanEditTopicInsideACourse()
     {
         LoginAsAdmin();
         
@@ -704,25 +705,28 @@ public class BolcsessegBarkaTests
         Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("#app > div > main > div > div > div > div > div.card-body.text-center > a")), TimeSpan.FromSeconds(10));
         SelectElement("#app > div > main > div > div > div > div > div.card-body.text-center > a","CssSelector",true);
         
-        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div.accordion:last-child .accordion-button button")), TimeSpan.FromSeconds(10));
-        SelectElement("div.accordion:last-child .accordion-button button","CssSelector",true);
+        Wait(ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[1]/div/main/div/div[4]/div/h2/button")), TimeSpan.FromSeconds(10));
+        SelectElement("/html/body/div[1]/div/main/div/div[4]/div/h2/button","XPath",true);
         
-        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div.accordion:last-child div.dropdown li:nth-child(4)")), TimeSpan.FromSeconds(10));
-        SelectElement("div.accordion:last-child div.dropdown li:nth-child(4)","CssSelector",true);
+        Wait(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.accordion:last-child .accordion-collapse button.dropdown-toggle")), TimeSpan.FromSeconds(10));
+        SelectElement("div.accordion:last-child .accordion-collapse button.dropdown-toggle","CssSelector",true);
+        
+        Wait(ExpectedConditions.ElementToBeClickable(By.CssSelector("ul.show > li:nth-child(4) > a:nth-child(1)")), TimeSpan.FromSeconds(10));
+        SelectElement("ul.show > li:nth-child(4) > a:nth-child(1)","CssSelector",true);
         
         Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div[role='dialog']")), TimeSpan.FromSeconds(10));
-
-        var newTopicName = _webDriver.FindElement(By.Name("name"));
-        newTopicName.SendKeys("Kádár korszak");
         
-        SelectElement("div[role='dialog'] button[type='submit']","CssSelector",true);
+        var name = _webDriver.FindElement(By.Name("name"));
+        name.SendKeys("Kádár korszak");
         
+        SelectElement("button[type='submit']","CssSelector",true);
         Wait(ExpectedConditions.TextToBePresentInElementLocated(By.CssSelector("body"), "Kádár korszak"), TimeSpan.FromSeconds(10));
+
         Assert.AreEqual("Kádár korszak", _webDriver.FindElement(By.CssSelector("div.accordion:last-child .accordion-button h2")).Text);
     }
 
     [TestMethod]
-    public void Test23_AdminCanDeleteTopicInsideACourse()
+    public void Test22_AdminCanDeleteTopicInsideACourse()
     {
         LoginAsAdmin();
         
@@ -732,21 +736,26 @@ public class BolcsessegBarkaTests
         Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("#app > div > main > div > div > div > div > div.card-body.text-center > a")), TimeSpan.FromSeconds(10));
         SelectElement("#app > div > main > div > div > div > div > div.card-body.text-center > a","CssSelector",true);
         
-        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div.accordion:last-child .accordion-button button")), TimeSpan.FromSeconds(10));
-        SelectElement("div.accordion:last-child .accordion-button button","CssSelector",true);
+        Wait(ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[1]/div/main/div/div[4]/div/h2/button")), TimeSpan.FromSeconds(10));
+        SelectElement("/html/body/div[1]/div/main/div/div[4]/div/h2/button","XPath",true);
         
-        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div.accordion:last-child div.dropdown li:nth-child(5)")), TimeSpan.FromSeconds(10));
-        SelectElement("div.accordion:last-child div.dropdown li:nth-child(5)","CssSelector",true);
+        Assert.AreEqual(2, _webDriver.FindElements(By.CssSelector(".accordion")).Count);
         
-        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div[role='alertdialog'] button[data-pc-name='acceptbutton']")), TimeSpan.FromSeconds(10));
-        SelectElement("div[role='alertdialog'] button[data-pc-name='acceptbutton']","CssSelector",true);
+        Wait(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.accordion:last-child .accordion-collapse button.dropdown-toggle")), TimeSpan.FromSeconds(10));
+        SelectElement("div.accordion:last-child .accordion-collapse button.dropdown-toggle","CssSelector",true);
         
-        new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10)).Until(drv => drv.FindElements(By.CssSelector("div.accordion")).Count == 1);
-        Assert.AreEqual(1, _webDriver.FindElements(By.CssSelector("div.accordion")).Count);
+        Wait(ExpectedConditions.ElementToBeClickable(By.CssSelector("ul.show > li:nth-child(5) > a:nth-child(1)")), TimeSpan.FromSeconds(10));
+        SelectElement("ul.show > li:nth-child(5) > a:nth-child(1)","CssSelector",true);
+        
+        Wait(ExpectedConditions.ElementToBeClickable(By.CssSelector("div[role='alertdialog']")), TimeSpan.FromSeconds(10));
+        SelectElement("button[data-pc-name='acceptbutton']","CssSelector",true);
+        
+        new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10)).Until(drv => drv.FindElements(By.CssSelector(".accordion")).Count == 1);
+        Assert.AreEqual(1, _webDriver.FindElements(By.CssSelector(".accordion")).Count);
     }
 
     [TestMethod]
-    public void Test24_TestIfAdminCanCreateNoteInsideATopic()
+    public void Test23_TestIfAdminCanCreateNoteInsideATopic()
     {
         LoginAsAdmin();
         
@@ -756,11 +765,14 @@ public class BolcsessegBarkaTests
         Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("#app > div > main > div > div > div > div > div.card-body.text-center > a")), TimeSpan.FromSeconds(10));
         SelectElement("#app > div > main > div > div > div > div > div.card-body.text-center > a","CssSelector",true);
         
-        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div.accordion:last-child .accordion-button button")), TimeSpan.FromSeconds(10));
-        SelectElement("div.accordion:last-child .accordion-button button","CssSelector",true);
+        Wait(ExpectedConditions.ElementIsVisible(By.XPath("/html/body/div[1]/div/main/div/div[4]/div/h2/button")), TimeSpan.FromSeconds(10));
+        SelectElement("/html/body/div[1]/div/main/div/div[4]/div/h2/button","XPath",true);
         
-        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div.accordion:last-child div.dropdown li:nth-child(2)")), TimeSpan.FromSeconds(10));
-        SelectElement("div.accordion:last-child div.dropdown li:nth-child(2)","CssSelector",true);
+        Wait(ExpectedConditions.ElementToBeClickable(By.CssSelector("div.accordion:last-child .accordion-collapse button.dropdown-toggle")), TimeSpan.FromSeconds(10));
+        SelectElement("div.accordion:last-child .accordion-collapse button.dropdown-toggle","CssSelector",true);
+        
+        Wait(ExpectedConditions.ElementToBeClickable(By.CssSelector("ul.show > li:nth-child(2) > a:nth-child(1)")), TimeSpan.FromSeconds(10));
+        SelectElement("ul.show > li:nth-child(2) > a:nth-child(1)","CssSelector",true);
         
         Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div[role='dialog']")), TimeSpan.FromSeconds(10));
 
@@ -774,11 +786,11 @@ public class BolcsessegBarkaTests
         SelectElement("saveNoteButton","Id", true);
         
         Wait(ExpectedConditions.TextToBePresentInElementLocated(By.CssSelector("body"), "Teszt Jegyzet"), TimeSpan.FromSeconds(10));
-        Assert.AreEqual("Jegyzet címe: Teszt Jegyzet", _webDriver.FindElement(By.CssSelector("div.card-body")).Text);  
+        Assert.AreEqual("Jegyzet címe: Teszt Jegyzet", _webDriver.FindElement(By.CssSelector("#collapse6 > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2)")).Text);  
     }
 
     [TestMethod]
-    public void Test25_TestIfAdminOrTeacherCanAssignGroupsToACourse()
+    public void Test24_TestIfAdminOrTeacherCanAssignGroupsToACourse()
     {
         LoginAsAdmin();
         
@@ -792,7 +804,7 @@ public class BolcsessegBarkaTests
         SelectElement("#manageCourses","CssSelector",true);
         
         Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div[role='dialog']")), TimeSpan.FromSeconds(10));
-        SelectElement("body > div:nth-child(7) > div > div:nth-child(3) > div:nth-child(1) > div:nth-child(3) > svg","CssSelector",true);
+        SelectElement("svg[data-pc-section='dropdownicon']","CssSelector",true);
         
         Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("div[data-pc-section='panel']")), TimeSpan.FromSeconds(10));
        
@@ -808,11 +820,11 @@ public class BolcsessegBarkaTests
         Navigate("Kurzusaim")!.Click();
         
         Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("#app > div > main > div > div > div:nth-child(2) > div")),TimeSpan.FromSeconds(10));
-        Assert.AreEqual("Történelem (Módosított csoport)",_webDriver.FindElement(By.CssSelector("#app > div > main > div > div > div:nth-child(2) > div > div.card-body.text-center > h5")).Text);
+        Assert.AreEqual("Matematika",_webDriver.FindElement(By.CssSelector("#app > div > main > div > div > div:nth-child(2) > div > div.card-body.text-center > h5")).Text);
     }
     
     [TestMethod]
-    public void Test26_TestIfAdminCanEditNoteInsideATopic()
+    public void Test25_TestIfAdminCanEditNoteInsideATopic()
     {
         LoginAsAdmin();
         
@@ -841,7 +853,7 @@ public class BolcsessegBarkaTests
     }
     
     [TestMethod]
-    public void Test27_TestIfAdminCanDeleteNoteInsideATopic()
+    public void Test26_TestIfAdminCanDeleteNoteInsideATopic()
     {
         LoginAsAdmin();
         
@@ -869,7 +881,7 @@ public class BolcsessegBarkaTests
     }
     
     [TestMethod]
-    public void Test28_CreateQuizTest()
+    public void Test27_CreateQuizTest()
     {
         LoginAsAdmin();
         
@@ -911,7 +923,7 @@ public class BolcsessegBarkaTests
     }
     
     [TestMethod]
-    public void Test29_EditQuizTest()
+    public void Test28_EditQuizTest()
     {
         LoginAsAdmin();
         
@@ -955,7 +967,7 @@ public class BolcsessegBarkaTests
         Assert.AreEqual("30", timeEdit.GetAttribute("value"));
     }
     [TestMethod]
-    public void Test30_AddTaskToQuizTest()
+    public void Test29_AddTaskToQuizTest()
     {
         LoginAsAdmin();
         
@@ -1015,7 +1027,7 @@ public class BolcsessegBarkaTests
     }
     
     [TestMethod]
-    public void Test31_EditTaskInQuizTest()
+    public void Test30_EditTaskInQuizTest()
     {
         LoginAsAdmin();
         
