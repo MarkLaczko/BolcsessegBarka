@@ -9,6 +9,7 @@ use App\Http\Resources\CurrentStudentAssignmentResource;
 use App\Models\Assignment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Lang;
 
 class AssignmentController extends Controller
@@ -26,6 +27,7 @@ class AssignmentController extends Controller
      */
     public function store(StoreAssignmentRequest $request)
     {
+        Gate::authorize("assignments.store");
         $data = $request->validated();
         $assignment = Assignment::create($data);
         if ($request->file("teacher_task") != null) {
@@ -50,6 +52,7 @@ class AssignmentController extends Controller
      */
     public function update(UpdateAssignmentRequest $request, string $id)
     {
+        Gate::authorize("assignments.update");
         $data = $request->validated();
         $assignment = Assignment::findOrFail($id);
         $assignment->update($data);
@@ -65,6 +68,7 @@ class AssignmentController extends Controller
      */
     public function destroy(string $id)
     {
+        Gate::authorize("assignments.destroy");
         $assignment = Assignment::findOrFail($id);
         $assignment->delete();
 
@@ -73,6 +77,7 @@ class AssignmentController extends Controller
 
 
     public function download($id) {
+        Gate::authorize("assignments.download");
         $item = Assignment::find($id);
     
         if (is_null($item)) {
