@@ -26,7 +26,7 @@
                                     id="header"
                                     v-model="form.value.header"
                                     :classes="{
-                                        input: 'form-control',
+                                        input: 'form-control form-control-dark',
                                         label: 'form-label',
                                     }"
                                     autocomplete="off"
@@ -45,7 +45,7 @@
                                     id="text"
                                     v-model="form.value.text"
                                     :classes="{
-                                        input: 'form-control',
+                                        input: 'form-control form-control-dark',
                                         label: 'form-label',
                                     }"
                                     autocomplete="off"
@@ -73,7 +73,7 @@
                                         </div>
                                         <div class="my-2">
                                             <label :for="'type' + index" class="form-label">{{ messages.pages.editTaskPage.subtaskType }}</label>
-                                            <select name="type" :id="'type' + index" class="form-select" v-model="subtask.type">
+                                            <select name="type" :id="'type' + index" class="form-select form-control-dark" v-model="subtask.type">
                                                 <option value="short_answer">{{ messages.pages.editTaskPage.typeOptions.shortAnswer }}</option>
                                                 <option value="multiple_choice">{{ messages.pages.editTaskPage.typeOptions.multipleChoice }}</option>
                                                 <option value="essay">{{ messages.pages.editTaskPage.typeOptions.essay }}</option>
@@ -111,7 +111,7 @@
                                             step="0.5"
                                             v-model="subtask.marks"
                                             :classes="{
-                                                input: 'form-control',
+                                                input: 'form-control form-control-dark',
                                                 label: 'form-label',
                                             }"
                                             validation="required|min:0"
@@ -134,18 +134,18 @@
                             </div>
                             <div class="col-12 my-1">
                                 <div class="card w-100 my-2 p-1">
-                                    <button type="button" class="btn btn-info" id="addSubtask" @click="addEmptySubtask"><i class="fa-solid fa-plus"></i></button>
+                                    <button type="button" class="btn btn-info text-white" id="addSubtask" @click="addEmptySubtask"><i class="fa-solid fa-plus"></i></button>
                                 </div>
                             </div>
                             <div class="col-12 my-1">
                                 <div class="d-flex w-100 flex-row justify-content-end my-2 p-1">
-                                    <RouterLink :to="{ name: 'editQuiz', params: { id: route.params.quizId } }" class="btn btn-secondary ms-1">{{ messages.pages.editTaskPage.cancel }}</RouterLink>
+                                    <RouterLink :to="{ name: 'editQuiz', params: { id: route.params.quizId } }" class="btn btn-secondary text-white ms-1">{{ messages.pages.editTaskPage.cancel }}</RouterLink>
                                     <FormKit
                                         type="submit"
                                         id="submit"
                                         :label="messages.pages.editTaskPage.submit"
                                         :classes="{
-                                            input: 'btn btn-success ms-1'
+                                            input: 'btn btn-success text-white ms-1'
                                         }"
                                     />
                                 </div>
