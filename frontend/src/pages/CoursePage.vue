@@ -628,7 +628,7 @@
           <div class="d-flex justify-content-start align-items-center gap-2">
             <button
               type="button"
-              class="btn btn-secondary" :class="{'text-white' : isDarkMode, 'text-dark' : !isDarkMode}"
+              class="btn btn-secondary text-white" :class="{'text-white' : isDarkMode, 'text-dark' : !isDarkMode}"
               @click="(currentNoteVisible = false), (isNoteReadonly = true)"
             >
               {{ messages.pages.coursePage.currentNoteDialog.cancelButton }}
