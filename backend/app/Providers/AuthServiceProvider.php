@@ -546,5 +546,52 @@ class AuthServiceProvider extends ServiceProvider
 
             return Response::deny("You must have access to this quiz's course as a teacher!");
         });
+
+        //Assignmnets gates
+
+        Gate::define('assignments.store', function (User $user) {
+            if ($user->is_admin == 1) {
+                return Response::allow();
+            } else {
+                $isTeacher = $user->groups()->wherePivot("permission", "Tanár")->exists();
+                return $isTeacher
+                    ? Response::allow()
+                    : Response::deny("You must be an administrator or a teacher to create a assignment!");
+            }
+        });
+
+        Gate::define('assignments.update', function (User $user) {
+            if ($user->is_admin == 1) {
+                return Response::allow();
+            } else {
+                $isTeacher = $user->groups()->wherePivot("permission", "Tanár")->exists();
+                return $isTeacher
+                    ? Response::allow()
+                    : Response::deny("You must be an administrator or a teacher to update a assignment!");
+            }
+        });
+
+        Gate::define('assignments.destroy', function (User $user) {
+            if ($user->is_admin == 1) {
+                return Response::allow();
+            } else {
+                $isTeacher = $user->groups()->wherePivot("permission", "Tanár")->exists();
+                return $isTeacher
+                    ? Response::allow()
+                    : Response::deny("You must be an administrator or a teacher to delete a assignment!");
+            }
+        });
+
+        Gate::define('assignments.download', function (User $user) {
+            if ($user->is_admin == 1) {
+                return Response::allow();
+            } else {
+                $isTeacher = $user->groups()->wherePivot("permission", "Tanár")->exists();
+                return $isTeacher
+                    ? Response::allow()
+                    : Response::deny("You must be an administrator or a teacher to download a assignment!");
+            }
+        });
+
     }
 }
