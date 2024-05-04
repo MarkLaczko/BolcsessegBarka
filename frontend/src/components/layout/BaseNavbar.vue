@@ -49,21 +49,21 @@
             <ul class="dropdown-menu">
               <li>
                 <RouterLink
-                  class="dropdown-item"
+                  class="dropdown-item text-white fw-bold"
                   :to="{ name: 'userAdministration' }"
                   >{{ messages.layout.header.userAdministration }}</RouterLink
                 >
               </li>
               <li>
                 <RouterLink
-                  class="dropdown-item"
+                  class="dropdown-item text-white fw-bold"
                   :to="{ name: 'groupAdministration' }"
                   >{{ messages.layout.header.groupAdministration }}</RouterLink
                 >
               </li>
               <li>
                 <RouterLink
-                  class="dropdown-item"
+                  class="dropdown-item text-white fw-bold"
                   :to="{ name: 'courseAdministration' }"
                   >{{ messages.layout.header.courseAdministration }}</RouterLink
                 >
@@ -119,7 +119,7 @@
                     </button>
                   </li>
                   <li>
-                    <a class="dropdown-item">
+                    <a class="dropdown-item text-white fw-bold">
                       <div class="form-check form-switch">
                         <input
                           class="form-check-input"
@@ -139,13 +139,13 @@
                   </li>
                   <li>
                     <RouterLink
-                      class="dropdown-item"
+                      class="dropdown-item text-white fw-bold"
                       :to="{ name: 'profile' }"
                       >{{ messages.layout.header.profile }}</RouterLink
                     >
                   </li>
                   <li>
-                    <a class="dropdown-item" @click="logoutUser">{{
+                    <a class="dropdown-item text-white fw-bold" @click="logoutUser">{{
                       messages.layout.header.logout
                     }}</a>
                   </li>
