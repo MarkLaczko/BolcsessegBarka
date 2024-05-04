@@ -608,7 +608,7 @@ namespace BolcsessegBarkaAPITests
             _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
             
             var note = new StringContent(
-                JsonConvert.SerializeObject(new { title = "Jegyzet", text = "Ez egy teszt jegyszet.", user_id = 1, topic_id = 1 }),
+                JsonConvert.SerializeObject(new { title = "Jegyzet", text = "Ez egy teszt jegyszet.", user_id = 1, topic_id = 1, role = "Tanár" }),
                 Encoding.UTF8,
                 "application/json");
             
@@ -624,7 +624,7 @@ namespace BolcsessegBarkaAPITests
             _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
             
             var note = new StringContent(
-                JsonConvert.SerializeObject(new { title = "Jegyzet2", text = "Ez egy teszt jegyszet.", user_id = 1, topic_id = 1 }),
+                JsonConvert.SerializeObject(new { title = "Jegyzet2", text = "Ez egy teszt jegyszet.", user_id = 1, topic_id = 1, role = "Tanár" }),
                 Encoding.UTF8,
                 "application/json");
             
@@ -667,7 +667,7 @@ namespace BolcsessegBarkaAPITests
 
             Assert.IsNotNull(notes);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual("Jegyzet", notes.Data[0].Title);
+            Assert.AreEqual("Ókori civilizációk", notes.Data[0].Title);
         }
         
         [TestMethod]
@@ -701,7 +701,7 @@ namespace BolcsessegBarkaAPITests
 
             Assert.IsNotNull(note);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual("Jegyzet", note.Title);
+            Assert.AreEqual("Ókori civilizációk", note.Title);
         }
         
         [TestMethod]
@@ -741,6 +741,60 @@ namespace BolcsessegBarkaAPITests
             var response = await _client!.DeleteAsync("notes/2");
             
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetCurrentNotes_ReturnsUnauthorized() 
+        {
+            Unauthenticate();
+            var response = await _client!.GetAsync("getCurrentNotes");
+           
+            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetCurrentNotes_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync("getCurrentNotes");
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetCurrentNotes_ReturnsValidData()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _client!.GetAsync("getCurrentNotes");
+            var notes = await Deserialize<NoteResponse>(response);
+
+            Assert.IsNotNull(notes);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("Ókori civilizációk", notes.Data[0].Title);
+        }
+        
+        [TestMethod]
+        public async Task GetTeacherNotes_ReturnsUnauthorized() 
+        {
+            Unauthenticate();
+            var response = await _client!.GetAsync("getTeacherNotes");
+           
+            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetTeacherNotes_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync("getTeacherNotes");
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
         
         [TestMethod]
@@ -1211,6 +1265,26 @@ namespace BolcsessegBarkaAPITests
             var response = await _client!.DeleteAsync($"subtasks/{postResponseData.Subtasks[0].Id}");
             
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetCurrentAssignments_ReturnsUnauthorized() 
+        {
+            Unauthenticate();
+            var response = await _client!.GetAsync("getCurrentAssignments");
+           
+            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetCurrentAssignments_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync("getCurrentAssignments");
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
     }
 }
