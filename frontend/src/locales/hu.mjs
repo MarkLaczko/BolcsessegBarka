@@ -214,7 +214,10 @@ export default {
       }
     },
     attemptPage: {
-      removeOption: "Törlés",
+      removeOption: "Válasz törlése",
+      toastMessages: {
+        failedToSubmit: "Váratlan hiba a válaszok elküldésekor"
+      }
     },
     quizPage: {
       opens: "Nyílik",
@@ -301,8 +304,6 @@ export default {
       subtaskType: "Alfeladat típusa",
       subtaskOptions: "Válaszlehetőségek",
       subtaskOptionsInstructions: "Kezdje el gépelni a válaszlehetőségeket! Az Enter billentyűvel tudja hozzáadni a válaszokat.",
-      subtaskSolution: "Helyes válaszok",
-      subtaskSolutionInstructions: "Kezdje el gépelni a helyes válaszokat! Az Enter billentyűvel tudja hozzáadni a helyes válaszokat.",
       subtaskMarks: "Alfeladat pontszáma",
       cancel: "Mégse",
       submit: "Mentés",
@@ -341,8 +342,6 @@ export default {
       subtaskType: "Alfeladat típusa",
       subtaskOptions: "Válaszlehetőségek",
       subtaskOptionsInstructions: "Kezdje el gépelni a válaszlehetőségeket! Az Enter billentyűvel tudja hozzáadni a válaszokat.",
-      subtaskSolution: "Helyes válaszok",
-      subtaskSolutionInstructions: "Kezdje el gépelni a helyes válaszokat! Az Enter billentyűvel tudja hozzáadni a helyes válaszokat.",
       subtaskMarks: "Alfeladat pontszáma",
       cancel: "Mégse",
       submit: "Mentés",

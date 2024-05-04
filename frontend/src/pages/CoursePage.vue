@@ -628,7 +628,7 @@
           <div class="d-flex justify-content-start align-items-center gap-2">
             <button
               type="button"
-              class="btn btn-secondary" :class="{'text-white' : isDarkMode, 'text-dark' : !isDarkMode}"
+              class="btn btn-secondary text-white" :class="{'text-white' : isDarkMode, 'text-dark' : !isDarkMode}"
               @click="(currentNoteVisible = false), (isNoteReadonly = true)"
             >
               {{ messages.pages.coursePage.currentNoteDialog.cancelButton }}
@@ -837,10 +837,10 @@
                     </div>
                   </div>
                   <div
-                    class="col-lg-3 col-md-6 col-sm-12 d-flex justify-content-center  justify-content-lg-end align-items-center mb-2 mb-lg-0"
+                    class="col-lg-3 col-md-6 col-sm-12 d-flex justify-content-center justify-content-lg-end align-items-center mb-2 mb-lg-0"
                   >
                     <div
-                      class="btn-group"
+                      class="d-flex justify-content-center align-items-center gap-1"
                       role="group"
                       aria-label="Assignment Actions"
                       v-if="
@@ -850,7 +850,7 @@
                       <button
                         type="button"
                         class="btn"
-                        :class="{'btn-danger' : !isDarkMode,'text-dark' : !isDarkMode, 'btn-light' : isDarkMode, 'text-white' : !isDarkMode}"
+                        :class="{'btn-danger' : !isDarkMode, 'btn-outline-danger' : isDarkMode, 'text-white' : !isDarkMode}"
                         @click="deleteAssignment(assignment.id)"
                       >
                         <i class="fa-solid fa-trash"></i>
@@ -858,7 +858,7 @@
                       <button
                         type="button"
                         class="btn" 
-                        :class="{'btn-warning' : !isDarkMode,'text-dark' : !isDarkMode, 'btn-light' : isDarkMode, 'text-white' : !isDarkMode}"
+                        :class="{'btn-warning' : !isDarkMode, 'btn-outline-warning' : isDarkMode, 'text-white' : !isDarkMode}"
                         @click="openUpdateAssignment(assignment.id)"
                       >
                         <i class="fa-solid fa-pencil"></i>
@@ -866,7 +866,7 @@
                       <button
                         type="button"
                         class="btn" 
-                        :class="{'btn-success' : !isDarkMode,'text-dark' : !isDarkMode, 'btn-light' : isDarkMode, 'text-white' : !isDarkMode}"
+                        :class="{'btn-success' : !isDarkMode, 'btn-outline-success' : isDarkMode, 'text-white' : !isDarkMode}"
                         @click="filteredStudentAssignment(assignment.id)"
                       >
                         <i class="fa-solid fa-download"></i>
@@ -1009,7 +1009,7 @@
                             (currentUserData.is_admin &&
                               member.permission == 'Tanár')
                           "
-                          class="btn" :class="{'btn-warning' : !isDarkMode,'text-dark' : !isDarkMode, 'btn-light' : isDarkMode, 'text-white' : !isDarkMode}"
+                          class="btn" :class="{'btn-warning' : !isDarkMode, 'btn-outline-warning' : isDarkMode, 'text-white' : !isDarkMode}"
                           type="button"
                           @click="navigateToEditQuizPage(quiz.id)"
                         >
@@ -1020,7 +1020,7 @@
                             currentUserData.is_admin ||
                             member.permission == 'Tanár'
                           "
-                          class="btn" :class="{'btn-danger' : !isDarkMode,'text-dark' : !isDarkMode, 'btn-light' : isDarkMode, 'text-white' : !isDarkMode}"
+                          class="btn" :class="{'btn-danger' : !isDarkMode, 'btn-outline-danger' : isDarkMode, 'text-white' : !isDarkMode}"
                           type="button"
                           @click="confirmDeleteSubtask(quiz.id, topic.id)"
                         >
@@ -1694,7 +1694,8 @@ export default {
           new Date(data.deadline).toISOString().slice(0, 19).replace("T", " ")
         );
         formData.append("teacher_task", data?.teacher_task[0]?.file);
-        formData.append("teacher_task_name", data?.teacher_task[0]?.name);
+        formData.append("teacher_task_name", data?.teacher_task[0]?.name == null ? this.currentAssignment.teacher_task_name : data?.teacher_task[0]?.name);
+       
 
         const user = userStore();
         await http.put(`/assignments/${this.currentAssignment.id}`, formData, {

@@ -3,27 +3,82 @@
 ## Tartalomjegyzék
 
 1.  [Bevezetés](#bevezetés)
-2.  [Navigációs sáv](#navigációs-sáv)
-3.  [Felhasználó kezelés](#felhasználó-kezelés) (Adminok részére)
-4.  [Kurzus kezelés](#kurzus-kezelés) (Adminok részére)
-5.  [Kurzusaim oldal](#kurzusaim-oldal)
-6.  [Egy adott kurzus oldala](#egy-adott-kurzus-oldala-diákok-számára) (Diákok számára)
-7.  [Egy adott kurzus oldala](#egy-adott-kurzus-oldala-tanárok-számára) (Tanárok számára)
-8.  [Kvíz létrehozása](#kvíz-létrehozása) (Tanárok számára)
-9.  [Kvíz módosítása](#kvíz-módosítása) (Tanárok számára)
-10. [Kvíz kitöltése](#kvíz-kitöltése)
-11. [Kvíz értékelése](#kvíz-értékelése) (Tanárok számára)
-12. [Új feladat létrehozása](#új-feladat-létrehozása) (Tanárok számára)
-13. [Feladat módosítása](#feladat-módosítása) (Tanárok számára)
-14. [Feladat törlése](#feladat-törlése) (Tanárok számára)
-15. [Feladat letöltése](#feladat-letöltése) (Tanárok számára)
-16. [Feladat leadása](#feladat-leadása) (Diákok számára)
-
-
+2.  [Regisztráció](#regisztráció)
+3.  [Bejelentkezés](#bejelentkezés)
+4.  [Navigációs sáv](#navigációs-sáv)
+5.  [Főoldal](#főoldal)
+6.  [Felhasználó kezelés](#felhasználó-kezelés) (Adminok részére)
+7.  [Kurzus kezelés](#kurzus-kezelés) (Adminok részére)
+8.  [Kurzusaim oldal](#kurzusaim-oldal)
+9.  [Egy adott kurzus oldala](#egy-adott-kurzus-oldala-diákok-számára) (Diákok számára)
+10. [Egy adott kurzus oldala](#egy-adott-kurzus-oldala-tanárok-számára) (Tanárok számára)
+11. [Kvíz létrehozása](#kvíz-létrehozása) (Tanárok számára)
+12. [Kvíz módosítása](#kvíz-módosítása) (Tanárok számára)
+13. [Kvíz kitöltése](#kvíz-kitöltése)
+14. [Kvíz értékelése](#kvíz-értékelése) (Tanárok számára)
+15. [Új feladat létrehozása](#új-feladat-létrehozása) (Tanárok számára)
+16. [Feladat módosítása](#feladat-módosítása) (Tanárok számára)
+17. [Feladat törlése](#feladat-törlése) (Tanárok számára)
+18. [Feladat letöltése](#feladat-letöltése) (Tanárok számára)
+19. [Feladat leadása](#feladat-leadása) (Diákok számára)
 
 ## Bevezetés
 
-Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevékenységeiket lebonyolítani. Egyszerű, felhasználóbarát felülettel tudják csoportokba sorolni a felhasználókat, kurzosokat tudnak létrehozni, leadandó feladatokat, jegyzeteket, kvízeket tudnak létrehozni és kitölteni.
+Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevékenységeiket lebonyolítani. Egyszerű, felhasználóbarát felülettel tudják csoportokba sorolni a felhasználókat, kurzusokat tudnak létrehozni, leadandó feladatokat, jegyzeteket, kvízeket tudnak létrehozni és kitölteni.
+
+## Regisztráció
+
+> Ez a dokumentáció bemutatja a regisztrációs oldalt, amely lehetővé teszi az új felhasználók számára, hogy regisztráljanak az alkalmazásban. A felhasználói felület egyszerű és felhasználóbarát, biztosítva, hogy a regisztrációs folyamat zökkenőmentes és intuitív legyen.
+
+### A Regisztrációs Oldal Felépítése
+
+Az oldal egy központilag elhelyezkedő űrlapot tartalmaz, amely a következő mezőket tartalmazza:
+
+1. **Név:** A felhasználó teljes nevét kell ide beírni. Ez a mező kötelező, és maximum 255 karakter hosszú lehet.
+2. **E-mail Cím:** A felhasználó e-mail címe. Ez a mező szintén kötelező, és érvényes e-mail formátumot igényel.
+3. **Jelszó:** A kívánt jelszó, amely legalább 8 karakter hosszúságú kell, hogy legyen, és nem haladhatja meg a 255 karaktert. Ez a mező is kötelező.
+4. **Jelszó Megerősítése:** A felhasználónak meg kell ismételnie az első jelszó mezőben megadott jelszót. Ez szintén kötelező és a fenti hossz-korlátozások vonatkoznak rá.
+
+A mezők alatti gombok:
+
+- **Már van fiókja:** Amennyiben már rendelkezik felhasználói fiókkal, ezen a gombon keresztül közvetlenül a bejelentkezési oldalra navigálhat.
+- **Regisztráció:** Egy link, ami a bejelentkezési oldalra irányít, ha a felhasználó sikeresen regisztrált.
+
+### Funkciók és Interaktivitás
+
+- **Téma Váltás:** A felhasználók váltogathatnak a világos és sötét mód között a jobb felső sarokban található fogaskerék ikonra kattintva, majd a téma ikonjának kiválasztásával.
+- **Nyelv Váltás:** Ugyanezen menüben a felhasználó választhat az elérhető nyelvek közül egy kapcsoló segítségével.
+
+### Válaszok Kezelése
+
+- **Sikeres Regisztráció:** Ha a regisztráció sikeres, a felhasználó egy sikerüzenetet kap, majd automatikusan átirányításra kerül a bejelentkezési oldalra.
+- **Hiba a Regisztráció Során:** Hiba esetén a felhasználó egy hibaüzenetet kap, ami részletezi a problémát.
+
+## Bejelentkezés
+
+> Ez a dokumentáció ismerteti a bejelentkezési oldalt, amely lehetővé teszi a meglévő felhasználók számára a rendszerbe történő bejelentkezést. Az oldal kialakítása egyszerű és intuitív, hogy a felhasználók gyorsan és hatékonyan hozzáférhessenek fiókjaikhoz.
+
+### A Bejelentkezési Oldal Felépítése
+
+A bejelentkezési oldal központi eleme egy űrlap, amely a következő mezőket tartalmazza:
+
+- **E-mail Cím:** A felhasználónak be kell írnia az e-mail címét, amelyet a regisztrációnál használt.
+- **Jelszó:** A felhasználónak meg kell adnia a jelszavát.
+
+Az űrlap alján helyezkednek el a következő gombok:
+
+- **Bejelentkezés:** A bejelentkezési űrlap beküldésére szolgáló gomb, átirányít a főoldalra.
+- **Még nincs fiókja:** Amennyiben a látogató még nem rendelkezik fiókkal, ezen a gombon keresztül átirányítható a regisztrációs oldalra.
+
+### Funkciók és Interaktivitás
+
+- **Téma Váltás:** A felhasználók váltogathatnak a világos és sötét mód között a jobb felső sarokban lévő fogaskerék ikon segítségével.
+- **Nyelv Váltás:** A felhasználók kiválaszthatják a kívánt nyelvet a fogaskerék menüben található nyelvváltó kapcsolóval.
+
+### Üzenetkezelés
+
+- **Sikeres Bejelentkezés:** Sikeres bejelentkezés esetén a felhasználót automatikusan a főoldalra irányítja az alkalmazás.
+- **Hibás Bejelentkezés:** Ha a bejelentkezési kísérlet sikertelen, a felhasználó tájékoztatást kap egy hibaüzenet formájában, amely az űrlap felett jelenik meg.
 
 ## Navigációs sáv
 
@@ -53,10 +108,37 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
    - A navigációs sáv jobb oldalán egy felhasználói menü található, amely több beállítást és lehetőséget kínál:
      - **Felhasználói avatár:** Egy karikában megjeleníti a felhasználó monogramját.
-     - **Téma Váltása:** A felhasználók váltogathatnak a sötét és világos téma között, a nap ikonra nyomva világos, a hold ikonra kattintva pedig a sötét témát állíthatunk be. A megjelenése eszköz méretétől függő: kismérettől felfele ikonok, kisméret és azalatt pedig szöveg formájában lehet kezelni a témát.
-     - **Nyelv Váltása:** Egy kapcsoló segítségével a felhasználók váltogathatnak a `Magyar` és az `Angol` nyelv között.
+     - **Téma váltása:** A felhasználók váltogathatnak a sötét és világos téma között, a nap ikonra nyomva világos, a hold ikonra kattintva pedig a sötét témát állíthatunk be. A megjelenése eszköz méretétől függő: kismérettől felfele ikonok, kisméret és azalatt pedig szöveg formájában lehet kezelni a témát.
+     - **Nyelv váltása:** Egy kapcsoló segítségével a felhasználók váltogathatnak a `Magyar` és az `Angol` nyelv között.
      - **Profilom:** A felhasználó profiljának szerkesztése. A felhasználó itt jelszót tud változtatni.
      - **Kijelentkezés:** Biztonságosan kilépteti a felhasználót és a bejelentkezési oldalra irányítja.
+
+## Főoldal
+
+> A `főoldal` az applikáció központi eleme, amely üdvözli a felhasználót és hozzáférést biztosít az adott felhasználóhoz tartozó feladatokhoz, tananyagokhoz.
+
+### Kezdő Nézet
+
+- `Betöltési Indikátor:` Amikor az oldal tölt, egy animált ikon jelenik meg, jelezve, hogy az oldal betöltése folyamatban van.
+- `Üdvözlő Üzenet:` Az oldal tetején egy személyre szabott üdvözlő üzenet látható, amely a felhasználó nevét is megjeleníti.
+
+### Feladatok és Tananyagok
+
+**A főoldal két fő részből áll:** a feladatok és a tananyagok megjelenítésére szolgáló szekciókból.
+
+#### `Feladatok Böngészése`
+
+- **Lapozás:** A feladatok listája lapozható, lehetőséget biztosítva a felhasználónak, hogy végigböngéssze az elérhető feladatokat.
+- **Feladat leadása:** Az adott feladathoz tartozó `Feladat leadása` gombra kattintva az oldal átirányít az adott feladat oldalára, diákok leadhatják a feladatukat, továbbá lehetőségük van letölteni a tanár által korábban feltöltött dokumentumokat is.
+
+#### `Tananyagok Böngészése`
+
+- **Tananyag Kártyák:** Minden tananyag egy informatív kártyán kerül bemutatásra, amely tartalmazza a tananyag nevét, kiadásának időpontját, és azt, hogy melyik kurzushoz tartozik. Ezen kártyák segítségével a felhasználók könnyedén hozzáférhetnek a tananyag további részleteihez.
+- **Részletek Megtekintése:** A tananyagokon található `Megtekintés` gombra kattintva egy részletes nézet jelenik meg, ahol a tananyag teljes tartalma olvasható.
+
+#### `Megjelenítési Módok`
+
+- **Responszív Kialakítás:** Az oldal kialakítása alkalmazkodik a különböző képernyőméretekhez, biztosítva a felhasználóbarát megjelenést mobil eszközökön és asztali számítógépeken egyaránt.
 
 ## Felhasználó kezelés
 
@@ -206,22 +288,22 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
 ### Bevezetés:
 
-> Egy adott kurzus oldala lehetővé teszi a diákok számára, hogy megtekintsék a kurzusokhoz tartozó témákat és a témához tartozó feladatokat, jegyezeteket. Az oldal egy harmonika szerkezetben jeleníti meg a témákat, ahol minden téma egy külön panelen található, tartalmazva a téma részleteit.
+> Egy adott kurzus oldala lehetővé teszi a diákok számára, hogy megtekintsék a kurzusokhoz tartozó témákat és a témához tartozó feladatokat, jegyezeteket, kvízeket. Az oldal egy harmonika szerkezetben jeleníti meg a témákat, ahol minden téma egy külön panelen található, tartalmazva a téma részleteit.
 
 ### Témák:
 
-- **Téma Információk:** Minden téma panelje tartalmazza a téma nevét és az alatta hozzáadot jegyzetét, feladatokat.
+- **Téma Információk:** Minden téma panelje tartalmazza a téma nevét és az alatta hozzáadot jegyzeteket, feladatokat és persze a kvízeket.
 - **Navigáció a Témák Között:** A téma paneljei kibonthatóak, így a diákok könnyen áttekinthetik a teljes kurzustéma-szerkezetét.
 
 ### Jegyzetek:
 
 - **Jegyzetek létrehozása:** Jegyzeteket az adott kurzuson belül található témákhoz tud hozzáadni a tanuló a `Jegyzet hozzáadása` gomb megnyomásával. Itt meg kell adni a jegyzet nevét, annak tartalmát, majd ezek után a `mentés` gombra nyomva hozzáadja az adott témához a jegyzetet.
 
-- **Jegyzet megtekintése:** A már létrehozott jegyzeteket a `Megtekintés` gombra kattintva tudja a felhasználó megtekinteni.
+- **Jegyzet megtekintése:** A már létrehozott jegyzeteket (Saját vagy akár Tanári jegyzetről van szó) a `Megtekintés` gombra kattintva tudja a felhasználó megtekinteni.
 
 - **Jegyzet szerkesztése:** A `Megtekintés` gombra kattintva nyílik lehetőség a dokumentum elérésére. Alapbeállításban a jegyzet csak olvasható formában jelenik meg. Amennyiben szerkeszteni kívánja a szöveget, először kattintson a `Szerkesztés` gombra, ekkor a dokumentum szerkeszthető állapotba kerül. A szerkesztés befejeztével a `Mentés` gombra kattintva rögzítheti a változtatásokat, és ezzel sikeresen frissíti a jegyzet tartalmát.
 
-- **Jegyzet törlése:** A jegyzet törlése a `Megtekintés` gombra kattintva érhető el. Ha úgy dönt, hogy már nincs szüksége a jegyzetre, egyszerűen kattintson a `Törlés` gombra. Ezt követően megjelenik egy megerősítő párbeszédpanel, amely arra kéri Önt, hogy igazolja vissza a törlés szándékát. Ez a lépés biztosítja, hogy csak akkor törölje a jegyzetet, ha valóban ezt szeretné.
+- **Jegyzet törlése:** A jegyzet törlése a `Megtekintés` gombra kattintva érhető el. Ha úgy dönt, hogy már nincs szüksége a jegyzetre, először is kattintson a `Szerkesztés` gombra, ezután kattintson a `Törlés` gombra. Ezt követően megjelenik egy megerősítő párbeszédpanel, amely arra kéri Önt, hogy igazolja vissza a törlés szándékát. Ez a lépés biztosítja, hogy csak akkor törölje a jegyzetet, ha valóban ezt szeretné.
 
 ### Visszajelzések kezelése:
 
@@ -232,7 +314,7 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
 ### Bevezetés:
 
-> Egy adott kurzus oldala lehetővé teszi a tanárok számára, hogy átfogóan kezeljék a kurzusokhoz kapcsolódó témákat. Az oldal különféle funkcionalitásokat kínál, mint például új téma hozzáadása, meglévő téma szerkesztése és törlése. Ezen felül a tanárok hozzáadhatnak feladatokat és jegyzeteket az egyes témákhoz.
+> Egy adott kurzus oldala lehetővé teszi a tanárok számára, hogy átfogóan kezeljék a kurzusokhoz kapcsolódó témákat. Az oldal különféle funkcionalitásokat kínál, mint például új téma hozzáadása, meglévő téma szerkesztése és törlése. Ezen felül a tanárok hozzáadhatnak feladatokat, jegyzeteket és kvízeket az egyes témákhoz.
 
 ### Témák:
 
@@ -242,17 +324,17 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 ### Új téma hozzáadása
 
 - **Új Téma Gomb:** Az `Új téma` gombra kattintva megnyílik egy dialógusablak, ahol megadható a téma neve és sorrendje.
-- **Adatbevitel:** A téma neve kötelező és legfeljebb 60 karakter hosszú lehet. A sorrend egy szám, ami meghatározza a téma elhelyezkedését a listában.
+- **Adatbevitel:** A téma neve kötelező és legfeljebb 60 karakter hosszú lehet.
 - **Mentés:** A `Mentés` gombra kattintva a rendszer hozzáadja az új témát a kurzushoz.
 
 ### Téma szerkesztése
 
-- **Szerkesztés Gomb:** A szerkesztés gombra kattintva egy hasonló dialógusablak jelenik meg, mint az új téma hozzáadásakor.
-- **Adatok Frissítése:** A téma adatainak frissítése után a `Mentés` gombra kattintva a rendszer frissíti a téma adatait.
+- **Szerkesztés Gomb:** A `Műveletek` gombra kattintva található meg a `szerkesztés` menüpont, amely egy hasonló dialógusablak jelenik meg, mint az új téma hozzáadásakor.
+- **Adatok Frissítése:** A téma nevének frissítése után a `Mentés` gombra kattintva a rendszer frissíti a téma adatait.
 
 ### Téma törlése
 
-- **Törlés Gomb:** A törlés gombra kattintva a rendszer eltávolítja a témát a kurzusból. Ez a művelet végleges, és nem állítható helyre.
+- **Törlés Gomb:** Az adott témához tartozó Műveletek gombra kattintva érhető el a törlés gomb, erre kattintva a rendszer eltávolítja a témát a kurzusból. Ez a művelet végleges, és nem állítható helyre.
 
 ### Jegyzetek:
 
@@ -262,7 +344,7 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
 - **Jegyzet szerkesztése:** A `Megtekintés` gombra kattintva nyílik lehetőség a dokumentum elérésére. Alapbeállításban a jegyzet csak olvasható formában jelenik meg. Amennyiben szerkeszteni kívánja a szöveget, először kattintson a `Szerkesztés` gombra, ekkor a dokumentum szerkeszthető állapotba kerül. A szerkesztés befejeztével a `Mentés` gombra kattintva rögzítheti a változtatásokat, és ezzel sikeresen frissíti a jegyzet tartalmát.
 
-- **Jegyzet törlése:** A jegyzet törlése a `Megtekintés` gombra kattintva érhető el. Ha úgy dönt, hogy már nincs szüksége a jegyzetre, egyszerűen kattintson a `Törlés` gombra. Ezt követően megjelenik egy megerősítő párbeszédpanel, amely arra kéri Önt, hogy igazolja vissza a törlés szándékát. Ez a lépés biztosítja, hogy csak akkor törölje a jegyzetet, ha valóban ezt szeretné.
+- **Jegyzet törlése:** A jegyzet törlése a `Megtekintés` gombra kattintva, azon belül pedig a `Szerkesztés` gomb megnyomása után érhető el. Ha úgy dönt, hogy már nincs szüksége a jegyzetre, egyszerűen kattintson a `Törlés` gombra. Ezt követően megjelenik egy megerősítő párbeszédpanel, amely arra kéri Önt, hogy igazolja vissza a törlés szándékát. Ez a lépés biztosítja, hogy csak akkor törölje a jegyzetet, ha valóban ezt szeretné.
 
 ### Csoportok kezelése:
 
@@ -275,14 +357,14 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
 ### Design és Felhasználói Interakció:
 
-- **Dinamikus Interakció:** A téma hozzáadása, szerkesztése és törlése dinamikusan történik, anélkül, hogy az oldalt újra kellene tölteni.
+- **Dinamikus Interakció:** A téma, jegyzet hozzáadása, szerkesztése és törlése dinamikusan történik, anélkül, hogy az oldalt újra kellene tölteni.
 - **Hozzáférés-szabályozás:** Csak azok a felhasználók férhetnek hozzá a szerkesztési és törlési funkciókhoz, akik rendelkeznek a megfelelő jogosultságokkal (pl. adminisztrátorok vagy tanárok).
 
 ## Kvíz létrehozása
 
 ### Bevezetés:
 
-> A kvíz létrehozása oldal a kurzus oldaláról, azon belül is egy témából érhető el a `Műveletek`, `Új kvíz` gombra kattintva. 
+> A kvíz létrehozása oldal a kurzus oldaláról, azon belül is egy témából érhető el a `Műveletek`, `Új kvíz` gombra kattintva.
 
 ### Funkciók és használat:
 
@@ -300,13 +382,13 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
 4. **Kvíz zárása**
 
-   - Opcionálisan megadható, hogy a kvíz milyen időponttól *ne* legyen elérhető.
+   - Opcionálisan megadható, hogy a kvíz milyen időponttól _ne_ legyen elérhető.
 
-4. **Időkorlát**
+5. **Időkorlát**
 
    - Opcionálisan, percben megadható, hogy a kvíz kitöltésére mennyi legyen az időkeret. A kívzt az idő lejárta után az oldal automatikusan elküldi, feltéve, ha az oldal meg van nyitva.
 
-5. **Mentés**
+6. **Mentés**
 
    - A megfelelő adatok bevitele után a `Mentés` gombbal menthetőek az adatok. Ezek után át leszünk irányítva a kvíz szerkesztése oldalra.
 
@@ -314,7 +396,7 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
 ### Bevezetés:
 
-> A kvíz szerkesztésénél megváltoztathazó a kvíz részletei, valamint új feladato lehet hozzáadni. 
+> A kvíz szerkesztésénél megváltoztathazó a kvíz részletei, valamint új feladato lehet hozzáadni.
 
 ### Funkciók és használat:
 
@@ -332,25 +414,25 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
 4. **Kvíz zárása**
 
-   - Opcionálisan megadható, hogy a kvíz milyen időponttól *ne* legyen elérhető.
+   - Opcionálisan megadható, hogy a kvíz milyen időponttól _ne_ legyen elérhető.
 
-4. **Időkorlát**
+5. **Időkorlát**
 
    - Opcionálisan, percben megadható, hogy a kvíz kitöltésére mennyi legyen az időkeret. A kívzt az idő lejárta után az oldal automatikusan elküldi, feltéve, ha az oldal meg van nyitva.
 
-5. **Mentés**
+6. **Mentés**
 
    - A megfelelő adatok bevitele után a `Mentés` gombbal menthetőek az adatok. Ezek után át leszünk irányítva a kvíz szerkesztése oldalra.
 
-6. **Új feladat hozzáadása**
+7. **Új feladat hozzáadása**
 
    - Új feladatot a kék plusz (`+`) gombra kattiva hozzáadható, amikor a feladat hozzáadása oldalra leszünk átirányítva.
 
-7. **Feladatok sorrendje**
+8. **Feladatok sorrendje**
 
    - A feladatok sorrendjét a fel, illetve le nyilakkal lehet változtatni. Az utolsó feladatnak a le nyíl helyett egy felülre nyíl található.
 
-8. **Feladat törlése**
+9. **Feladat törlése**
 
    - Feladatot törölni a mellette található piros kuka gombbal lehet.
 
@@ -366,15 +448,15 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
    - Minden feladatnak kötelező megadni egy rövid szöveg, ami maximum 255 karakter hosszú lehet.
 
-4. **Alfeladatok**
-   
+3. **Alfeladatok**
+
    - Új alfeladatot a kék plusz (`+`) gombra kattiva hozzáadható, amikor az alfeladat a két szövegdoboz alatt fog megjelenni
 
-5. **Alfeladatok sorrendje**
+4. **Alfeladatok sorrendje**
 
    - Az alfeladatok sorrendjét a fel, illetve le nyilakkal lehet változtatni. Az utolsó alfeladatnak a le nyíl helyett egy felülre nyíl található.
 
-6. **Alfeladat törlése**
+5. **Alfeladat törlése**
 
    - Alfeladatot törölni a mellette található piros kuka gombbal lehet.
 
@@ -432,24 +514,23 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
 1. **Alfeladat értékelése**
 
-   - Az alfeladatra adott válasz (vagy *Nem válaszolt*) az alfeladat alatt látható. Itt található a feladatra kapható maximum pontszám, illetve adható meg, hogy helyes-e a megoldás, valamint mennyi pontot kapott a kitöltő. A mentés a zöld `Mentés` gombbal lehetséges.
+   - Az alfeladatra adott válasz (vagy _Nem válaszolt_) az alfeladat alatt látható. Itt található a feladatra kapható maximum pontszám, illetve adható meg, hogy helyes-e a megoldás, valamint mennyi pontot kapott a kitöltő. A mentés a zöld `Mentés` gombbal lehetséges.
 
 2. **Értékelés**
 
    - Az értékelés befejezéséhez az oldal alján található `Értékelés` rész a lap alján található. Itt látható az elért pontszám, valamint adható meg szöveges (maximum 10 akrakter hosszú) értékelés. Ennek elmentéséhez a `Mentés` gombra kell kattintani. A `Befejezés` gomb visszavisz a kvíz oldalára.
 
-
 ## Új feladat létrehozása
 
 ### Bevezetés:
 
-> Új feladat létrehozása a kurzus oldaláról, azon belül is egy témából érhető el a `Műveletek`, `Új feladat` gombra kattintva. 
+> Új feladat létrehozása a kurzus oldaláról, azon belül is egy témából érhető el a `Műveletek`, `Új feladat` gombra kattintva.
 
 ### Funkciók és használat:
 
 1. **Feladat címe**
 
-   - Kötelező kitölteni, a maximális hosszúsága 255 karakter lehet. 
+   - Kötelező kitölteni, a maximális hosszúsága 255 karakter lehet.
 
 2. **Hozzászólás**
 
@@ -461,7 +542,7 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
 4. **Feladat/Jegyzet feltöltése diákok számára**
 
-   - Nem kötelező kitölteni, fel tud tölteni egy fájlt amit szeretné hogy a diákok lássanak. 
+   - Nem kötelező kitölteni, fel tud tölteni egy fájlt amit szeretné hogy a diákok lássanak.
 
 5. **Mégsem gomb**
 
@@ -470,7 +551,6 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 6. **Mentés gomb**
 
    - Ezzel a gombbal lehet elmenteni a feladatot ami annál a témánál fog megjelenni ahol rá lett nyomva a művelet gombra.
-
 
 ## Feladat módosítása
 
@@ -482,7 +562,7 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
 1. **Feladat címe**
 
-   - Kötelező kitölteni, a maximális hosszúsága 255 karakter lehet. 
+   - Kötelező kitölteni, a maximális hosszúsága 255 karakter lehet.
 
 2. **Hozzászólás**
 
@@ -494,7 +574,7 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
 4. **Feladat/Jegyzet feltöltése diákok számára**
 
-   - Nem kötelező kitölteni, itt lehet hozzáadni vagy módosítani egy fájlt amit szeretné hogy a diákok lássanak. 
+   - Nem kötelező kitölteni, itt lehet hozzáadni vagy módosítani egy fájlt amit szeretné hogy a diákok lássanak.
 
 5. **Mégsem gomb**
 
@@ -512,13 +592,13 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
 1. **Mégsem**
 
-   - Ezzel a gombbal elveti a törlést és így megmarad a feladat. 
+   - Ezzel a gombbal elveti a törlést és így megmarad a feladat.
 
 2. **Mentés**
 
    - Ezzel a gombbal tudja véglegesíteni a törlést és így végleg törli a feladatot.
 
-## Feladat letöltése 
+## Feladat letöltése
 
 > A feladatot letölteni a kurzus oldaláról, a létrehozott feladat kártyán látható letöltés ikonra kattintva érhető el. Miután rányom a gombra felfog ugrani egy ablak amin megjelennek az ahhoz a témához tartozó összes feladat amit a diákok adtak le.
 
@@ -526,7 +606,7 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
 1. **Táblázat**
 
-   - **1. oszlop:** Ebben az oszlopban látható, hogy melyik diák adta le a feladatot. 
+   - **1. oszlop:** Ebben az oszlopban látható, hogy melyik diák adta le a feladatot.
    - **2. oszlop:** Ebben az oszlopban látható, a leadott fájl neve.
    - **3. oszlop:** Ebben az oszlopban látható, lehet letölteni a feladatot amit a diák feltöltött.
 
@@ -534,7 +614,7 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
    - Ezzel a gombbal tudja letölteni az összes diák álltal leadott feladatot ami ahhoz a feladathoz tartozik.
 
-2. **Bezárás**
+3. **Bezárás**
 
    - Ezzel a gombbal tudja becsukni a felugró ablakot.
 
@@ -564,18 +644,18 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
    - Itt látható a tanár álltal feltölött tananyag címe.
 
- 6. **Feladat / jegyzet feltöltése diákok számára.**  
+6. **Feladat / jegyzet feltöltése diákok számára.**
 
-   - A diák itt tudja feltölteni a tanár számára a kész feladatot.
+- A diák itt tudja feltölteni a tanár számára a kész feladatot.
 
- 7. **Feladat letöltése**  
+7.  **Feladat letöltése**
 
-   - A diák le tudja tölteni amit a tanár feltöltött a diákok számára.
+- A diák le tudja tölteni amit a tanár feltöltött a diákok számára.
 
-8. **Mégsem**  
+8. **Mégsem**
 
    - A mégse gombra kattintva vissza tud menni a feladathoz tartozó kurzus oldalára
 
-9. **Mentés**  
+9. **Mentés**
 
-   - Feltudja tölteni a feladatot és visszaviszi a kurzus 
+   - Feltudja tölteni a feladatot és visszaviszi a kurzus
