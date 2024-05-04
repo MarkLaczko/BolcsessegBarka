@@ -9,20 +9,20 @@
 
       <BaseConfirmDialog />
       <BaseToast />
-      
+
       <BaseDialog v-if="addCourseDialogVisible" :width="'25rem'" :visible="addCourseDialogVisible"
         :header="messages.pages.courseManagementPage.newCourseDialog.title">
         <FormKit type="form" :actions="false" @submit="postCourses" :incomplete-message="messages.pages.courseManagementPage.newCourseDialog
-      .validationMessages.matchAllValidationMessage
-      ">
+          .validationMessages.matchAllValidationMessage
+          ">
           <FormKit type="text" name="name" label="Kurzus neve" validation="required|length:5,100" :validation-messages="{
-      required:
-        messages.pages.courseManagementPage.newCourseDialog
-          .validationMessages.nameRequired,
-      length:
-        messages.pages.courseManagementPage.newCourseDialog
-          .validationMessages.nameLength,
-    }" :classes="{
+            required:
+              messages.pages.courseManagementPage.newCourseDialog
+                .validationMessages.nameRequired,
+            length:
+              messages.pages.courseManagementPage.newCourseDialog
+                .validationMessages.nameLength,
+          }" :classes="{
       input: {
         'mb-1': true,
         'form-control': true,
@@ -30,10 +30,10 @@
     }" />
           <FormKit type="file" name="image" @change="handleFileChange" label="Kép hozzáadása"
             accept=".JPEG,.PNG,.JPG,.BMP" :validation-messages="{
-      required:
-        messages.pages.courseManagementPage.newCourseDialog
-          .validationMessages.imageRequired,
-    }" :classes="{
+              required:
+                messages.pages.courseManagementPage.newCourseDialog
+                  .validationMessages.imageRequired,
+            }" :classes="{
       input: {
         'mb-1': true,
         'form-control': true,
@@ -45,47 +45,47 @@
             <Button type="button" label="Mégse" class="btn btn-danger text-white mx-1"
               @click="addCourseDialogVisible = false"></Button>
             <FormKit type="submit" label="Mentés" :classes="{
-      input: {
-        btn: true,
-        'btn-success': true,
-        'text-white': true,
-        'w-auto': true,
-        'addCourse': true
-      },
-    }" />
+              input: {
+                btn: true,
+                'btn-success': true,
+                'text-white': true,
+                'w-auto': true,
+                'addCourse': true
+              },
+            }" />
           </div>
         </FormKit>
       </BaseDialog>
       <BaseDialog v-if="modifyCourseDialogVisible" :width="'25rem'" :visible="modifyCourseDialogVisible" :header="messages.pages.courseManagementPage.editCourseDialog.title +
-      ' ' +
-      currentlyModifyingCourse.name
-      ">
+        ' ' +
+        currentlyModifyingCourse.name
+        ">
         <FormKit type="form" :actions="false" @submit="updateCourse" :value="currentlyModifyingCourse"
           :incomplete-message="messages.pages.courseManagementPage.editCourseDialog
-      .validationMessages.matchAllValidationMessage
-      ">
+            .validationMessages.matchAllValidationMessage
+            ">
           <FormKit type="text" name="name" label="Kurzus neve" validation="length:0,255" :validation-messages="{
-      length:
-        messages.pages.courseManagementPage.editCourseDialog
-          .validationMessages.nameLength,
-    }" :classes="{
+            length:
+              messages.pages.courseManagementPage.editCourseDialog
+                .validationMessages.nameLength,
+          }" :classes="{
       input: {
         'mb-1': true,
         'form-control': true,
       },
     }" />
           <FormKit type="file" name="image" @change="handleFileChange" :label="messages.pages.courseManagementPage.editCourseDialog
-      .validationMessages.fileUpload
-      " accept=".JPEG,.PNG,.JPG,.BMP" :classes="{
-      input: {
-        'mb-1': true,
-        'form-control': true,
-      },
-    }" />
+            .validationMessages.fileUpload
+            " accept=".JPEG,.PNG,.JPG,.BMP" :classes="{
+        input: {
+          'mb-1': true,
+          'form-control': true,
+        },
+      }" />
 
           <MultiSelect v-model="currentlyModifyingCourse.groups" :options="groupsNoUselessData" filter
-            optionLabel="name" :placeholder="messages.pages.courseManagementPage.editCourseDialog.multiSelect.title" display="chip"
-            :pt="{
+            optionLabel="name" :placeholder="messages.pages.courseManagementPage.editCourseDialog.multiSelect.title"
+            display="chip" :pt="{
               list: {
                 class: 'rounded-3 w-75 list-style-none p-2',
               },
@@ -129,35 +129,35 @@
             <Button type="button" label="Mégse" class="btn btn-danger text-white mx-1"
               @click="modifyCourseDialogVisible = false"></Button>
             <FormKit type="submit" label="Mentés" :classes="{
-      input: {
-        btn: true,
-        'btn-success': true,
-        'text-white': true,
-        'w-auto': true,
-        'modifyCourse': true
-      },
-    }" />
+              input: {
+                btn: true,
+                'btn-success': true,
+                'text-white': true,
+                'w-auto': true,
+                'modifyCourse': true
+              },
+            }" />
           </div>
         </FormKit>
       </BaseDialog>
       <div>
         <div class="card darkTheme">
           <Toolbar :pt="{
-      start: {
-        class:
-          'col-sm-12 col-md-5 d-flex justify-content-md-start align-items-center justify-content-center',
-      },
-      center: {
-        class: 'col-sm-12 col-md-2',
-      },
-      end: {
-        class:
-          'col-sm-12 col-md-5 d-flex justify-content-md-end align-items-center justify-content-center',
-      },
-      root: {
-        class: 'row mb-2',
-      },
-    }">
+            start: {
+              class:
+                'col-sm-12 col-md-5 d-flex justify-content-md-start align-items-center justify-content-center',
+            },
+            center: {
+              class: 'col-sm-12 col-md-2',
+            },
+            end: {
+              class:
+                'col-sm-12 col-md-5 d-flex justify-content-md-end align-items-center justify-content-center',
+            },
+            root: {
+              class: 'row mb-2',
+            },
+          }">
             <template #start>
               <Button :label="messages.pages.courseManagementPage.newUser" icon="pi pi-plus"
                 class="mr-2 btn btn-success text-white me-1 mt-2 ms-2" @click="addCourseDialogVisible = true" />
@@ -173,10 +173,10 @@
           <DataTable exportFilename="courses" ref="dt" :value="courses" tableStyle="min-width: 50rem" sortField="id"
             :sortOrder="1" v-model:filters="filters" filterDisplay="row" v-model:selection="selectedCourses"
             selectionMode="multiple" dataKey="id" :metaKeySelection="false" :pt="{
-      table: {
-        class: 'table table-responsive align-middle',
-      },
-    }">
+              table: {
+                class: 'table table-responsive align-middle',
+              },
+            }">
             <Column>
               <template #header>
                 <div class="d-flex justify-content-center">
@@ -194,27 +194,27 @@
               <template #body="slotProp">
                 <div class="d-flex justify-content-center">
                   <i class="fa-solid fa-check text-success" v-if="selectedCourses.findIndex((x) => x == slotProp.data) != -1
-      "></i>
+                  "></i>
                   <i class="fa-solid fa-x text-danger" v-else></i>
                 </div>
               </template>
             </Column>
             <Column field="id" :header="messages.pages.courseManagementPage.idText" sortable></Column>
             <Column field="name" :header="messages.pages.courseManagementPage.nameText" sortable :pt="{
-      columnfilter: {
-        class: 'd-flex',
-      },
-      filtermenubutton: {
-        class: 'btn ms-1',
-      },
-      headerfilterclearbutton: {
-        class: 'btn ms-1',
-      },
-    }">
+              columnfilter: {
+                class: 'd-flex',
+              },
+              filtermenubutton: {
+                class: 'btn ms-1',
+              },
+              headerfilterclearbutton: {
+                class: 'btn ms-1',
+              },
+            }">
               <template #filter="{ filterModel, filterCallback }">
                 <InputText v-model="filterModel.value" type="text" @input="filterCallback()" class="form-control"
                   :placeholder="messages.pages.courseManagementPage.namePlaceholder
-      " />
+                    " />
               </template>
             </Column>
             <Column field="image" :header="messages.pages.courseManagementPage.imageText" style="width: 50%">
@@ -227,11 +227,11 @@
               <template #body="slotProp">
                 <button type="button" class="btn btn-warning" v-if="slotProp.data.email != currentUserData.email"
                   @click="
-                  (modifyCourseDialogVisible = true),
-                  (currentlyModifyingCourse = {
-                    ...slotProp.data
-                  })
-                  ">  
+                    (modifyCourseDialogVisible = true),
+                    (currentlyModifyingCourse = {
+                      ...slotProp.data
+                    })
+                    ">
                   <i class="fa-solid fa-pen-to-square"></i>
                 </button>
               </template>
@@ -300,7 +300,6 @@ export default {
       modifyCourseDialogVisible: false,
       currentlyModifyingCourse: [],
       loading: true,
-      checked: true,
     };
   },
   computed: {
@@ -310,7 +309,7 @@ export default {
     ...mapState(courseStore, ["courses"]),
     ...mapState(languageStore, ["messages"]),
     ...mapState(groupStore, ["groups"]),
-    groupsNoUselessData(){
+    groupsNoUselessData() {
       let returnGroups = [];
       for (const group of this.groups) {
         let groupData = {
