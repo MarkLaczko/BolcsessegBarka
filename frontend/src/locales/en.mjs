@@ -191,6 +191,9 @@ export default {
     },
     attemptPage: {
       removeOption: "Delete answer",
+      toastMessages: {
+        failedToSubmit: "Unexpected error when submiting your answers"
+      }
     },
     markQuizPage: {
       attemptOf: "'s attempt",

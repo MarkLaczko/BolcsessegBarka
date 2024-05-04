@@ -46,9 +46,11 @@ import { timeStore } from "@stores/TimeStore.mjs";
 import { languageStore } from '@stores/LanguageStore.mjs';
 import { reactive, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useToast } from 'primevue/usetoast';
 
 const route = useRoute();
 const router = useRouter();
+const toast = useToast();
 
 const messages = reactive(languageStore().messages);
 
@@ -67,7 +69,18 @@ const submitAttempt = async () => {
         await attemptStore().finishAttempt(route.params.id)
         window.location = `/quiz/${attemptDetails.value.quiz.id}`;
     } catch (error) {
-        console.error('valami nem jó')
+        let toastToAdd = {
+            severity: "error",
+            detail: messages.pages.attemptPage.toastMessages.failedToSubmit,
+            life: 3000,
+        };
+        if (!themeStore().isDarkMode) {
+            toastToAdd.styleClass = "bg-danger text-white";
+        }
+        else {
+            toastToAdd.styleClass = "toast-danger text-white";
+        }
+        toast.add(toastToAdd);
     }
 };
 

@@ -215,6 +215,9 @@ export default {
     },
     attemptPage: {
       removeOption: "Válasz törlése",
+      toastMessages: {
+        failedToSubmit: "Váratlan hiba a válaszok elküldésekor"
+      }
     },
     quizPage: {
       opens: "Nyílik",
