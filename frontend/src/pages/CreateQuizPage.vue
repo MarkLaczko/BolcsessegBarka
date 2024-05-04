@@ -129,7 +129,7 @@
                                 id="submit"
                                 :label="messages.pages.createQuizPage.submit"
                                 :classes="{
-                                    input: 'btn btn-success',
+                                    input: 'btn btn-success text-white',
                                 }"
                             />
                         </div>
