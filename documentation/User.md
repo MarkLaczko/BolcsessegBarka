@@ -3,26 +3,82 @@
 ## Tartalomjegyzék
 
 1.  [Bevezetés](#bevezetés)
-2.  [Navigációs sáv](#navigációs-sáv)
-3.  [Főoldal](#főoldal)
-4.  [Felhasználó kezelés](#felhasználó-kezelés) (Adminok részére)
-5.  [Kurzus kezelés](#kurzus-kezelés) (Adminok részére)
-6.  [Kurzusaim oldal](#kurzusaim-oldal)
-7.  [Egy adott kurzus oldala](#egy-adott-kurzus-oldala-diákok-számára) (Diákok számára)
-8.  [Egy adott kurzus oldala](#egy-adott-kurzus-oldala-tanárok-számára) (Tanárok számára)
-9.  [Kvíz létrehozása](#kvíz-létrehozása) (Tanárok számára)
-10. [Kvíz módosítása](#kvíz-módosítása) (Tanárok számára)
-11. [Kvíz kitöltése](#kvíz-kitöltése)
-12. [Kvíz értékelése](#kvíz-értékelése) (Tanárok számára)
-13. [Új feladat létrehozása](#új-feladat-létrehozása) (Tanárok számára)
-14. [Feladat módosítása](#feladat-módosítása) (Tanárok számára)
-15. [Feladat törlése](#feladat-törlése) (Tanárok számára)
-16. [Feladat letöltése](#feladat-letöltése) (Tanárok számára)
-17. [Feladat leadása](#feladat-leadása) (Diákok számára)
+2.  [Regisztráció](#regisztráció)
+3.  [Bejelentkezés](#bejelentkezés)
+4.  [Navigációs sáv](#navigációs-sáv)
+5.  [Főoldal](#főoldal)
+6.  [Felhasználó kezelés](#felhasználó-kezelés) (Adminok részére)
+7.  [Kurzus kezelés](#kurzus-kezelés) (Adminok részére)
+8.  [Kurzusaim oldal](#kurzusaim-oldal)
+9.  [Egy adott kurzus oldala](#egy-adott-kurzus-oldala-diákok-számára) (Diákok számára)
+10. [Egy adott kurzus oldala](#egy-adott-kurzus-oldala-tanárok-számára) (Tanárok számára)
+11. [Kvíz létrehozása](#kvíz-létrehozása) (Tanárok számára)
+12. [Kvíz módosítása](#kvíz-módosítása) (Tanárok számára)
+13. [Kvíz kitöltése](#kvíz-kitöltése)
+14. [Kvíz értékelése](#kvíz-értékelése) (Tanárok számára)
+15. [Új feladat létrehozása](#új-feladat-létrehozása) (Tanárok számára)
+16. [Feladat módosítása](#feladat-módosítása) (Tanárok számára)
+17. [Feladat törlése](#feladat-törlése) (Tanárok számára)
+18. [Feladat letöltése](#feladat-letöltése) (Tanárok számára)
+19. [Feladat leadása](#feladat-leadása) (Diákok számára)
 
 ## Bevezetés
 
 Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevékenységeiket lebonyolítani. Egyszerű, felhasználóbarát felülettel tudják csoportokba sorolni a felhasználókat, kurzusokat tudnak létrehozni, leadandó feladatokat, jegyzeteket, kvízeket tudnak létrehozni és kitölteni.
+
+## Regisztráció
+
+> Ez a dokumentáció bemutatja a regisztrációs oldalt, amely lehetővé teszi az új felhasználók számára, hogy regisztráljanak az alkalmazásban. A felhasználói felület egyszerű és felhasználóbarát, biztosítva, hogy a regisztrációs folyamat zökkenőmentes és intuitív legyen.
+
+### A Regisztrációs Oldal Felépítése
+
+Az oldal egy központilag elhelyezkedő űrlapot tartalmaz, amely a következő mezőket tartalmazza:
+
+1. **Név:** A felhasználó teljes nevét kell ide beírni. Ez a mező kötelező, és maximum 255 karakter hosszú lehet.
+2. **E-mail Cím:** A felhasználó e-mail címe. Ez a mező szintén kötelező, és érvényes e-mail formátumot igényel.
+3. **Jelszó:** A kívánt jelszó, amely legalább 8 karakter hosszúságú kell, hogy legyen, és nem haladhatja meg a 255 karaktert. Ez a mező is kötelező.
+4. **Jelszó Megerősítése:** A felhasználónak meg kell ismételnie az első jelszó mezőben megadott jelszót. Ez szintén kötelező és a fenti hossz-korlátozások vonatkoznak rá.
+
+A mezők alatti gombok:
+
+- **Már van fiókja:** Amennyiben már rendelkezik felhasználói fiókkal, ezen a gombon keresztül közvetlenül a bejelentkezési oldalra navigálhat.
+- **Regisztráció:** Egy link, ami a bejelentkezési oldalra irányít, ha a felhasználó sikeresen regisztrált.
+
+### Funkciók és Interaktivitás
+
+- **Téma Váltás:** A felhasználók váltogathatnak a világos és sötét mód között a jobb felső sarokban található fogaskerék ikonra kattintva, majd a téma ikonjának kiválasztásával.
+- **Nyelv Váltás:** Ugyanezen menüben a felhasználó választhat az elérhető nyelvek közül egy kapcsoló segítségével.
+
+### Válaszok Kezelése
+
+- **Sikeres Regisztráció:** Ha a regisztráció sikeres, a felhasználó egy sikerüzenetet kap, majd automatikusan átirányításra kerül a bejelentkezési oldalra.
+- **Hiba a Regisztráció Során:** Hiba esetén a felhasználó egy hibaüzenetet kap, ami részletezi a problémát.
+
+## Bejelentkezés
+
+> Ez a dokumentáció ismerteti a bejelentkezési oldalt, amely lehetővé teszi a meglévő felhasználók számára a rendszerbe történő bejelentkezést. Az oldal kialakítása egyszerű és intuitív, hogy a felhasználók gyorsan és hatékonyan hozzáférhessenek fiókjaikhoz.
+
+### A Bejelentkezési Oldal Felépítése
+
+A bejelentkezési oldal központi eleme egy űrlap, amely a következő mezőket tartalmazza:
+
+- **E-mail Cím:** A felhasználónak be kell írnia az e-mail címét, amelyet a regisztrációnál használt.
+- **Jelszó:** A felhasználónak meg kell adnia a jelszavát.
+
+Az űrlap alján helyezkednek el a következő gombok:
+
+- **Bejelentkezés:** A bejelentkezési űrlap beküldésére szolgáló gomb, átirányít a főoldalra.
+- **Még nincs fiókja:** Amennyiben a látogató még nem rendelkezik fiókkal, ezen a gombon keresztül átirányítható a regisztrációs oldalra.
+
+### Funkciók és Interaktivitás
+
+- **Téma Váltás:** A felhasználók váltogathatnak a világos és sötét mód között a jobb felső sarokban lévő fogaskerék ikon segítségével.
+- **Nyelv Váltás:** A felhasználók kiválaszthatják a kívánt nyelvet a fogaskerék menüben található nyelvváltó kapcsolóval.
+
+### Üzenetkezelés
+
+- **Sikeres Bejelentkezés:** Sikeres bejelentkezés esetén a felhasználót automatikusan a főoldalra irányítja az alkalmazás.
+- **Hibás Bejelentkezés:** Ha a bejelentkezési kísérlet sikertelen, a felhasználó tájékoztatást kap egy hibaüzenet formájában, amely az űrlap felett jelenik meg.
 
 ## Navigációs sáv
 
