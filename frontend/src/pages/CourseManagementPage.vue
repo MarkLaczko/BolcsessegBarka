@@ -83,45 +83,47 @@
       },
     }" />
 
-          <MultiSelect v-model="currentlyModifyingCourse.groups" :options="groups" filter :maxSelectedLabels="3"
-            optionLabel="name" :placeholder="messages.pages.courseManagementPage.editCourseDialog.multiSelect
-      .title
-      " display="chip" :pt="{
-      list: {
-        class: 'rounded-3 w-75 list-style-none p-2',
-      },
-      header: {
-        class:
-          'rounded-3 w-75 mb-2 d-flex justify-content-center align-items-center p-1',
-      },
-      closeButton: {
-        class: 'btn mb-1',
-      },
-      filterIcon: {
-        class: 'd-none',
-      },
-      filterInput: {
-        class: 'form-control mx-2',
-        placeholder:
-          messages.pages.courseManagementPage.editCourseDialog
-            .multiSelect.searchPlaceholder,
-      },
-      headerCheckbox: {
-        input: 'form-check-input',
-      },
-      itemCheckbox: {
-        input: 'form-check-input me-2',
-      },
-      transition: {
-        name: 'multi-select-fade',
-      },
-      item: {
-        class: 'd-flex',
-      },
-      removeTokenIcon: {
-        class: 'ms-1',
-      },
-    }" />
+          <MultiSelect v-model="currentlyModifyingCourse.groups" :options="groupsNoUselessData" filter
+            optionLabel="name" :placeholder="messages.pages.courseManagementPage.editCourseDialog.multiSelect.title" display="chip"
+            :pt="{
+              list: {
+                class: 'rounded-3 w-75 list-style-none p-2',
+              },
+              header: {
+                class: 'rounded-3 w-75 mb-2 d-flex justify-content-center align-items-center p-1',
+              },
+              closeButton: {
+                class: 'btn mb-1',
+              },
+              filterIcon: {
+                class: 'd-none',
+              },
+              filterInput: {
+                class: 'form-control mx-2',
+                placeholder: messages.pages.courseManagementPage.editCourseDialog.multiSelect.searchPlaceholder,
+              },
+              headerCheckbox: {
+                input: 'form-check-input',
+              },
+              itemCheckbox: {
+                input: 'form-check-input me-2',
+              },
+              transition: {
+                name: 'multi-select-fade',
+              },
+              item: {
+                class: 'd-flex',
+              },
+              token: {
+                class: 'list-style-none badge text-bg-dark p-2 mb-1 mx-1'
+              },
+              removeTokenIcon: {
+                class: 'ms-2'
+              },
+              inputToken: {
+                class: 'list-style-none'
+              },
+            }" />
 
           <div class="d-flex justify-content-end mt-2 mb-3">
             <Button type="button" label="Mégse" class="btn btn-danger text-white mx-1"
@@ -227,7 +229,7 @@
                   @click="
                   (modifyCourseDialogVisible = true),
                   (currentlyModifyingCourse = {
-                    ...slotProp.data,
+                    ...slotProp.data
                   })
                   ">  
                   <i class="fa-solid fa-pen-to-square"></i>
@@ -308,6 +310,29 @@ export default {
     ...mapState(courseStore, ["courses"]),
     ...mapState(languageStore, ["messages"]),
     ...mapState(groupStore, ["groups"]),
+    groupsNoUselessData(){
+      let returnGroups = [];
+      for (const group of this.groups) {
+        let groupData = {
+          id: group.id,
+          name: group.name,
+          users: []
+        }
+        for (const user of group.users) {
+          groupData.users.push({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            is_admin: user.is_admin,
+            member: {
+              ...user.member
+            }
+          })
+        }
+        returnGroups.push(groupData)
+      }
+      return returnGroups;
+    }
   },
   methods: {
     ...mapActions(groupStore, ["getGroups"]),

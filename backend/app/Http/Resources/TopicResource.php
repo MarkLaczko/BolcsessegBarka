@@ -17,7 +17,6 @@ class TopicResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
-            "order" => $this->order,
             "course" => new CourseResource($this->whenLoaded('course')),
             "assignment" => AssignmentResource::collection($this->whenLoaded('assignments')),
             'quizzes' => QuizResource::collection($this->whenLoaded('quizzes')),

@@ -190,7 +190,10 @@ export default {
       }
     },
     attemptPage: {
-      removeOption: "Delete",
+      removeOption: "Delete answer",
+      toastMessages: {
+        failedToSubmit: "Unexpected error when submiting your answers"
+      }
     },
     markQuizPage: {
       attemptOf: "'s attempt",
@@ -297,8 +300,6 @@ export default {
       subtaskType: "Subtask type",
       subtaskOptions: "Answer options",
       subtaskOptionsInstructions: "Start typing the answer options! Hit Enter to add a new option.",
-      subtaskSolution: "Correct answers",
-      subtaskSolutionInstructions: "Start typing the correct answers! Hit Enter to add a new answer.",
       subtaskMarks: "Subtask marks",
       cancel: "Cancel",
       submit: "Save",
@@ -337,8 +338,6 @@ export default {
       subtaskType: "Subtask type",
       subtaskOptions: "Answer options",
       subtaskOptionsInstructions: "Start typing the answer options! Hit Enter to add a new option.",
-      subtaskSolution: "Correct answers",
-      subtaskSolutionInstructions: "Start typing the correct answers! Hit Enter to add a new answer.",
       subtaskMarks: "Subtask marks",
       cancel: "Cancel",
       submit: "Save",

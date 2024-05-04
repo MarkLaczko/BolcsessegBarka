@@ -23,7 +23,7 @@
                                     {{ index + 1 }}. {{ option }}
                                 </label>
                             </div>
-                            <div class="form-check">
+                            <div class="form-check" v-if="subtaskAnswer(subtask.id) != undefined && subtaskAnswer(subtask.id).answer != ''">
                                 <input class="form-check-input" type="radio" :value="option" :name="`option${subtask.id}`" :id="`option${subtask.id}remove`" @click="event => attemptStore().addAnswer(route.params.id, subtask.id, '')">
                                 <label class="form-check-label" :for="`option${subtask.id}remove`">
                                     {{ messages.pages.attemptPage.removeOption }}
@@ -46,9 +46,11 @@ import { timeStore } from "@stores/TimeStore.mjs";
 import { languageStore } from '@stores/LanguageStore.mjs';
 import { reactive, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useToast } from 'primevue/usetoast';
 
 const route = useRoute();
 const router = useRouter();
+const toast = useToast();
 
 const messages = reactive(languageStore().messages);
 
@@ -58,12 +60,27 @@ const loading = computed(() => {
 
 const attemptDetails = reactive({});
 
+const subtaskAnswer = (id) => {
+    return attemptStore().userAttempts.find(x => x.id == attemptDetails.value.id).answers.find(x => x.subtask_id == id);
+}
+
 const submitAttempt = async () => {
     try {
         await attemptStore().finishAttempt(route.params.id)
         window.location = `/quiz/${attemptDetails.value.quiz.id}`;
     } catch (error) {
-        console.error('valami nem jó')
+        let toastToAdd = {
+            severity: "error",
+            detail: messages.pages.attemptPage.toastMessages.failedToSubmit,
+            life: 3000,
+        };
+        if (!themeStore().isDarkMode) {
+            toastToAdd.styleClass = "bg-danger text-white";
+        }
+        else {
+            toastToAdd.styleClass = "toast-danger text-white";
+        }
+        toast.add(toastToAdd);
     }
 };
 
