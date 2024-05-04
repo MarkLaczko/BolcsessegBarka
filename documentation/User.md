@@ -22,7 +22,7 @@
 
 ## Bevezetés
 
-Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevékenységeiket lebonyolítani. Egyszerű, felhasználóbarát felülettel tudják csoportokba sorolni a felhasználókat, kurzosokat tudnak létrehozni, leadandó feladatokat, jegyzeteket, kvízeket tudnak létrehozni és kitölteni.
+Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevékenységeiket lebonyolítani. Egyszerű, felhasználóbarát felülettel tudják csoportokba sorolni a felhasználókat, kurzusokat tudnak létrehozni, leadandó feladatokat, jegyzeteket, kvízeket tudnak létrehozni és kitölteni.
 
 ## Navigációs sáv
 
@@ -52,8 +52,8 @@ Az oldal segítségével iskolák és egyéb szervezetek tudják oktatási tevé
 
    - A navigációs sáv jobb oldalán egy felhasználói menü található, amely több beállítást és lehetőséget kínál:
      - **Felhasználói avatár:** Egy karikában megjeleníti a felhasználó monogramját.
-     - **Téma Váltása:** A felhasználók váltogathatnak a sötét és világos téma között, a nap ikonra nyomva világos, a hold ikonra kattintva pedig a sötét témát állíthatunk be. A megjelenése eszköz méretétől függő: kismérettől felfele ikonok, kisméret és azalatt pedig szöveg formájában lehet kezelni a témát.
-     - **Nyelv Váltása:** Egy kapcsoló segítségével a felhasználók váltogathatnak a `Magyar` és az `Angol` nyelv között.
+     - **Téma váltása:** A felhasználók váltogathatnak a sötét és világos téma között, a nap ikonra nyomva világos, a hold ikonra kattintva pedig a sötét témát állíthatunk be. A megjelenése eszköz méretétől függő: kismérettől felfele ikonok, kisméret és azalatt pedig szöveg formájában lehet kezelni a témát.
+     - **Nyelv váltása:** Egy kapcsoló segítségével a felhasználók váltogathatnak a `Magyar` és az `Angol` nyelv között.
      - **Profilom:** A felhasználó profiljának szerkesztése. A felhasználó itt jelszót tud változtatni.
      - **Kijelentkezés:** Biztonságosan kilépteti a felhasználót és a bejelentkezési oldalra irányítja.
 
