@@ -628,7 +628,7 @@
           <div class="d-flex justify-content-start align-items-center gap-2">
             <button
               type="button"
-              class="btn btn-secondary" :class="{'text-white' : isDarkMode, 'text-dark' : !isDarkMode}"
+              class="btn btn-secondary text-white" :class="{'text-white' : isDarkMode, 'text-dark' : !isDarkMode}"
               @click="(currentNoteVisible = false), (isNoteReadonly = true)"
             >
               {{ messages.pages.coursePage.currentNoteDialog.cancelButton }}
@@ -1694,7 +1694,8 @@ export default {
           new Date(data.deadline).toISOString().slice(0, 19).replace("T", " ")
         );
         formData.append("teacher_task", data?.teacher_task[0]?.file);
-        formData.append("teacher_task_name", data?.teacher_task[0]?.name);
+        formData.append("teacher_task_name", data?.teacher_task[0]?.name == null ? this.currentAssignment.teacher_task_name : data?.teacher_task[0]?.name);
+       
 
         const user = userStore();
         await http.put(`/assignments/${this.currentAssignment.id}`, formData, {
