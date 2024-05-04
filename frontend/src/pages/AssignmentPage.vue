@@ -6,11 +6,11 @@
     <div class="rounded-3 my-5 py-2" v-if="!loading">
       <div class="rounded-3 m-3 p-2" :class="{'bg-white' : !isDarkMode}" v-for="assignment in assignments" :key="assignment.id">
         <p >
-          {{ messages.pages.assignmentPage.task_name }} {{ assignment.task_name }} <br />
-          {{ messages.pages.assignmentPage.courseName }} {{ assignment.course.name }} <br />
-          {{ messages.pages.assignmentPage.deadline }} {{ assignment.deadline }} <br>
-          <span v-if="assignment.comment">{{ messages.pages.assignmentPage.comment }} {{ assignment.comment }}</span> <br>
-          <span v-if="assignment.teacher_task_name !== null">{{ messages.pages.assignmentPage.teacherTask }} {{ assignment.teacher_task_name }}</span>
+          <strong>{{ messages.pages.assignmentPage.task_name }}</strong> {{ assignment.task_name }} <br />
+          <strong>{{ messages.pages.assignmentPage.courseName }}</strong> {{ assignment.course.name }} <br />
+          <strong>{{ messages.pages.assignmentPage.deadline }}</strong> {{ assignment.deadline }} <br>
+          <span v-if="assignment.comment"><strong>{{ messages.pages.assignmentPage.comment }}</strong> {{ assignment.comment }}</span> <br>
+          <span v-if="assignment.teacher_task_name !== null"><strong>{{ messages.pages.assignmentPage.teacherTask }}</strong> {{ assignment.teacher_task_name }}</span>
         </p>
         <div
           v-if="isDeadlineReached"
@@ -215,6 +215,9 @@ export default {
         if (!this.isDarkMode) {
           toast.styleClass = "bg-success text-white";
         }
+        else {
+          toast.styleClass = "toast-success text-white";
+        }
 
         this.$toast.add(toast);
       } catch (error) {
@@ -227,6 +230,9 @@ export default {
         };
         if (!this.isDarkMode) {
           toast.styleClass = "bg-danger text-white";
+        }
+        else {
+          toast.styleClass = "toast-danger text-white";
         }
         this.$toast.add(toast);
       }
