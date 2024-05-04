@@ -4326,7 +4326,7 @@ export default {
 
 ## `NoteStore`
 
-> A `NoteStore` egy Pinia állapotkezelő tároló, amely a jegyzetek kezelését végzi. Ez a tároló felelős a jegyzet adatok lekérdezéséért, frissítéséért és törléséért, valamint az új jegyzetek létrehozásáért.
+> A `NoteStore` egy Pinia állapotkezelő tároló, amely a jegyzetek kezelését végzi. Ez a tároló felelős például a jegyzet adatok lekérdezéséért, frissítéséért és törléséért, valamint az új jegyzetek létrehozásáért.
 
 ### Tároló Funkciói
 
@@ -4337,6 +4337,8 @@ export default {
 - **postNote(data):** Új jegyzet létrehozására szolgál, ahol a data tartalmazza a jegyzet adatait.
 - **putNote(id, data):** Meglévő jegyzet adatainak módosítását végzi az adott azonosító alapján.
 - **destroyNote(id):** Törli a megadott azonosítójú jegyzetet.
+- **getCurrentNotes():** Visszaadja a tanuló által létrehozott, tanár által közzétett jegyzeteket azok alapján, hogy melyik kurzushoz és csoporthoz tartozik.
+- **getTeacherNotes():** Visszaadja az összes tanári jegyzetet aszerint, hogy az adott felhasználó részese-e a megfelelő kurzusnak, csoportnak.
 
 ### Hitelesítés Kezelése
 
