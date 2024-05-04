@@ -214,7 +214,7 @@ export default {
       }
     },
     attemptPage: {
-      removeOption: "Törlés",
+      removeOption: "Válasz törlése",
     },
     quizPage: {
       opens: "Nyílik",

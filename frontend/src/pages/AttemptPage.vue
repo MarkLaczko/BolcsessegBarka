@@ -23,7 +23,7 @@
                                     {{ index + 1 }}. {{ option }}
                                 </label>
                             </div>
-                            <div class="form-check">
+                            <div class="form-check" v-if="subtaskAnswer(subtask.id) != undefined && subtaskAnswer(subtask.id).answer != ''">
                                 <input class="form-check-input" type="radio" :value="option" :name="`option${subtask.id}`" :id="`option${subtask.id}remove`" @click="event => attemptStore().addAnswer(route.params.id, subtask.id, '')">
                                 <label class="form-check-label" :for="`option${subtask.id}remove`">
                                     {{ messages.pages.attemptPage.removeOption }}
@@ -57,6 +57,10 @@ const loading = computed(() => {
 });
 
 const attemptDetails = reactive({});
+
+const subtaskAnswer = (id) => {
+    return attemptStore().userAttempts.find(x => x.id == attemptDetails.value.id).answers.find(x => x.subtask_id == id);
+}
 
 const submitAttempt = async () => {
     try {

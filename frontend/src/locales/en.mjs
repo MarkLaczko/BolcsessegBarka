@@ -190,7 +190,7 @@ export default {
       }
     },
     attemptPage: {
-      removeOption: "Delete",
+      removeOption: "Delete answer",
     },
     markQuizPage: {
       attemptOf: "'s attempt",
