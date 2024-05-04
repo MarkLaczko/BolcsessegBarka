@@ -187,9 +187,9 @@ const loading = computed(() => {
     return quiz.value == undefined || form.value == undefined;
 });
 
-const messages = languageStore().messages;
+const messages = reactive(languageStore().messages);
 
-const language = languageStore().language;
+const language = reactive(languageStore().language);
 
 const getQuiz = async () => {
     quiz.value = await quizStore().getQuiz(route.params.quizId);
