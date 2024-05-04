@@ -20,6 +20,7 @@
    - [BaseLearningMaterialCard](#baselearningmaterialcard)
    - [BaseCourseCard](#basecoursecard)
    - [BaseAssignmentCard](#baseassignmentcard)
+   - [ScrollBackToTopButton](#scrollbacktotopbutton)
 4. [Layoutok](#layoutok)
    - [BaseNavbar](#basenavbar)
    - [BaseLayout](#baselayout)
@@ -34,6 +35,7 @@
    - [EditQuizPage](#qditquizpage)
    - [CreateTaskPage](#createtaskpage)
    - [EditTaskPage](#qdittaskpage)
+   - [AssignmentPage](#assignmentpage)
 6. [Nyelvi beállítások](#nyelvi-beállítások)
 7. [Tárolók](#tárolók)
    - [LanguageStore](#languagestore)
@@ -3121,6 +3123,33 @@ A `template`-ben egy Bootstrap `card` szerkezetet használunk, amely három oszl
 - **Komponensek:**
   - `BaseNavbar`: A navigációs sáv komponens, amelyet a fejlécben használunk.
 
+### `ScrollBackToTopButton`
+
+### Bemutatás:
+
+> A `ScrollBackToTopButton` létrehoz egy gombot aminek megnyomásával képes az oldal aljárról az oldal tetejére vinni a felhasználót.
+
+### Használat:
+
+> A `ScrollBackToTopButton` komponenst be kell importálnunk a script részben és utána a komponenst már be is illeszthetjük a `template` közé.
+
+#### Példa
+
+```html
+<template>
+  <ScrollBackToTopButton />
+</template>
+
+<script>
+  import ScrollBackToTopButton from "@layouts/ScrollBackToTopButton.vue";
+
+  export default {
+    components: {
+      ScrollBackToTopButton,
+    },
+  };
+</script>
+```
 ## Oldalak:
 
 ### `HomePage`
@@ -3218,13 +3247,17 @@ A `CoursesPage` komponens integrálja a `languageStore`-t a lokalizált üzenete
 4. **Új Feladat** (`newAssignmentDialogVisible`):
 
    - Lehetővé teszi új feladat létrehozását az űrlapon keresztül, ahol több mező (pl. határidő, feladat leírása) kitöltése szükséges.
-   - Feladat feltöltése többfájlos feltöltés támogatásával.
 
 5. **Feladat Szerkesztése** (`UpdateAssignmentDialogVisible`):
 
    - Hasonló funkciók, mint az új feladatnál, de az aktuális feladat adataival előre betöltve.
 
-6. **Jegyzetek Kezelése** (`newNoteDialogVisible`, `currentNoteVisible`):
+6. **Feladatok letöltése** (`DownloadAssignmentDialogVisible`):
+
+   - Lehetővé teszi a tanárok számára, hogy letöltsék a diákok által feltöltött feladatokat.
+   - Letudják tölteni egy adott diák feladatát és letudják tölteni az összes feladatot egy `ZIP` fájlba.
+
+7. **Jegyzetek Kezelése** (`newNoteDialogVisible`, `currentNoteVisible`):
    - Új jegyzet létrehozása és meglévő jegyzet megtekintése vagy szerkesztése.
    - Tartalmazza a szövegszerkesztőt a jegyzet tartalmának szerkesztésére.
    - Itt lehet kezelni a jegyzettel kapcsolatos funkciókat: törlés, frissítés.
@@ -3245,6 +3278,10 @@ A `CoursesPage` komponens integrálja a `languageStore`-t a lokalizált üzenete
 #### Jegyzet
 
 - A jegyzetkezelő funkciók (`deleteNote`, `updateNote`, `saveNote`,`openCurrentNote`) minden felhasználó számára elérhetőek, lehetővé téve számukra, hogy egyszerűen és hatékonyan kezeljék saját jegyzeteiket.
+
+#### Feladat
+
+- A feladatkezelő funkciók (`postNewAssignment`, `openUpdateAssignment`, `filteredStudentAssignment`,`updateAssignment`, `deleteAssignment`) a `tanárok` és az `adminok` számára elérhetőek, lehetővé téve számukra, hogy egyszerűen és hatékonyan kezeljék a feladatokat.
 
 #### Felhasználói jogosultságok
 
@@ -3551,6 +3588,42 @@ CSS szabályok és animációk vannak definiálva a komponenshez, hogy javítsá
 ### Integráció a Pinia Tárolókkal
 
 A komponens integrálja a `userStore`, `quizStore`, `themeStore`, és `languageStore` tárolókat a felhasználói adatok, témabeállítások és nyelvi beállítások kezeléséhez.
+
+### `AssignmentPage`
+
+A `AssignmentPage` oldal lehetővé teszi a diákok számára, hogy leadjanak feladatokat a tanárok számára.
+
+## Komponens Struktúra
+
+### Template Áttekintés:
+
+- **BaseLayout:** Az oldal alapvető elrendezési keretét biztosítja.
+- **BaseSpinner:** Egy töltésjelző, amely a felhasználói adatok betöltése közben jelenik meg.
+- **BaseToast:** Üzenetek megjelenítése a felhasználói műveletek eredményéről.
+
+### Script Részletek:
+
+#### Belső Állapotok:
+
+- **assignments:** Az Id alapján lekért feladatot tárolja.
+- **isDeadlineReached:** Boolean változó, mely jelzi, hogy elérte-e a határidőt a feladat.
+- **deadlineDate:** A feladat határideje.
+- **loading:** Boolean változó, ami jelzi, hogy az oldal betöltése folyamatban van-e.
+
+#### Metódusok:
+
+- **downloadAssignment(assignmentId):** Letölti a feladathoz tartozó fájlt.
+- **getAssignments():** Lekéri a szerkesztendő feladatot.
+- **postNewStudentAssignment(data):** Elküldi az új tanulói feladatot a szerverre.
+- **checkDeadline():** Ellenőrzi, hogy elértük-e a határidőt a feladatokhoz.
+
+## Integráció a Pinia Tárolókkal
+
+A komponens integrálja a `languageStore`, `userStore` és `themeStore` tárolókat a felhasználói adatok és témabeállítások kezeléséhez.
+
+## Stílusok és Animációk
+
+CSS szabályok és animációk vannak definiálva a komponenshez, hogy javítsák a felhasználói élményt.
 
 ## Nyelvi beállítások:
 
