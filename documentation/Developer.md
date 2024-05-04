@@ -49,7 +49,8 @@
 8. [Erőforrások](#erőforrások)
    - [Képek](#images-képek)
    - [Stílusok](#styles-stíluslapok)
-9. [Források](#források)
+9. [Csomagok](#felhasznált-csomagok)
+10. [Források](#felhasznált-források)
 
 ## Indítás
 
@@ -4404,6 +4405,19 @@ Ezek a változók más stíluslapokban is felhasználhatók a konzisztencia és 
 - Sötét mód stílusok, amelyek a `:root` szabályon keresztül a teljes alkalmazásra kiterjedően érvényesülnek.
 
 A fájlban definiált CSS szabályok széles skálája lehetővé teszi a felhasználói felület finomhangolását és az alkalmazás vizuális megjelenésének teljes körű testreszabását.
+
+## Felhasznált csomagok
+
+- [PrimeVue](https://primevue.org)
+- [Quill](https://www.npmjs.com/package/quill)
+- [PrimeIcons](https://www.npmjs.com/package/primeicons)
+- [Vue Devtools](https://www.npmjs.com/package/vite-plugin-vue-devtools)
+- [Vue Router](https://router.vuejs.org)
+- [Bootstrap](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
+- [Axios](https://axios-http.com/docs/intro)
+- [FormKit](https://formkit.com)
+- [Pinia](https://pinia.vuejs.org)
+- [Font Awesome](https://fontawesome.com)
 
 ## Felhasznált források
 
