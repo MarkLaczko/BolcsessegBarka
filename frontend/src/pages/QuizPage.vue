@@ -143,6 +143,7 @@
 import BaseLayout from '@layouts/BaseLayout.vue';
 import BaseSpinner from '@components/BaseSpinner.vue';
 import BaseDialog from '@components/BaseDialog.vue';
+import { useToast } from 'primevue/usetoast';
 import { quizStore } from '@stores/QuizStore';
 import { languageStore } from '@stores/LanguageStore';
 import { userStore } from '@stores/UserStore';
@@ -151,6 +152,7 @@ import { ref, reactive, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
+const toast = useToast();
 
 const quiz = reactive([]);
 
@@ -193,7 +195,18 @@ const startAttempt = async () => {
         const response = await attemptStore().postAttempt(route.params.id);
         window.location = `/attempt/${response.data.data.id}`
     } catch (error) {
-        console.log(error)
+        let toastToAdd = {
+            severity: "error",
+            detail: languageStore().messages.pages.quizPage.toastMessages.unexpectedError,
+            life: 3000,
+        };
+        if (!themeStore().isDarkMode) {
+            toastToAdd.styleClass = "bg-danger text-white";
+        }
+        else {
+            toastToAdd.styleClass = "toast-danger text-white";
+        }
+        toast.add(toastToAdd);
     }
 }
 
