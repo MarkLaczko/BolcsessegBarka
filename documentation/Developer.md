@@ -4005,7 +4005,7 @@ A komponensek `template` részénél egyszerűen hivatkozhatunk a `LanguageStore
 
 ### Bevezetés:
 
-> A `LanguageStore` egy központi állapotkezelő tároló a Pinia keretrendszer használatával, amely kezeli a nyelvi beállításokat és az alkalmazásszintű üzeneteket (messages). Ez a tároló lehetővé teszi a dinamikus nyelvváltást, és támogatja az állapot tartósítását, hogy a felhasználói preferenciák átmenetek és újraindítások után is megmaradjanak.
+> A `LanguageStore` a Pinia keretrendszerrel készült központi állapotkezelő tároló, amely az alkalmazás nyelvi beállításait és üzeneteit kezeli. Lehetővé teszi a dinamikus nyelvváltást, és az állapotot tartósítja, hogy a felhasználó preferenciái megmaradjanak az oldal újratöltésekor vagy a böngésző újraindításakor.
 
 ### **Tároló felépítése:**
 
@@ -4014,15 +4014,13 @@ A komponensek `template` részénél egyszerűen hivatkozhatunk a `LanguageStore
 A tároló állapota a következőket tartalmazza:
 
 - `language`: A jelenleg aktív nyelv kódja, alapértelmezés szerint "HU" (magyar).
-- `messages`: Az aktív nyelvhez tartozó üzeneteket tartalmazza, kezdetben a magyar nyelvi fájl (`hu`) adataival töltődik be.
 
 #### Példa
 
 ```js
 state() {
   return {
-    language: "HU",
-    messages: hu,
+    language: "HU"
   };
 }
 ```
@@ -4031,14 +4029,30 @@ state() {
 
 A tároló műveletei a következő funkciót tartalmazzák:
 
-- `switchLanguage()`: Ez a metódus vált a két nyelv (magyar és angol) között. A nyelvváltáskor az állapotban tárolt `language` és `messages` is frissül, így a felületen azonnal megjelennek a megfelelő nyelvű szövegek.
+- `switchLanguage()`: Ez a metódus vált a két nyelv (magyar és angol) között. Az állapotban tárolt `language` értékét módosítja, majd a megfelelő nyelvi fájlt állítja be a `messages` getterrel.
 
 ```js
 actions: {
   switchLanguage() {
     this.language = this.language === "HU" ? "EN" : "HU";
-    this.messages = this.language === "HU" ? hu : en;
-  },
+  }
+}
+```
+
+### Getterek (getters)
+
+A getterek dinamikusan biztosítják az aktuális nyelvhez tartozó üzeneteket.
+
+- `messages`: A jelenlegi nyelvhez tartozó üzenetfájl tartalmát adja vissza.
+
+```js
+getters: {
+  messages() {
+    if (this.language == "HU") {
+      return hu;
+    }
+    return en;
+  }
 }
 ```
 
@@ -4046,7 +4060,7 @@ actions: {
 
 > A `persist` tulajdonság beállításával a tároló állapota automatikusan megőrződik a böngésző lokális tárolójában vagy egy másik, konfigurálható tárolási helyen. Ez biztosítja, hogy a felhasználó által beállított nyelvi preferenciák megmaradjanak az oldal újratöltései és a böngésző újraindításai után is.
 
-#### Hazsnálata:
+#### Használata:
 
 ```js
 persist: true;
