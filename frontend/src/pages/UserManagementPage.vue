@@ -151,7 +151,7 @@
         'form-control': true,
       },
     }" />
-          <FormKit type="checkbox" label="Admin-E" name="is_admin" :classes="{
+          <FormKit type="checkbox" :label="messages.pages.userManagementPage.editUserDialog.isAdmin" name="is_admin" :classes="{
       input: {
         'mb-1': true,
         'form-check-input': true,
