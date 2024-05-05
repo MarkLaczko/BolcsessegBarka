@@ -14,7 +14,7 @@ http://gitlab.neumann-bp.edu.hu/72433070548/bolcsessegbarka.git
 
 [Fejlesztői dokumentáció](/documentation/Developer.md)
 
-[Felhasználó dokumentáció](/documentation/User.md)
+[Felhasználói dokumentáció](/documentation/User.md)
 
 [Tesztelési jegyzőkönyv](https://docs.google.com/spreadsheets/d/11gIBbxXhjW49-Xj5zJ5saSNCxc-tVdxybsBv-37Cc1k/edit?usp=sharing)
 
