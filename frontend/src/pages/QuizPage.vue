@@ -5,17 +5,17 @@
 
             <BaseDialog
                 :visible="beginAttemptDialogVisible"
-                :header="messages.pages.quizPage.beginAttemptDialog.begin"
+                :header="languageStore().messages.pages.quizPage.beginAttemptDialog.begin"
             >
                 <div>
-                    <p class="mb-1">{{ messages.pages.quizPage.beginAttemptDialog.confirm }}</p>
-                    <p class="mb-1" v-if="quiz.value.time != null">{{ messages.pages.quizPage.beginAttemptDialog.time }}: {{ quiz.value.time }} {{ messages.pages.quizPage.beginAttemptDialog.minutes }}.</p>
-                    <p class="mb-1" v-if="quiz.value.max_attempts == 1">{{ messages.pages.quizPage.beginAttemptDialog.attemptOnce }}</p>
-                    <p class="mb-1" v-else>{{ messages.pages.quizPage.beginAttemptDialog.attemptMultipleStart }} {{ quiz.value.max_attempts == null ? messages.pages.quizPage.beginAttemptDialog.attemptMultipleMiddle : quiz.value.max_attempts }} {{ messages.pages.quizPage.beginAttemptDialog.attemptMultipleEnd }}.</p>
+                    <p class="mb-1">{{ languageStore().messages.pages.quizPage.beginAttemptDialog.confirm }}</p>
+                    <p class="mb-1" v-if="quiz.value.time != null">{{ languageStore().messages.pages.quizPage.beginAttemptDialog.time }}: {{ quiz.value.time }} {{ languageStore().messages.pages.quizPage.beginAttemptDialog.minutes }}.</p>
+                    <p class="mb-1" v-if="quiz.value.max_attempts == 1">{{ languageStore().messages.pages.quizPage.beginAttemptDialog.attemptOnce }}</p>
+                    <p class="mb-1" v-else>{{ languageStore().messages.pages.quizPage.beginAttemptDialog.attemptMultipleStart }} {{ quiz.value.max_attempts == null ? languageStore().messages.pages.quizPage.beginAttemptDialog.attemptMultipleMiddle : quiz.value.max_attempts }} {{ languageStore().messages.pages.quizPage.beginAttemptDialog.attemptMultipleEnd }}.</p>
                 </div>
                 <div class="d-flex justify-content-end align-items-center gap-2">
-                    <button type="button" class="btn btn-outline-danger" @click="beginAttemptDialogVisible = false">{{ messages.pages.quizPage.beginAttemptDialog.cancel }}</button>
-                    <button type="button" class="btn btn-success" @click="startAttempt">{{ messages.pages.quizPage.beginAttemptDialog.start }}</button>
+                    <button type="button" class="btn btn-outline-danger" @click="beginAttemptDialogVisible = false">{{ languageStore().messages.pages.quizPage.beginAttemptDialog.cancel }}</button>
+                    <button type="button" class="btn btn-success text-white" @click="startAttempt">{{ languageStore().messages.pages.quizPage.beginAttemptDialog.start }}</button>
                 </div>
             </BaseDialog>
 
@@ -35,7 +35,7 @@
                         <tbody>
                             <tr>
                                 <td class="w-50">
-                                    {{ messages.pages.quizPage.opens }}
+                                    {{ languageStore().messages.pages.quizPage.opens }}
                                 </td>
                                 <td class="w-50" v-if="quiz.value.opens != null">
                                     {{ toDate(quiz.value.opens) }}
@@ -44,7 +44,7 @@
                             </tr>
                             <tr>
                                 <td class="w-50">
-                                    {{ messages.pages.quizPage.closes }}
+                                    {{ languageStore().messages.pages.quizPage.closes }}
                                 </td>
                                 <td class="w-50" v-if="quiz.value.closes != null">
                                     {{ toDate(quiz.value.closes) }}
@@ -53,17 +53,17 @@
                             </tr>
                             <tr>
                                 <td class="w-50">
-                                    {{ messages.pages.quizPage.time }}
+                                    {{ languageStore().messages.pages.quizPage.time }}
                                 </td>
                                 <td class="w-50" v-if="quiz.value.time != null">
                                     {{ quiz.value.time }}
-                                    {{ messages.pages.quizPage.minutes }}
+                                    {{ languageStore().messages.pages.quizPage.minutes }}
                                 </td>
                                 <td class="w-50" v-else>-</td>
                             </tr>
                             <tr>
                                 <td class="w-50">
-                                    {{ messages.pages.quizPage.attempts }}
+                                    {{ languageStore().messages.pages.quizPage.attempts }}
                                 </td>
                                 <td class="w-50" v-if="quiz.value.max_attempts != null">
                                     {{ quiz.value.max_attempts }}
@@ -77,16 +77,16 @@
             
             <div class="row" v-if="isTeacher && attempts.value != []">
                 <div class="col-12 mt-2">
-                    <h2>{{ messages.pages.quizPage.userAttempts }}</h2>
+                    <h2>{{ languageStore().messages.pages.quizPage.userAttempts }}</h2>
                     <table class="table table-responsive table-striped align-middle">
                         <thead>
                             <tr>
-                                <th>{{ messages.pages.quizPage.user }}</th>
-                                <th>{{ messages.pages.quizPage.begin }}</th>
-                                <th>{{ messages.pages.quizPage.finished }}</th>
-                                <th>{{ messages.pages.quizPage.marks }}</th>
-                                <th>{{ messages.pages.quizPage.grade }}</th>
-                                <th>{{ messages.pages.quizPage.evaluate }}</th>
+                                <th>{{ languageStore().messages.pages.quizPage.user }}</th>
+                                <th>{{ languageStore().messages.pages.quizPage.begin }}</th>
+                                <th>{{ languageStore().messages.pages.quizPage.finished }}</th>
+                                <th>{{ languageStore().messages.pages.quizPage.marks }}</th>
+                                <th>{{ languageStore().messages.pages.quizPage.grade }}</th>
+                                <th>{{ languageStore().messages.pages.quizPage.evaluate }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -98,7 +98,7 @@
                                 <td>{{ attempt.marks }}</td>
                                 <td>{{ attempt.grade }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-primary" @click="navigateToMarkPage(attempt.id)">{{ messages.pages.quizPage.evaluate }}</button>
+                                    <button type="button" class="btn btn-primary" @click="navigateToMarkPage(attempt.id)">{{ languageStore().messages.pages.quizPage.evaluate }}</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -107,17 +107,17 @@
             </div>
             <div class="row">
                 <div class="col-12 mt-2 d-flex justify-content-center aling-items-center" v-if="!hasAttemptOnThisQuiz && (quiz.value.opens == null || quiz.value.opens <= Math.floor(Date.now() / 1000)) && (quiz.value.closes == null || quiz.value.closes >= Math.floor(Date.now() / 1000))">
-                    <button type="button" class="btn btn-primary" @click="beginAttemptDialogVisible = true">{{ messages.pages.quizPage.startAttempt }}</button>
+                    <button type="button" class="btn btn-primary" @click="beginAttemptDialogVisible = true">{{ languageStore().messages.pages.quizPage.startAttempt }}</button>
                 </div>
                 <div class="col-12 mt-2" v-if="userAttempts.length > 0">
-                    <h2>{{ messages.pages.quizPage.ownAttempts }}</h2>
+                    <h2>{{ languageStore().messages.pages.quizPage.ownAttempts }}</h2>
                     <table class="table table-striped table-responsive">
                         <thead>
                             <tr>
-                                <th>Kezdés</th>
-                                <th>Végzés</th>
-                                <th>Pontszám</th>
-                                <th>Érdemjegy</th>
+                                <th>{{ languageStore().messages.pages.quizPage.begin }}</th>
+                                <th>{{ languageStore().messages.pages.quizPage.finished }}</th>
+                                <th>{{ languageStore().messages.pages.quizPage.marks }}</th>
+                                <th>{{ languageStore().messages.pages.quizPage.grade }}</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -151,8 +151,6 @@ import { ref, reactive, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
-
-const messages = reactive(languageStore().messages);
 
 const quiz = reactive([]);
 

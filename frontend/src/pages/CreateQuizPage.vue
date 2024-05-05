@@ -2,7 +2,7 @@
     <BaseLayout>
         <BaseToast />
         <BaseSpinner :loading="loading" />
-        <h1>{{ messages.pages.createQuizPage.title }}</h1>
+        <h1>{{ languageStore().messages.pages.createQuizPage.title }}</h1>
         <div class="row" v-if="!loading">
             <div class="col-12" v-if="topic.value != undefined">
                 <div class="row">
@@ -23,7 +23,7 @@
                         </ol>
                     </div>
                     <div class="col-12">
-                        <label for="topic_id">{{ messages.pages.createQuizPage.topic }}:</label>
+                        <label for="topic_id">{{ languageStore().messages.pages.createQuizPage.topic }}:</label>
                         <select name="topic_id" id="topic_id" v-model="form.topic_id" class="form-select">
                             <option :value="topic.id" v-for="topic of course.value.topics">{{ topic.name }}</option>
                         </select>
@@ -37,14 +37,14 @@
                     :classes="{
                         message: 'text-end'
                     }"
-                    :incomplete-message="messages.pages.createQuizPage.validationMessages.matchAllValidationMessage"
+                    :incomplete-message="languageStore().messages.pages.createQuizPage.validationMessages.matchAllValidationMessage"
                     @submit="submitForm"
                 >
                     <div class="row">
                         <div class="col-12 my-1">
                             <FormKit 
                                 type="text"
-                                :label="messages.pages.createQuizPage.name"
+                                :label="languageStore().messages.pages.createQuizPage.name"
                                 name="name"
                                 id="name"
                                 v-model="form.name"
@@ -55,16 +55,16 @@
                                 validation="required|length:0,100"
                                 :validation-messages="{
                                     required:
-                                        messages.pages.createQuizPage.validationMessages.nameLength, 
+                                        languageStore().messages.pages.createQuizPage.validationMessages.nameLength, 
                                     length:
-                                        messages.pages.createQuizPage.validationMessages.nameRequired,
+                                        languageStore().messages.pages.createQuizPage.validationMessages.nameRequired,
                                 }"
                             />
                         </div>
                         <div class="col-12 col-md-6 col-lg-3 my-1">
                             <FormKit 
                                 type="number"
-                                :label="messages.pages.createQuizPage.attempts"
+                                :label="languageStore().messages.pages.createQuizPage.attempts"
                                 name="max_attempts"
                                 id="max_attempts"
                                 v-model="form.max_attempts"
@@ -75,14 +75,14 @@
                                 validation="min:0"
                                 :validation-messages="{
                                     min:
-                                        messages.pages.createQuizPage.validationMessages.attemptsMin,
+                                        languageStore().messages.pages.createQuizPage.validationMessages.attemptsMin,
                                 }"
                             />
                         </div>
                         <div class="col-12 col-md-6 col-lg-3 my-1">
                             <FormKit 
                                 type="datetime-local"
-                                :label="messages.pages.createQuizPage.opens"
+                                :label="languageStore().messages.pages.createQuizPage.opens"
                                 name="opens"
                                 id="opens"
                                 v-model="form.opens"
@@ -95,7 +95,7 @@
                         <div class="col-12 col-md-6 col-lg-3 my-1">
                             <FormKit 
                                 type="datetime-local"
-                                :label="messages.pages.createQuizPage.closes"
+                                :label="languageStore().messages.pages.createQuizPage.closes"
                                 name="closes"
                                 id="closes"
                                 v-model="form.closes"
@@ -108,7 +108,7 @@
                         <div class="col-12 col-md-6 col-lg-3 my-1">
                             <FormKit 
                                 type="number"
-                                :label="messages.pages.createQuizPage.time"
+                                :label="languageStore().messages.pages.createQuizPage.time"
                                 name="time"
                                 id="time"
                                 v-model="form.time"
@@ -119,7 +119,7 @@
                                 
                                 :validation-messages="{
                                     min:
-                                        messages.pages.createQuizPage.validationMessages.timeMin,
+                                        languageStore().messages.pages.createQuizPage.validationMessages.timeMin,
                                 }"
                             />
                         </div>
@@ -127,7 +127,7 @@
                             <FormKit 
                                 type="submit"
                                 id="submit"
-                                :label="messages.pages.createQuizPage.submit"
+                                :label="languageStore().messages.pages.createQuizPage.submit"
                                 :classes="{
                                     input: 'btn btn-success text-white',
                                 }"
@@ -162,8 +162,6 @@ const topic = reactive({});
 
 const form = reactive({});
 
-const messages = languageStore().messages;
-
 const loading = computed(() => {
     return course.value == undefined;
 });
@@ -195,7 +193,7 @@ const submitForm = async () => {
     } catch (error) {
         let toastToAdd = {
           severity: "error",
-          detail: messages.pages.createQuizPage.toastMessages.unexpectedError,
+          detail: languageStore().messages.pages.createQuizPage.toastMessages.unexpectedError,
           life: 3000,
         };
         if (!themeStore().isDarkMode) {
