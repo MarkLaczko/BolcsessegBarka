@@ -265,8 +265,8 @@ const confirmDeleteTask = async (id, index) => {
     await confirm.require({
         message: languageStore().messages.pages.editQuizPage.confirmDialogs.deleteTask,
         icon: 'pi pi-exclamation-triangle',
-        rejectClass: 'btn btn-danger',
-        acceptClass: 'btn btn-success ',
+        rejectClass: 'btn btn-danger text-white',
+        acceptClass: 'btn btn-success text-white',
         rejectLabel: languageStore().messages.pages.editQuizPage.confirmDialogs.cancel,
         acceptLabel: languageStore().messages.pages.editQuizPage.confirmDialogs.confirm,
         accept: async () => {
