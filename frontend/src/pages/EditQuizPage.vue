@@ -4,8 +4,8 @@
         <BaseConfirmDialog />
         <BaseSpinner :loading="loading" />
         <div v-if="!loading">
-            <h1 v-if="language == 'HU'">{{ quiz.value.name }} {{ messages.pages.editQuizPage.title }}</h1>
-            <h1 v-if="language == 'EN'">{{ messages.pages.editQuizPage.title }} {{ quiz.value.name }}</h1>
+            <h1 v-if="languageStore().language == 'HU'">{{ quiz.value.name }} {{ languageStore().messages.pages.editQuizPage.title }}</h1>
+            <h1 v-if="languageStore().language == 'EN'">{{ languageStore().messages.pages.editQuizPage.title }} {{ quiz.value.name }}</h1>
             <div class="row">
                 <div class="col-12">
                     <ol class="breadcrumb">
@@ -21,14 +21,14 @@
                         :classes="{
                             message: 'text-end'
                         }"
-                        :incomplete-message="messages.pages.editQuizPage.validationMessages.matchAllValidationMessage"
+                        :incomplete-message="languageStore().messages.pages.editQuizPage.validationMessages.matchAllValidationMessage"
                         @submit="putForm"
                     >
                         <div class="row">
                             <div class="col-12 my-1">
                                 <FormKit
                                     type="text"
-                                    :label="messages.pages.editQuizPage.name"
+                                    :label="languageStore().messages.pages.editQuizPage.name"
                                     name="name"
                                     id="name"
                                     v-model="quiz.value.name"
@@ -38,15 +38,15 @@
                                     }"
                                     validation="required|length:0,100"
                                     :validation-messages="{
-                                        required: messages.pages.editQuizPage.validationMessages.nameRequired,
-                                        length: messages.pages.editQuizPage.validationMessages.nameLength,
+                                        required: languageStore().messages.pages.editQuizPage.validationMessages.nameRequired,
+                                        length: languageStore().messages.pages.editQuizPage.validationMessages.nameLength,
                                     }"
                                 />
                             </div>
                             <div class="col-12 col-md-6 col-lg-3 my-1">
                                 <FormKit
                                     type="number"
-                                    :label="messages.pages.editQuizPage.attempts"
+                                    :label="languageStore().messages.pages.editQuizPage.attempts"
                                     name="max_attempts"
                                     id="max_attempts"
                                     v-model="quiz.value.max_attempts"
@@ -56,14 +56,14 @@
                                     }"
                                     validation="min:0"
                                     :validation-messages="{
-                                        min: messages.pages.editQuizPage.validationMessages.attemptsMin,
+                                        min: languageStore().messages.pages.editQuizPage.validationMessages.attemptsMin,
                                     }"
                                 />
                             </div>
                             <div class="col-12 col-md-6 col-lg-3 my-1">
                                 <FormKit
                                     type="datetime-local"
-                                    :label="messages.pages.editQuizPage.opens"
+                                    :label="languageStore().messages.pages.editQuizPage.opens"
                                     name="opens"
                                     id="opens"
                                     v-model="quiz.value.opens"
@@ -76,7 +76,7 @@
                             <div class="col-12 col-md-6 col-lg-3 my-1">
                                 <FormKit
                                     type="datetime-local"
-                                    :label="messages.pages.editQuizPage.closes"
+                                    :label="languageStore().messages.pages.editQuizPage.closes"
                                     name="closes"
                                     id="closes"
                                     v-model="quiz.value.closes"
@@ -89,7 +89,7 @@
                             <div class="col-12 col-md-6 col-lg-3 my-1">
                                 <FormKit
                                     type="number"
-                                    :label="messages.pages.editQuizPage.time"
+                                    :label="languageStore().messages.pages.editQuizPage.time"
                                     name="time"
                                     id="time"
                                     v-model="quiz.value.time"
@@ -99,7 +99,7 @@
                                     }"
                                     validation="min:0"
                                     :validation-messages="{
-                                        min: messages.pages.editQuizPage.validationMessages.time,
+                                        min: languageStore().messages.pages.editQuizPage.validationMessages.time,
                                     }"
                                 />
                             </div>
@@ -107,7 +107,7 @@
                                 <FormKit
                                     type="submit"
                                     id="submit"
-                                    :label="messages.pages.editQuizPage.submit"
+                                    :label="languageStore().messages.pages.editQuizPage.submit"
                                     :classes="{
                                         input: 'btn btn-success text-white',
                                     }"
@@ -117,7 +117,7 @@
                     </FormKit>
                 </div>
                 <div class="col-12">
-                    <h2>{{ messages.pages.editQuizPage.tasks }}</h2>
+                    <h2>{{ languageStore().messages.pages.editQuizPage.tasks }}</h2>
                     <div class="card w-100 my-2 p-1 flex-row align-items-center gap-2 flex-wrap" v-for="(task, index) of tasks.value" :key="index">
                         <span class="badge text-bg-info text-white fs-5">{{index + 1}}.</span> <span class="flex-grow-1 fw-bold">{{ task.header }}</span>
                         <div>
@@ -164,10 +164,6 @@ const loading = computed(() => {
     return quiz.value == undefined;
 });
 
-const messages = languageStore().messages;
-
-const language = languageStore().language;
-
 const getQuiz = async () => {
     quiz.value = await quizStore().getQuiz(route.params.id);
 
@@ -203,7 +199,7 @@ const putForm = async () => {
 
         let toastToAdd = {
           severity: "success",
-          detail: messages.pages.editQuizPage.toastMessages.updateSuccess,
+          detail: languageStore().messages.pages.editQuizPage.toastMessages.updateSuccess,
           life: 3000,
         };
         if (!themeStore().isDarkMode) {
@@ -216,7 +212,7 @@ const putForm = async () => {
     } catch (error) {
         let toastToAdd = {
           severity: "error",
-          detail: messages.pages.editQuizPage.toastMessages.updateUnexpectedError,
+          detail: languageStore().messages.pages.editQuizPage.toastMessages.updateUnexpectedError,
           life: 3000,
         };
         if (!themeStore().isDarkMode) {
@@ -252,7 +248,7 @@ const moveItem = async (from, to) => {
     } catch (error) {
         let toastToAdd = {
           severity: "error",
-          detail: messages.pages.editQuizPage.toastMessages.changeOrderUnexpectedError,
+          detail: languageStore().messages.pages.editQuizPage.toastMessages.changeOrderUnexpectedError,
           life: 3000,
         };
         if (!themeStore().isDarkMode) {
@@ -267,12 +263,12 @@ const moveItem = async (from, to) => {
 
 const confirmDeleteTask = async (id, index) => {
     await confirm.require({
-        message: messages.pages.editQuizPage.confirmDialogs.deleteTask,
+        message: languageStore().messages.pages.editQuizPage.confirmDialogs.deleteTask,
         icon: 'pi pi-exclamation-triangle',
         rejectClass: 'btn btn-danger',
         acceptClass: 'btn btn-success ',
-        rejectLabel: messages.pages.editQuizPage.confirmDialogs.cancel,
-        acceptLabel: messages.pages.editQuizPage.confirmDialogs.confirm,
+        rejectLabel: languageStore().messages.pages.editQuizPage.confirmDialogs.cancel,
+        acceptLabel: languageStore().messages.pages.editQuizPage.confirmDialogs.confirm,
         accept: async () => {
             try {
                 await http.delete(`/tasks/${id}`, {
@@ -285,7 +281,7 @@ const confirmDeleteTask = async (id, index) => {
 
                 let toastToAdd = {
                     severity: "success",
-                    detail: messages.pages.editQuizPage.toastMessages.deleteSuccess,
+                    detail: languageStore().messages.pages.editQuizPage.toastMessages.deleteSuccess,
                     life: 3000,
                 };
                 if (!themeStore().isDarkMode) {
@@ -298,7 +294,7 @@ const confirmDeleteTask = async (id, index) => {
             } catch (error) {
                 let toastToAdd = {
                     severity: "error",
-                    detail: messages.pages.editQuizPage.toastMessages.deleteUnexpectedError,
+                    detail: languageStore().messages.pages.editQuizPage.toastMessages.deleteUnexpectedError,
                     life: 3000,
                 };
                 if (!themeStore().isDarkMode) {
