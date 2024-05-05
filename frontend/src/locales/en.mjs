@@ -241,6 +241,9 @@ export default {
         attemptMultipleEnd: "times",
         cancel: "Cancel",
         start: "Start",
+      },
+      toastMessages: {
+        unexpectedError: "Unexpected error when starting the attempt."
       }
     },
     createQuizPage: {
