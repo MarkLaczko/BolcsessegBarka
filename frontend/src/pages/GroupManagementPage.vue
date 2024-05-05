@@ -611,7 +611,6 @@ export default {
   },
   exportCSV() {
     this.$refs.dt.exportCSV();
-    console.log(this.$refs.dt);
   },
 };
 </script>
