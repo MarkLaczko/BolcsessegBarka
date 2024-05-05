@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Mime;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Text.RegularExpressions;
 using Group = ApiLibrary.Group;
@@ -1286,5 +1287,181 @@ namespace BolcsessegBarkaAPITests
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
+        
+        [TestMethod]
+        public async Task GetAssignments_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync($"assignments");
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetAssignment_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync($"assignments/1");
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task CreateAssignment_ReturnsCreated()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var assignment = new StringContent(
+                JsonConvert.SerializeObject(new { task_name="teszt", comment = "teszt@teszt.com", deadline= new DateTime(2024, 5, 19, 10, 23, 0).ToString("yyyy-MM-dd HH:mm:ss"), courseable_id=1, topic_id=1 }),
+                Encoding.UTF8,
+                "application/json");
+            
+            var response = await _client!.PostAsync("assignments", assignment);
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task UpdateAssignment_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            
+            var assignment = new StringContent(
+                JsonConvert.SerializeObject(new { 
+                    task_name = "teszt", 
+                    comment = "teszt adat", 
+                    deadline = new DateTime(2024, 5, 19, 10, 23, 0), 
+                    courseable_id = 1, 
+                    topic_id = 1 
+                }),
+                Encoding.UTF8,
+                "application/json");
+            
+            var response = await _client!.PostAsync("assignments", assignment);
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+            
+            var createdAssignment = await Deserialize<Assignment>(response); 
+            var createdAssignmentId = createdAssignment.Id;
+            
+            var updateAssignment = new StringContent(
+                JsonConvert.SerializeObject(new { 
+                    task_name = "teszt módosítás", 
+                    comment = "teszt adat módosítás", 
+                    deadline = new DateTime(2024, 5, 19, 10, 23, 0), 
+                    courseable_id = 1, 
+                    topic_id = 1 
+                }),
+                Encoding.UTF8,
+                "application/json");
+            
+            var response2 = await _client!.PutAsync($"assignments/{createdAssignmentId}",updateAssignment);
+            Assert.AreEqual(HttpStatusCode.OK, response2.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task DeleteAssignment_ReturnsNoContent()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            
+            var assignment = new StringContent(
+                JsonConvert.SerializeObject(new { 
+                    task_name = "teszt", 
+                    comment = "teszt adat", 
+                    deadline = new DateTime(2024, 5, 19, 10, 23, 0), 
+                    courseable_id = 1, 
+                    topic_id = 1 
+                }),
+                Encoding.UTF8,
+                "application/json");
+            
+            var response = await _client!.PostAsync("assignments", assignment);
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+            
+            var createdAssignment = await Deserialize<Assignment>(response); 
+            var createdAssignmentId = createdAssignment.Id;
+            
+            var response2 = await _client!.DeleteAsync($"assignments/{createdAssignmentId}");
+            Assert.AreEqual(HttpStatusCode.NoContent, response2.StatusCode);
+        }
+
+
+        
+        [TestMethod]
+        public async Task GetStudentsAssignments_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync($"studentAssignments");
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task GetStudentAssignment_ReturnsOK()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
+            
+            var response = await _client!.GetAsync($"studentAssignments/1");
+            
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task CreateStudentAssignment_ReturnsCreated()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            
+            byte[] studentTaskData = Encoding.UTF8.GetBytes("Ez egy példa a diák feladathoz.");
+            var byteContent = new ByteArrayContent(studentTaskData);
+            
+            var multipartContent = new MultipartFormDataContent
+            {
+                { byteContent, "student_task", "student_task.bin" },
+                { new StringContent("1"), "assignment_id" },
+                { new StringContent("teszt diák feladat"), "student_task_name" },
+                { new StringContent("1"), "user_id" }
+            };
+            
+            var response = await _client!.PostAsync("studentAssignments", multipartContent);
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+        }
+        
+        [TestMethod]
+        public async Task DeleteStudentAssignment_ReturnsNoContent()
+        {
+            var token = await AuthenticateAndGetToken();
+            _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            
+            byte[] studentTaskData = Encoding.UTF8.GetBytes("Ez egy példa a diák feladathoz.");
+            var byteContent = new ByteArrayContent(studentTaskData);
+            
+            var multipartContent = new MultipartFormDataContent
+            {
+                { byteContent, "student_task", "student_task.bin" },
+                { new StringContent("1"), "assignment_id" },
+                { new StringContent("teszt diák feladat"), "student_task_name" },
+                { new StringContent("1"), "user_id" }
+            };
+            
+            var response = await _client!.PostAsync("studentAssignments", multipartContent);
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+            
+            var createdAssignment = await Deserialize<StudentAssignment>(response); 
+            var createdAssignmentId = createdAssignment.Id;
+
+            var response2 = await _client!.DeleteAsync($"studentAssignments/{createdAssignmentId}");
+            Assert.AreEqual(HttpStatusCode.NoContent, response2.StatusCode);
+        }
+
+
     }
 }
