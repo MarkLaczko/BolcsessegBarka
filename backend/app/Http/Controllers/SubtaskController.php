@@ -11,7 +11,7 @@ class SubtaskController extends Controller
 {
     public function destroy(int $id){
         $subtask = Subtask::findOrFail($id);
-        Gate::authorize("tasks.delete", $subtask);
+        Gate::authorize("subtasks.delete", $subtask);
         
         $subtask->delete();
 
