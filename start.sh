@@ -18,12 +18,10 @@ else
     docker compose exec app composer install
 fi
 
-source .env
+docker compose exec app php artisan key:generate
 
-if [ -z "${APP_KEY}" ]; then
-    echo "APP_KEY már létezik!"
-else
-    docker compose exec app php artisan key:generate
-fi
+echo "5 másodperc várás a MySQL elindulásáig"
+
+sleep 5
 
 docker compose exec app php artisan migrate:fresh --seed
