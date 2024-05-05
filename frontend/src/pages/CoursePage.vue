@@ -288,7 +288,7 @@
           <FormKit
             type="submit"
             :label="messages.pages.newAssignmentPage.saveButton"
-            id="addUserButton"
+            id="addAssignmentButton"
             :classes="{
               input: {
                 btn: true,
