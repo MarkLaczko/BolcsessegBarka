@@ -36,7 +36,8 @@ class DatabaseSeeder extends Seeder
             TaskSeeder::class,
             SubtaskSeeder::class,
             NoteSeeder::class,
-            AssignmentSeeder::class
+            AssignmentSeeder::class,
+            StudentAssignmentSeeder::class
         ]);
     }
 }
