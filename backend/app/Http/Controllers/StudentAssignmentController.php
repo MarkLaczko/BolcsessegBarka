@@ -52,6 +52,8 @@ class StudentAssignmentController extends Controller
         $data = $request->validated();
         $assignment = StudentAssignment::findOrFail($id);
         $assignment->update($data);
+        $assignment->student_task = $request->file("student_task")->get();
+        $assignment->save();
         return new StudentAssignmentResource($assignment);
     }
 
@@ -89,7 +91,7 @@ class StudentAssignmentController extends Controller
     {
         $item = Assignment::with("studentAssignment")->findOrFail($id);
 
-        $items = $item->studentAssignment;
+        $items = $item->studentAssignmentsWithTask;
 
         $zip = new ZipArchive;
         $zipFileName = $filename;
@@ -97,11 +99,11 @@ class StudentAssignmentController extends Controller
         if ($zip->open(public_path($zipFileName), ZipArchive::CREATE) === TRUE) {
 
             foreach ($items as $file) {
-                    
+
                 $file_contents = $file->student_task;
                 $tempFilePath = tempnam(sys_get_temp_dir(), 'download');
                 file_put_contents($tempFilePath, $file_contents);
-                
+
                 $zip->addFile($tempFilePath, $file->student_task_name);
             }
 

@@ -32,5 +32,9 @@ class Assignment extends Model
         return $this->hasMany(StudentAssignment::class)->select(["assignment_id","student_task_name","user_id"]);
     }
 
+    public function studentAssignmentsWithTask() : HasMany{
+        return $this->hasMany(StudentAssignment::class)->select(['student_task', 'student_task_name']);
+    }
+
 }
 
