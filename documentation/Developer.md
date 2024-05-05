@@ -80,7 +80,7 @@ A projekt elindításához futassa le a `start.sh` fájlt.
 
 ### Adatbázis
 
-Az adatbázis EK diagramja [itt](https://dbdiagram.io/d/65f97220ae072629ce6400fe) érhető el.
+Az adatbázis EK diagramja [itt](https://dbdiagram.io/d/BolcsessegBarka-65f97220ae072629ce6400fe) érhető el.
 
 ![EK diagram](/documentation/er_diagram.png)
 
