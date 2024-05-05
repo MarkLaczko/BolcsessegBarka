@@ -5,15 +5,21 @@ import en from "@locales/en.mjs";
 export const languageStore = defineStore("languageStore", {
   state() {
     return {
-      language: "HU",
-      messages: hu,
+      language: "HU"
     };
   },
   actions: {
     switchLanguage() {
       this.language = this.language === "HU" ? "EN" : "HU";
-      this.messages = this.language === "HU" ? hu : en;
     },
+  },
+  getters: {
+    messages() {
+      if (this.language == "HU") {
+        return hu;
+      }
+      return en;
+    }
   },
   persist: true,
 });
