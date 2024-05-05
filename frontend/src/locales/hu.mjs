@@ -245,6 +245,9 @@ export default {
         attemptMultipleEnd: "alkalommal lehet kitölteni",
         cancel: "Mégse",
         start: "Kezdés",
+      },
+      toastMessages: {
+        unexpectedError: "Váratlan hiba a próbálkozás indítása közben."
       }
     },
     createQuizPage: {
