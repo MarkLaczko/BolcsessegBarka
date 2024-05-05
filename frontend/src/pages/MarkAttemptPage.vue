@@ -4,14 +4,14 @@
         <div v-if="!loading">
             <div class="row mb-3">
                 <div class="col-12">
-                    <h1>{{ attempt.value.user.name }} {{ messages.pages.markQuizPage.attemptOf }}</h1>
+                    <h1>{{ attempt.value.user.name }} {{ languageStore().messages.pages.markQuizPage.attemptOf }}</h1>
                 </div>
                 <div class="col-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><RouterLink :to="{name: 'course', params: {id: attempt.value.quiz.topic.course.id}}">{{ attempt.value.quiz.topic.course.name }}</RouterLink></li>
                         <li class="breadcrumb-item"><RouterLink :to="{name: 'course', params: {id: attempt.value.quiz.topic.course.id}}">{{ attempt.value.quiz.topic.name }}</RouterLink></li>
                         <li class="breadcrumb-item"><a href="#" @click="navigateToQuizPage">{{ attempt.value.quiz.name }}</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">{{ attempt.value.user.name }} {{ messages.pages.markQuizPage.attemptOf }}</li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ attempt.value.user.name }} {{ languageStore().messages.pages.markQuizPage.attemptOf }}</li>
                     </ol>
                 </div>
                 <div class="col-12">
@@ -23,7 +23,7 @@
                             </tr>
                             <tr>
                                 <td>Végzett</td>
-                                <td>{{ toDate(attempt.value.end) }} <span v-if="attempt.value.quiz.time != null && (attempt.value.start + (attempt.value.quiz.time * 60) < attempt.value.end)" class="badge  text-bg-danger text-white">{{ messages.pages.markQuizPage.late }}</span></td>
+                                <td>{{ toDate(attempt.value.end) }} <span v-if="attempt.value.quiz.time != null && (attempt.value.start + (attempt.value.quiz.time * 60) < attempt.value.end)" class="badge  text-bg-danger text-white">{{ languageStore().messages.pages.markQuizPage.late }}</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -48,7 +48,7 @@
                                         <div class="col-12 col-md-6 my-3">
                                             <FormKit
                                                 type="number"
-                                                :label="messages.pages.markQuizPage.maxMarks"
+                                                :label="languageStore().messages.pages.markQuizPage.maxMarks"
                                                 :value="subtask.maxMarks"
                                                 disabled
                                                 :id="`maxMarks${subtask.answer.id}`"
@@ -67,14 +67,14 @@
                                                 <FormKit
                                                     type="number"
                                                     v-model="subtask.marks"
-                                                    :label="messages.pages.markQuizPage.marks"
+                                                    :label="languageStore().messages.pages.markQuizPage.marks"
                                                     :id="`marks${subtask.answer.id}`"
                                                     step="0.5"
                                                     :disabled="subtask.correct"
                                                     :validation="`required|min:0|max:${subtask.maxMarks}`"
                                                     :validation-messages="{
-                                                        required: messages.pages.editTaskPage.marksRequired,
-                                                        min: messages.pages.editTaskPage.marksMin,
+                                                        required: languageStore().messages.pages.editTaskPage.marksRequired,
+                                                        min: languageStore().messages.pages.editTaskPage.marksMin,
                                                     }"
                                                     :classes="{
                                                         label: 'form-label',
@@ -86,7 +86,7 @@
                                                     type="checkbox"
                                                     v-model="subtask.correct"
                                                     :id="`correct${subtask.answer.id}`"
-                                                    :label="messages.pages.markQuizPage.correctAnswer"
+                                                    :label="languageStore().messages.pages.markQuizPage.correctAnswer"
                                                     :classes="{
                                                         label: 'form-check-label ms-2',
                                                         input: 'form-check-input'
@@ -96,7 +96,7 @@
 
                                                 <FormKit
                                                     type="submit"
-                                                    :label="messages.pages.markQuizPage.save"
+                                                    :label="languageStore().messages.pages.markQuizPage.save"
                                                     :id="`submit${subtask.answer.id}`"
                                                     :classes="{
                                                         input: 'btn btn-success text-white mt-2'
@@ -107,7 +107,7 @@
                                     </div>
                                 </div>
                                 <div v-else>
-                                    <p><i>{{ messages.pages.markQuizPage.noAnswer }}</i></p>
+                                    <p><i>{{ languageStore().messages.pages.markQuizPage.noAnswer }}</i></p>
                                 </div>
                             </div>
                         </div>
@@ -119,7 +119,7 @@
                         <div class="col-12 col-md-6">
                             <FormKit
                                 type="text"
-                                :label="messages.pages.markQuizPage.overallMarks"
+                                :label="languageStore().messages.pages.markQuizPage.overallMarks"
                                 v-model="overallText"
                                 disabled
                                 id="overallMarks"
@@ -138,12 +138,12 @@
                                 <FormKit
                                     type="text"
                                     v-model="attempt.value.grade"
-                                    :label="messages.pages.markQuizPage.grade"
+                                    :label="languageStore().messages.pages.markQuizPage.grade"
                                     id="grade"
                                     validation="required|max:10"
                                     :validation-messages="{
-                                        required: messages.pages.editTaskPage.marksRequired,
-                                        max: messages.pages.editTaskPage.marksMin,
+                                        required: languageStore().messages.pages.editTaskPage.marksRequired,
+                                        max: languageStore().messages.pages.editTaskPage.marksMin,
                                     }"
                                     :classes="{
                                         label: 'form-label',
@@ -153,12 +153,12 @@
 
                                 <div class="d-flex justify-content-end align-items-center gap-1">
                                     <button type="button" class="btn btn-secondary mt-2" @click="navigateToQuizPage">
-                                        {{ messages.pages.markQuizPage.finish }}
+                                        {{ languageStore().messages.pages.markQuizPage.finish }}
                                     </button>
 
                                     <FormKit
                                         type="submit"
-                                        :label="messages.pages.markQuizPage.save"
+                                        :label="languageStore().messages.pages.markQuizPage.save"
                                         id="submitGrade"
                                         :classes="{
                                             input: 'btn btn-success text-white mt-2'
@@ -189,8 +189,6 @@ const route = useRoute();
 const toast = useToast();
 
 const attempt = reactive({});
-
-const messages = reactive(languageStore().messages);
 
 const tasks = reactive({});
 
@@ -257,7 +255,7 @@ const submitMark = (id, correct, marks) => {
         answerStore().updateAnswer(id, correct, marks)
         let toastToAdd = {
             severity: "success",
-            detail: messages.pages.markQuizPage.toastMessages.updatedMark,
+            detail: languageStore().messages.pages.markQuizPage.toastMessages.updatedMark,
             life: 3000,
         };
         if (!themeStore().isDarkMode) {
@@ -271,7 +269,7 @@ const submitMark = (id, correct, marks) => {
     } catch (error) {
         let toastToAdd = {
             severity: "error",
-            detail: messages.pages.markQuizPage.toastMessages.failedUpdateMark,
+            detail: languageStore().messages.pages.markQuizPage.toastMessages.failedUpdateMark,
             life: 3000,
         };
         if (!themeStore().isDarkMode) {
@@ -289,7 +287,7 @@ const submitGrade = async () => {
         await attemptStore().grade(attempt.value.id, overallMarks.value, attempt.value.grade);
         let toastToAdd = {
             severity: "success",
-            detail: messages.pages.markQuizPage.toastMessages.graded,
+            detail: languageStore().messages.pages.markQuizPage.toastMessages.graded,
             life: 3000,
         };
         if (!themeStore().isDarkMode) {
@@ -302,7 +300,7 @@ const submitGrade = async () => {
     } catch (error) {
         let toastToAdd = {
             severity: "error",
-            detail: messages.pages.markQuizPage.toastMessages.failedToGrade,
+            detail: languageStore().messages.pages.markQuizPage.toastMessages.failedToGrade,
             life: 3000,
         };
         if (!themeStore().isDarkMode) {
