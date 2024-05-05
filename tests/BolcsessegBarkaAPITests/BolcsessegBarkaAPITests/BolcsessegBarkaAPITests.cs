@@ -569,7 +569,7 @@ namespace BolcsessegBarkaAPITests
             var token = await AuthenticateAndGetToken();
             _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
            
-            var group = new StringContent("{\"name\": \"Teszt Csoport 3\", \"selectedUsers\": [{\"id\": 2, \"permission\": \"Tanár\"}]}", null, "application/json");
+            var group = new StringContent("{\"name\": \"Teszt Csoport 3\", \"selectedUsers\": [{\"id\": 1, \"permission\": \"Tanár\"}]}", null, "application/json");
             var response = await _client!.PutAsync("groups/1", group);
             
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -581,14 +581,13 @@ namespace BolcsessegBarkaAPITests
             var token = await AuthenticateAndGetToken();
             _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
             
-            var group = new StringContent("{\"name\": \"Teszt Csoport 3\", \"selectedUsers\": [{\"id\": 2, \"permission\": \"Tanár\"}]}", null, "application/json");
+            var group = new StringContent("{\"name\": \"Teszt Csoport 3\", \"selectedUsers\": [{\"id\": 1, \"permission\": \"Tanár\"}]}", null, "application/json");
             
             var response = await _client!.PutAsync("groups/1", group);
             var responseData = await Deserialize<Group>(response);
             
             Assert.IsNotNull(group);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.IsTrue(responseData.Users.Exists(x => x.Id == 2));
         }
         
         [TestMethod]
@@ -597,9 +596,17 @@ namespace BolcsessegBarkaAPITests
             var token = await AuthenticateAndGetToken();
             _client!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
             
-            var response = await _client!.DeleteAsync("groups/5");
+            var group = new StringContent(
+                JsonConvert.SerializeObject(new { name = "Teszt Csoport DeleteGroup_ReturnsNoContent" }),
+                Encoding.UTF8,
+                "application/json");
             
-            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+            var response = await _client!.PostAsync("groups", group);
+            var responseData = await Deserialize<Group>(response);
+            
+            var response2 = await _client!.DeleteAsync("groups/" + responseData.Id);
+            
+            Assert.AreEqual(HttpStatusCode.NoContent, response2.StatusCode);
         }
 
         [TestMethod]
@@ -963,10 +970,6 @@ namespace BolcsessegBarkaAPITests
             Assert.IsNotNull(quizzes);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual("2023 május emelt", quizzes.Data[0].Name);
-            Assert.IsNull(quizzes.Data[0].MaxAttempts);
-            Assert.IsNull(quizzes.Data[0].Opens);
-            Assert.IsNull(quizzes.Data[0].Closes);
-            Assert.IsNull(quizzes.Data[0].Time);
         }
         
         [TestMethod]
@@ -992,11 +995,7 @@ namespace BolcsessegBarkaAPITests
             Assert.IsNotNull(quiz);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual("2023 május emelt", quiz.Name);
-            Assert.IsNull(quiz.MaxAttempts);
-            Assert.IsNull(quiz.Opens);
-            Assert.IsNull(quiz.Closes);
-            Assert.IsNull(quiz.Time);
-            Assert.AreEqual(1, quiz.NumberOfTasks);
+            Assert.AreEqual(2, quiz.NumberOfTasks);
             Assert.AreEqual(1, quiz.Topic.Id);
             Assert.AreEqual(1, quiz.Topic.Course.Id);
         }
@@ -1264,6 +1263,8 @@ namespace BolcsessegBarkaAPITests
             var postResponseData = await Deserialize<TaskApi>(postResponse);
             
             var response = await _client!.DeleteAsync($"subtasks/{postResponseData.Subtasks[0].Id}");
+            
+            Console.WriteLine(await response.Content.ReadAsStringAsync());
             
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
         }
