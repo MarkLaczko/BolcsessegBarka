@@ -1110,4 +1110,66 @@ public class BolcsessegBarkaTests
         Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("span.flex-grow-1.fw-bold")), TimeSpan.FromSeconds(10));
         Assert.AreEqual("Ez egy teszt!", _webDriver.FindElement(By.CssSelector("span.flex-grow-1.fw-bold")).Text);
     }
+    
+    [TestMethod]
+    public void Test31_CreateAssignment()
+    {
+        LoginAsAdmin();
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.LinkText("Kurzusaim")), TimeSpan.FromSeconds(10));
+        Navigate("Kurzusaim")!.Click();
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.CssSelector("#app > div > main > div > div > div > div > div.card-body.text-center > a")), TimeSpan.FromSeconds(10));
+        SelectElement("#app > div > main > div > div > div > div > div.card-body.text-center > a","CssSelector",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.ClassName("accordion-header")), TimeSpan.FromSeconds(10));
+        SelectElement("accordion-header","ClassName",true);
+        
+        Wait(ExpectedConditions.ElementIsVisible(By.Id("dropdownMenu")), TimeSpan.FromSeconds(10));
+        SelectElement("dropdownMenu","Id",true);
+        
+        Wait(ExpectedConditions.ElementToBeClickable(By.CssSelector("ul.show > li:nth-child(1) > a:nth-child(1)")), TimeSpan.FromSeconds(10));
+        SelectElement("ul.show > li:nth-child(1) > a:nth-child(1)","CssSelector",true);
+        
+        var taskName = _webDriver.FindElement(By.Name("task_name"));
+        taskName.SendKeys("Példa feladat");
+
+        var comment = _webDriver.FindElement(By.Name("comment"));
+        comment.SendKeys("Csináld meg");
+        
+        var deadline = _webDriver.FindElement(By.Name("deadline"));
+        deadline.SendKeys("2024-06-02T14:12");
+        
+        Wait(ExpectedConditions.ElementToBeClickable(By.Id("addAssignmentButton")), TimeSpan.FromSeconds(10));
+        SelectElement("addAssignmentButton","Id",true);
+        
+    }
+    
+    [TestMethod]
+    public void Test32_DeleteAssignment()
+    {
+        LoginAsAdmin();
+        
+        var wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(10));
+        wait.Until(ExpectedConditions.ElementIsVisible(By.LinkText("Kurzusaim")));
+        _webDriver.FindElement(By.LinkText("Kurzusaim")).Click();
+        
+        wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("#app > div > main > div > div > div > div > div.card-body.text-center > a")));
+        _webDriver.FindElement(By.CssSelector("#app > div > main > div > div > div > div > div.card-body.text-center > a")).Click();
+        
+        wait.Until(ExpectedConditions.ElementIsVisible(By.ClassName("accordion-header")));
+        _webDriver.FindElement(By.ClassName("accordion-header")).Click();
+        
+        var deleteButton = _webDriver.FindElement(By.CssSelector("#collapse1 > div.accordion-body > div:nth-child(4) > div > div.col-lg-3.col-md-6.col-sm-12.d-flex.justify-content-center.justify-content-lg-end.align-items-center.mb-2.mb-lg-0 > div > button.btn.btn-danger.text-white"));
+        ((IJavaScriptExecutor)_webDriver).ExecuteScript("arguments[0].scrollIntoView(true);", deleteButton);
+        
+        System.Threading.Thread.Sleep(2000);
+        
+        deleteButton.Click();
+        
+        wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("body > div:nth-child(7) > div > div.d-flex.justify-content-end.align-items-center.gap-1.mt-2 > button.btn.btn-success.text-white")));
+        _webDriver.FindElement(By.CssSelector("body > div:nth-child(7) > div > div.d-flex.justify-content-end.align-items-center.gap-1.mt-2 > button.btn.btn-success.text-white")).Click();
+        
+    }
+
 }
