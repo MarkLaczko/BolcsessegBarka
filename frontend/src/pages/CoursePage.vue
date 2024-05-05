@@ -1709,7 +1709,7 @@ export default {
         let toast = {
           severity: "success",
           detail:
-            this.messages.pages.newAssignmentPage.toastMessages
+            this.messages.pages.coursePage.updateAssignmentDialog
               .successfullyModifyAssignment,
           life: 3000,
         };
@@ -1725,7 +1725,7 @@ export default {
         let toast = {
           severity: "error",
           detail:
-            this.messages.pages.newAssignmentPage.toastMessages
+            this.messages.pages.coursePage.updateAssignmentDialog
               .failedToModifyAssignment,
           life: 3000,
         };
