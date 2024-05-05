@@ -282,8 +282,8 @@ const confirmDeleteSubtask = async (id, index) => {
     await confirm.require({
         message: languageStore().messages.pages.createTaskPage.deleteTask,
         icon: 'pi pi-exclamation-triangle',
-        rejectClass: 'btn btn-danger',
-        acceptClass: 'btn btn-success ',
+        rejectClass: 'btn btn-danger text-white',
+        acceptClass: 'btn btn-success text-white ',
         rejectLabel: languageStore().messages.pages.createTaskPage.cancel,
         acceptLabel: languageStore().messages.pages.createTaskPage.confirm,
         accept: async () => {
