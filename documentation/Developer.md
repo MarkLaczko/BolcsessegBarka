@@ -46,11 +46,19 @@
    - [QuizStore](#quizstore)
    - [CourseStore](#coursestore)
    - [NoteStore](#notestore)
-8. [Erőforrások](#erőforrások)
+8. [Őrök (guardok)](#őrök-guardok)
+   - [AdminGuard](#adminguard) 
+   - [AttemptAccessGuard](#attemptaccessguard) 
+   - [AttemptMarkGuard](#attemptmarkguard) 
+   - [AuthGuard](#authguard) 
+   - [QuizAccessGuard](#quizaccessguard) 
+   - [QuizCreationGuard](#quizcreationguard) 
+   - [HTTP Interceptor](#http-interceptor)
+9. [Erőforrások](#erőforrások)
    - [Képek](#images-képek)
    - [Stílusok](#styles-stíluslapok)
-9. [Csomagok](#felhasznált-csomagok)
-10. [Források](#felhasznált-források)
+10. [Csomagok](#felhasznált-csomagok)
+11. [Források](#felhasznált-források)
 
 ## Indítás
 
@@ -4381,6 +4389,227 @@ export default {
   },
 };
 ```
+
+## Őrök (guardok)
+
+### `AdminGuard`
+
+#### Funkció:
+> A `AdminGuard` egy útvonalőrző (route guard) funkció, amely biztosítja, hogy csak az adminisztrátori jogosultsággal rendelkező felhasználók férhessenek hozzá bizonyos útvonalakhoz az alkalmazásban. Ha a felhasználónak nincs adminisztrátori jogosultsága, akkor a requiresAdmin metával ellátott útvonalakhoz történő hozzáférést korlátozza, és átirányítja a felhasználót egy meghatározott alapértelmezett útvonalra.
+
+#### Importált Modulok:
+
+- `userStore` a `@stores/UserStore.mjs `modulból: Ez a modul szolgál az aktuális felhasználó információinak lekérésére és kezelésére.
+
+#### Paraméterek:
+
+- **to:** A következő útvonal objektuma, ahová a felhasználó navigálni szeretne.
+- **from:** A jelenlegi útvonal objektuma, ahonnan a felhasználó érkezik.
+- **next:** A továbbhaladást irányító függvény, amellyel eldönthető, hogy a felhasználó átirányításra kerül-e vagy folytatja az aktuális útvonalat.
+
+#### Működés:
+
+1. A `userStore` segítségével ellenőrzi, hogy az aktuális felhasználó rendelkezik-e adminisztrátori jogosultsággal az `isAdmin` változó alapján.
+2. Ha a felhasználó adminisztrátor:
+    - Tovább engedi a felhasználót a következő útvonalra (`next()`).
+3. Ha a felhasználó nem adminisztrátor:
+    - Ha az új útvonal (`to`) rendelkezik a `requiresAdmin` metával:
+      - Átirányítja a felhasználót a `home` útvonalra (`next({ name: 'home' })`).
+    - Ha az új útvonal nem tartalmazza a `requiresAdmin` metát:
+      - Tovább engedi a felhasználót a cél útvonalra (`next()`).
+
+### `AttemptAccessGuard`
+
+#### Funkció: 
+> A `AttemptAccessGuard` egy útvonalőrző funkció, amely biztosítja, hogy csak az adott kísérlethez (attempt) jogosultsággal rendelkező felhasználók férhessenek hozzá a vonatkozó útvonalakhoz. Az `attemptStore` segítségével ellenőrzi, hogy a felhasználó jogosult-e a kísérlet megtekintésére vagy szerkesztésére.
+
+#### Importált Modulok:
+
+- `userStore` a `@stores/UserStore.mjs modulból`: Az aktuális felhasználó hitelesítési és jogosultsági állapotának lekérésére szolgál.
+- `attemptStore` a `@stores/AttemptStore.mjs` modulból: A felhasználó kísérleti jogosultságainak lekérésére szolgál.
+
+#### Segédfüggvények:
+
+- `getPerms:` Ellenőrzi, hogy a felhasználó hozzáféréssel rendelkezik-e az aktuálisan megtekintett kísérlethez.
+1. Az aktuális URL-ből (path) kinyeri a kísérlet azonosítóját (ID).
+2. Ha az URL minta nem felel meg a kísérletekhez vezető útvonalnak, vagy nem a megfelelő alútvonalat próbálja elérni (pl. "mark"), akkor `false`-t ad vissza.
+3. A felhasználó által hozzáférhető kísérleteket (attempts) lekérdezi az `attemptStore` segítségével.
+4. Megkeresi, hogy az adott kísérlet (ID) benne van-e a felhasználó elérhető kísérletei között.
+.5 Ha a kísérlet megtalálható, visszatér `true` értékkel, ellenkező esetben `false`-sal.
+
+#### Paraméterek:
+
+- **to:** A következő útvonal objektuma, ahová a felhasználó navigálni szeretne.
+- **from:** A jelenlegi útvonal objektuma, ahonnan a felhasználó érkezik.
+- **next:** A továbbhaladást irányító függvény, amely meghatározza, hogy a felhasználó átirányításra kerül-e vagy folytatja az aktuális útvonalat.
+
+#### Működés:
+
+1. Ellenőrzi, hogy a felhasználó hitelesített-e (`userStore().isAuthenticated`) és hogy jogosult-e a megtekintett kísérlethez (`getPerms`).
+2. Ha mindkét feltétel teljesül:
+    - Tovább engedi a felhasználót a következő útvonalra (`next()`).
+3. Ha bármelyik feltétel nem teljesül:
+    - Ha az új útvonal (`to`) rendelkezik a `attemptAccessGuard` metával:
+      - Átirányítja a felhasználót a home útvonalra (`next({ name: 'home' })`).
+    - Ha az új útvonal nem tartalmazza az `attemptAccessGuard` metát:
+      - Tovább engedi a felhasználót a cél útvonalra (`next()`).
+
+### `AttemptMarkGuard`
+
+#### Funkció: 
+> Az `AttemptMarkGuard` egy útvonalőrző funkció, amely biztosítja, hogy csak a tanári jogosultsággal rendelkező felhasználók férhessenek hozzá az adott kísérlet pontozási (mark) útvonalaihoz. Az `attemptStore` és a `userStore` modulok segítségével ellenőrzi, hogy a felhasználó jogosult-e a pontozási műveletekhez.
+
+#### Importált Modulok:
+
+- `userStore` a `@stores/UserStore.mjs` modulból: Az aktuális felhasználó hitelesítési és jogosultsági állapotának lekérésére szolgál.
+- `attemptStore` a `@stores/AttemptStore.mjs` modulból: Az adott kísérlet csoportjainak és felhasználóinak kezelésére szolgál.
+
+#### Segédfüggvény:
+
+- ``getPerms``: Ellenőrzi, hogy a felhasználó rendelkezik-e tanári jogosultsággal az adott kísérletben.
+1. Az aktuális URL-ből (path) kinyeri a kísérlet azonosítóját (ID).
+2. Ha az URL minta nem felel meg a kísérletek pontozási útvonalának (pl. "mark"), akkor `false`-t ad vissza.
+3. Lekéri az adott kísérlethez tartozó csoportok felhasználóit az `attemptStore` segítségével (`getAttemptGroups`).
+4. Keresést végez az aktuális felhasználó azonosítója alapján az adott csoportokban.
+5. Ellenőrzi, hogy a felhasználónak van-e tanári (Teacher) jogosultsága a csoportok bármelyikében.
+6. Ha a felhasználónak tanári jogosultsága van, `true` értéket ad vissza, ellenkező esetben `false`-t.
+
+#### Paraméterek:
+
+- **to:** A következő útvonal objektuma, ahová a felhasználó navigálni szeretne.
+- **from:** A jelenlegi útvonal objektuma, ahonnan a felhasználó érkezik.
+- **next:** A továbbhaladást irányító függvény, amely meghatározza, hogy a felhasználó átirányításra kerül-e vagy folytatja az aktuális útvonalat.
+
+#### Működés:
+
+1. Ellenőrzi, hogy a felhasználó hitelesített-e (`userStore().isAuthenticated`) és rendelkezik-e tanári jogosultsággal a kísérlet pontozási útvonalához (getPerms).
+2. Ha mindkét feltétel teljesül:
+    - Tovább engedi a felhasználót a következő útvonalra (`next()`).
+3. Ha bármelyik feltétel nem teljesül:
+    - Ha az új útvonal (`to`) rendelkezik az `attemptMarkGuard` metával:
+      - Átirányítja a felhasználót a `home` útvonalra (`next({ name: 'home' })`).
+    - Ha az új útvonal nem tartalmazza az `attemptMarkGuard` metát:
+      - Tovább engedi a felhasználót a cél útvonalra (`next()`).
+
+### `AuthGuard`
+
+#### Funkció: 
+> Az `AuthGuard` egy útvonalőrző funkció, amely ellenőrzi, hogy a felhasználó hitelesített-e, és ennek megfelelően irányítja az alkalmazáson belüli navigációt. Az olyan útvonalak esetében, amelyekhez hitelesítés szükséges, biztosítja, hogy csak bejelentkezett felhasználók férjenek hozzá, míg az olyan útvonalakhoz, mint például a `login` vagy `register`, átirányítja a már hitelesített felhasználókat egy másik oldalra.
+
+#### Importált Modulok:
+
+- `userStore` a `@stores/UserStore.mjs` modulból: Az aktuális felhasználó hitelesítési és jogosultsági állapotának lekérésére szolgál.
+
+#### Paraméterek:
+
+- **to:** A következő útvonal objektuma, ahová a felhasználó navigálni szeretne.
+- **from:** A jelenlegi útvonal objektuma, ahonnan a felhasználó érkezik.
+- **next:** A továbbhaladást irányító függvény, amely meghatározza, hogy a felhasználó átirányításra kerül-e vagy folytatja az aktuális útvonalat.
+
+#### Működés:
+
+1. Ha a felhasználó hitelesített (`userStore().isAuthenticated`):
+    - Ellenőrzi, hogy az új útvonal (`to`) a `login` vagy `register` oldalra irányul-e.
+    - Ha igen, átirányítja a felhasználót a home oldalra (`next({ name: 'home' })`).
+    - Egyébként tovább engedi a felhasználót a cél útvonalra (`next()`).
+2. Ha a felhasználó nem hitelesített:
+    - Ha az új útvonal (`to`) rendelkezik a `requiresAuth` metával:
+      - Átirányítja a felhasználót a `login` oldalra (`next({ name: 'login' })`).
+    - Ha az új útvonal nem tartalmazza a `requiresAuth` metát:
+        - Tovább engedi a felhasználót a cél útvonalra (`next()`).
+
+### `QuizAccessGuard`
+
+#### Funkció: 
+> A `QuizAccessGuard` egy útvonalőrző funkció, amely ellenőrzi, hogy a felhasználó jogosult-e egy adott kvízhez való hozzáféréshez. Az `quizStore` és a `userStore` modulok segítségével határozza meg a felhasználó jogosultságait, és biztosítja, hogy csak tanárok és diákok érjék el a kívánt útvonalakat.
+
+#### Importált Modulok:
+
+- `userStore` a `@stores/UserStore.mjs` modulból: Az aktuális felhasználó hitelesítési és jogosultsági állapotának lekérésére szolgál.
+- `quizStore` a `@stores/QuizStore.mjs` modulból: Az adott kvíz részleteinek és csoportjainak lekérésére szolgál.
+
+#### Segédfüggvény:
+
+- `getPerms`: Ellenőrzi, hogy a felhasználó rendelkezik-e megfelelő jogosultsággal az adott kvíz megtekintéséhez vagy szerkesztéséhez.
+1. Az aktuális URL-ből (`path`) kinyeri a kvíz azonosítóját (ID).
+2. Ha az URL minta nem egyezik a kvíz útvonalaival vagy az "edit" alútvonallal, akkor `false`-t ad vissza.
+3. Lekéri a kvízhez tartozó csoportok felhasználóit a `quizStore` segítségével (`getQuiz`).
+4. Megkeresi az aktuális felhasználót az adott csoportokban.
+5. Ellenőrzi, hogy a felhasználónak van-e "Tanár" vagy "Tanuló" jogosultsága.
+6. Ha a felhasználó tanár vagy tanuló, true értéket ad vissza, ellenkező esetben `false`-t.
+
+#### Paraméterek:
+
+- **to:** A következő útvonal objektuma, ahová a felhasználó navigálni szeretne.
+- **from:** A jelenlegi útvonal objektuma, ahonnan a felhasználó érkezik.
+- **next:** A továbbhaladást irányító függvény, amely meghatározza, hogy a felhasználó átirányításra kerül-e vagy folytatja az aktuális útvonalat.
+
+#### Működés:
+
+1. Ellenőrzi, hogy a felhasználó hitelesített-e (`userStore().isAuthenticated`) és hogy rendelkezik-e tanári vagy tanulói jogosultsággal az adott kvízhez (`getPerms`).
+2. Ha mindkét feltétel teljesül:
+    - Tovább engedi a felhasználót a következő útvonalra (`next()`).
+3. Ha bármelyik feltétel nem teljesül:
+    - Ha az új útvonal (`to`) rendelkezik a `quizAccessGuard` metával:
+      - Átirányítja a felhasználót a home oldalra (`next({ name: 'home' })`).
+    - Ha az új útvonal nem tartalmazza a `quizAccessGuard` metát:
+      - Tovább engedi a felhasználót a cél útvonalra (`next()`).
+
+### `QuizCreationGuard`
+
+### Funkció: 
+> A `QuizCreationGuard` egy útvonalőrző funkció, amely ellenőrzi, hogy a felhasználó rendelkezik-e tanári jogosultsággal egy adott kurzuson belül kvíz létrehozásához vagy szerkesztéséhez. Az `userStore`, a `courseStore` és a `quizStore` segítségével ellenőrzi a hozzáférési jogosultságokat.
+
+#### Importált Modulok:
+
+- `userStore` a `@stores/UserStore.mjs` modulból: Az aktuális felhasználó - hitelesítési és jogosultsági állapotának lekérésére szolgál.
+- `courseStore` a `@stores/CourseStore.mjs` modulból: Az adott kurzus részleteinek és csoportjainak lekérésére szolgál.
+- `quizStore` a `@stores/QuizStore.mjs` modulból: Az adott kvíz részleteinek és csoportjainak lekérésére szolgál.
+
+#### Segédfüggvény:
+
+- `getCourse`: Ellenőrzi, hogy a felhasználó tanári jogosultsággal rendelkezik-e az adott kurzusban vagy kvízben.
+1. Az aktuális URL-ből (`path`) kinyeri a kurzus vagy kvíz azonosítóját (ID).
+2. Ha az URL minta nem tartalmazza a kvíz vagy kurzus szerkesztési vagy létrehozási alútvonalakat (pl. "edit", "create-quiz"), akkor `false`-t ad vissza.
+3. Ha az URL a kvíz szerkesztéséhez kapcsolódik (`quiz`):
+    - Lekéri a kvízhez tartozó kurzus csoportjait a `quizStore` segítségével (`getQuiz`).
+4. Ha az URL a kurzus létrehozásához kapcsolódik (`create-quiz`):
+    - Lekéri a kurzus csoportjait a `courseStore` segítségével (`getCourse`).
+5. Megkeresi az aktuális felhasználót az adott csoportokban.
+6. Ellenőrzi, hogy a felhasználónak van-e tanári jogosultsága ("Tanár").
+7. Ha a felhasználó tanár, true értéket ad vissza, ellenkező esetben `false`-t.
+
+#### Paraméterek:
+
+- **to:** A következő útvonal objektuma, ahová a felhasználó navigálni szeretne.
+- **from:** A jelenlegi útvonal objektuma, ahonnan a felhasználó érkezik.
+- **next:** A továbbhaladást irányító függvény, amely meghatározza, hogy a felhasználó átirányításra kerül-e vagy folytatja az aktuális útvonalat.
+
+#### Működés:
+
+1. Ellenőrzi, hogy a felhasználó hitelesített-e (`userStore().isAuthenticated`) és rendelkezik-e tanári jogosultsággal a kvíz létrehozásához vagy szerkesztéséhez (`getCourse`).
+2. Ha mindkét feltétel teljesül:
+    - Tovább engedi a felhasználót a következő útvonalra (`next()`).
+3. Ha bármelyik feltétel nem teljesül:
+    - Ha az új útvonal (`to`) rendelkezik a `quizCreationGuard` metával:
+      - Átirányítja a felhasználót a home oldalra (`next({ name: 'home' })`).
+    - Ha az új útvonal nem tartalmazza a `quizCreationGuard` metát:
+      - Tovább engedi a felhasználót a cél útvonalra (`next()`).
+
+### `HTTP Interceptor`
+
+#### Funkció: 
+> A `http.interceptors.response.use` egy HTTP interceptor, amely figyeli az API-válaszokat, hogy megfelelően kezelje az esetleges hibakódokat. Ha az API-hívás során egy adott hibakódot, például `401 Unauthorized` kap, automatikusan kijelentkezteti a felhasználót, és átirányítja a bejelentkezési oldalra.
+
+#### Működés:
+
+1. **Pozitív válasz:** Ha a válasz sikeres, visszaadja a `response` objektumot, lehetővé téve az adatok felhasználását.
+2. **Hibás válasz:** Ha hiba történik a kérések során, a következőket teszi:
+    - Ellenőrzi, hogy a válasz státuszkódja `401 Unauthorized`-e.
+    - Ha a státuszkód `401`:
+      - Lekéri a `userStore` aktuális állapotát.
+      - Meghívja a `logout` függvényt a felhasználó kijelentkeztetéséhez.
+      - Átirányítja a felhasználót a bejelentkezési oldalra (`router.push("/login")`).
 
 ## Erőforrások
 
