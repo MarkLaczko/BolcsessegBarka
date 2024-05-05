@@ -1,20 +1,26 @@
 <template>
     <BaseLayout>
         <BaseToast />
-        <h1>{{ messages.pages.profilePage.title }}</h1>
         <FormKit
             type="form"
             :actions="false"
+            :classes="{
+                form: {
+                    'mt-2' : true
+                }
+            }"
             @submit="updateProfile"
         >
+            <h1 class="text-center">{{ messages.pages.profilePage.title }}</h1>
+
             <div class="row">
                 <div class="col-12 col-md-6">
                     <label class="form-label">{{ messages.pages.profilePage.nameLabel }}</label>
-                    <input type="text" class="form-control" disabled :value="currentUserData.name">
+                    <input type="text" class="form-control form-control-dark" disabled :value="currentUserData.name">
                 </div>
                 <div class="col-12 col-md-6">
                     <label class="form-label">{{ messages.pages.profilePage.emailLabel }}</label>
-                    <input type="text" class="form-control" disabled :value="currentUserData.email">
+                    <input type="text" class="form-control form-control-dark" disabled :value="currentUserData.email">
                 </div>
 
                 <div class="col-12 mt-2">
@@ -35,7 +41,8 @@
                         :classes="{
                         input: {
                             'form-control': true,
-                            'w-100': true
+                            'w-100': true,
+                            'form-control-dark': true,
                         },
                         messages: {
                             'list-style-none': true,
@@ -61,7 +68,8 @@
                         :classes="{
                         input: {
                             'form-control': true,
-                            'w-100': true
+                            'w-100': true,
+                            'form-control-dark': true,
                         },
                         messages: {
                             'list-style-none': true,
@@ -89,7 +97,8 @@
                         :classes="{
                         input: {
                             'form-control': true,
-                            'w-100': true
+                            'w-100': true,
+                            'form-control-dark': true,
                         },
                         messages: {
                             'list-style-none': true,
