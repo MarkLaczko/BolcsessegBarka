@@ -409,12 +409,12 @@ export default {
         },
       },
       editUserDialog: {
-        title: "Módosítása:",
+        title: "Módosítása",
         nameLabel: "Név",
         emailLabel: "Email",
         passwordLabel: "Jelszó",
         confirmPasswordLabel: "Jelszó megerősítése",
-        isAdmin: "Admin-E",
+        isAdmin: "Adminisztrátor",
         saveButton: "Mentés",
         cancelButton: "Mégsem",
         validationMessages: {

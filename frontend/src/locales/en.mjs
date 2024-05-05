@@ -404,7 +404,7 @@ export default {
         },
       },
       editUserDialog: {
-        title: "Edit:",
+        title: "Edit",
         nameLabel: "Name",
         emailLabel: "Email",
         passwordLabel: "Password",
